@@ -5,16 +5,16 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Timer;
 
+import purethought.animation.BAnimator;
 import purethought.gui.BFactory;
 
-import animation.BAnimator;
 
 public class AWTAnimator extends BAnimator{
 	private int _millis;
 	private Timer _timer;
 
 	public AWTAnimator(){
-		this(1000/30);
+		this(1000/10);
 	}
 	
 	public AWTAnimator(int millis){

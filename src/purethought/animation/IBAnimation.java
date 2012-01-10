@@ -5,7 +5,7 @@ package purethought.animation;
 public interface IBAnimation {
 	void stepAnimation(long millis);
 	IBAnimable[] animables();
-	IBAnimation abortAnimation();
+	void abortAnimation();
 	boolean aborted();
 	void applyAnimation();
 	boolean endReached();

@@ -15,12 +15,11 @@ public abstract class BAnimation implements IBAnimation{
 	}
 
 	@Override
-	public final IBAnimation abortAnimation() {
+	public final void abortAnimation() {
 		_aborted = true;
 		for( IBAnimable a: animables() ){
 			a.abortAnimation(this);
 		}
-		return null;
 	}
 	
 	@Override

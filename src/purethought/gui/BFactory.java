@@ -1,6 +1,6 @@
 package purethought.gui;
 
-import animation.BAnimator;
+import purethought.animation.BAnimator;
 import purethought.awt.AWTFactory;
 import purethought.problem.BCardExtractor;
 import purethought.problem.BProblemLocator;

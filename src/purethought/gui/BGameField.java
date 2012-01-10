@@ -1,11 +1,14 @@
 package purethought.gui;
 
+import purethought.animation.BAnimator;
+import purethought.animation.BFlipAnimation;
+import purethought.animation.BRotateAnimation;
+import purethought.animation.BTransformAnimation;
+import purethought.animation.BCompoundTransformAnimation;
+import purethought.animation.IBTransformAnimable;
 import purethought.problem.BCardExtractor;
 import purethought.problem.BProblem;
 import purethought.problem.BProblemLocator;
-import animation.BAnimator;
-import animation.BRotateAnimation;
-import animation.IBTransformAnimable;
 
 public class BGameField {
 	private IBCanvas _canvas;
@@ -68,7 +71,15 @@ public class BGameField {
 		
 		BFactory f = BFactory.instance();
 		BAnimator animator = f.animator();
-		animator.addAnimation( new BRotateAnimation(Math.PI, new IBTransformAnimable[]{ _questionSprite }) );
+		animator.addAnimation(
+			new BCompoundTransformAnimation( 
+				new IBTransformAnimable[]{ _questionSprite },
+				new BTransformAnimation[]{
+					new BRotateAnimation(Math.PI/2, null),
+					new BFlipAnimation(0, Math.PI/4, null ),
+				}
+			)
+		);
 	}
 	
 	/**

@@ -16,7 +16,7 @@ public class BRotateAnimation extends BTransformAnimation{
 	}
 	
 	@Override
-	protected IBTransform stepTransform(long millis) {
+	public IBTransform stepTransform(long millis) {
 		IBTransform t = BFactory.instance().identityTransform();
 		t.rotate(_angle);
 		_angle += _radSecond*millis/1000;

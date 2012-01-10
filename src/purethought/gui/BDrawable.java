@@ -3,31 +3,22 @@ package purethought.gui;
 import java.util.Collection;
 import java.util.HashMap;
 
-import animation.IBAnimation;
-import animation.IBTransformAnimable;
+import purethought.animation.IBAnimation;
+import purethought.animation.IBTransformAnimable;
+
 
 
 public abstract class BDrawable implements IBDrawable, IBTransformAnimable{
 
 	protected IBTransform _t = BFactory.instance().identityTransform();
-	protected HashMap<IBAnimation, IBTransform> _tt = new HashMap<IBAnimation, IBTransform>();
+	protected IBTransform _tt;
 	
-	public IBTransform temporaryTransform(IBAnimation a){
-		IBTransform ret = _tt.get(a);
-		if( a == null ){
-			ret = BFactory.instance().identityTransform();
-			_tt.put(a, ret);
-		}
-		return ret;
+	public IBTransform temporaryTransform(){
+		return _tt;
 	}
 	
-	public void setTemporaryTransform(IBTransform tt,IBAnimation a){
-		if( tt == null ){
-			_tt.remove(a);
-		}
-		else{
-			_tt.put(a, tt);
-		}
+	public void setTemporaryTransform(IBTransform tt){
+		_tt = tt;
 	}
 
 	
@@ -85,11 +76,11 @@ public abstract class BDrawable implements IBDrawable, IBTransformAnimable{
 	}
 
 	public void abortAnimation(IBAnimation a){
-		setTemporaryTransform(null, a);
+		setTemporaryTransform(null);
 	}
 	
 	public void applyAnimation(IBAnimation a){
-		IBTransform tt = temporaryTransform(a);
+		IBTransform tt = temporaryTransform();
 		if( tt != null ){
 			_t.preConcatenate(tt);
 		}
@@ -117,15 +108,7 @@ public abstract class BDrawable implements IBDrawable, IBTransformAnimable{
 	}
 
 	private IBTransform computeTemporaryTransform() {
-		Collection<IBTransform> tt = _tt.values();
-		if( tt.size() == 0 ){
-			return null;
-		}
-		IBTransform ret = BFactory.instance().identityTransform();
-		for (IBTransform t : tt) {
-			ret.concatenate(t);
-		}
-		return ret;
+		return temporaryTransform();
 	}
 
 	/**

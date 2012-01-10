@@ -23,7 +23,7 @@ public class BFlipAnimation extends BTransformAnimation{
 	}
 
 	@Override
-	protected IBTransform stepTransform(long millis) {
+	public IBTransform stepTransform(long millis) {
 		IBTransform t = BFactory.instance().identityTransform();
 		double c = Math.cos(_angle);
 		t.scale(c, 1);
