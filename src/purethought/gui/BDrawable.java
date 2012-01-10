@@ -82,12 +82,12 @@ public abstract class BDrawable implements IBDrawable, IBTransformAnimable{
 	public void applyAnimation(IBAnimation a){
 		IBTransform tt = temporaryTransform();
 		if( tt != null ){
-			_t.preConcatenate(tt);
+			_t.concatenate(tt);
 		}
 	}
 
 	@Override
-	public void draw(IBCanvas c, IBTransform additionalT) {
+	public void draw(IBCanvas c) {
 		IBTransform t = transform();
 		
 		IBTransform tt = computeTemporaryTransform();
@@ -98,12 +98,6 @@ public abstract class BDrawable implements IBDrawable, IBTransformAnimable{
 			t = temp;
 		}
 		
-		if( additionalT != null ){
-			IBTransform temp = BFactory.instance().identityTransform();
-			temp.concatenate(additionalT);
-			temp.concatenate(t);
-			t = temp;
-		}
 		draw_internal(c,t);
 	}
 

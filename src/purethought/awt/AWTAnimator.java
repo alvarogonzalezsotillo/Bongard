@@ -14,7 +14,7 @@ public class AWTAnimator extends BAnimator{
 	private Timer _timer;
 
 	public AWTAnimator(){
-		this(1000/10);
+		this(1000/20);
 	}
 	
 	public AWTAnimator(int millis){

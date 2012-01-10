@@ -71,13 +71,15 @@ public class BGameField {
 		
 		BFactory f = BFactory.instance();
 		BAnimator animator = f.animator();
-		animator.addAnimation(
-			new BCompoundTransformAnimation( 
-				new IBTransformAnimable[]{ _questionSprite },
-				new BRotateAnimation(Math.PI/2),
-				new BFlipAnimation(0, Math.PI/4)
-			)
-		);
+//		animator.addAnimation(
+//			new BCompoundTransformAnimation( 
+//				new IBTransformAnimable[]{ _questionSprite },
+//				new BRotateAnimation(Math.PI/2),
+//				new BFlipAnimation(Math.PI/4000, 10*1000)
+//			)
+//		);
+		
+		animator.addAnimation( new BFlipAnimation(2*Math.PI/1000, 4*1000, _questionSprite ) );
 	}
 	
 	/**
@@ -90,7 +92,7 @@ public class BGameField {
 		
 		IBCanvas canvas = canvas();
 		for( BSprite s: _allSprites ){
-			s.draw( canvas, canvas.transform() );
+			s.draw( canvas );
 		}
 	}
 	

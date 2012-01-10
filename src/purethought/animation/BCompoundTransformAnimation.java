@@ -34,8 +34,9 @@ public class BCompoundTransformAnimation implements IBAnimation {
 
 	@Override
 	public void applyAnimation() {
-		for (BTransformAnimation a : _animations) {
-			a.applyAnimation();
+		for( IBAnimable a: animables() ){
+			IBTransformAnimable ta = (IBTransformAnimable) a;
+			ta.applyAnimation(this);
 		}
 	}
 

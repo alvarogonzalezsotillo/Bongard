@@ -5,5 +5,5 @@ public interface IBDrawable extends IBTransformable{
 	public void setTransform(IBTransform t);
 	public IBPoint[] originalHull();
 	public IBPoint[] hull();
-	public void draw(IBCanvas c, IBTransform additionalT);
+	public void draw(IBCanvas c);
 }

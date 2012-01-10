@@ -2,6 +2,8 @@ package purethought.awt;
 
 import java.awt.Canvas;
 import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Image;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -33,8 +35,15 @@ public class AWTGame implements IBGame, Runnable{
 		JFrame f = new JFrame( "Bongard" );
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		_canvas = new Canvas(){
-			public void paint(java.awt.Graphics g) {
+			public void paint(Graphics g) {
+				AWTCanvas canvas = (AWTCanvas)f().canvas();
+				canvas.eraseBackground();
+				Image i = canvas.getOffscreenImage();
 				f().field().draw();
+				g.drawImage(i,0,0,null);
+			}
+			public void update(Graphics g){
+				paint(g);
 			}
 		};
 		f.add(_canvas);
