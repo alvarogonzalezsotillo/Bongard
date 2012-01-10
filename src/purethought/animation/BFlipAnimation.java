@@ -11,7 +11,7 @@ public class BFlipAnimation extends BTransformAnimation{
 	protected double _angle = 0;
 	protected double _axisAngle;
 
-	public BFlipAnimation(double axisAngle, double radSecond, IBTransformAnimable[] a) {
+	public BFlipAnimation(double axisAngle, double radSecond, IBTransformAnimable ... a) {
 		super(a);
 		_radSecond = radSecond;
 		_axisAngle = axisAngle;

@@ -1,7 +1,5 @@
 package purethought.animation;
 
-import java.util.ArrayList;
-
 import purethought.gui.BFactory;
 import purethought.gui.IBTransform;
 
@@ -11,7 +9,7 @@ public class BCompoundTransformAnimation implements IBAnimation {
 	private BTransformAnimation[] _animations;
 	private boolean _aborted;
 
-	public BCompoundTransformAnimation( IBTransformAnimable a[], BTransformAnimation animations[] ){
+	public BCompoundTransformAnimation( IBTransformAnimable[] a, BTransformAnimation ... animations ){
 		_a = a;
 		_animations = animations;
 	}

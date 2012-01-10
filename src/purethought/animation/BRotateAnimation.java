@@ -9,7 +9,7 @@ public class BRotateAnimation extends BTransformAnimation{
 	private double _angle;
 	
 	
-	public BRotateAnimation( double radSecond, IBTransformAnimable[] a ){
+	public BRotateAnimation( double radSecond, IBTransformAnimable ... a ){
 		super(a);
 		_radSecond = radSecond;
 		_angle = 0;

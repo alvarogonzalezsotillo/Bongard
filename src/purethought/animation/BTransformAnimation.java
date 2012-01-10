@@ -4,7 +4,7 @@ import purethought.gui.IBTransform;
 
 public abstract class BTransformAnimation extends BAnimation{
 
-	public BTransformAnimation(IBTransformAnimable[] a) {
+	public BTransformAnimation(IBTransformAnimable ... a) {
 		super(a);
 	}
 	

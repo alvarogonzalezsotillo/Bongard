@@ -5,7 +5,7 @@ public abstract class BAnimation implements IBAnimation{
 	private IBAnimable[] _a;
 	private boolean _aborted = false;
 
-	public BAnimation(IBAnimable[] a){
+	public BAnimation(IBAnimable ... a){
 		_a = a;
 	}
 	

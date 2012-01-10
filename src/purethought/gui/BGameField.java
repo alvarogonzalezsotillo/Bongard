@@ -74,10 +74,8 @@ public class BGameField {
 		animator.addAnimation(
 			new BCompoundTransformAnimation( 
 				new IBTransformAnimable[]{ _questionSprite },
-				new BTransformAnimation[]{
-					new BRotateAnimation(Math.PI/2, null),
-					new BFlipAnimation(0, Math.PI/4, null ),
-				}
+				new BRotateAnimation(Math.PI/2),
+				new BFlipAnimation(0, Math.PI/4)
 			)
 		);
 	}
