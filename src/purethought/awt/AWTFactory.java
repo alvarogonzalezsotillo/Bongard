@@ -50,7 +50,7 @@ public class AWTFactory extends BFactory {
 	@Override
 	public AWTCanvas canvas(){
 		if (_canvas == null) {
-			_canvas = new AWTCanvas( game().canvas() );
+			_canvas = new AWTCanvas();
 		}
 
 		return _canvas;

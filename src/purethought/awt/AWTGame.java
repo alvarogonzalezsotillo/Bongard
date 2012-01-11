@@ -18,24 +18,13 @@ public class AWTGame implements IBGame, Runnable{
 
 	private JFrame _f;
 	
-	public Component _canvas;
-	
-	public BGameField _field;
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public Component canvas(){
-		return _canvas;
-	}
 	
 	@SuppressWarnings("serial")
 	private JFrame createFrame(){
 		JFrame f = new JFrame( "Bongard" );
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		_canvas = new AWTCanvas.Canvas();
-		f.add(_canvas);
+		Component canvas = ((AWTCanvas)f().canvas()).canvasImpl();
+		f.add(canvas);
 		
 		f.setSize( 480, 640 );
 		return f;

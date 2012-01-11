@@ -1,5 +1,6 @@
 package purethought.awt;
 
+import java.awt.Canvas;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -22,7 +23,7 @@ import purethought.util.BFactory;
 public class AWTCanvas extends BCanvas{
 	
 	@SuppressWarnings("serial")
-	public static class Canvas extends java.awt.Canvas{
+	private class CanvasImpl extends Canvas{
 		{
 			addComponentListener( new ComponentAdapter() {
 				@Override
@@ -57,18 +58,18 @@ public class AWTCanvas extends BCanvas{
 		}
 	};
 
-	private Canvas _impl;
+	private CanvasImpl _impl;
 	private Image _image;
 	
 	/**
 	 * 
 	 * @param obj
 	 */
-	public AWTCanvas(Component impl) {
-		_impl = (Canvas) impl;
+	public AWTCanvas() {
+		_impl = new CanvasImpl();
 	}
 	
-	private Component canvas(){
+	public Component canvasImpl(){
 		return _impl;
 	}
 	
@@ -89,7 +90,7 @@ public class AWTCanvas extends BCanvas{
 	
 	@Override
 	public void refresh() {
-		canvas().repaint();
+		canvasImpl().repaint();
 	}
 	
 
@@ -113,7 +114,7 @@ public class AWTCanvas extends BCanvas{
 	 * 
 	 */
 	public Image getOffscreenImage() {
-		Component c = canvas();
+		Component c = canvasImpl();
 		Dimension d = c.getSize();
 		if (_image == null || _image.getWidth(null) != d.width
 				|| _image.getHeight(null) != d.height) {
@@ -124,7 +125,7 @@ public class AWTCanvas extends BCanvas{
 
 	@Override
 	public IBRectangle size() {
-		Component c = canvas();
+		Component c = canvasImpl();
 		return new BRectangle( 0, 0, c.getWidth(), c.getHeight() );
 	}
 

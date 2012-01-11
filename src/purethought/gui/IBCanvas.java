@@ -8,4 +8,6 @@ public interface IBCanvas{
 	IBRectangle size();
 	void setDrawable( IBCanvasDrawable d );
 	IBCanvasDrawable drawable();
+	void addListener(IBCanvasListener l);
+	void removeListener(IBCanvasListener l);
 }
