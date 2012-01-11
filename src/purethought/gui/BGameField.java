@@ -1,12 +1,13 @@
 package purethought.gui;
 
 import purethought.animation.BAnimator;
+import purethought.animation.BCompoundTransformAnimation;
+import purethought.animation.BConcatenateAnimation;
 import purethought.animation.BFlipAnimation;
 import purethought.animation.BRotateAnimation;
 import purethought.animation.BScaleAnimation;
-import purethought.animation.BTransformAnimation;
-import purethought.animation.BCompoundTransformAnimation;
-import purethought.animation.IBTransformAnimable;
+import purethought.animation.IBAnimable;
+import purethought.animation.IBAnimation;
 import purethought.problem.BCardExtractor;
 import purethought.problem.BProblem;
 import purethought.problem.BProblemLocator;
@@ -77,16 +78,32 @@ public class BGameField {
 		
 		BFactory f = BFactory.instance();
 		BAnimator animator = f.animator();
-//		animator.addAnimation(
-//			new BCompoundTransformAnimation( 
-//				new IBTransformAnimable[]{ _questionSprite },
-//				new BRotateAnimation(Math.PI/2),
-//				new BFlipAnimation(Math.PI/4000, 10*1000)
-//			)
-//		);
 		
-		animator.addAnimation( new BFlipAnimation(2*Math.PI/1000, 4*1000, _allSprites ) );
-		animator.addAnimation( new BScaleAnimation(1.1,1.1, 4*1000, _questionSprite ) );
+		animator.addAnimation(
+			new BConcatenateAnimation( 
+				new IBAnimable[]{ _questionSprite },
+				new BFlipAnimation(Math.PI/500, 1000),
+				new BRotateAnimation(Math.PI/500, 1000)
+			)
+		);
+		
+		animator.addAnimation( 
+			new BConcatenateAnimation( 
+				_set1Sprites,
+				new BScaleAnimation(1.1,1.1, 500),
+				new BScaleAnimation(1/1.1,1/1.1, 500),
+				new BScaleAnimation(1.1,1.1, 500),
+				new BScaleAnimation(1/1.1,1/1.1, 500)
+			)
+		);
+
+		animator.addAnimation( 
+			new BCompoundTransformAnimation(
+				_set2Sprites,
+				 new BRotateAnimation(Math.PI/500, 2000),
+				 new BFlipAnimation(Math.PI/500, 2000)
+			)
+		);
 	}
 	
 	/**

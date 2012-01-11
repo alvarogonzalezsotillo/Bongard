@@ -33,6 +33,4 @@ public class AWTSprite extends BSprite{
 		g2d.dispose();
 	}
 
-
-	
 }
