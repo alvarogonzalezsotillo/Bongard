@@ -8,11 +8,15 @@ import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 
 import purethought.gui.BCanvas;
+import purethought.gui.BGameField;
 import purethought.gui.BRectangle;
 import purethought.gui.IBRectangle;
+import purethought.problem.BProblemLocator;
 import purethought.util.BFactory;
 
 public class AWTCanvas extends BCanvas{
@@ -28,6 +32,16 @@ public class AWTCanvas extends BCanvas{
 					c.adjustTransformToSize();
 				}
 			});
+			
+			addMouseListener( new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					BFactory instance = BFactory.instance();
+					BProblemLocator test = instance.randomProblem();
+					AWTCanvas c = (AWTCanvas) instance.canvas();
+					((BGameField)c.drawable()).setProblem(test);
+				}
+			});
 		}
 		
 		public void paint(Graphics g) {
@@ -35,7 +49,7 @@ public class AWTCanvas extends BCanvas{
 			AWTCanvas canvas = (AWTCanvas)f.canvas();
 			canvas.eraseBackground();
 			Image i = canvas.getOffscreenImage();
-			f.field().draw();
+			canvas.drawable().draw(canvas);
 			g.drawImage(i,0,0,null);
 		}
 		public void update(Graphics g){
@@ -89,7 +103,7 @@ public class AWTCanvas extends BCanvas{
 	}
 	
 	public void adjustTransformToSize(){
-		IBRectangle origin = BFactory.instance().field().size();
+		IBRectangle origin = drawable().size();
 		IBRectangle destination = size();
 		
 		transform().setTo(origin, destination);

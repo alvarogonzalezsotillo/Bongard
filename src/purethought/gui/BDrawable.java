@@ -1,9 +1,5 @@
 package purethought.gui;
 
-import java.util.Collection;
-import java.util.HashMap;
-
-import purethought.animation.IBAnimation;
 import purethought.animation.IBTransformAnimable;
 import purethought.util.BFactory;
 
@@ -112,6 +108,13 @@ public abstract class BDrawable implements IBDrawable, IBTransformAnimable{
 		return temporaryTransform();
 	}
 
+	@Override
+	public IBPoint position(){
+		IBPoint ret = BFactory.instance().point(0, 0);
+		ret = transform().transform(ret);
+		return ret;
+	}
+	
 	/**
 	 * Draw ignoring the internal transform, only the given transform 
 	 * @param c

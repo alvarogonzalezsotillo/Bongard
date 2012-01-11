@@ -36,14 +36,15 @@ public class BCompoundTransformAnimation implements IBAnimation {
 	public void stepAnimation(long millis) {
 		IBTransform t = BFactory.instance().identityTransform();
 		for (BTransformAnimation a : _animations) {
-			if( !a.endReached() ){
-				IBTransform st = a.stepTransform(millis);
-				t.concatenate(st);
+			if( a.endReached() ){
+				continue;
 			}
-		}
-		for( IBAnimable a: animables() ){
-			IBTransformAnimable ta = (IBTransformAnimable) a;
-			ta.setTemporaryTransform(t);
+			for( IBAnimable an: animables() ){
+				IBTransformAnimable ta = (IBTransformAnimable) an;
+				IBTransform st = a.stepTransform(millis, ta);
+				t.concatenate(st);
+				ta.setTemporaryTransform(t);
+			}
 		}
 	}
 	

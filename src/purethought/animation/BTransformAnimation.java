@@ -8,13 +8,13 @@ public abstract class BTransformAnimation extends BAnimation{
 		super(a);
 	}
 	
-	public abstract IBTransform stepTransform(long millis);
+	public abstract IBTransform stepTransform(long millis, IBTransformAnimable a);
 	
 	@Override
 	public final void stepAnimation(long millis) {
-		IBTransform t = stepTransform(millis);
 		for( IBAnimable a: animables() ){
 			IBTransformAnimable ta = (IBTransformAnimable) a;
+			IBTransform t = stepTransform(millis, ta);
 			ta.setTemporaryTransform(t);
 			if( endReached() ){
 				ta.applyTemporaryTransform();

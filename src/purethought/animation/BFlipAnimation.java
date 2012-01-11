@@ -23,7 +23,7 @@ public class BFlipAnimation extends BTransformAnimation{
 	}
 
 	@Override
-	public IBTransform stepTransform(long millis) {
+	public IBTransform stepTransform(long millis, IBTransformAnimable a) {
 		_currentMillis += millis;
 		if( _currentMillis > _totalMillis ){
 			millis = _totalMillis-_currentMillis;

@@ -58,11 +58,9 @@ public class AWTGame implements IBGame, Runnable{
 		_f.setVisible(true);
 		
 		BProblemLocator loc = f().randomProblem();
-		
-		f().field().setProblem(loc);
-		IBTransform t = f().identityTransform();
-		t.scale(.5, .5);
-		f().canvas().setTransform(t);
+		BGameField field = new BGameField();
+		field.setProblem(loc);
+		f().canvas().setDrawable(field);
 	}
 
 	private static BFactory f() {

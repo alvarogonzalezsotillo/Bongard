@@ -23,8 +23,7 @@ public abstract class BFactory {
 		return _instance;
 	}
 
-	private BGameField _field;
-	
+
 	protected BFactory() {
 	}
 	
@@ -37,12 +36,4 @@ public abstract class BFactory {
 	public abstract BAnimator animator();
 	
 	public abstract BProblemLocator randomProblem();
-	
-	public BGameField field(){
-		if( _field == null ){
-			_field = new BGameField( BFactory.instance().canvas() );
-		}
-		return _field;
-	}
-
 }

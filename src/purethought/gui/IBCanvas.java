@@ -6,4 +6,6 @@ public interface IBCanvas{
 	void setTransform(IBTransform t);
 	void refresh();
 	IBRectangle size();
+	void setDrawable( IBCanvasDrawable d );
+	IBCanvasDrawable drawable();
 }
