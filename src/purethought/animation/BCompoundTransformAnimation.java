@@ -1,7 +1,7 @@
 package purethought.animation;
 
-import purethought.gui.BFactory;
 import purethought.gui.IBTransform;
+import purethought.util.BFactory;
 
 public class BCompoundTransformAnimation implements IBAnimation {
 

@@ -4,10 +4,10 @@ import java.io.File;
 import java.util.Formatter;
 import java.util.Random;
 
-import purethought.gui.BFactory;
 import purethought.gui.BSprite;
 import purethought.gui.IBRaster;
 import purethought.problem.BProblemLocator;
+import purethought.util.BFactory;
 
 public class AWTFactory extends BFactory {
 

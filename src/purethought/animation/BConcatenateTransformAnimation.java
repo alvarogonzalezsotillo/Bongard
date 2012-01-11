@@ -19,7 +19,7 @@ public class BConcatenateTransformAnimation implements IBAnimation{
 
 	@Override
 	public boolean aborted() {
-		return false;
+		return _aborted;
 	}
 
 	@Override
@@ -49,8 +49,7 @@ public class BConcatenateTransformAnimation implements IBAnimation{
 
 	@Override
 	public void stepAnimation(long millis) {
-		// TODO Auto-generated method stub
-		
+		BTransformAnimation a = _animations[_index];
 	}
 
 }

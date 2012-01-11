@@ -1,5 +1,7 @@
 package purethought.gui;
 
+import purethought.util.BFactory;
+
 
 public abstract class BSprite extends BDrawable{
 

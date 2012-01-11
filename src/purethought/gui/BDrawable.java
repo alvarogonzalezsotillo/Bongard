@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import purethought.animation.IBAnimation;
 import purethought.animation.IBTransformAnimable;
+import purethought.util.BFactory;
 
 
 
@@ -84,6 +85,7 @@ public abstract class BDrawable implements IBDrawable, IBTransformAnimable{
 		if( tt != null ){
 			_t.concatenate(tt);
 		}
+		setTemporaryTransform(null);
 	}
 
 	@Override

@@ -11,7 +11,6 @@ public class BRectangle implements IBRectangle{
 		_y = y;
 		_w = width;
 		_h = height;
-			
 	}
 
 	public double x(){ return _x; }
