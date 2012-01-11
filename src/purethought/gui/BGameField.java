@@ -85,8 +85,8 @@ public class BGameField {
 //			)
 //		);
 		
-		animator.addAnimation( new BFlipAnimation(2*Math.PI/1000, 4*1000, _questionSprite ) );
-		animator.addAnimation( new BScaleAnimation(1.2,1.2, 4*1000, _allSprites ) );
+		animator.addAnimation( new BFlipAnimation(2*Math.PI/1000, 4*1000, _allSprites ) );
+		animator.addAnimation( new BScaleAnimation(1.1,1.1, 4*1000, _questionSprite ) );
 	}
 	
 	/**
