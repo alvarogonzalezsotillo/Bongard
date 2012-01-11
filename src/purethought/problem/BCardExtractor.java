@@ -1,9 +1,9 @@
 package purethought.problem;
 
-import purethought.gui.BFactory;
 import purethought.gui.BRectangle;
 import purethought.gui.IBRaster;
 import purethought.gui.IBRectangle;
+import purethought.util.BFactory;
 
 public abstract class BCardExtractor{
 	

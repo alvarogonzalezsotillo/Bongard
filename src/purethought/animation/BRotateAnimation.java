@@ -1,30 +1,37 @@
 package purethought.animation;
 
-import purethought.gui.BFactory;
 import purethought.gui.IBTransform;
+import purethought.util.BFactory;
 
 public class BRotateAnimation extends BTransformAnimation{
 
-	private double _radSecond;
-	private double _angle;
+	private double _radMillis;
+	private int _totalMillis;
+	private int _currentMillis;
 	
 	
-	public BRotateAnimation( double radSecond, IBTransformAnimable ... a ){
+	public BRotateAnimation( double radMillis, int totalMillis, IBTransformAnimable ... a ){
 		super(a);
-		_radSecond = radSecond;
-		_angle = 0;
+		_radMillis = radMillis;
+		_totalMillis = totalMillis;
 	}
 	
 	@Override
 	public IBTransform stepTransform(long millis) {
+		_currentMillis += millis;
+		if( _currentMillis > _totalMillis ){
+			millis = _totalMillis-_currentMillis;
+			_currentMillis = _totalMillis;
+		}
+
 		IBTransform t = BFactory.instance().identityTransform();
-		t.rotate(_angle);
-		_angle += _radSecond*millis/1000;
+		double angle = _radMillis*_currentMillis; 
+		t.rotate(angle);
 		return t;
 	}
 
 	@Override
 	public boolean endReached() {
-		return false;
+		return _currentMillis >= _totalMillis;
 	}
 }

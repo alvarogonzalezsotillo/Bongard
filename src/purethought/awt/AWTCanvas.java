@@ -6,13 +6,44 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.geom.AffineTransform;
 
 import purethought.gui.BCanvas;
+import purethought.gui.BRectangle;
+import purethought.gui.IBRectangle;
+import purethought.util.BFactory;
 
 public class AWTCanvas extends BCanvas{
+	
+	@SuppressWarnings("serial")
+	public static class Canvas extends java.awt.Canvas{
+		{
+			addComponentListener( new ComponentAdapter() {
+				@Override
+				public void componentResized(ComponentEvent e) {
+					BFactory f = BFactory.instance();
+					AWTCanvas c = (AWTCanvas) f.canvas();
+					c.adjustTransformToSize();
+				}
+			});
+		}
+		
+		public void paint(Graphics g) {
+			BFactory f = BFactory.instance();
+			AWTCanvas canvas = (AWTCanvas)f.canvas();
+			canvas.eraseBackground();
+			Image i = canvas.getOffscreenImage();
+			f.field().draw();
+			g.drawImage(i,0,0,null);
+		}
+		public void update(Graphics g){
+			paint(g);
+		}
+	};
 
-	private Component _impl;
+	private Canvas _impl;
 	private Image _image;
 	
 	/**
@@ -20,7 +51,7 @@ public class AWTCanvas extends BCanvas{
 	 * @param obj
 	 */
 	public AWTCanvas(Component impl) {
-		_impl = impl;
+		_impl = (Canvas) impl;
 	}
 	
 	private Component canvas(){
@@ -56,6 +87,13 @@ public class AWTCanvas extends BCanvas{
 		Graphics graphics = i.getGraphics();
 		graphics.fillRect(0, 0, i.getWidth(null), i.getHeight(null));
 	}
+	
+	public void adjustTransformToSize(){
+		IBRectangle origin = BFactory.instance().field().size();
+		IBRectangle destination = size();
+		
+		transform().setTo(origin, destination);
+	}
 
 	/**
 	 * 
@@ -68,6 +106,12 @@ public class AWTCanvas extends BCanvas{
 			_image = c.createImage(d.width, d.height);
 		}
 		return _image;
+	}
+
+	@Override
+	public IBRectangle size() {
+		Component c = canvas();
+		return new BRectangle( 0, 0, c.getWidth(), c.getHeight() );
 	}
 
 }

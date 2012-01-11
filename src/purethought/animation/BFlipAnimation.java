@@ -1,7 +1,7 @@
 package purethought.animation;
 
-import purethought.gui.BFactory;
 import purethought.gui.IBTransform;
+import purethought.util.BFactory;
 
 public class BFlipAnimation extends BTransformAnimation{
 
@@ -10,7 +10,6 @@ public class BFlipAnimation extends BTransformAnimation{
 	protected int _totalMillis;
 	protected int _currentMillis;
 	protected double _radMillis;
-	protected double _angle = 0;
 
 	public BFlipAnimation(double radMillis, int totalMillis, IBTransformAnimable ... a) {
 		super(a);
@@ -31,8 +30,8 @@ public class BFlipAnimation extends BTransformAnimation{
 			_currentMillis = _totalMillis;
 		}
 		IBTransform t = BFactory.instance().identityTransform();
-		_angle = _radMillis*_currentMillis;
-		double c = Math.cos(_angle);
+		double angle = _radMillis*_currentMillis;
+		double c = Math.cos(angle);
 		t.scale(c, 1);
 		return t;
 	}

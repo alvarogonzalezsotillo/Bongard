@@ -1,5 +1,7 @@
 package purethought.gui;
 
+import purethought.util.BFactory;
+
 public abstract class BCanvas implements IBCanvas{
 	private IBTransform _t = BFactory.instance().identityTransform();
 

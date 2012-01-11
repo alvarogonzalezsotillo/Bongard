@@ -1,43 +1,25 @@
 package purethought.animation;
 
-import purethought.gui.BFactory;
 import purethought.gui.IBTransform;
+import purethought.util.BFactory;
 
 public class BCompoundTransformAnimation implements IBAnimation {
 
 	private IBTransformAnimable[] _a;
 	private BTransformAnimation[] _animations;
-	private boolean _aborted;
 
 	public BCompoundTransformAnimation( IBTransformAnimable[] a, BTransformAnimation ... animations ){
-		_a = a;
 		_animations = animations;
-	}
-	
-	@Override
-	public void abortAnimation() {
-		_aborted = true;
-		for (BTransformAnimation a : _animations) {
-			a.abortAnimation();
-		}
+		setAnimables(a);
 	}
 
-	@Override
-	public boolean aborted() {
-		return _aborted;
+	public BCompoundTransformAnimation( BTransformAnimation[] animations, IBTransformAnimable... a){
+		this( a, animations );
 	}
 
 	@Override
 	public IBAnimable[] animables() {
 		return _a;
-	}
-
-	@Override
-	public void applyAnimation() {
-		for( IBAnimable a: animables() ){
-			IBTransformAnimable ta = (IBTransformAnimable) a;
-			ta.applyAnimation(this);
-		}
 	}
 
 	@Override
@@ -64,4 +46,11 @@ public class BCompoundTransformAnimation implements IBAnimation {
 			ta.setTemporaryTransform(t);
 		}
 	}
+	
+	@Override
+	public final void setAnimables(IBAnimable...a){
+		_a = new IBTransformAnimable[a.length];
+		System.arraycopy(a, 0, _a, 0, a.length);
+	}
+	
 }

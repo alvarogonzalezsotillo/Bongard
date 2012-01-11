@@ -16,6 +16,9 @@ public abstract class BTransformAnimation extends BAnimation{
 		for( IBAnimable a: animables() ){
 			IBTransformAnimable ta = (IBTransformAnimable) a;
 			ta.setTemporaryTransform(t);
+			if( endReached() ){
+				ta.applyTemporaryTransform();
+			}
 		}
 	}
 }

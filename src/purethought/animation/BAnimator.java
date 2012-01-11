@@ -19,10 +19,6 @@ public abstract class BAnimator {
 		for (Iterator<IBAnimation> ai = _animations.iterator(); ai.hasNext();) {
 			IBAnimation a = ai.next();
 			if( a.endReached() ){
-				a.applyAnimation();
-				ai.remove();
-			}
-			else if( a.aborted() ){
 				ai.remove();
 			}
 			else{

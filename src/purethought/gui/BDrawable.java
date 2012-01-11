@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import purethought.animation.IBAnimation;
 import purethought.animation.IBTransformAnimable;
+import purethought.util.BFactory;
 
 
 
@@ -13,10 +14,12 @@ public abstract class BDrawable implements IBDrawable, IBTransformAnimable{
 	protected IBTransform _t = BFactory.instance().identityTransform();
 	protected IBTransform _tt;
 	
+	@Override
 	public IBTransform temporaryTransform(){
 		return _tt;
 	}
 	
+	@Override
 	public void setTemporaryTransform(IBTransform tt){
 		_tt = tt;
 	}
@@ -35,6 +38,7 @@ public abstract class BDrawable implements IBDrawable, IBTransformAnimable{
 	/**
 	 * 
 	 */
+	@Override
 	public void scale(double x, double y){
 		_t.scale(x, y);
 	}
@@ -42,6 +46,7 @@ public abstract class BDrawable implements IBDrawable, IBTransformAnimable{
 	/**
 	 * 
 	 */
+	@Override
 	public void rotate(double a){
 		_t.rotate(a);
 	}
@@ -49,6 +54,7 @@ public abstract class BDrawable implements IBDrawable, IBTransformAnimable{
 	/**
 	 * 
 	 */
+	@Override
 	public void translate(double x, double y){
 		_t.translate(x, y);
 	}
@@ -56,14 +62,17 @@ public abstract class BDrawable implements IBDrawable, IBTransformAnimable{
 	/**
 	 * 
 	 */
+	@Override
 	public void concatenate( IBTransform t ){
 		_t.concatenate(t);
 	}
 	
+	@Override
 	public void preConcatenate( IBTransform t ){
 		_t.preConcatenate(t);
 	}
 	
+	@Override
 	public IBPoint[] hull(){
 		IBPoint[] original = originalHull();
 		IBPoint[] ret = new IBPoint[original.length];
@@ -75,15 +84,13 @@ public abstract class BDrawable implements IBDrawable, IBTransformAnimable{
 		return ret;
 	}
 
-	public void abortAnimation(IBAnimation a){
-		setTemporaryTransform(null);
-	}
-	
-	public void applyAnimation(IBAnimation a){
+	@Override
+	public void applyTemporaryTransform(){
 		IBTransform tt = temporaryTransform();
 		if( tt != null ){
 			_t.concatenate(tt);
 		}
+		setTemporaryTransform(null);
 	}
 
 	@Override

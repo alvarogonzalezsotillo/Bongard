@@ -1,14 +1,17 @@
 package purethought.gui;
 
 import purethought.animation.BAnimator;
+import purethought.animation.BCompoundTransformAnimation;
+import purethought.animation.BConcatenateAnimation;
 import purethought.animation.BFlipAnimation;
 import purethought.animation.BRotateAnimation;
-import purethought.animation.BTransformAnimation;
-import purethought.animation.BCompoundTransformAnimation;
-import purethought.animation.IBTransformAnimable;
+import purethought.animation.BScaleAnimation;
+import purethought.animation.IBAnimable;
+import purethought.animation.IBAnimation;
 import purethought.problem.BCardExtractor;
 import purethought.problem.BProblem;
 import purethought.problem.BProblemLocator;
+import purethought.util.BFactory;
 
 public class BGameField {
 	private IBCanvas _canvas;
@@ -18,6 +21,7 @@ public class BGameField {
 	private BSprite[] _set2Sprites;
 	private BSprite _questionSprite;
 	private BSprite[] _allSprites;
+	private IBRectangle _size;
 
 	/**
 	 * 
@@ -55,6 +59,9 @@ public class BGameField {
 	
 	private void alignSprites(){
 		int s = 105;
+		_size = new BRectangle(0, 0, s*4, s*6);
+				
+				
 		_set1Sprites[0].translate(s, s*1);
 		_set1Sprites[1].translate(s, s*2);
 		_set1Sprites[2].translate(s, s*3);
@@ -71,15 +78,32 @@ public class BGameField {
 		
 		BFactory f = BFactory.instance();
 		BAnimator animator = f.animator();
-//		animator.addAnimation(
-//			new BCompoundTransformAnimation( 
-//				new IBTransformAnimable[]{ _questionSprite },
-//				new BRotateAnimation(Math.PI/2),
-//				new BFlipAnimation(Math.PI/4000, 10*1000)
-//			)
-//		);
 		
-		animator.addAnimation( new BFlipAnimation(2*Math.PI/1000, 4*1000, _questionSprite ) );
+		animator.addAnimation(
+			new BConcatenateAnimation( 
+				new IBAnimable[]{ _questionSprite },
+				new BFlipAnimation(Math.PI/500, 1000),
+				new BRotateAnimation(Math.PI/500, 1000)
+			)
+		);
+		
+		animator.addAnimation( 
+			new BConcatenateAnimation( 
+				_set1Sprites,
+				new BScaleAnimation(1.1,1.1, 500),
+				new BScaleAnimation(1/1.1,1/1.1, 500),
+				new BScaleAnimation(1.1,1.1, 500),
+				new BScaleAnimation(1/1.1,1/1.1, 500)
+			)
+		);
+
+		animator.addAnimation( 
+			new BCompoundTransformAnimation(
+				_set2Sprites,
+				 new BRotateAnimation(Math.PI/500, 2000),
+				 new BFlipAnimation(Math.PI/500, 2000)
+			)
+		);
 	}
 	
 	/**
@@ -102,5 +126,9 @@ public class BGameField {
 	 */
 	public IBCanvas canvas(){
 		return _canvas;
+	}
+
+	public IBRectangle size() {
+		return _size;
 	}
 }

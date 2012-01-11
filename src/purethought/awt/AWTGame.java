@@ -8,11 +8,11 @@ import java.awt.Image;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import purethought.gui.BFactory;
 import purethought.gui.BGameField;
 import purethought.gui.IBGame;
 import purethought.gui.IBTransform;
 import purethought.problem.BProblemLocator;
+import purethought.util.BFactory;
 
 public class AWTGame implements IBGame, Runnable{
 
@@ -34,18 +34,7 @@ public class AWTGame implements IBGame, Runnable{
 	private JFrame createFrame(){
 		JFrame f = new JFrame( "Bongard" );
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		_canvas = new Canvas(){
-			public void paint(Graphics g) {
-				AWTCanvas canvas = (AWTCanvas)f().canvas();
-				canvas.eraseBackground();
-				Image i = canvas.getOffscreenImage();
-				f().field().draw();
-				g.drawImage(i,0,0,null);
-			}
-			public void update(Graphics g){
-				paint(g);
-			}
-		};
+		_canvas = new AWTCanvas.Canvas();
 		f.add(_canvas);
 		
 		f.setSize( 480, 640 );
