@@ -1,6 +1,7 @@
 package purethought.awt;
 
 import java.awt.geom.AffineTransform;
+import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 
 import purethought.gui.BRectangle;
@@ -11,6 +12,13 @@ import purethought.util.BFactory;
 
 @SuppressWarnings("serial")
 public class AWTTransform extends AffineTransform implements IBTransform{
+	
+	public AWTTransform() {
+	}
+	
+	public AWTTransform(AffineTransform t){
+		super(t);
+	}
 
 	@Override
 	public void concatenate(IBTransform t) {
@@ -45,6 +53,8 @@ public class AWTTransform extends AffineTransform implements IBTransform{
 		scale(sx, sy);
 		translate(dx, dy);
 	}
+
+	
 	
 	public static void main(String[] args) {
 		AWTTransform t = new AWTTransform();
@@ -71,6 +81,18 @@ public class AWTTransform extends AffineTransform implements IBTransform{
 		p = new AWTPoint(-0,0);
 		System.out.println( p + " --> " + t.transform(p) );
 
+	}
+
+	@Override
+	public IBTransform inverse() {
+		AWTTransform t = new AWTTransform(this);
+		try {
+			t.invert();
+		}
+		catch (NoninvertibleTransformException e) {
+			return null;
+		}
+		return t;
 	}
 
 }

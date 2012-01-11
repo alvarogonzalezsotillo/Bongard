@@ -11,6 +11,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.awt.geom.AffineTransform;
 
 import purethought.gui.BCanvas;
@@ -21,6 +22,33 @@ import purethought.problem.BProblemLocator;
 import purethought.util.BFactory;
 
 public class AWTCanvas extends BCanvas{
+	
+	private class MouseListenerImpl extends MouseAdapter{
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			BFactory instance = BFactory.instance();
+			BProblemLocator test = instance.randomProblem();
+			AWTCanvas c = (AWTCanvas) instance.canvas();
+			((BGameField)c.drawable()).setProblem(test);
+		}
+		
+		@Override
+		public void mouseDragged(MouseEvent e) {
+		}
+		
+		@Override
+		public void mouseWheelMoved(MouseWheelEvent e) {
+		}
+		
+		@Override
+		public void mousePressed(MouseEvent e) {
+		}
+		
+		@Override
+		public void mouseReleased(MouseEvent e) {
+		}
+	}
+	
 	
 	@SuppressWarnings("serial")
 	private class CanvasImpl extends Canvas{
@@ -34,15 +62,7 @@ public class AWTCanvas extends BCanvas{
 				}
 			});
 			
-			addMouseListener( new MouseAdapter() {
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					BFactory instance = BFactory.instance();
-					BProblemLocator test = instance.randomProblem();
-					AWTCanvas c = (AWTCanvas) instance.canvas();
-					((BGameField)c.drawable()).setProblem(test);
-				}
-			});
+			addMouseListener( new MouseListenerImpl() ); 
 		}
 		
 		public void paint(Graphics g) {
