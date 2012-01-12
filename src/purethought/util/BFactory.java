@@ -4,7 +4,7 @@ import purethought.animation.BAnimator;
 import purethought.awt.AWTFactory;
 import purethought.geom.IBPoint;
 import purethought.geom.IBTransform;
-import purethought.gui.BGameField;
+import purethought.gui.BLabel;
 import purethought.gui.BSprite;
 import purethought.gui.IBCanvas;
 import purethought.gui.IBGame;
@@ -30,10 +30,12 @@ public abstract class BFactory {
 	public abstract IBTransform identityTransform();
 	public abstract IBPoint point(double x, double y);
 	public abstract BCardExtractor cardExtractor();
-	public abstract IBCanvas canvas();
 	public abstract IBGame game();
-	public abstract BSprite create( IBRaster raster );
+	public abstract BSprite sprite( IBRaster raster );
+	public abstract BLabel label( String text );
 	public abstract BAnimator animator();
+
 	
-	public abstract BProblemLocator randomProblem();
+	public abstract IBCanvas canvas(); // TODO: MOVE INSIDE GAME
+	public abstract BProblemLocator randomProblem(); // TODO: MOVE INSIDE CARDEXTRACTOR
 }

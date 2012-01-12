@@ -26,26 +26,27 @@ public class AWTCanvas extends BCanvas{
 	private class MouseListenerImpl extends MouseAdapter{
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			BFactory instance = BFactory.instance();
-			BProblemLocator test = instance.randomProblem();
-			AWTCanvas c = (AWTCanvas) instance.canvas();
-			((BGameField)c.drawable()).setProblem(test);
+			listeners().pointerClick(null);
 		}
 		
 		@Override
 		public void mouseDragged(MouseEvent e) {
+			listeners().pointerDrag(null);
 		}
 		
 		@Override
 		public void mouseWheelMoved(MouseWheelEvent e) {
+			listeners().zoomIn(null);
 		}
 		
 		@Override
 		public void mousePressed(MouseEvent e) {
+			listeners().pointerDown(null);
 		}
 		
 		@Override
 		public void mouseReleased(MouseEvent e) {
+			listeners().pointerUp(null);
 		}
 	}
 	

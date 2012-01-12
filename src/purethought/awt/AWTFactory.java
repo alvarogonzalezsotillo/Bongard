@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Formatter;
 import java.util.Random;
 
+import purethought.gui.BLabel;
 import purethought.gui.BSprite;
 import purethought.gui.IBRaster;
 import purethought.problem.BProblemLocator;
@@ -57,7 +58,7 @@ public class AWTFactory extends BFactory {
 	}
 
 	@Override
-	public BSprite create(IBRaster raster) {
+	public BSprite sprite(IBRaster raster) {
 		return new AWTSprite(raster);
 	}
 
@@ -77,6 +78,11 @@ public class AWTFactory extends BFactory {
 		}
 
 		return _animator;
+	}
+
+	@Override
+	public BLabel label(String text) {
+		return new AWTLabel(text);
 	}
 	
 

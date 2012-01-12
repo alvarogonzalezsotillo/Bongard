@@ -56,8 +56,14 @@ public abstract class BCanvas implements IBCanvas{
 	}
 
 	@Override
-	public void setDrawable(IBCanvasDrawable _d) {
-		this._d = _d;
+	public void setDrawable(IBCanvasDrawable d) {
+		if( _d != null ){
+			_d.addedTo(null);
+		}
+		_d = d;
+		if( _d != null ){
+			_d.addedTo(this);
+		}
 	}
 
 	@Override
@@ -75,7 +81,7 @@ public abstract class BCanvas implements IBCanvas{
 		_listeners.remove(l);
 	}
 	
-	protected IBCanvasListener listener(){
+	protected IBCanvasListener listeners(){
 		return _listeners;
 	}
 	
