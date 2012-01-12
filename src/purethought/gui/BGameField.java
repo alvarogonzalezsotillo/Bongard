@@ -7,7 +7,9 @@ import purethought.animation.BFlipAnimation;
 import purethought.animation.BRotateAnimation;
 import purethought.animation.BScaleAnimation;
 import purethought.animation.BTranslateAnimation;
+import purethought.animation.BWaitForAnimation;
 import purethought.animation.IBAnimable;
+import purethought.animation.IBAnimation;
 import purethought.animation.IBTransformAnimable;
 import purethought.geom.BRectangle;
 import purethought.geom.IBPoint;
@@ -19,6 +21,9 @@ import purethought.problem.BProblemLocator;
 import purethought.util.BFactory;
 
 public class BGameField implements IBCanvasDrawable{
+	
+	private static final boolean SHOW_POINTER = false;
+
 	private BProblem _problem;
 	
 	private BSprite[] _set1Sprites;
@@ -30,16 +35,36 @@ public class BGameField implements IBCanvasDrawable{
 	private BLabel _pointer = BFactory.instance().label("O");
 	
 	private IBCanvasListener _listener = new IBCanvasListener(){
+		
+		private boolean _dragQuestion = false;
+		private IBAnimation _pickUpAnimation;
+		private IBAnimation _dropAnimation;
+		private IBAnimation _dragAnimation;
+		
 		@Override
 		public void pointerDown(IBPoint p) {
+			if( _questionSprite.inside(p, null) ){
+				_pickUpAnimation = new BScaleAnimation(1.3, 1.3, 100, _questionSprite);
+				animator().addAnimation( _pickUpAnimation );
+				_dragQuestion = true;
+			}
 		}
 
 		@Override
-		public void pointerDrag(IBPoint p) {
+		public void pointerDrag(IBPoint p){
+			if( _dragQuestion ){
+				_dragAnimation = new BTranslateAnimation(p, 50, _questionSprite );
+				animator().addAnimation( new BWaitForAnimation(_dragAnimation, _pickUpAnimation) );
+			}
 		}
 
 		@Override
 		public void pointerUp(IBPoint p) {
+			if( _dragQuestion ){
+				_dropAnimation = new BScaleAnimation(1/1.3, 1/1.3, 100, _questionSprite);
+				animator().addAnimation( new BWaitForAnimation(_dropAnimation, _pickUpAnimation) );
+			}
+			_dragQuestion = false;
 		}
 
 		@Override
@@ -48,9 +73,8 @@ public class BGameField implements IBCanvasDrawable{
 			BProblemLocator test = instance.randomProblem();
 			setProblem(test);
 			
-			BAnimator a = instance.animator();
 			_pointer.setText(p.toString());
-			a.addAnimation( new BTranslateAnimation(p, 1000, _pointer) );
+			animator().addAnimation( new BTranslateAnimation(p, 1000, _pointer) );
 		}
 
 		@Override
@@ -173,12 +197,18 @@ public class BGameField implements IBCanvasDrawable{
 			s.draw( canvas, aditionalTransform );
 		}
 		
-		_pointer.draw(canvas, aditionalTransform);
+		if( SHOW_POINTER ){
+			_pointer.draw(canvas, aditionalTransform);
+		}
 	}
 	
 	@Override
 	public IBRectangle size() {
 		return _size;
+	}
+	
+	public BAnimator animator(){
+		return BFactory.instance().animator();
 	}
 
 	@Override

@@ -46,6 +46,13 @@ public class BCompoundTransformAnimation implements IBAnimation {
 				ta.setTemporaryTransform(t);
 			}
 		}
+		
+		if( endReached() ){
+			for( IBAnimable an: animables() ){
+				IBTransformAnimable ta = (IBTransformAnimable) an;
+				ta.applyTemporaryTransform();
+			}			
+		}
 	}
 	
 	@Override

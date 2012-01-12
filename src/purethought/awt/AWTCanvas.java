@@ -74,7 +74,9 @@ public class AWTCanvas extends BCanvas{
 				}
 			});
 			
-			addMouseListener( new MouseListenerImpl() ); 
+			MouseListenerImpl l = new MouseListenerImpl();
+			addMouseListener( l ); 
+			addMouseMotionListener(l);
 		}
 		
 		public void paint(Graphics g) {

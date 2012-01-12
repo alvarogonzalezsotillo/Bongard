@@ -10,8 +10,9 @@ import purethought.gui.IBCanvas;
 import purethought.gui.IBRaster;
 
 public class AWTSprite extends BSprite{
-
 	
+	private static final boolean SHOW_POSITION = false;
+
 	public AWTSprite(IBRaster raster) {
 		super(raster);
 	}
@@ -30,6 +31,13 @@ public class AWTSprite extends BSprite{
 		int y = -img.getHeight(null)/2;
 		
 		g2d.drawImage(img, x, y, null);
+		
+		if( SHOW_POSITION ){
+			AffineTransform at = (AffineTransform) transform();
+			String s = at.getTranslateX() + "," + at.getTranslateY();
+			g2d.drawString(s, 0, 0);
+		}
+		
 		g2d.dispose();
 	}
 }

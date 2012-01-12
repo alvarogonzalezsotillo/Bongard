@@ -16,7 +16,7 @@ public class AWTAnimator extends BAnimator{
 	private int _step;
 
 	public AWTAnimator(){
-		this(1000/20);
+		this(1000/60);
 	}
 	
 	public AWTAnimator(int millis){
