@@ -2,13 +2,13 @@ package purethought.util;
 
 import purethought.animation.BAnimator;
 import purethought.awt.AWTFactory;
+import purethought.geom.IBPoint;
+import purethought.geom.IBTransform;
 import purethought.gui.BGameField;
 import purethought.gui.BSprite;
 import purethought.gui.IBCanvas;
 import purethought.gui.IBGame;
-import purethought.gui.IBPoint;
 import purethought.gui.IBRaster;
-import purethought.gui.IBTransform;
 import purethought.problem.BCardExtractor;
 import purethought.problem.BProblemLocator;
 

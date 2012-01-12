@@ -2,9 +2,9 @@ package purethought.awt;
 
 import java.awt.Image;
 
-import purethought.gui.BRectangle;
+import purethought.geom.BRectangle;
+import purethought.geom.IBRectangle;
 import purethought.gui.IBRaster;
-import purethought.gui.IBRectangle;
 import purethought.util.BImplementations;
 
 public class AWTRaster extends BImplementations implements IBRaster{

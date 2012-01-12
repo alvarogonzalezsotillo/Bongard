@@ -1,5 +1,7 @@
 package purethought.gui;
 
+import purethought.geom.IBPoint;
+
 public interface IBCanvasListener {
 	void pointerDown(IBPoint p);
 	void pointerDrag(IBPoint p);

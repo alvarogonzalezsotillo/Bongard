@@ -1,6 +1,6 @@
 package purethought.animation;
 
-import purethought.gui.IBTransform;
+import purethought.geom.IBTransform;
 import purethought.util.BFactory;
 
 public class BScaleAnimation extends BTransformAnimation{

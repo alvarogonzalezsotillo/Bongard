@@ -8,9 +8,9 @@ import java.awt.Image;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import purethought.geom.IBTransform;
 import purethought.gui.BGameField;
 import purethought.gui.IBGame;
-import purethought.gui.IBTransform;
 import purethought.problem.BProblemLocator;
 import purethought.util.BFactory;
 

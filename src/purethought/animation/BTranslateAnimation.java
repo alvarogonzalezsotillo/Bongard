@@ -1,7 +1,7 @@
 package purethought.animation;
 
-import purethought.gui.IBPoint;
-import purethought.gui.IBTransform;
+import purethought.geom.IBPoint;
+import purethought.geom.IBTransform;
 import purethought.util.BFactory;
 
 public class BTranslateAnimation extends BTransformAnimation{

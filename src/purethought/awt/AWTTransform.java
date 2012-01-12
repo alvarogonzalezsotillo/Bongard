@@ -4,10 +4,10 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 
-import purethought.gui.BRectangle;
-import purethought.gui.IBPoint;
-import purethought.gui.IBRectangle;
-import purethought.gui.IBTransform;
+import purethought.geom.BRectangle;
+import purethought.geom.IBPoint;
+import purethought.geom.IBRectangle;
+import purethought.geom.IBTransform;
 import purethought.util.BFactory;
 
 @SuppressWarnings("serial")

@@ -1,5 +1,8 @@
 package purethought.gui;
 
+import purethought.geom.IBRectangle;
+import purethought.geom.IBTransform;
+
 
 public interface IBCanvas{
 	IBTransform transform();

@@ -10,8 +10,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import purethought.geom.IBRectangle;
 import purethought.gui.IBRaster;
-import purethought.gui.IBRectangle;
 import purethought.problem.BCardExtractor;
 import purethought.problem.BProblem;
 import purethought.problem.BProblemLocator;

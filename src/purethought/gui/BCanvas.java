@@ -2,6 +2,8 @@ package purethought.gui;
 
 import java.util.ArrayList;
 
+import purethought.geom.IBPoint;
+import purethought.geom.IBTransform;
 import purethought.util.BFactory;
 
 public abstract class BCanvas implements IBCanvas{

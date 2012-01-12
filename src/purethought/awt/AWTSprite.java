@@ -4,10 +4,10 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
 
+import purethought.geom.IBTransform;
 import purethought.gui.BSprite;
 import purethought.gui.IBCanvas;
 import purethought.gui.IBRaster;
-import purethought.gui.IBTransform;
 
 public class AWTSprite extends BSprite{
 
@@ -26,11 +26,10 @@ public class AWTSprite extends BSprite{
 		
 		Image img = raster().getImpl(Image.class);
 		
-		int x = (int) originalHull()[0].x();
-		int y = (int) originalHull()[0].y();
+		int x = -img.getWidth(null)/2;
+		int y = -img.getHeight(null)/2;
 		
 		g2d.drawImage(img, x, y, null);
 		g2d.dispose();
 	}
-
 }

@@ -14,10 +14,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.geom.AffineTransform;
 
+import purethought.geom.BRectangle;
+import purethought.geom.IBRectangle;
 import purethought.gui.BCanvas;
 import purethought.gui.BGameField;
-import purethought.gui.BRectangle;
-import purethought.gui.IBRectangle;
 import purethought.problem.BProblemLocator;
 import purethought.util.BFactory;
 
@@ -70,7 +70,7 @@ public class AWTCanvas extends BCanvas{
 			AWTCanvas canvas = (AWTCanvas)f.canvas();
 			canvas.eraseBackground();
 			Image i = canvas.getOffscreenImage();
-			canvas.drawable().draw(canvas);
+			canvas.drawable().draw(canvas, transform());
 			g.drawImage(i,0,0,null);
 		}
 		public void update(Graphics g){
@@ -101,9 +101,6 @@ public class AWTCanvas extends BCanvas{
 		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 		g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
 		g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-
-		AffineTransform transform = (AffineTransform)transform();
-		g2d.setTransform( transform );
 		
 		return g2d;
 	}

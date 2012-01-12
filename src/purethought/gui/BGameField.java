@@ -5,6 +5,9 @@ import purethought.animation.BCompoundTransformAnimation;
 import purethought.animation.BRotateAnimation;
 import purethought.animation.BTranslateAnimation;
 import purethought.animation.IBTransformAnimable;
+import purethought.geom.BRectangle;
+import purethought.geom.IBRectangle;
+import purethought.geom.IBTransform;
 import purethought.problem.BCardExtractor;
 import purethought.problem.BProblem;
 import purethought.problem.BProblemLocator;
@@ -119,17 +122,18 @@ public class BGameField implements IBCanvasDrawable{
 	/**
 	 * 
 	 */
-	public void draw(IBCanvas canvas){
+	@Override
+	public void draw(IBCanvas canvas, IBTransform aditionalTransform){
 		if( _allSprites == null ){
 			return;
 		}
 		
 		for( BSprite s: _allSprites ){
-			s.draw( canvas );
+			s.draw( canvas, aditionalTransform );
 		}
 	}
 	
-
+	@Override
 	public IBRectangle size() {
 		return _size;
 	}

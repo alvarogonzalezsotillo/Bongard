@@ -2,7 +2,7 @@ package purethought.awt;
 
 import java.awt.geom.Point2D;
 
-import purethought.gui.IBPoint;
+import purethought.geom.IBPoint;
 
 
 @SuppressWarnings("serial")

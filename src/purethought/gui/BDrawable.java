@@ -1,6 +1,8 @@
 package purethought.gui;
 
 import purethought.animation.IBTransformAnimable;
+import purethought.geom.IBPoint;
+import purethought.geom.IBTransform;
 import purethought.util.BFactory;
 
 
@@ -68,17 +70,6 @@ public abstract class BDrawable implements IBDrawable, IBTransformAnimable{
 		_t.preConcatenate(t);
 	}
 	
-	@Override
-	public IBPoint[] hull(){
-		IBPoint[] original = originalHull();
-		IBPoint[] ret = new IBPoint[original.length];
-		
-		for( int i = 0 ; i < ret.length ; i++ ){
-			ret[i] = _t.transform(original[i]);
-		}
-		
-		return ret;
-	}
 
 	@Override
 	public void applyTemporaryTransform(){
@@ -90,7 +81,7 @@ public abstract class BDrawable implements IBDrawable, IBTransformAnimable{
 	}
 
 	@Override
-	public void draw(IBCanvas c) {
+	public void draw(IBCanvas c, IBTransform aditionalTransform ){
 		IBTransform t = transform();
 		
 		IBTransform tt = computeTemporaryTransform();
@@ -98,6 +89,13 @@ public abstract class BDrawable implements IBDrawable, IBTransformAnimable{
 			IBTransform temp = BFactory.instance().identityTransform();
 			temp.concatenate(t);
 			temp.concatenate(tt);
+			t = temp;
+		}
+		
+		if( aditionalTransform != null ){
+			IBTransform temp = BFactory.instance().identityTransform();
+			temp.concatenate(t);
+			temp.concatenate(aditionalTransform);
 			t = temp;
 		}
 		
