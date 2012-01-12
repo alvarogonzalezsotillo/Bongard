@@ -1,11 +1,13 @@
 package purethought.awt;
 
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -16,6 +18,7 @@ import java.awt.geom.AffineTransform;
 
 import purethought.geom.BRectangle;
 import purethought.geom.IBRectangle;
+import purethought.geom.IBTransform;
 import purethought.gui.BCanvas;
 import purethought.gui.BGameField;
 import purethought.problem.BProblemLocator;
@@ -24,29 +27,37 @@ import purethought.util.BFactory;
 public class AWTCanvas extends BCanvas{
 	
 	private class MouseListenerImpl extends MouseAdapter{
+		
+		private AWTPoint pointInOriginalCoords(MouseEvent e){
+			Point p = e.getPoint();
+			AWTPoint point = new AWTPoint(0, 0);
+			inverseTransform().transform(p, point);
+			return point;
+		}
+		
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			listeners().pointerClick(null);
+			listeners().pointerClick(pointInOriginalCoords(e));
 		}
 		
 		@Override
 		public void mouseDragged(MouseEvent e) {
-			listeners().pointerDrag(null);
+			listeners().pointerDrag(pointInOriginalCoords(e));
 		}
 		
 		@Override
 		public void mouseWheelMoved(MouseWheelEvent e) {
-			listeners().zoomIn(null);
+			listeners().zoomIn(pointInOriginalCoords(e));
 		}
 		
 		@Override
 		public void mousePressed(MouseEvent e) {
-			listeners().pointerDown(null);
+			listeners().pointerDown(pointInOriginalCoords(e));
 		}
 		
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			listeners().pointerUp(null);
+			listeners().pointerUp(pointInOriginalCoords(e));
 		}
 	}
 	
@@ -68,11 +79,12 @@ public class AWTCanvas extends BCanvas{
 		
 		public void paint(Graphics g) {
 			BFactory f = BFactory.instance();
-			AWTCanvas canvas = (AWTCanvas)f.canvas();
-			canvas.eraseBackground();
-			Image i = canvas.getOffscreenImage();
-			canvas.drawable().draw(canvas, transform());
+			eraseBackground();
+			Image i = getOffscreenImage();
+			drawable().draw(AWTCanvas.this, transform());
 			g.drawImage(i,0,0,null);
+			AWTAnimator a = (AWTAnimator)f.animator();
+			g.drawString("Millis:" + a.lastStep(), 0, getHeight());
 		}
 		public void update(Graphics g){
 			paint(g);
@@ -118,7 +130,9 @@ public class AWTCanvas extends BCanvas{
 	public void eraseBackground(){
 		Image i = getOffscreenImage();
 		Graphics graphics = i.getGraphics();
+		graphics.setColor( Color.gray );
 		graphics.fillRect(0, 0, i.getWidth(null), i.getHeight(null));
+		graphics.dispose();
 	}
 	
 	public void adjustTransformToSize(){
@@ -145,6 +159,10 @@ public class AWTCanvas extends BCanvas{
 	public IBRectangle size() {
 		Component c = canvasImpl();
 		return new BRectangle( 0, 0, c.getWidth(), c.getHeight() );
+	}
+
+	public AWTTransform inverseTransform(){
+		return (AWTTransform) transform().inverse();
 	}
 
 }

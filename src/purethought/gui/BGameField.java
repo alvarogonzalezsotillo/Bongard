@@ -47,6 +47,10 @@ public class BGameField implements IBCanvasDrawable{
 			BFactory instance = BFactory.instance();
 			BProblemLocator test = instance.randomProblem();
 			setProblem(test);
+			
+			BAnimator a = instance.animator();
+			_pointer.setText(p.toString());
+			a.addAnimation( new BTranslateAnimation(p, 1000, _pointer) );
 		}
 
 		@Override
@@ -100,6 +104,7 @@ public class BGameField implements IBCanvasDrawable{
 		
 		
 		_size = new BRectangle(0, 0, s*4, s*6);
+		
 				
 		
 		for (int i = 0; i < _set1Sprites.length; i++) {
@@ -158,6 +163,8 @@ public class BGameField implements IBCanvasDrawable{
 	 */
 	@Override
 	public void draw(IBCanvas canvas, IBTransform aditionalTransform){
+		
+		
 		if( _allSprites == null ){
 			return;
 		}
@@ -165,6 +172,8 @@ public class BGameField implements IBCanvasDrawable{
 		for( BSprite s: _allSprites ){
 			s.draw( canvas, aditionalTransform );
 		}
+		
+		_pointer.draw(canvas, aditionalTransform);
 	}
 	
 	@Override

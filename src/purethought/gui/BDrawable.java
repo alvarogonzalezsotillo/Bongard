@@ -94,8 +94,8 @@ public abstract class BDrawable implements IBDrawable, IBTransformAnimable{
 		
 		if( aditionalTransform != null ){
 			IBTransform temp = BFactory.instance().identityTransform();
-			temp.concatenate(t);
 			temp.concatenate(aditionalTransform);
+			temp.concatenate(t);
 			t = temp;
 		}
 		
