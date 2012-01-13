@@ -64,7 +64,6 @@ public class AWTCanvas extends BCanvas{
 			addComponentListener( new ComponentAdapter() {
 				@Override
 				public void componentResized(ComponentEvent e) {
-					BFactory f = BFactory.instance();
 					AWTCanvas c = AWTCanvas.this;
 					c.adjustTransformToSize();
 				}

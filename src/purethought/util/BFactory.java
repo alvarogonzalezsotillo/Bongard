@@ -6,11 +6,9 @@ import purethought.geom.IBPoint;
 import purethought.geom.IBTransform;
 import purethought.gui.BLabel;
 import purethought.gui.BSprite;
-import purethought.gui.IBCanvas;
 import purethought.gui.IBGame;
 import purethought.gui.IBRaster;
 import purethought.problem.BCardExtractor;
-import purethought.problem.BProblemLocator;
 
 public abstract class BFactory {
 	

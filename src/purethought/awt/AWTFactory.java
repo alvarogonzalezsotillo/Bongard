@@ -1,13 +1,8 @@
 package purethought.awt;
 
-import java.io.File;
-import java.util.Formatter;
-import java.util.Random;
-
 import purethought.gui.BLabel;
 import purethought.gui.BSprite;
 import purethought.gui.IBRaster;
-import purethought.problem.BProblemLocator;
 import purethought.util.BFactory;
 
 public class AWTFactory extends BFactory {

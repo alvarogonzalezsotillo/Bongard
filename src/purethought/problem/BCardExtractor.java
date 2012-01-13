@@ -1,5 +1,7 @@
 package purethought.problem;
 
+import java.util.Random;
+
 import purethought.geom.BRectangle;
 import purethought.geom.IBRectangle;
 import purethought.gui.IBRaster;
@@ -22,6 +24,9 @@ public abstract class BCardExtractor{
 	private static IBRectangle getCard( int side, int row, int column ){
 		return new BRectangle(7+side*293+column*(100+8),5+row*(100+8),100,100);
 	}
+
+
+	private Random _random;
 
 	
 	/**
@@ -80,5 +85,23 @@ public abstract class BCardExtractor{
 	protected abstract IBRaster extract(IBRectangle r, IBRaster i);
 
 
-	public abstract BProblemLocator randomProblem();
+	/**
+	 * 
+	 * @return
+	 */
+	public BProblemLocator randomProblem(){
+		BProblemLocator[] ps = allProblems();
+		int r = random().nextInt( ps.length );
+		return ps[r];
+	}
+	
+	private Random random() {
+		if (_random == null) {
+			_random = new Random();
+		}
+		return _random;
+	}
+
+
+	public abstract BProblemLocator[] allProblems();
 }

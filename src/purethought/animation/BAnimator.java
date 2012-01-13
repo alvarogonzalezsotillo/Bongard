@@ -1,7 +1,6 @@
 package purethought.animation;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public abstract class BAnimator {
 
