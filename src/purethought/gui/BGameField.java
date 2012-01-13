@@ -134,6 +134,10 @@ public class BGameField extends BTopDrawable implements IBFlippableDrawable{
 		@Override
 		public void zoomOut(IBPoint p) {
 		}
+
+		@Override
+		public void resized() {
+		}
 	};
 
 	private BFlippableContainer _container;

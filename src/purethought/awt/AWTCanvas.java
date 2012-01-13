@@ -69,6 +69,7 @@ public class AWTCanvas extends BCanvas{
 			addComponentListener( new ComponentAdapter() {
 				@Override
 				public void componentResized(ComponentEvent e) {
+					listeners().resized();
 					AWTCanvas c = AWTCanvas.this;
 					c.adjustTransformToSize();
 				}
@@ -138,12 +139,6 @@ public class AWTCanvas extends BCanvas{
 		graphics.dispose();
 	}
 	
-	public void adjustTransformToSize(){
-		IBRectangle origin = drawable().originalSize();
-		IBRectangle destination = originalSize();
-		
-		transform().setTo(origin, destination);
-	}
 
 	/**
 	 * 

@@ -1,5 +1,6 @@
 package purethought.gui;
 
+import purethought.geom.IBPoint;
 import purethought.geom.IBRectangle;
 import purethought.geom.IBTransform;
 import purethought.problem.BCardExtractor;
@@ -12,6 +13,38 @@ public class BBongardTestField extends BTopDrawable implements IBFlippableDrawab
 	private BProblem _problem;
 	private BSprite _sprite;
 	private BFlippableContainer _container;
+	
+	private IBCanvasListener _listener = new IBCanvasListener(){
+
+		@Override
+		public void pointerClick(IBPoint p) {
+		}
+
+		@Override
+		public void pointerDown(IBPoint p) {
+		}
+
+		@Override
+		public void pointerDrag(IBPoint p) {
+		}
+
+		@Override
+		public void pointerUp(IBPoint p) {
+		}
+
+		@Override
+		public void resized() {
+		}
+
+		@Override
+		public void zoomIn(IBPoint p) {
+		}
+
+		@Override
+		public void zoomOut(IBPoint p) {
+			_container.flipUp();
+		}
+	};
 	
 	/**
 	 * 
@@ -53,5 +86,17 @@ public class BBongardTestField extends BTopDrawable implements IBFlippableDrawab
 	@Override
 	public void showed() {
 	}
+	
+	@Override
+	public void addedTo(IBCanvas c) {
+		if( canvas() != null ){
+			canvas().removeListener(_listener);
+		}
+		super.addedTo(c);
+		if( canvas() != null ){
+			canvas().addListener(_listener);
+		}
+	}
+	
 
 }

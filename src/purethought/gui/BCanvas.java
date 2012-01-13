@@ -3,6 +3,7 @@ package purethought.gui;
 import java.util.ArrayList;
 
 import purethought.geom.IBPoint;
+import purethought.geom.IBRectangle;
 import purethought.geom.IBTransform;
 import purethought.util.BFactory;
 
@@ -13,32 +14,37 @@ public abstract class BCanvas implements IBCanvas{
 
 		@Override
 		public void pointerClick(IBPoint p) {
-			for (IBCanvasListener i : this) i.pointerClick(p);
+			for (IBCanvasListener i : this.toArray(new IBCanvasListener[0])) i.pointerClick(p);
 		}
 
 		@Override
 		public void pointerDown(IBPoint p) {
-			for (IBCanvasListener i : this) i.pointerDown(p);
+			for (IBCanvasListener i : this.toArray(new IBCanvasListener[0])) i.pointerDown(p);
 		}
 
 		@Override
 		public void pointerDrag(IBPoint p) {
-			for (IBCanvasListener i : this) i.pointerDrag(p);
+			for (IBCanvasListener i : this.toArray(new IBCanvasListener[0])) i.pointerDrag(p);
 		}
 
 		@Override
 		public void pointerUp(IBPoint p) {
-			for (IBCanvasListener i : this) i.pointerUp(p);
+			for (IBCanvasListener i : this.toArray(new IBCanvasListener[0])) i.pointerUp(p);
 		}
 
 		@Override
 		public void zoomIn(IBPoint p) {
-			for (IBCanvasListener i : this) i.zoomIn(p);
+			for (IBCanvasListener i : this.toArray(new IBCanvasListener[0])) i.zoomIn(p);
 		}
 
 		@Override
 		public void zoomOut(IBPoint p) {
-			for (IBCanvasListener i : this) i.zoomOut(p);
+			for (IBCanvasListener i : this.toArray(new IBCanvasListener[0])) i.zoomOut(p);
+		}
+
+		@Override
+		public void resized() {
+			for (IBCanvasListener i : this.toArray(new IBCanvasListener[0])) i.resized();
 		}
 		
 	}
@@ -84,5 +90,13 @@ public abstract class BCanvas implements IBCanvas{
 	protected IBCanvasListener listeners(){
 		return _listeners;
 	}
+
 	
+	public void adjustTransformToSize(){
+		IBRectangle origin = drawable().originalSize();
+		IBRectangle destination = originalSize();
+		
+		transform().setTo(origin, destination);
+	}
+
 }

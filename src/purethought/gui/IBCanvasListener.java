@@ -3,6 +3,7 @@ package purethought.gui;
 import purethought.geom.IBPoint;
 
 public interface IBCanvasListener {
+	void resized();
 	void pointerDown(IBPoint p);
 	void pointerDrag(IBPoint p);
 	void pointerUp(IBPoint p);
