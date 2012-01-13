@@ -7,10 +7,11 @@ import purethought.problem.BProblem;
 import purethought.problem.BProblemLocator;
 import purethought.util.BFactory;
 
-public class BBongardTestField extends BTopDrawable{
+public class BBongardTestField extends BTopDrawable implements IBFlippableDrawable{
 
 	private BProblem _problem;
 	private BSprite _sprite;
+	private BFlippableContainer _container;
 	
 	/**
 	 * 
@@ -32,6 +33,25 @@ public class BBongardTestField extends BTopDrawable{
 	@Override
 	protected void draw_internal(IBCanvas c, IBTransform t) {
 		_sprite.draw(c, t);
+	}
+
+	@Override
+	public BFlippableContainer flippableContainer() {
+		return _container;
+	}
+
+	@Override
+	public void hided() {
+	}
+
+	@Override
+	public void setFlippableContainer(BFlippableContainer c) {
+		_container = c;
+		
+	}
+
+	@Override
+	public void showed() {
 	}
 
 }

@@ -6,7 +6,9 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import purethought.gui.BBongardTestField;
+import purethought.gui.BFlippableContainer;
 import purethought.gui.BGameField;
+import purethought.gui.IBFlippableDrawable;
 import purethought.gui.IBGame;
 import purethought.problem.BProblemLocator;
 import purethought.util.BFactory;
@@ -61,7 +63,9 @@ public class AWTGame implements IBGame, Runnable{
 		btf.setProblem(loc);
 		
 		
-		canvas().setDrawable(gf);
+		canvas().setDrawable( new BFlippableContainer(0, 0, new IBFlippableDrawable[][]{
+				{ gf, btf }
+		}));
 	}
 
 	private static BFactory f() {

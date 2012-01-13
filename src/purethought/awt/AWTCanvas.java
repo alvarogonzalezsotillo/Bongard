@@ -43,7 +43,12 @@ public class AWTCanvas extends BCanvas{
 		
 		@Override
 		public void mouseWheelMoved(MouseWheelEvent e) {
-			listeners().zoomIn(pointInOriginalCoords(e));
+			if( e.getWheelRotation() > 0 ){
+				listeners().zoomIn(pointInOriginalCoords(e));
+			}
+			else{
+				listeners().zoomOut(pointInOriginalCoords(e));
+			}
 		}
 		
 		@Override
@@ -72,6 +77,7 @@ public class AWTCanvas extends BCanvas{
 			MouseListenerImpl l = new MouseListenerImpl();
 			addMouseListener( l ); 
 			addMouseMotionListener(l);
+			addMouseWheelListener(l);
 		}
 		
 		public void paint(Graphics g) {

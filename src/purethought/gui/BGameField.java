@@ -17,7 +17,7 @@ import purethought.problem.BProblem;
 import purethought.problem.BProblemLocator;
 import purethought.util.BFactory;
 
-public class BGameField extends BTopDrawable{
+public class BGameField extends BTopDrawable implements IBFlippableDrawable{
 	
 	private static final boolean SHOW_POINTER = false;
 
@@ -128,12 +128,15 @@ public class BGameField extends BTopDrawable{
 
 		@Override
 		public void zoomIn(IBPoint p) {
+			_container.flipDown();
 		}
 
 		@Override
 		public void zoomOut(IBPoint p) {
 		}
 	};
+
+	private BFlippableContainer _container;
 
 	/**
 	 * 
@@ -240,4 +243,24 @@ public class BGameField extends BTopDrawable{
 			canvas().addListener(_listener);
 		}
 	}
+	
+	@Override
+	public BFlippableContainer flippableContainer() {
+		return _container;
+	}
+
+	@Override
+	public void hided() {
+	}
+
+	@Override
+	public void setFlippableContainer(BFlippableContainer c) {
+		_container = c;
+		
+	}
+
+	@Override
+	public void showed() {
+	}
+
 }
