@@ -78,4 +78,7 @@ public abstract class BCardExtractor{
 	 * @return
 	 */
 	protected abstract IBRaster extract(IBRectangle r, IBRaster i);
+
+
+	public abstract BProblemLocator randomProblem();
 }

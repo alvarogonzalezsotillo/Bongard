@@ -13,7 +13,6 @@ import purethought.util.BFactory;
 public class AWTFactory extends BFactory {
 
 	private AWTGame _game;
-	private AWTCanvas _canvas;
 	private AWTAnimator _animator;
 	
 	/**
@@ -48,27 +47,10 @@ public class AWTFactory extends BFactory {
 		return new AWTCardExtractor();
 	}
 
-	@Override
-	public AWTCanvas canvas(){
-		if (_canvas == null) {
-			_canvas = new AWTCanvas();
-		}
-
-		return _canvas;
-	}
 
 	@Override
 	public BSprite sprite(IBRaster raster) {
 		return new AWTSprite(raster);
-	}
-
-	@Override
-	public BProblemLocator randomProblem() {
-		Random r = new Random();
-		Formatter f = new Formatter();
-		f.format("p%03d.png", r.nextInt(280)+1 );
-		File file = new File("2bpp-png/" + f.toString() );
-		return new BProblemLocator(file);
 	}
 
 	@Override

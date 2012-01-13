@@ -122,7 +122,7 @@ public class BGameField extends BTopDrawable{
 		@Override
 		public void pointerClick(IBPoint p) {
 			BFactory instance = BFactory.instance();
-			BProblemLocator test = instance.randomProblem();
+			BProblemLocator test = instance.cardExtractor().randomProblem();
 			setProblem(test);
 			
 			_pointer.setText(p.toString());

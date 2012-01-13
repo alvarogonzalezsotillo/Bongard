@@ -15,11 +15,22 @@ public class AWTGame implements IBGame, Runnable{
 
 	private JFrame _f;
 	
+	private AWTCanvas _canvas;
+
+	@Override
+	public AWTCanvas canvas(){
+		if (_canvas == null) {
+			_canvas = new AWTCanvas();
+		}
+
+		return _canvas;
+	}
+	
 	
 	private JFrame createFrame(){
 		JFrame f = new JFrame( "Bongard" );
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		Component canvas = ((AWTCanvas)f().canvas()).canvasImpl();
+		Component canvas = canvas().canvasImpl();
 		f.add(canvas);
 		
 		f.setSize( 480, 640 );
@@ -42,7 +53,7 @@ public class AWTGame implements IBGame, Runnable{
 		_f = createFrame();
 		_f.setVisible(true);
 		
-		BProblemLocator loc = f().randomProblem();
+		BProblemLocator loc = f().cardExtractor().randomProblem();
 		BGameField gf = new BGameField();
 		gf.setProblem(loc);
 		
@@ -50,7 +61,7 @@ public class AWTGame implements IBGame, Runnable{
 		btf.setProblem(loc);
 		
 		
-		f().canvas().setDrawable(gf);
+		canvas().setDrawable(gf);
 	}
 
 	private static BFactory f() {

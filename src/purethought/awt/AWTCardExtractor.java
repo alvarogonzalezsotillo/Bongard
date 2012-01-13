@@ -7,6 +7,8 @@ import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Formatter;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 
@@ -86,5 +88,16 @@ public class AWTCardExtractor extends BCardExtractor{
 			writeImage(f, card);
 		}
 	}
+	
+	@Override
+	public BProblemLocator randomProblem() {
+		Random r = new Random();
+		Formatter f = new Formatter();
+		f.format("p%03d.png", r.nextInt(280)+1 );
+		File file = new File("2bpp-png/" + f.toString() );
+		return new BProblemLocator(file);
+	}
+
+
 
 }

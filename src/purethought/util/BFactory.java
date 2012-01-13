@@ -34,8 +34,4 @@ public abstract class BFactory {
 	public abstract BSprite sprite( IBRaster raster );
 	public abstract BLabel label( String text );
 	public abstract BAnimator animator();
-
-	
-	public abstract IBCanvas canvas(); // TODO: MOVE INSIDE GAME
-	public abstract BProblemLocator randomProblem(); // TODO: MOVE INSIDE CARDEXTRACTOR
 }
