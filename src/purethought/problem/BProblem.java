@@ -10,6 +10,9 @@ import purethought.util.BException;
  * @author alvaro
  */
 public class BProblem {
+	
+	private IBRaster _testImage;
+	
 	private IBRaster[] _a;
 	private IBRaster[] _b;
 	private IBRaster[] _images;
@@ -26,15 +29,18 @@ public class BProblem {
 	 * 
 	 * @param loc
 	 */
-	public BProblem( IBRaster[] a, IBRaster[] b ){
-		init( a, b );
+	public BProblem( IBRaster testImage, IBRaster[] a, IBRaster[] b ){
+		init( testImage, a, b );
 	}
 	
 	/**
 	 * 
 	 * @param loc
 	 */
-	public void init( IBRaster[] a, IBRaster[] b ){
+	public void init( IBRaster testImage, IBRaster[] a, IBRaster[] b ){
+		
+		_testImage = testImage;
+		
 		if( a == null || a.length != 6 ){
 			throw new BException("incorrect a", null );
 		}
@@ -176,5 +182,9 @@ public class BProblem {
 		ret += " image1_of_set1:" + _image1_with_set1;
 		
 		return ret;
+	}
+
+	public IBRaster testImage() {
+		return _testImage;
 	}
 }

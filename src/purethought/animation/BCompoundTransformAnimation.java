@@ -5,9 +5,12 @@ import purethought.util.BFactory;
 
 public class BCompoundTransformAnimation implements IBAnimation {
 
-	private IBTransformAnimable[] _a;
 	private BTransformAnimation[] _animations;
 
+	public BCompoundTransformAnimation( BTransformAnimation ...animations ){
+		this( new IBTransformAnimable[0], animations);
+	}
+	
 	public BCompoundTransformAnimation( IBTransformAnimable[] a, BTransformAnimation ... animations ){
 		_animations = animations;
 		setAnimables(a);
@@ -18,8 +21,13 @@ public class BCompoundTransformAnimation implements IBAnimation {
 	}
 
 	@Override
+	public boolean needsUpdate() {
+		return !endReached();
+	}
+
+	@Override
 	public IBAnimable[] animables() {
-		return _a;
+		return _animations[0].animables();
 	}
 
 	@Override
@@ -39,9 +47,10 @@ public class BCompoundTransformAnimation implements IBAnimation {
 			if( a.endReached() ){
 				continue;
 			}
+			a.stepTransform(millis);
 			for( IBAnimable an: animables() ){
 				IBTransformAnimable ta = (IBTransformAnimable) an;
-				IBTransform st = a.stepTransform(millis, ta);
+				IBTransform st = a.getTransform(ta);
 				t.concatenate(st);
 				ta.setTemporaryTransform(t);
 			}
@@ -57,8 +66,9 @@ public class BCompoundTransformAnimation implements IBAnimation {
 	
 	@Override
 	public final void setAnimables(IBAnimable...a){
-		_a = new IBTransformAnimable[a.length];
-		System.arraycopy(a, 0, _a, 0, a.length);
+		for( BTransformAnimation an: _animations ){
+			an.setAnimables(a);
+		}
 	}
 	
 }

@@ -8,7 +8,6 @@ import purethought.geom.BRectangle;
 import purethought.geom.IBPoint;
 import purethought.geom.IBRectangle;
 import purethought.geom.IBTransform;
-import purethought.util.BFactory;
 
 @SuppressWarnings("serial")
 public class AWTTransform extends AffineTransform implements IBTransform{

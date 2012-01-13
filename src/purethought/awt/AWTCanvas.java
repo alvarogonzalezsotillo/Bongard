@@ -14,14 +14,10 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
-import java.awt.geom.AffineTransform;
 
 import purethought.geom.BRectangle;
 import purethought.geom.IBRectangle;
-import purethought.geom.IBTransform;
 import purethought.gui.BCanvas;
-import purethought.gui.BGameField;
-import purethought.problem.BProblemLocator;
 import purethought.util.BFactory;
 
 public class AWTCanvas extends BCanvas{
@@ -138,8 +134,8 @@ public class AWTCanvas extends BCanvas{
 	}
 	
 	public void adjustTransformToSize(){
-		IBRectangle origin = drawable().size();
-		IBRectangle destination = size();
+		IBRectangle origin = drawable().originalSize();
+		IBRectangle destination = originalSize();
 		
 		transform().setTo(origin, destination);
 	}
@@ -158,7 +154,7 @@ public class AWTCanvas extends BCanvas{
 	}
 
 	@Override
-	public IBRectangle size() {
+	public IBRectangle originalSize() {
 		Component c = canvasImpl();
 		return new BRectangle( 0, 0, c.getWidth(), c.getHeight() );
 	}

@@ -9,12 +9,18 @@ public abstract class BAnimation implements IBAnimation{
 	}
 	
 	@Override
+	public boolean needsUpdate() {
+		return !endReached();
+	}
+
+	
+	@Override
 	public final IBAnimable[] animables() {
 		return _a.clone();
 	}
 	
 	@Override
-	public final void setAnimables(IBAnimable...a){
+	public void setAnimables(IBAnimable...a){
 		_a = a.clone();
 	}
 }

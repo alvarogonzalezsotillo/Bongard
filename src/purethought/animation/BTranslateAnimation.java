@@ -7,27 +7,19 @@ import purethought.util.BFactory;
 public class BTranslateAnimation extends BTransformAnimation{
 
 	private IBPoint _dest;
-	private int _totalMillis;
-	private int _currentMillis;
 	
 	
 	public BTranslateAnimation( IBPoint dest, int totalMillis, IBTransformAnimable ... a ){
-		super(a);
+		super(totalMillis,a);
 		_dest = dest;
-		_totalMillis = totalMillis;
 	}
+
 	
 	@Override
-	public IBTransform stepTransform(long millis, IBTransformAnimable a) {
-		_currentMillis += millis;
-		if( _currentMillis > _totalMillis ){
-			millis = _totalMillis-_currentMillis;
-			_currentMillis = _totalMillis;
-		}
-		
+	public IBTransform getTransform(IBTransformAnimable a) {
 		IBPoint origin = a.position();
-		double tx = _currentMillis*(_dest.x() - origin.x())/_totalMillis;
-		double ty = _currentMillis*(_dest.y() - origin.y())/_totalMillis;
+		double tx = currentMillis()*(_dest.x() - origin.x())/totalMillis();
+		double ty = currentMillis()*(_dest.y() - origin.y())/totalMillis();
 		
 		IBTransform ret = BFactory.instance().identityTransform();
 		ret.translate(tx, ty);
@@ -35,9 +27,5 @@ public class BTranslateAnimation extends BTransformAnimation{
 		return ret;
 	}
 
-	@Override
-	public boolean endReached() {
-		return _currentMillis >= _totalMillis;
-	}
 
 }

@@ -8,9 +8,9 @@ public interface IBCanvas{
 	IBTransform transform();
 	void setTransform(IBTransform t);
 	void refresh();
-	IBRectangle size();
-	void setDrawable( IBCanvasDrawable d );
-	IBCanvasDrawable drawable();
+	IBRectangle originalSize();
+	void setDrawable( IBTopDrawable d );
+	IBTopDrawable drawable();
 	void addListener(IBCanvasListener l);
 	void removeListener(IBCanvasListener l);
 }

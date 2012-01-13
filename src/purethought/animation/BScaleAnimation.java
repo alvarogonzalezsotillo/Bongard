@@ -8,33 +8,21 @@ public class BScaleAnimation extends BTransformAnimation{
 	
 	private double _fx;
 	private double _fy;
-	private int _totalMillis;
-	private int _currentMillis;
 
 	public BScaleAnimation( double fx, double fy, int totalMillis, IBTransformAnimable ... a){
-		super(a);
+		super(totalMillis, a);
 		_fx = fx;
 		_fy = fy;
-		_totalMillis = totalMillis;
 	}
 
-	@Override
-	public IBTransform stepTransform(long millis, IBTransformAnimable a) {
-		_currentMillis += millis;
-		if( _currentMillis > _totalMillis ){
-			millis = _totalMillis-_currentMillis;
-			_currentMillis = _totalMillis;
-		}
+		
+	public IBTransform getTransform(IBTransformAnimable a) {
 		IBTransform t = BFactory.instance().identityTransform();
-		double fx = 1+(_fx-1)*_currentMillis/_totalMillis;
-		double fy = 1+(_fy-1)*_currentMillis/_totalMillis;
+		double fx = 1+(_fx-1)*currentMillis()/totalMillis();
+		double fy = 1+(_fy-1)*currentMillis()/totalMillis();
 		t.scale(fx, fy);
 		return t;
 	}
 
-	@Override
-	public boolean endReached() {
-		return _currentMillis >= _totalMillis;
-	}
 
 }

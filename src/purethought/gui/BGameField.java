@@ -20,7 +20,7 @@ import purethought.problem.BProblem;
 import purethought.problem.BProblemLocator;
 import purethought.util.BFactory;
 
-public class BGameField implements IBCanvasDrawable{
+public class BGameField extends BTopDrawable{
 	
 	private static final boolean SHOW_POINTER = false;
 
@@ -31,7 +31,6 @@ public class BGameField implements IBCanvasDrawable{
 	private BSprite _questionSprite;
 	private BSprite[] _allSprites;
 	private IBRectangle _size;
-	private IBCanvas _canvas;
 	private BLabel _pointer = BFactory.instance().label("O");
 	
 	private IBCanvasListener _listener = new IBCanvasListener(){
@@ -40,6 +39,10 @@ public class BGameField implements IBCanvasDrawable{
 		private IBAnimation _pickUpAnimation;
 		private IBAnimation _dropAnimation;
 		private IBAnimation _dragAnimation;
+		private IBAnimation _set1OverAnimation;
+		private boolean _set1Over;
+		private boolean _set2Over;
+		private IBAnimation _set2OverAnimation;
 		
 		@Override
 		public void pointerDown(IBPoint p) {
@@ -55,16 +58,65 @@ public class BGameField implements IBCanvasDrawable{
 			if( _dragQuestion ){
 				_dragAnimation = new BTranslateAnimation(p, 50, _questionSprite );
 				animator().addAnimation( new BWaitForAnimation(_dragAnimation, _pickUpAnimation) );
+				checkSets();
 			}
+		}
+
+		private void checkSets() {
+			boolean set1Over = near( _questionSprite, _set1Sprites );
+			if( !_set1Over &&  set1Over ){
+				_set1OverAnimation = new BScaleAnimation( 1.3, 1.3, 100, _set1Sprites );
+				animator().addAnimation(_set1OverAnimation);
+			}
+			if( _set1Over && !set1Over ){
+				animator().addAnimation( new BWaitForAnimation( new BScaleAnimation(1/1.3,1/1.3,100,_set1Sprites), _set1OverAnimation) );
+			}
+			_set1Over = set1Over;
+			
+			boolean set2Over = near( _questionSprite, _set2Sprites );
+			if( !_set2Over &&  set2Over ){
+				_set2OverAnimation = new BScaleAnimation( 1.3, 1.3, 100, _set2Sprites );
+				animator().addAnimation(_set2OverAnimation);
+			}
+			if( _set2Over && !set2Over ){
+				animator().addAnimation( new BWaitForAnimation( new BScaleAnimation(1/1.3,1/1.3,100,_set2Sprites ), _set2OverAnimation) );
+			}
+			_set2Over = set2Over;
+		}
+
+		private boolean near(BSprite questionSprite, BSprite[] sprites) {
+			IBPoint p = questionSprite.temporaryPosition();
+			
+			for( BSprite s: sprites ){
+				if( s.inside(p, null) ){
+					return true;
+				}
+			}
+			return false;
 		}
 
 		@Override
 		public void pointerUp(IBPoint p) {
 			if( _dragQuestion ){
-				_dropAnimation = new BScaleAnimation(1/1.3, 1/1.3, 100, _questionSprite);
+				BFactory f = BFactory.instance();
+				IBPoint dest = f.point(105*2, 105*3);
+				_dropAnimation = 
+						new BCompoundTransformAnimation(
+								new IBTransformAnimable[]{ _questionSprite }, 
+								new BScaleAnimation(1/1.3, 1/1.3, 100),
+								new BTranslateAnimation( dest, 100)
+						);
 				animator().addAnimation( new BWaitForAnimation(_dropAnimation, _pickUpAnimation) );
+				
+				if( _set1Over ){
+					animator().addAnimation( new BWaitForAnimation( new BScaleAnimation(1/1.3,1/1.3,100,_set1Sprites ), _set1OverAnimation) );
+				}
+				if( _set2Over ){
+					animator().addAnimation( new BWaitForAnimation( new BScaleAnimation(1/1.3,1/1.3,100,_set2Sprites ), _set2OverAnimation) );
+				}
+
 			}
-			_dragQuestion = false;
+			_set1Over = _set2Over = _dragQuestion = false;
 		}
 
 		@Override
@@ -133,12 +185,12 @@ public class BGameField implements IBCanvasDrawable{
 		
 		for (int i = 0; i < _set1Sprites.length; i++) {
 			IBTransformAnimable a = _set1Sprites[i];
-			animator.addAnimation( new BTranslateAnimation( f.point(s, s*(i+1) ), millis, a ) );
+			animator.addAnimation( new BTranslateAnimation( f.point(s*.8, s*(i+1) ), millis, a ) );
 		}
 
 		for (int i = 0; i < _set2Sprites.length; i++) {
 			IBTransformAnimable a = _set2Sprites[i];
-			animator.addAnimation( new BTranslateAnimation( f.point(s*3, s*(i+1) ), millis, a ) );
+			animator.addAnimation( new BTranslateAnimation( f.point(s*3.2, s*(i+1) ), millis, a ) );
 		}
 
 		animator.addAnimation(
@@ -186,7 +238,7 @@ public class BGameField implements IBCanvasDrawable{
 	 * 
 	 */
 	@Override
-	public void draw(IBCanvas canvas, IBTransform aditionalTransform){
+	protected void draw_internal(IBCanvas canvas, IBTransform aditionalTransform){
 		
 		
 		if( _allSprites == null ){
@@ -203,26 +255,22 @@ public class BGameField implements IBCanvasDrawable{
 	}
 	
 	@Override
-	public IBRectangle size() {
+	public IBRectangle originalSize() {
 		return _size;
 	}
 	
-	public BAnimator animator(){
+	private BAnimator animator(){
 		return BFactory.instance().animator();
 	}
 
 	@Override
 	public void addedTo(IBCanvas c) {
-		if( _canvas != null ){
-			_canvas.removeListener(_listener);
+		if( canvas() != null ){
+			canvas().removeListener(_listener);
 		}
-		_canvas = c;
-		if( _canvas != null ){
-			_canvas.addListener(_listener);
+		super.addedTo(c);
+		if( canvas() != null ){
+			canvas().addListener(_listener);
 		}
-	}
-	
-	public IBCanvas canvas(){
-		return _canvas;
 	}
 }

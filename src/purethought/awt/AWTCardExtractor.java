@@ -24,7 +24,7 @@ public class AWTCardExtractor extends BCardExtractor{
 	 * 
 	 */
 	@Override
-	protected IBRaster getTestImage(BProblemLocator test) {
+	public IBRaster getTestImage(BProblemLocator test) {
 		return readImage( test.getImpl(File.class) );
 	}
 

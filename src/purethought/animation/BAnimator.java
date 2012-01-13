@@ -16,14 +16,23 @@ public abstract class BAnimator {
 	 * @param millis
 	 */
 	public void stepAnimations(long millis){
-		for (Iterator<IBAnimation> ai = _animations.iterator(); ai.hasNext();) {
-			IBAnimation a = ai.next();
+		IBAnimation[] an = _animations.toArray( new IBAnimation[0] );
+		for (IBAnimation a : an) {
 			if( a.endReached() ){
-				ai.remove();
+				_animations.remove(a);
 			}
 			else{
 				a.stepAnimation(millis);
 			}
 		}
+	}
+	
+	public boolean needsUpdate(){
+		for (IBAnimation a : _animations ) {
+			if( a.needsUpdate() ){
+				return true;
+			}
+		}
+		return false;
 	}
 }

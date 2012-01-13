@@ -79,18 +79,23 @@ public abstract class BDrawable implements IBDrawable, IBTransformAnimable{
 		}
 		setTemporaryTransform(null);
 	}
-
-	@Override
-	public void draw(IBCanvas c, IBTransform aditionalTransform ){
+	
+	public IBTransform transformWithTemporary(){
 		IBTransform t = transform();
 		
-		IBTransform tt = computeTemporaryTransform();
+		IBTransform tt = temporaryTransform();
 		if( tt != null ){
 			IBTransform temp = BFactory.instance().identityTransform();
 			temp.concatenate(t);
 			temp.concatenate(tt);
 			t = temp;
 		}
+		return t;
+	}
+
+	@Override
+	public void draw(IBCanvas c, IBTransform aditionalTransform ){
+		IBTransform t = transformWithTemporary();
 		
 		if( aditionalTransform != null ){
 			IBTransform temp = BFactory.instance().identityTransform();
@@ -102,9 +107,6 @@ public abstract class BDrawable implements IBDrawable, IBTransformAnimable{
 		draw_internal(c,t);
 	}
 
-	private IBTransform computeTemporaryTransform() {
-		return temporaryTransform();
-	}
 
 	@Override
 	public IBPoint position(){
@@ -112,7 +114,13 @@ public abstract class BDrawable implements IBDrawable, IBTransformAnimable{
 		ret = transform().transform(ret);
 		return ret;
 	}
-	
+
+	public IBPoint temporaryPosition(){
+		IBPoint ret = BFactory.instance().point(0, 0);
+		ret = transformWithTemporary().transform(ret);
+		return ret;
+	}
+
 	/**
 	 * Draw ignoring the internal transform, only the given transform 
 	 * @param c

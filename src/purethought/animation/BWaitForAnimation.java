@@ -2,6 +2,29 @@ package purethought.animation;
 
 public class BWaitForAnimation implements IBAnimation{
 
+	public static class RunnableAnimation extends BAnimation{
+		private boolean _endReached;
+		private Runnable _runnable;
+		
+		public RunnableAnimation(Runnable r){
+			_runnable = r;
+		}
+
+		@Override
+		public void stepAnimation(long millis) {
+			if( !_endReached ){
+				_runnable.run();
+			}
+			_endReached = true;
+		}
+
+		@Override
+		public boolean endReached() {
+			return _endReached;
+		}
+	}
+
+	
 	private IBAnimation[] _waitFor;
 	private IBAnimation _animation;
 
@@ -11,9 +34,14 @@ public class BWaitForAnimation implements IBAnimation{
 	}
 	
 	@Override
+	public boolean needsUpdate() {
+		return !endReached();
+	}
+	
+	@Override
 	public void stepAnimation(long millis) {
 		for (IBAnimation w : _waitFor) {
-			if( !w.endReached() ){
+			if( w != null && !w.endReached() ){
 				return;
 			}
 		}

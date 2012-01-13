@@ -1,14 +1,11 @@
 package purethought.awt;
 
-import java.awt.Canvas;
 import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.Image;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import purethought.geom.IBTransform;
+import purethought.gui.BBongardTestField;
 import purethought.gui.BGameField;
 import purethought.gui.IBGame;
 import purethought.problem.BProblemLocator;
@@ -19,7 +16,6 @@ public class AWTGame implements IBGame, Runnable{
 	private JFrame _f;
 	
 	
-	@SuppressWarnings("serial")
 	private JFrame createFrame(){
 		JFrame f = new JFrame( "Bongard" );
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -47,9 +43,14 @@ public class AWTGame implements IBGame, Runnable{
 		_f.setVisible(true);
 		
 		BProblemLocator loc = f().randomProblem();
-		BGameField field = new BGameField();
-		field.setProblem(loc);
-		f().canvas().setDrawable(field);
+		BGameField gf = new BGameField();
+		gf.setProblem(loc);
+		
+		BBongardTestField btf = new BBongardTestField();
+		btf.setProblem(loc);
+		
+		
+		f().canvas().setDrawable(gf);
 	}
 
 	private static BFactory f() {

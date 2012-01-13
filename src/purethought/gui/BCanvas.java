@@ -44,7 +44,7 @@ public abstract class BCanvas implements IBCanvas{
 	}
 
 	private IBTransform _t = BFactory.instance().identityTransform();
-	private IBCanvasDrawable _d;
+	private IBTopDrawable _d;
 	private ListenerList _listeners = new ListenerList();
 
 	public IBTransform transform() {
@@ -56,7 +56,7 @@ public abstract class BCanvas implements IBCanvas{
 	}
 
 	@Override
-	public void setDrawable(IBCanvasDrawable d) {
+	public void setDrawable(IBTopDrawable d) {
 		if( _d != null ){
 			_d.addedTo(null);
 		}
@@ -67,7 +67,7 @@ public abstract class BCanvas implements IBCanvas{
 	}
 
 	@Override
-	public IBCanvasDrawable drawable() {
+	public IBTopDrawable drawable() {
 		return _d;
 	}
 	

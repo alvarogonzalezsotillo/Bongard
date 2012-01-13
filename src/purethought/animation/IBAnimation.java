@@ -7,4 +7,5 @@ public interface IBAnimation {
 	IBAnimable[] animables();
 	void setAnimables(IBAnimable ... a);
 	boolean endReached();
+	boolean needsUpdate();
 }

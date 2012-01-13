@@ -32,8 +32,10 @@ public abstract class BCardExtractor{
 	}
 	
 	public static BProblem extract( BProblemLocator test ){
-		IBRaster[][] images = extractImages(test);
-		return new BProblem(images[0], images[1]);
+		BCardExtractor ce = BFactory.instance().cardExtractor();
+		IBRaster testImage = ce.getTestImage(test);
+		IBRaster[][] images = ce.extractImages(testImage);
+		return new BProblem(testImage,images[0], images[1]);
 	}
 	
 	/**
@@ -41,23 +43,21 @@ public abstract class BCardExtractor{
 	 * @param i
 	 * @return first dimension are sides of problem, second dimension is tiles of side
 	 */
-	private static IBRaster[][] extractImages( BProblemLocator test ){
-		BCardExtractor instance = BFactory.instance().cardExtractor();
-		IBRaster testImage = instance.getTestImage(test);
+	private IBRaster[][] extractImages( IBRaster testImage ){
 		IBRaster ret[][] = new IBRaster[2][];
 		ret[0] = new IBRaster[A.length];
 		ret[1] = new IBRaster[B.length];
 		
 		for( int j= 0 ; j < A.length ; j++ ){
 			IBRectangle r = A[j];
-			IBRaster card = instance.extract( r, testImage );
+			IBRaster card = extract( r, testImage );
 			card.addImpl("A" + j );
 			ret[0][j] = card;
 		}
 		
 		for( int j= 0 ; j < B.length ; j++ ){
 			IBRectangle r = B[j];
-			IBRaster card = instance.extract( r, testImage );
+			IBRaster card = extract( r, testImage );
 			card.addImpl("B" + j );
 			ret[1][j] = card;
 		}

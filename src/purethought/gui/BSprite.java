@@ -26,7 +26,7 @@ public abstract class BSprite extends BDrawable{
 		return _raster;
 	}
 	
-	public IBRectangle originalPosition(){
+	public IBRectangle originalSize(){
 		if (_originalPosition == null) {
 			IBRaster ra = raster();
 			IBRectangle re = ra.originalSize();
@@ -50,7 +50,7 @@ public abstract class BSprite extends BDrawable{
 		
 		IBPoint inverseP = inverseT.transform(p);		
 		
-		return BRectangle.inside( originalPosition(), inverseP);
+		return BRectangle.inside( originalSize(), inverseP);
 	}
 	
 	

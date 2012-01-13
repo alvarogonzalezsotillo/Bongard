@@ -2,7 +2,6 @@ package purethought.animation;
 
 public class BConcatenateAnimation implements IBAnimation{
 
-	private IBAnimable[] _a;
 	private IBAnimation[] _animations;
 
 	public BConcatenateAnimation( IBAnimable[] a, IBAnimation ... animations ){
@@ -15,11 +14,6 @@ public class BConcatenateAnimation implements IBAnimation{
 	}
 	
 	
-	@Override
-	public IBAnimable[] animables() {
-		return _a;
-	}
-
 	@Override
 	public boolean endReached() {
 		return currentAnimation() == null;
@@ -48,8 +42,16 @@ public class BConcatenateAnimation implements IBAnimation{
 		for( IBAnimation an : _animations ){
 			an.setAnimables(a);
 		}
-		_a = new IBTransformAnimable[a.length];
-		System.arraycopy(a, 0, _a, 0, a.length);
+	}
+
+	@Override
+	public IBAnimable[] animables() {
+		return _animations[0].animables();
+	}
+
+	@Override
+	public boolean needsUpdate() {
+		return !endReached();
 	}
 
 }

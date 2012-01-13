@@ -37,8 +37,12 @@ public class AWTAnimator extends BAnimator{
 				_lastMillis = c;
 				int m = Math.min(2*_millis, _step);
 				
+				boolean update = needsUpdate();
 				stepAnimations(m);
-				BFactory.instance().canvas().refresh();
+				
+				if( update ){
+					BFactory.instance().canvas().refresh();
+				}
 			}
 		});
 	}

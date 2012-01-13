@@ -3,6 +3,7 @@ package purethought.awt;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
+import java.util.Formatter;
 
 import purethought.geom.IBTransform;
 import purethought.gui.BSprite;
@@ -34,7 +35,7 @@ public class AWTSprite extends BSprite{
 		
 		if( SHOW_POSITION ){
 			AffineTransform at = (AffineTransform) transform();
-			String s = at.getTranslateX() + "," + at.getTranslateY();
+			String s = new Formatter().format("%2.2f, %2.2f", at.getTranslateX(), at.getTranslateY() ).toString();
 			g2d.drawString(s, 0, 0);
 		}
 		
