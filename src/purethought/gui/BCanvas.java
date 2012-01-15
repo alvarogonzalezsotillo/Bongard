@@ -10,7 +10,7 @@ import purethought.util.BFactory;
 public abstract class BCanvas implements IBCanvas{
 	
 	@SuppressWarnings("serial")
-	public class ListenerList extends ArrayList<IBCanvasListener> implements IBCanvasListener{
+	public static class ListenerList extends ArrayList<IBCanvasListener> implements IBCanvasListener{
 
 		@Override
 		public void pointerClick(IBPoint p) {
@@ -64,11 +64,11 @@ public abstract class BCanvas implements IBCanvas{
 	@Override
 	public void setDrawable(IBTopDrawable d) {
 		if( _d != null ){
-			_d.addedTo(null);
+			removeListener(_d.listener());
 		}
 		_d = d;
 		if( _d != null ){
-			_d.addedTo(this);
+			addListener(_d.listener());
 		}
 	}
 
@@ -79,12 +79,16 @@ public abstract class BCanvas implements IBCanvas{
 	
 	@Override
 	public void addListener(IBCanvasListener l) {
-		_listeners.add(l);
+		if( l != null ){
+			_listeners.add(l);
+		}
 	}
 	
 	@Override
 	public void removeListener(IBCanvasListener l) {
-		_listeners.remove(l);
+		if( l != null ){
+			_listeners.remove(l);
+		}
 	}
 	
 	protected IBCanvasListener listeners(){

@@ -7,7 +7,6 @@ import purethought.util.BFactory;
 
 public abstract class BTopDrawable extends BDrawable implements IBTopDrawable{
 
-	private IBCanvas _canvas;
 
 	@Override
 	public boolean inside(IBPoint p, IBTransform aditionalTransform ){
@@ -25,16 +24,5 @@ public abstract class BTopDrawable extends BDrawable implements IBTopDrawable{
 		
 		return BRectangle.inside( originalSize(), inverseP);
 	}
-
-	@Override
-	public void addedTo(IBCanvas c) {
-		_canvas = c;
-		
-	}
-	
-	public IBCanvas canvas(){
-		return _canvas;
-	}
-
 
 }

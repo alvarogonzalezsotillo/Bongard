@@ -1,13 +1,26 @@
 package purethought.gui;
 
+import purethought.geom.BRectangle;
 import purethought.geom.IBPoint;
 import purethought.geom.IBRectangle;
 import purethought.geom.IBTransform;
+import purethought.util.BFactory;
 
 public class BFlippableContainer extends BTopDrawable {
 	private IBFlippableDrawable[][] _drawables;
 	private int _x;
 	private int _y;
+	
+	private BCanvas.ListenerList _publicListener;
+	
+	public IBCanvasListener listener(){
+		if (_publicListener == null) {
+			_publicListener = new BCanvas.ListenerList();
+			_publicListener.add(_listener);
+		}
+
+		return _publicListener;
+	}
 	
 	private IBCanvasListener _listener = new IBCanvasListener() {
 		
@@ -46,19 +59,7 @@ public class BFlippableContainer extends BTopDrawable {
 		setCurrent(x, y);
 	}
 	
-	@Override
-	public void addedTo(IBCanvas c) {
-		if( canvas() != null ){
-			canvas().removeListener(_listener);
-			current().addedTo(null);
-		}
-		super.addedTo(c);
-		if( canvas() != null ){
-			canvas().addListener(_listener);
-			current().addedTo(canvas());
-		}
-	}
-	
+
 	public void flipDown(){
 		int y = (_y+1)%_drawables[_x].length;
 		setCurrent(_x,y);
@@ -74,7 +75,7 @@ public class BFlippableContainer extends BTopDrawable {
 		IBFlippableDrawable current = current();
 
 		if (current != null) {
-			current.addedTo(null);
+			removeListener( current.listener() );
 			current.setFlippableContainer(null);
 		}
 
@@ -83,14 +84,11 @@ public class BFlippableContainer extends BTopDrawable {
 
 		current = current();
 		if (current != null) {
-			current.addedTo(canvas());
+			addListener( current.listener() );
 			current.setFlippableContainer(this);
 		}
 		
 		adjustTransformToSize();
-		if( canvas() != null ){
-			canvas().refresh();
-		}
 	}
 
 	public IBFlippableDrawable[][] drawables() {
@@ -103,11 +101,11 @@ public class BFlippableContainer extends BTopDrawable {
 
 	@Override
 	protected void draw_internal(IBCanvas c, IBTransform t) {
-		current().draw(canvas(), t);
+		current().draw(c, t);
 	}
 	
 	public void adjustTransformToSize(){
-		if( current() == null || canvas() == null ){
+		if( current() == null ){
 			return;
 		}
 		IBRectangle origin = current().originalSize();
@@ -118,7 +116,7 @@ public class BFlippableContainer extends BTopDrawable {
 
 	@Override
 	public IBRectangle originalSize() {
-		return canvas().originalSize();
+		return new BRectangle(0, 0, 240, 320);
 	}
 
 }
