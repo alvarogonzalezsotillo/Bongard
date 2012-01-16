@@ -41,13 +41,14 @@ public class AWTTransform extends AffineTransform implements IBTransform{
 		double sx = destination.w() / origin.w();
 		double sy = destination.h() / origin.h();
 		
+		/*if keep aspect ratio*/{
 		sx = Math.min( sx, sy );
 		sy = Math.min( sx, sy );
+		}
 
-		double dx = destination.x() - origin.x();
-		double dy = destination.y() - origin.y();
+		double dx = (destination.w()-(sx)*origin.w())/2;
+		double dy = (destination.h()-(sy)*origin.h())/2;
 		
-
 		setToIdentity();
 		scale(sx, sy);
 		translate(dx, dy);
@@ -55,7 +56,7 @@ public class AWTTransform extends AffineTransform implements IBTransform{
 
 	
 	
-	public static void main(String[] args) {
+	public static void test(String[] args) {
 		AWTTransform t = new AWTTransform();
 		
 		IBRectangle o = new BRectangle(-100, -100, 200, 200);
