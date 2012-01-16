@@ -2,6 +2,7 @@ package purethought.gui;
 
 import purethought.geom.IBRectangle;
 import purethought.geom.IBTransform;
+import purethought.gui.event.IBEventSource;
 
 
 public interface IBCanvas extends IBEventSource{

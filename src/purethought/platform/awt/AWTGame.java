@@ -1,4 +1,4 @@
-package purethought.awt;
+package purethought.platform.awt;
 
 import java.awt.Component;
 
@@ -71,5 +71,15 @@ public class AWTGame implements IBGame, Runnable{
 	private static BFactory f() {
 		return BFactory.instance();
 	}
-	
+
+	private AWTAnimator _animator;
+
+	@Override
+	public AWTAnimator animator() {
+		if (_animator == null) {
+			_animator = new AWTAnimator();
+		}
+
+		return _animator;
+	}
 }

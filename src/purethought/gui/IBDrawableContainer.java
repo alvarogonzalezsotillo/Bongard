@@ -1,6 +1,8 @@
 package purethought.gui;
 
 import purethought.geom.IBRectangle;
+import purethought.gui.event.IBEventListener;
+import purethought.gui.event.IBEventSource;
 
 public interface IBDrawableContainer extends IBDrawable, IBEventSource{
 	IBEventListener listener();

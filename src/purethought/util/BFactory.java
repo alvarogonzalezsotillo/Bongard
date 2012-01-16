@@ -1,13 +1,13 @@
 package purethought.util;
 
 import purethought.animation.BAnimator;
-import purethought.awt.AWTFactory;
 import purethought.geom.IBPoint;
 import purethought.geom.IBTransform;
 import purethought.gui.BLabel;
 import purethought.gui.BSprite;
 import purethought.gui.IBGame;
 import purethought.gui.IBRaster;
+import purethought.platform.awt.AWTFactory;
 import purethought.problem.BCardExtractor;
 
 public abstract class BFactory {
@@ -31,5 +31,4 @@ public abstract class BFactory {
 	public abstract IBGame game();
 	public abstract BSprite sprite( IBRaster raster );
 	public abstract BLabel label( String text );
-	public abstract BAnimator animator();
 }

@@ -1,4 +1,4 @@
-package purethought.gui;
+package purethought.gui.event;
 
 import purethought.geom.IBTransform;
 

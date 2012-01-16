@@ -1,4 +1,4 @@
-package purethought.awt;
+package purethought.platform.awt;
 
 import java.awt.Color;
 import java.awt.Graphics2D;

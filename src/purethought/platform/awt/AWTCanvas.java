@@ -1,4 +1,4 @@
-package purethought.awt;
+package purethought.platform.awt;
 
 import java.awt.Canvas;
 import java.awt.Color;
@@ -18,7 +18,7 @@ import java.awt.event.MouseWheelEvent;
 import purethought.geom.BRectangle;
 import purethought.geom.IBRectangle;
 import purethought.gui.BCanvas;
-import purethought.gui.IBEvent;
+import purethought.gui.event.IBEvent;
 import purethought.util.BFactory;
 
 public class AWTCanvas extends BCanvas{
@@ -98,7 +98,7 @@ public class AWTCanvas extends BCanvas{
 			Image i = getOffscreenImage();
 			drawable().draw(AWTCanvas.this, transform());
 			g.drawImage(i,0,0,null);
-			AWTAnimator a = (AWTAnimator)f.animator();
+			AWTAnimator a = (AWTAnimator)f.game().animator();
 			g.drawString("Millis:" + a.lastStep(), 0, getHeight());
 		}
 		public void update(Graphics g){

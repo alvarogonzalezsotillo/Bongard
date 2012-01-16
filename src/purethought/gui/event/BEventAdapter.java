@@ -1,8 +1,7 @@
-package purethought.geom;
+package purethought.gui.event;
 
-import purethought.gui.IBEvent;
-import purethought.gui.IBEventListener;
-import purethought.gui.IBEventSource;
+import purethought.geom.IBPoint;
+import purethought.geom.IBRectangle;
 
 public class BEventAdapter implements IBEventListener{
 	

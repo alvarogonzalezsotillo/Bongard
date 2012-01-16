@@ -8,11 +8,11 @@ import purethought.animation.BTranslateAnimation;
 import purethought.animation.BWaitForAnimation;
 import purethought.animation.IBAnimation;
 import purethought.animation.IBTransformAnimable;
-import purethought.geom.BEventAdapter;
 import purethought.geom.BRectangle;
 import purethought.geom.IBPoint;
 import purethought.geom.IBRectangle;
 import purethought.geom.IBTransform;
+import purethought.gui.event.BEventAdapter;
 import purethought.problem.BCardExtractor;
 import purethought.problem.BProblem;
 import purethought.problem.BProblemLocator;
@@ -182,7 +182,7 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 		int millis = 400;
 		
 		BFactory f = BFactory.instance();
-		BAnimator animator = f.animator();
+		BAnimator animator = animator();
 		
 		
 		_size = new BRectangle(0, 0, s*4, s*6);
@@ -236,7 +236,7 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	}
 	
 	private BAnimator animator(){
-		return BFactory.instance().animator();
+		return BFactory.instance().game().animator();
 	}
 
 	@Override

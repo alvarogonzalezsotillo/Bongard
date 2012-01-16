@@ -5,6 +5,7 @@ import purethought.geom.BRectangle;
 import purethought.geom.IBPoint;
 import purethought.geom.IBRectangle;
 import purethought.geom.IBTransform;
+import purethought.gui.event.IBEvent;
 import purethought.util.BFactory;
 
 public class BFlippableContainer extends BDrawableContainer {

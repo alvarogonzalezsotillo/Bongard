@@ -1,4 +1,4 @@
-package purethought.awt;
+package purethought.platform.awt;
 
 import purethought.gui.BLabel;
 import purethought.gui.BSprite;
@@ -8,7 +8,6 @@ import purethought.util.BFactory;
 public class AWTFactory extends BFactory {
 
 	private AWTGame _game;
-	private AWTAnimator _animator;
 	
 	/**
 	 * 
@@ -48,14 +47,6 @@ public class AWTFactory extends BFactory {
 		return new AWTSprite(raster);
 	}
 
-	@Override
-	public AWTAnimator animator() {
-		if (_animator == null) {
-			_animator = new AWTAnimator();
-		}
-
-		return _animator;
-	}
 
 	@Override
 	public BLabel label(String text) {

@@ -3,6 +3,7 @@ package purethought.gui;
 import purethought.geom.IBPoint;
 import purethought.geom.IBRectangle;
 import purethought.geom.IBTransform;
+import purethought.gui.event.IBEvent;
 import purethought.problem.BCardExtractor;
 import purethought.problem.BProblem;
 import purethought.problem.BProblemLocator;

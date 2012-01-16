@@ -4,6 +4,8 @@ import purethought.geom.BRectangle;
 import purethought.geom.IBPoint;
 import purethought.geom.IBRectangle;
 import purethought.geom.IBTransform;
+import purethought.gui.event.IBEvent;
+import purethought.gui.event.IBEventListener;
 import purethought.util.BFactory;
 
 public abstract class BDrawableContainer extends BDrawable implements IBDrawableContainer{
