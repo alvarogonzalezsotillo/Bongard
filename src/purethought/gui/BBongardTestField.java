@@ -8,43 +8,20 @@ import purethought.problem.BProblem;
 import purethought.problem.BProblemLocator;
 import purethought.util.BFactory;
 
-public class BBongardTestField extends BTopDrawable implements IBFlippableDrawable{
+public class BBongardTestField extends BDrawableContainer implements IBFlippableDrawable{
 
 	private BProblem _problem;
 	private BSprite _sprite;
 	private BFlippableContainer _container;
-	
-	private IBCanvasListener _listener = new IBCanvasListener(){
 
-		@Override
-		public void pointerClick(IBPoint p) {
-		}
-
-		@Override
-		public void pointerDown(IBPoint p) {
-		}
-
-		@Override
-		public void pointerDrag(IBPoint p) {
-		}
-
-		@Override
-		public void pointerUp(IBPoint p) {
-		}
-
-		@Override
-		public void resized() {
-		}
-
-		@Override
-		public void zoomIn(IBPoint p) {
-		}
-
-		@Override
-		public void zoomOut(IBPoint p) {
+	@Override
+	protected boolean handleEvent(IBEvent e) {
+		if( e.type() == IBEvent.Type.zoomOut ){
 			_container.flipUp();
+			return true;
 		}
-	};
+		return super.handleEvent(e);
+	}
 	
 	/**
 	 * 
@@ -86,17 +63,4 @@ public class BBongardTestField extends BTopDrawable implements IBFlippableDrawab
 	@Override
 	public void showed() {
 	}
-	
-	@Override
-	public void addedTo(IBCanvas c) {
-		if( canvas() != null ){
-			canvas().removeListener(_listener);
-		}
-		super.addedTo(c);
-		if( canvas() != null ){
-			canvas().addListener(_listener);
-		}
-	}
-	
-
 }

@@ -8,6 +8,7 @@ import purethought.animation.BTranslateAnimation;
 import purethought.animation.BWaitForAnimation;
 import purethought.animation.IBAnimation;
 import purethought.animation.IBTransformAnimable;
+import purethought.geom.BEventAdapter;
 import purethought.geom.BRectangle;
 import purethought.geom.IBPoint;
 import purethought.geom.IBRectangle;
@@ -17,7 +18,7 @@ import purethought.problem.BProblem;
 import purethought.problem.BProblemLocator;
 import purethought.util.BFactory;
 
-public class BGameField extends BTopDrawable implements IBFlippableDrawable{
+public class BGameField extends BDrawableContainer implements IBFlippableDrawable{
 	
 	private static final boolean SHOW_POINTER = true;
 
@@ -30,7 +31,7 @@ public class BGameField extends BTopDrawable implements IBFlippableDrawable{
 	private IBRectangle _size;
 	private BLabel _pointer = BFactory.instance().label("O");
 	
-	private IBCanvasListener _listener = new IBCanvasListener(){
+	private BEventAdapter _adapter = new BEventAdapter(this) {
 		
 		private boolean _dragQuestion = false;
 		private IBAnimation _pickUpAnimation;
@@ -42,21 +43,25 @@ public class BGameField extends BTopDrawable implements IBFlippableDrawable{
 		private IBAnimation _set2OverAnimation;
 		
 		@Override
-		public void pointerDown(IBPoint p) {
+		public boolean pointerDown(IBPoint p) {
 			if( _questionSprite.inside(p, null) ){
 				_pickUpAnimation = new BScaleAnimation(1.3, 1.3, 100, _questionSprite);
 				animator().addAnimation( _pickUpAnimation );
 				_dragQuestion = true;
+				return true;
 			}
+			return false;
 		}
 
 		@Override
-		public void pointerDrag(IBPoint p){
+		public boolean pointerDrag(IBPoint p){
 			if( _dragQuestion ){
 				_dragAnimation = new BTranslateAnimation(p, 50, _questionSprite );
 				animator().addAnimation( new BWaitForAnimation(_dragAnimation, _pickUpAnimation) );
 				checkSets();
+				return true;
 			}
+			return false;
 		}
 
 		private void checkSets() {
@@ -93,7 +98,7 @@ public class BGameField extends BTopDrawable implements IBFlippableDrawable{
 		}
 
 		@Override
-		public void pointerUp(IBPoint p) {
+		public boolean pointerUp(IBPoint p) {
 			if( _dragQuestion ){
 				BFactory f = BFactory.instance();
 				IBPoint dest = f.point(105*2, 105*3);
@@ -114,30 +119,26 @@ public class BGameField extends BTopDrawable implements IBFlippableDrawable{
 
 			}
 			_set1Over = _set2Over = _dragQuestion = false;
+			return false;
 		}
 
 		@Override
-		public void pointerClick(IBPoint p) {
+		public boolean pointerClick(IBPoint p) {
 			BFactory instance = BFactory.instance();
 			BProblemLocator test = instance.cardExtractor().randomProblem();
 			setProblem(test);
 			
 			_pointer.setText(p.toString());
 			animator().addAnimation( new BTranslateAnimation(p, 1000, _pointer) );
+			return false;
 		}
 
 		@Override
-		public void zoomIn(IBPoint p) {
+		public boolean zoomIn(IBPoint p) {
 			_container.flipDown();
+			return true;
 		}
 
-		@Override
-		public void zoomOut(IBPoint p) {
-		}
-
-		@Override
-		public void resized() {
-		}
 	};
 
 	private BFlippableContainer _container;
@@ -237,17 +238,6 @@ public class BGameField extends BTopDrawable implements IBFlippableDrawable{
 		return BFactory.instance().animator();
 	}
 
-	@Override
-	public void addedTo(IBCanvas c) {
-		if( canvas() != null ){
-			canvas().removeListener(_listener);
-		}
-		super.addedTo(c);
-		if( canvas() != null ){
-			canvas().addListener(_listener);
-		}
-	}
-	
 	@Override
 	public BFlippableContainer flippableContainer() {
 		return _container;

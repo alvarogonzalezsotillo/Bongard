@@ -6,53 +6,11 @@ import purethought.geom.IBRectangle;
 import purethought.geom.IBTransform;
 import purethought.util.BFactory;
 
-public class BFlippableContainer extends BTopDrawable {
+public class BFlippableContainer extends BDrawableContainer {
 	private IBFlippableDrawable[][] _drawables;
 	private int _x;
 	private int _y;
 	
-	private BCanvas.ListenerList _publicListener;
-	
-	public IBCanvasListener listener(){
-		if (_publicListener == null) {
-			_publicListener = new BCanvas.ListenerList();
-			_publicListener.add(_listener);
-		}
-
-		return _publicListener;
-	}
-	
-	private IBCanvasListener _listener = new IBCanvasListener() {
-		
-		@Override
-		public void zoomOut(IBPoint p) {
-		}
-		
-		@Override
-		public void zoomIn(IBPoint p) {
-		}
-		
-		@Override
-		public void resized() {
-			adjustTransformToSize();
-		}
-		
-		@Override
-		public void pointerUp(IBPoint p) {
-		}
-		
-		@Override
-		public void pointerDrag(IBPoint p) {
-		}
-		
-		@Override
-		public void pointerDown(IBPoint p) {
-		}
-		
-		@Override
-		public void pointerClick(IBPoint p) {
-		}
-	};
 
 	public BFlippableContainer(int x, int y, IBFlippableDrawable[][] drawables) {
 		_drawables = drawables;
@@ -102,6 +60,15 @@ public class BFlippableContainer extends BTopDrawable {
 	@Override
 	protected void draw_internal(IBCanvas c, IBTransform t) {
 		current().draw(c, t);
+	}
+
+	@Override
+	protected boolean handleEvent(IBEvent e) {
+		if( e.type() == IBEvent.Type.containerResized ){
+			adjustTransformToSize();
+			return true;
+		}
+		return false;
 	}
 	
 	public void adjustTransformToSize(){

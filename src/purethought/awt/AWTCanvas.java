@@ -18,50 +18,61 @@ import java.awt.event.MouseWheelEvent;
 import purethought.geom.BRectangle;
 import purethought.geom.IBRectangle;
 import purethought.gui.BCanvas;
+import purethought.gui.IBEvent;
 import purethought.util.BFactory;
 
 public class AWTCanvas extends BCanvas{
 	
 	private class MouseListenerImpl extends MouseAdapter{
 		
-		private AWTPoint pointInOriginalCoords(MouseEvent e){
-			Point p = e.getPoint();
-			AWTPoint point = new AWTPoint(0, 0);
-			inverseTransform().transform(p, point);
-			return point;
-		}
 		
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			listeners().pointerClick(pointInOriginalCoords(e));
+			listeners().handle( event( IBEvent.Type.pointerClick, e ) );
 		}
 		
 		@Override
 		public void mouseDragged(MouseEvent e) {
-			listeners().pointerDrag(pointInOriginalCoords(e));
+			listeners().handle( event( IBEvent.Type.pointerDragged, e ) );
 		}
 		
 		@Override
 		public void mouseWheelMoved(MouseWheelEvent e) {
 			if( e.getWheelRotation() > 0 ){
-				listeners().zoomIn(pointInOriginalCoords(e));
+				listeners().handle( event( IBEvent.Type.zoomIn, e ) );
 			}
 			else{
-				listeners().zoomOut(pointInOriginalCoords(e));
+				listeners().handle( event( IBEvent.Type.zoomOut, e ) );
 			}
 		}
 		
 		@Override
 		public void mousePressed(MouseEvent e) {
-			listeners().pointerDown(pointInOriginalCoords(e));
+			listeners().handle( event( IBEvent.Type.pointerDown, e ) );
 		}
 		
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			listeners().pointerUp(pointInOriginalCoords(e));
+			listeners().handle( event( IBEvent.Type.pointerUp, e ) );
 		}
 	}
 	
+	private AWTPoint pointInOriginalCoords(MouseEvent e){
+		if( e == null ){
+			return null;
+		}
+		
+		Point p = e.getPoint();
+		AWTPoint point = new AWTPoint(0, 0);
+		inverseTransform().transform(p, point);
+		return point;
+	}
+	
+
+	private IBEvent event( IBEvent.Type t, MouseEvent e ){
+		return new IBEvent( t, pointInOriginalCoords(e), originalSize() );
+	}
+
 	
 	@SuppressWarnings("serial")
 	private class CanvasImpl extends Canvas{
@@ -69,7 +80,7 @@ public class AWTCanvas extends BCanvas{
 			addComponentListener( new ComponentAdapter() {
 				@Override
 				public void componentResized(ComponentEvent e) {
-					listeners().resized();
+					listeners().handle( event( IBEvent.Type.containerResized, null ) );
 					AWTCanvas c = AWTCanvas.this;
 					c.adjustTransformToSize();
 				}
