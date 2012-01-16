@@ -41,12 +41,13 @@ public class AWTAnimator extends BAnimator{
 				stepAnimations(m);
 				
 				if( update ){
-					BFactory.instance().game().canvas().refresh();
+					refresh();
 				}
 			}
 		});
 	}
 	
+
 	public int lastStep(){
 		return _step;
 	}

@@ -64,7 +64,7 @@ public class AWTGame implements IBGame, Runnable{
 		
 		
 		canvas().setDrawable( new BFlippableContainer(0, 0, new IBFlippableDrawable[][]{
-				{ gf, btf }
+				{  gf, btf }
 		}));
 	}
 

@@ -148,6 +148,7 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	 * @param canvas
 	 */
 	public BGameField(){
+		listener().addListener( _adapter );
 	}
 	
 	/**

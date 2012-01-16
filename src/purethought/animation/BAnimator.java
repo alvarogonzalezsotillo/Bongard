@@ -2,6 +2,8 @@ package purethought.animation;
 
 import java.util.ArrayList;
 
+import purethought.util.BFactory;
+
 public abstract class BAnimator {
 
 	private ArrayList<IBAnimation> _animations = new ArrayList<IBAnimation>();
@@ -24,6 +26,10 @@ public abstract class BAnimator {
 				a.stepAnimation(millis);
 			}
 		}
+	}
+	
+	protected void refresh() {
+		BFactory.instance().game().canvas().refresh();
 	}
 	
 	public boolean needsUpdate(){

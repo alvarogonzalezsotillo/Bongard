@@ -38,7 +38,7 @@ public class AWTCanvas extends BCanvas{
 		
 		@Override
 		public void mouseWheelMoved(MouseWheelEvent e) {
-			if( e.getWheelRotation() > 0 ){
+			if( e.getWheelRotation() < 0 ){
 				listeners().handle( event( IBEvent.Type.zoomIn, e ) );
 			}
 			else{

@@ -21,7 +21,9 @@ public abstract class BDrawableContainer extends BDrawable implements IBDrawable
 	
 	@Override
 	public void addListener(IBEventListener l) {
-		_listeners.addListener(l);
+		if( l != null ){
+			_listeners.addListener(l);
+		}
 	}
 
 	/**
@@ -35,11 +37,13 @@ public abstract class BDrawableContainer extends BDrawable implements IBDrawable
 
 	@Override
 	public void removeListener(IBEventListener l) {
-		_listeners.removeListener(l);
+		if( l != null ){
+			_listeners.removeListener(l);
+		}
 	}
 	
 	@Override
-	public IBEventListener listener() {
+	public BListenerList listener() {
 		return _listeners;
 	}
 

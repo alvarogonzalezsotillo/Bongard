@@ -1,5 +1,6 @@
 package purethought.gui;
 
+import purethought.animation.BAnimator;
 import purethought.geom.BRectangle;
 import purethought.geom.IBPoint;
 import purethought.geom.IBRectangle;
@@ -19,17 +20,21 @@ public class BFlippableContainer extends BDrawableContainer {
 	
 
 	public void flipDown(){
-		int y = (_y+1)%_drawables[_x].length;
+		System.out.println( "flipDown" );
+		int y = Math.min(_y+1,_drawables.length);
 		setCurrent(_x,y);
 	}
 	
 	public void flipUp(){
-		int y = (_y-1)%_drawables[_x].length;
+		System.out.println( "flipUp" );
+		int y = Math.max(_y-1,0);
 		setCurrent(_x,y);
 	}
 	
 
 	private void setCurrent(int x, int y) {
+		System.out.println( "setCurrent:" + x + "," + y );
+		System.out.println( " previous:" + current() );
 		IBFlippableDrawable current = current();
 
 		if (current != null) {
@@ -47,6 +52,9 @@ public class BFlippableContainer extends BDrawableContainer {
 		}
 		
 		adjustTransformToSize();
+		
+		System.out.println( " last:" + current() );
+		BFactory.instance().game().canvas().refresh();
 	}
 
 	public IBFlippableDrawable[][] drawables() {
@@ -59,7 +67,9 @@ public class BFlippableContainer extends BDrawableContainer {
 
 	@Override
 	protected void draw_internal(IBCanvas c, IBTransform t) {
-		current().draw(c, t);
+		IBFlippableDrawable current = current();
+		System.out.println( System.currentTimeMillis() + ":" + current );
+		current.draw(c, t);
 	}
 
 	@Override
