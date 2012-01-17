@@ -1,6 +1,5 @@
 package purethought.gui;
 
-import purethought.geom.IBPoint;
 import purethought.geom.IBRectangle;
 import purethought.geom.IBTransform;
 import purethought.gui.event.IBEvent;

@@ -26,7 +26,7 @@ public class AWTCardExtractor extends BCardExtractor{
 	 */
 	@Override
 	public IBRaster getTestImage(BProblemLocator test) {
-		return readImage( test.getImpl(File.class) );
+		return readImage( test.getImpl(File.class), Color.white );
 	}
 
 	/**
@@ -46,15 +46,20 @@ public class AWTCardExtractor extends BCardExtractor{
 		
 		Image img = i.getImpl(Image.class);
 		g.drawImage(img, x, y, bgcolor, null);
+		g.dispose();
 		
 		return new AWTRaster(ret);
 	}
 	
-	private static IBRaster readImage(File f){
-		BufferedImage image;
+	private static IBRaster readImage(File f, Color bgColor){
 		try {
-			image = ImageIO.read(f);
-			return new AWTRaster(image);
+			BufferedImage image = ImageIO.read(f);
+			BufferedImage ret = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
+			Graphics g = ret.getGraphics();
+			g.drawImage(image, 0, 0, bgColor, null );
+			g.dispose();
+			
+			return new AWTRaster(ret);
 		} catch (IOException ex) {
 			throw new BException( "Unable to read:" + f, ex );
 		}
