@@ -46,8 +46,8 @@ public class AWTTransform extends AffineTransform implements IBTransform{
 		sy = Math.min( sx, sy );
 		}
 
-		double dx = (destination.w()-(sx)*origin.w())/2;
-		double dy = (destination.h()-(sy)*origin.h())/2;
+		double dx = (destination.w()/sx-origin.w())/2;
+		double dy = (destination.h()/sy-origin.h())/2;
 		
 		setToIdentity();
 		scale(sx, sy);

@@ -26,6 +26,10 @@ public class IBEvent {
 		return _p;
 	}
 	
+	/**
+	 * 
+	 * @return size of the container, in its own coordinate system
+	 */
 	public IBRectangle rectangle(){
 		return _r;
 	}
