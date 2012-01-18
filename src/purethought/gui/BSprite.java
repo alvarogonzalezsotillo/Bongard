@@ -11,6 +11,7 @@ public abstract class BSprite extends BDrawable{
 
 	private IBRaster _raster;
 	private IBRectangle _originalPosition;
+	private double _alpha = 1;
 	
 	
 	/**
@@ -51,6 +52,16 @@ public abstract class BSprite extends BDrawable{
 		IBPoint inverseP = inverseT.transform(p);		
 		
 		return BRectangle.inside( originalSize(), inverseP);
+	}
+
+
+	public void setAlfa(double _alfa) {
+		this._alpha = _alfa;
+	}
+
+
+	public double alpha() {
+		return _alpha;
 	}
 	
 	

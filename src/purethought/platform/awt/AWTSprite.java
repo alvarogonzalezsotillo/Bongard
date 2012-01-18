@@ -1,5 +1,7 @@
 package purethought.platform.awt;
 
+import java.awt.AlphaComposite;
+import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
@@ -25,6 +27,8 @@ public class AWTSprite extends BSprite{
 		
 		Graphics2D g2d = canvas.getGraphics();
 		g2d.transform((AffineTransform) t);
+		g2d.setComposite( AlphaComposite.getInstance( AlphaComposite.SRC_OVER, (float)alpha() ) );
+		
 		
 		Image img = raster().getImpl(Image.class);
 		

@@ -1,5 +1,7 @@
 package purethought.gui;
 
+import javax.crypto.IllegalBlockSizeException;
+
 import purethought.animation.BAnimator;
 import purethought.animation.BCompoundTransformAnimation;
 import purethought.animation.BRotateAnimation;
@@ -20,7 +22,7 @@ import purethought.util.BFactory;
 
 public class BGameField extends BDrawableContainer implements IBFlippableDrawable{
 	
-	private static final boolean SHOW_POINTER = true;
+	private static final boolean SHOW_POINTER = false;
 
 	private BProblem _problem;
 	
@@ -41,6 +43,8 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 		private boolean _set1Over;
 		private boolean _set2Over;
 		private IBAnimation _set2OverAnimation;
+		private BWaitForAnimation _set1DropAnimation;
+		private BWaitForAnimation _set2DropAnimation;
 		
 		@Override
 		public boolean pointerDown(IBPoint p) {
@@ -101,7 +105,15 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 		public boolean pointerUp(IBPoint p) {
 			if( _dragQuestion ){
 				BFactory f = BFactory.instance();
+				
+				boolean correctAnswer = _set1Over && _problem.isOfSet1(_questionSprite.raster()) ||
+										_set2Over && _problem.isOfSet2(_questionSprite.raster());
+				
 				IBPoint dest = f.point(105*2, 105*3);
+				if( correctAnswer ){
+					dest = _questionSprite.temporaryPosition();
+				}
+				
 				_dropAnimation = 
 						new BCompoundTransformAnimation(
 								new IBTransformAnimable[]{ _questionSprite }, 
@@ -111,10 +123,19 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 				animator().addAnimation( new BWaitForAnimation(_dropAnimation, _pickUpAnimation) );
 				
 				if( _set1Over ){
-					animator().addAnimation( new BWaitForAnimation( new BScaleAnimation(1/1.3,1/1.3,100,_set1Sprites ), _set1OverAnimation) );
+					_set1DropAnimation = new BWaitForAnimation( new BScaleAnimation(1/1.3,1/1.3,100,_set1Sprites ), _set1OverAnimation);
+					animator().addAnimation( _set1DropAnimation );
 				}
 				if( _set2Over ){
-					animator().addAnimation( new BWaitForAnimation( new BScaleAnimation(1/1.3,1/1.3,100,_set2Sprites ), _set2OverAnimation) );
+					_set2DropAnimation = new BWaitForAnimation( new BScaleAnimation(1/1.3,1/1.3,100,_set2Sprites ), _set2OverAnimation);
+					animator().addAnimation( _set2DropAnimation );
+				}
+				
+				if( correctAnswer ){
+					BSprite[] sprites = _set1Over ? _set1Sprites : _set2Sprites;
+					IBAnimation setDropAnimation = _set1Over ? _set1DropAnimation : _set2DropAnimation;
+					animator().addAnimation( new BWaitForAnimation( new BRotateAnimation(2*Math.PI/400, 400, sprites), setDropAnimation ) );
+					animator().addAnimation( new BWaitForAnimation( new BRotateAnimation(2*Math.PI/400, 400, _questionSprite), _dropAnimation ) );
 				}
 
 			}
