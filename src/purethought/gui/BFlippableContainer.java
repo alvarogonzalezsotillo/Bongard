@@ -1,8 +1,10 @@
 package purethought.gui;
 
 import purethought.geom.BRectangle;
+import purethought.geom.IBPoint;
 import purethought.geom.IBRectangle;
 import purethought.geom.IBTransform;
+import purethought.gui.event.BEventAdapter;
 import purethought.gui.event.IBEvent;
 import purethought.util.BFactory;
 
@@ -11,7 +13,43 @@ public class BFlippableContainer extends BDrawableContainer {
 	private int _x;
 	private int _y;
 	
-
+	IBPoint _initialPoint;
+	IBPoint _currentPoint;
+	double _vx = 0;
+	
+	private BEventAdapter _flipAdapter = new BEventAdapter(this){
+		IBPoint _lastPoint;
+		public boolean pointerDown(IBPoint pInMyCoordinates) {
+			_initialPoint = pInMyCoordinates;
+			_lastPoint = _initialPoint;
+			return false;
+		}
+		public boolean pointerDrag(IBPoint pInMyCoordinates) {
+			
+			if( _lastPoint != null ){
+				_vx = pInMyCoordinates.x() - _lastPoint.x();
+			}
+			
+			_lastPoint = _currentPoint;
+			_currentPoint = pInMyCoordinates;
+			
+			double dx = _currentPoint.x() - _initialPoint.x();
+			
+			BFactory f = BFactory.instance();
+			IBTransform t = f.identityTransform();
+			t.translate(dx, 0);
+			setTemporaryTransform( t );
+			f.game().canvas().refresh();
+			return false;
+		}
+		public boolean pointerUp(IBPoint pInMyCoordinates) {
+			_initialPoint = null;
+			_currentPoint = null;
+			
+			return false;
+		}
+	};
+	
 	public BFlippableContainer(int x, int y, IBFlippableDrawable[][] drawables) {
 		_drawables = drawables;
 		setCurrent(x, y);
@@ -63,6 +101,10 @@ public class BFlippableContainer extends BDrawableContainer {
 	protected void draw_internal(IBCanvas c, IBTransform t) {
 		IBFlippableDrawable current = current();
 		current.draw(c, t);
+
+		BLabel l = BFactory.instance().label( _vx + " -- " + _currentPoint );
+		l.translate(0, originalSize().h()-10);
+		l.draw(c, t);
 	}
 
 	@Override
@@ -71,7 +113,10 @@ public class BFlippableContainer extends BDrawableContainer {
 			adjustTransformToSize();
 			return true;
 		}
-		return false;
+		if( super.handleEvent(e) ){
+			return true;
+		}
+		return _flipAdapter.handle(e);
 	}
 	
 	public void adjustTransformToSize(){

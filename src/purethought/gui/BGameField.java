@@ -1,7 +1,5 @@
 package purethought.gui;
 
-import javax.crypto.IllegalBlockSizeException;
-
 import purethought.animation.BAnimator;
 import purethought.animation.BCompoundTransformAnimation;
 import purethought.animation.BRotateAnimation;

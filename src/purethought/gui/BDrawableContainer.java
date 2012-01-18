@@ -6,17 +6,24 @@ import purethought.geom.IBRectangle;
 import purethought.geom.IBTransform;
 import purethought.gui.event.IBEvent;
 import purethought.gui.event.IBEventListener;
+import purethought.gui.event.IBEventSource;
 import purethought.util.BFactory;
 
 public abstract class BDrawableContainer extends BDrawable implements IBDrawableContainer{
 
-	private BListenerList _listeners = new BListenerList(this){
+	private MyListenerList _listeners = new MyListenerList(this);
+	
+	class MyListenerList extends BListenerList{
+		public MyListenerList(IBEventSource container) {
+			super(container);
+		}
+
 		@Override
 		public boolean handle(IBEvent e){
-			boolean result = BDrawableContainer.this.handleEvent(e);
-			if( result ){
-				return true;
-			}
+			return BDrawableContainer.this.handleEvent(e);
+		}
+		
+		public boolean handleOfTheListenerList(IBEvent e){
 			return super.handle(e);
 		}
 	};
@@ -34,7 +41,7 @@ public abstract class BDrawableContainer extends BDrawable implements IBDrawable
 	 * @return
 	 */
 	protected boolean handleEvent(IBEvent e) {
-		return false;
+		return _listeners.handleOfTheListenerList(e);
 	}
 
 	@Override
