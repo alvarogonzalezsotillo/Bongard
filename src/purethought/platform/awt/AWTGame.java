@@ -1,6 +1,7 @@
 package purethought.platform.awt;
 
 import java.awt.Component;
+import java.awt.Container;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -15,7 +16,7 @@ import purethought.util.BFactory;
 
 public class AWTGame implements IBGame, Runnable{
 
-	private JFrame _f;
+	private Container _c;
 	
 	private AWTCanvas _canvas;
 
@@ -52,8 +53,8 @@ public class AWTGame implements IBGame, Runnable{
 	 */
 	@Override
 	public void run() {
-		_f = createFrame();
-		_f.setVisible(true);
+		Container c = container();
+		c.setVisible(true);
 		
 		BProblemLocator loc = f().cardExtractor().randomProblem();
 		BGameField gf = new BGameField();
@@ -67,6 +68,18 @@ public class AWTGame implements IBGame, Runnable{
 				{  gf, btf }
 		}));
 	}
+
+	private Container container() {
+		if( _c == null ){
+			_c = createFrame();
+		}
+		return _c;
+	}
+	
+	public void setContainer( Container c ){
+		_c = c;
+	}
+
 
 	private static BFactory f() {
 		return BFactory.instance();
