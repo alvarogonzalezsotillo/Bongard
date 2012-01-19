@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Formatter;
 
 import javax.imageio.ImageIO;
@@ -26,7 +27,7 @@ public class AWTCardExtractor extends BCardExtractor{
 	 */
 	@Override
 	public IBRaster getTestImage(BProblemLocator test) {
-		return readImage( test.getImpl(File.class), Color.white );
+		return readImage( test.getImpl(URL.class), Color.white );
 	}
 
 	/**
@@ -51,7 +52,7 @@ public class AWTCardExtractor extends BCardExtractor{
 		return new AWTRaster(ret);
 	}
 	
-	private static IBRaster readImage(File f, Color bgColor){
+	private static IBRaster readImage(URL f, Color bgColor){
 		try {
 			BufferedImage image = ImageIO.read(f);
 			BufferedImage ret = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
@@ -73,7 +74,7 @@ public class AWTCardExtractor extends BCardExtractor{
 	
 
 	public static void main(String[] args) throws IOException {
-		File imageFile = new File( "./2bpp-png/p004.png");
+		URL imageFile = AWTCardExtractor.class.getResource("/tests/p004.png");
 
 		BProblemLocator test = new BProblemLocator(imageFile);
 		
@@ -100,8 +101,8 @@ public class AWTCardExtractor extends BCardExtractor{
 		BProblemLocator[] ret = new BProblemLocator[280];
 		for( int i = 0 ; i < count ; i++ ){
 			Formatter f = new Formatter();
-			f.format("p%03d.png", i+1 );
-			File file = new File("2bpp-png/" + f.toString() );
+			f.format("/tests/p%03d.png", i+1 );
+			URL file = getClass().getResource(f.toString());
 			ret[i] = new BProblemLocator(file);
 		}
 		return ret;
