@@ -30,7 +30,7 @@ public abstract class BDrawable implements IBDrawable, IBTransformAnimable{
 
 	@Override
 	public void setTransform(IBTransform t) {
-		_t = t;
+		_t = t.copy();
 	}
 
 	/**

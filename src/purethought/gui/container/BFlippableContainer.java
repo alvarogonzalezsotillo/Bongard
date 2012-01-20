@@ -34,11 +34,9 @@ public class BFlippableContainer extends BDrawableContainer {
 			_currentPoint = pInMyCoordinates;
 			
 			double dx = _currentPoint.x() - _initialPoint.x();
-			
+
+			setDrawableOffset(dx);
 			BFactory f = BFactory.instance();
-			IBTransform t = f.identityTransform();
-			t.translate(dx, 0);
-			setTemporaryTransform( t );
 			f.game().canvas().refresh();
 			return false;
 		}
@@ -61,7 +59,25 @@ public class BFlippableContainer extends BDrawableContainer {
 		setCurrent(x);
 	}
 	
-
+	private void setDrawableOffset(double dx){
+		double w = originalSize().w();
+		IBTransform i = BFactory.instance().identityTransform();
+		if( current() != null ){
+			current().setTransform(i);
+			current().translate(dx, 0);
+		}
+		if( right() != null ){
+			right().setTransform(i);
+			right().translate(dx+w, 0);
+		}
+		if( left() != null ){
+			left().setTransform(i);
+			left().translate(dx-w, 0);
+		}
+		
+	}
+	
+	
 	private void setCurrent(int x) {
 		IBFlippableDrawable current = current();
 
@@ -79,24 +95,41 @@ public class BFlippableContainer extends BDrawableContainer {
 		}
 		
 		adjustTransformToSize();
-		
+		setDrawableOffset(0);
 		BFactory.instance().game().canvas().refresh();
 	}
 
 
 	@Override
 	protected void draw_internal(IBCanvas c, IBTransform t) {
-		IBFlippableDrawable current = current();
-		current.draw(c, t);
+		if( left() != null ) left().draw(c,t);
+		if( right() != null ) right().draw(c,t);
+		if( current() != null ) current().draw(c,t);
 
 		BLabel l = BFactory.instance().label( _vx + " -- " + _currentPoint );
 		l.translate(0, originalSize().h()-10);
-		//l.draw(c, t);
+		l.draw(c, t);
 	}
 
 	private IBFlippableDrawable current() {
-		return _model.drawable(_x);
+		return drawable(_x);
 	}
+		
+	private IBFlippableDrawable drawable(int pos){
+		if( pos >= 0 && pos < _model.width() ){
+			return _model.drawable(pos);
+		}
+		return null;
+	}
+	
+	private IBFlippableDrawable left(){
+		return drawable(_x-1);
+	}
+	
+	private IBFlippableDrawable right(){
+		return drawable(_x+1);
+	}
+	
 
 	@Override
 	protected boolean handleEvent(IBEvent e) {
@@ -116,11 +149,8 @@ public class BFlippableContainer extends BDrawableContainer {
 		}
 		IBRectangle origin = current().originalSize();
 		IBRectangle destination = originalSize();
-		System.out.println( "origin:" + origin );
-		System.out.println( "destination:" + destination );
 		transform().setTo(origin, destination);
 	}
-
 
 	@Override
 	public IBRectangle originalSize() {

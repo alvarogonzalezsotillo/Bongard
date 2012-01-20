@@ -94,5 +94,10 @@ public class AWTTransform extends AffineTransform implements IBTransform{
 		}
 		return t;
 	}
+	
+	@Override
+	public AWTTransform copy() {
+		return new AWTTransform(this);
+	}
 
 }

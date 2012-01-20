@@ -1,6 +1,8 @@
 package purethought.gui.container;
 
-public interface IBFlippableDrawable extends IBDrawableContainer{
+import purethought.animation.IBTransformAnimable;
+
+public interface IBFlippableDrawable extends IBDrawableContainer, IBTransformAnimable{
 	BFlippableContainer flippableContainer();
 	void setFlippableContainer( BFlippableContainer c );
 	void showed();
