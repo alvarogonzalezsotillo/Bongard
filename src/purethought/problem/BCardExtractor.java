@@ -1,5 +1,7 @@
 package purethought.problem;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 import purethought.geom.BRectangle;
@@ -104,4 +106,20 @@ public abstract class BCardExtractor{
 
 
 	public abstract BProblemLocator[] allProblems();
+
+	public BProblemLocator[] randomProblems(int n){
+		BProblemLocator[] ps = allProblems();
+		BProblemLocator[] ret = new BProblemLocator[n];
+		
+		ArrayList<BProblemLocator> list = new ArrayList<BProblemLocator>();
+		list.addAll( Arrays.asList(ps) );
+		
+		for( int i = 0 ; i < n ; i++ ){
+			BProblemLocator l = list.remove( random().nextInt(list.size()) );
+			ret[i] = l;
+		}
+		
+		return ret;
+		
+	}
 }

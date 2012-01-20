@@ -10,6 +10,7 @@ import purethought.gui.container.BFlippableContainer;
 import purethought.gui.container.IBFlippableDrawable;
 import purethought.gui.game.BBongardTestField;
 import purethought.gui.game.BGameField;
+import purethought.gui.game.BGameModel;
 import purethought.gui.game.IBGame;
 import purethought.problem.BProblemLocator;
 import purethought.util.BFactory;
@@ -54,19 +55,9 @@ public class AWTGame implements IBGame, Runnable{
 	@Override
 	public void run() {
 		Container c = container();
+		BProblemLocator[] problems = f().cardExtractor().randomProblems(6);
+		canvas().setDrawable( new BFlippableContainer( new BGameModel(problems ) ) );
 		c.setVisible(true);
-		
-		BProblemLocator loc = f().cardExtractor().randomProblem();
-		BGameField gf = new BGameField();
-		gf.setProblem(loc);
-		
-		BBongardTestField btf = new BBongardTestField();
-		btf.setProblem(loc);
-		
-		
-		canvas().setDrawable( new BFlippableContainer(0, 0, new IBFlippableDrawable[][]{
-				{  gf, btf }
-		}));
 	}
 
 	private Container container() {
@@ -76,10 +67,6 @@ public class AWTGame implements IBGame, Runnable{
 		return _c;
 	}
 	
-	public void setContainer( Container c ){
-		_c = c;
-	}
-
 
 	private static BFactory f() {
 		return BFactory.instance();

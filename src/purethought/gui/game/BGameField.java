@@ -157,13 +157,6 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 			animator().addAnimation( new BTranslateAnimation(p, 1000, _pointer) );
 			return false;
 		}
-
-		@Override
-		public boolean zoomIn(IBPoint p) {
-			_container.flipDown();
-			return true;
-		}
-
 	};
 
 	private BFlippableContainer _container;
@@ -173,7 +166,12 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	 * @param canvas
 	 */
 	public BGameField(){
+		this(null);
+	}
+	
+	public BGameField(BProblemLocator test){
 		listener().addListener( _adapter );
+		setProblem(test);
 	}
 	
 	/**
@@ -181,6 +179,9 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	 * @param test
 	 */
 	public void setProblem( BProblemLocator test ){
+		if( test == null ){
+			return;
+		}
 		BFactory f = BFactory.instance();
 		_problem = BCardExtractor.extract(test);
 		

@@ -11,9 +11,7 @@ import purethought.gui.event.IBEvent;
 import purethought.util.BFactory;
 
 public class BFlippableContainer extends BDrawableContainer {
-	private IBFlippableDrawable[][] _drawables;
 	private int _x;
-	private int _y;
 	
 	IBPoint _initialPoint;
 	IBPoint _currentPoint;
@@ -40,7 +38,7 @@ public class BFlippableContainer extends BDrawableContainer {
 			BFactory f = BFactory.instance();
 			IBTransform t = f.identityTransform();
 			t.translate(dx, 0);
-			//setTemporaryTransform( t );
+			setTemporaryTransform( t );
 			f.game().canvas().refresh();
 			return false;
 		}
@@ -51,25 +49,20 @@ public class BFlippableContainer extends BDrawableContainer {
 			return false;
 		}
 	};
+
+	private IBFlippableModel _model;
 	
-	public BFlippableContainer(int x, int y, IBFlippableDrawable[][] drawables) {
-		_drawables = drawables;
-		setCurrent(x, y);
+	public BFlippableContainer(IBFlippableModel model){
+		this(0,model);
+	}
+	
+	public BFlippableContainer(int x, IBFlippableModel model) {
+		_model = model;
+		setCurrent(x);
 	}
 	
 
-	public void flipDown(){
-		int y = Math.min(_y+1,_drawables.length);
-		setCurrent(_x,y);
-	}
-	
-	public void flipUp(){
-		int y = Math.max(_y-1,0);
-		setCurrent(_x,y);
-	}
-	
-
-	private void setCurrent(int x, int y) {
+	private void setCurrent(int x) {
 		IBFlippableDrawable current = current();
 
 		if (current != null) {
@@ -78,7 +71,6 @@ public class BFlippableContainer extends BDrawableContainer {
 		}
 
 		_x = x;
-		_y = y;
 
 		current = current();
 		if (current != null) {
@@ -91,13 +83,6 @@ public class BFlippableContainer extends BDrawableContainer {
 		BFactory.instance().game().canvas().refresh();
 	}
 
-	public IBFlippableDrawable[][] drawables() {
-		return _drawables.clone();
-	}
-
-	public IBFlippableDrawable current() {
-		return drawables()[_x][_y];
-	}
 
 	@Override
 	protected void draw_internal(IBCanvas c, IBTransform t) {
@@ -107,6 +92,10 @@ public class BFlippableContainer extends BDrawableContainer {
 		BLabel l = BFactory.instance().label( _vx + " -- " + _currentPoint );
 		l.translate(0, originalSize().h()-10);
 		//l.draw(c, t);
+	}
+
+	private IBFlippableDrawable current() {
+		return _model.drawable(_x);
 	}
 
 	@Override
@@ -135,8 +124,9 @@ public class BFlippableContainer extends BDrawableContainer {
 
 	@Override
 	public IBRectangle originalSize() {
-		if( current() != null )
+		if( current() != null ){
 			return current().originalSize();
+		}
 		return new BRectangle(0, 0, 240, 320);
 	}
 

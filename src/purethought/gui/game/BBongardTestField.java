@@ -18,15 +18,15 @@ public class BBongardTestField extends BDrawableContainer implements IBFlippable
 	private BProblem _problem;
 	private BSprite _sprite;
 	private BFlippableContainer _container;
-
-	@Override
-	protected boolean handleEvent(IBEvent e) {
-		if( e.type() == IBEvent.Type.zoomOut ){
-			_container.flipUp();
-			return true;
-		}
-		return super.handleEvent(e);
+	
+	public BBongardTestField(){
+		this(null);
 	}
+	
+	public BBongardTestField(BProblemLocator l){
+		setProblem(l);
+	}
+
 	
 	/**
 	 * 
