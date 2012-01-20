@@ -38,7 +38,7 @@ public class BFlippableContainer extends BDrawableContainer {
 			BFactory f = BFactory.instance();
 			IBTransform t = f.identityTransform();
 			t.translate(dx, 0);
-			setTemporaryTransform( t );
+			//setTemporaryTransform( t );
 			f.game().canvas().refresh();
 			return false;
 		}
@@ -104,7 +104,7 @@ public class BFlippableContainer extends BDrawableContainer {
 
 		BLabel l = BFactory.instance().label( _vx + " -- " + _currentPoint );
 		l.translate(0, originalSize().h()-10);
-		l.draw(c, t);
+		//l.draw(c, t);
 	}
 
 	@Override

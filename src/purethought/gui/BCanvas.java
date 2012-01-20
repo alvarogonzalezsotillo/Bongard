@@ -28,6 +28,7 @@ public abstract class BCanvas implements IBCanvas{
 		_d = d;
 		if( _d != null ){
 			addListener(_d.listener());
+			adjustTransformToSize();
 		}
 	}
 
@@ -56,6 +57,9 @@ public abstract class BCanvas implements IBCanvas{
 
 	
 	public void adjustTransformToSize(){
+		if( drawable() == null ){
+			return;
+		}
 		IBRectangle origin = drawable().originalSize();
 		IBRectangle destination = originalSize();
 		

@@ -1,8 +1,10 @@
 package purethought.platform.applet;
 
 import java.applet.Applet;
+import java.awt.BorderLayout;
 
 import purethought.gui.IBGame;
+import purethought.platform.awt.AWTCanvas;
 import purethought.platform.awt.AWTGame;
 import purethought.util.BFactory;
 
@@ -13,6 +15,10 @@ public class AppletGame extends Applet {
 	public void init() {
 		IBGame game = BFactory.instance().game();
 		((AWTGame)game).setContainer(this);
+		
+		AWTCanvas canvas = ((AWTGame)game).canvas();
+		setLayout( new BorderLayout() );
+		add( canvas.canvasImpl(), BorderLayout.CENTER );
 	}
 	
 	@Override

@@ -96,7 +96,9 @@ public class AWTCanvas extends BCanvas{
 			BFactory f = BFactory.instance();
 			eraseBackground();
 			Image i = getOffscreenImage();
-			drawable().draw(AWTCanvas.this, transform());
+			if( drawable() != null ){
+				drawable().draw(AWTCanvas.this, transform());
+			}
 			g.drawImage(i,0,0,null);
 			AWTAnimator a = (AWTAnimator)f.game().animator();
 			g.drawString("Millis:" + a.lastStep(), 0, getHeight());

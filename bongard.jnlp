@@ -1,0 +1,15 @@
+<jnlp codebase="https://sites.google.com/site/alvarogonzalezsotillo/scripts" href="bongard.jnlp" spec="1.0+">
+ <information>
+    <title>Bongard tests</title>
+    <vendor>Alvaro Gonzalez Sotillo</vendor>
+  </information>
+  <resources>
+  	<jar href="bongard.jar"/>
+  </resources>
+  <application-desc
+    name="Bongard tests"
+    main-class="purethought.platform.awt.AWTGame"
+    width="480"
+    height="640">
+  </application-desc>
+</jnlp>
