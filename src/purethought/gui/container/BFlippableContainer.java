@@ -60,6 +60,7 @@ public class BFlippableContainer extends BDrawableContainer {
 	}
 	
 	private void setDrawableOffset(double dx){
+		dx+=100;
 		double w = originalSize().w();
 		IBTransform i = BFactory.instance().identityTransform();
 		if( current() != null ){
@@ -79,19 +80,33 @@ public class BFlippableContainer extends BDrawableContainer {
 	
 	
 	private void setCurrent(int x) {
-		IBFlippableDrawable current = current();
 
-		if (current != null) {
-			removeListener( current.listener() );
-			current.setFlippableContainer(null);
+		if (current() != null) {
+			removeListener( current().listener() );
+			current().setFlippableContainer(null);
+		}
+		if (left() != null) {
+			removeListener( left().listener() );
+			left().setFlippableContainer(null);
+		}
+		if (right() != null) {
+			removeListener( right().listener() );
+			right().setFlippableContainer(null);
 		}
 
 		_x = x;
 
-		current = current();
-		if (current != null) {
-			addListener( current.listener() );
-			current.setFlippableContainer(this);
+		if (current() != null) {
+			addListener( current().listener() );
+			current().setFlippableContainer(this);
+		}
+		if (left() != null) {
+			addListener( left().listener() );
+			left().setFlippableContainer(this);
+		}
+		if (right() != null) {
+			addListener( right().listener() );
+			right().setFlippableContainer(this);
 		}
 		
 		adjustTransformToSize();
@@ -109,6 +124,7 @@ public class BFlippableContainer extends BDrawableContainer {
 		BLabel l = BFactory.instance().label( _vx + " -- " + _currentPoint );
 		l.translate(0, originalSize().h()-10);
 		l.draw(c, t);
+		super.draw_internal(c, t);
 	}
 
 	private IBFlippableDrawable current() {

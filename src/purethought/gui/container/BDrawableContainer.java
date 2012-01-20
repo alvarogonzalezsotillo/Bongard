@@ -2,18 +2,26 @@ package purethought.gui.container;
 
 import purethought.geom.BRectangle;
 import purethought.geom.IBPoint;
-import purethought.geom.IBRectangle;
 import purethought.geom.IBTransform;
 import purethought.gui.basic.BDrawable;
+import purethought.gui.basic.IBCanvas;
 import purethought.gui.event.BListenerList;
 import purethought.gui.event.IBEvent;
 import purethought.gui.event.IBEventListener;
 import purethought.gui.event.IBEventSource;
 import purethought.util.BFactory;
+import purethought.util.BPointerSupport;
 
 public abstract class BDrawableContainer extends BDrawable implements IBDrawableContainer{
 
+	private BPointerSupport _ps = new BPointerSupport();
+	
 	private MyListenerList _listeners = new MyListenerList(this);
+	
+	
+	protected BDrawableContainer(){
+		_listeners.addListener(_ps);
+	}
 	
 	class MyListenerList extends BListenerList{
 		public MyListenerList(IBEventSource container) {
@@ -73,5 +81,10 @@ public abstract class BDrawableContainer extends BDrawable implements IBDrawable
 		IBPoint inverseP = inverseT.transform(p);		
 		
 		return BRectangle.inside( originalSize(), inverseP);
+	}
+	
+	@Override
+	protected void draw_internal(IBCanvas c, IBTransform t) {
+		_ps.draw_impl(c, t);
 	}
 }

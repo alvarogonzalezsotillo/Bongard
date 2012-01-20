@@ -35,6 +35,9 @@ public class BListenerList implements IBEventListener{
 		if( p == null ){
 			return null;
 		}
+		if( l.source() == null ){
+			return p;
+		}
 		return l.source().transform().inverse().transform(p);
 	}
 	
@@ -55,6 +58,9 @@ public class BListenerList implements IBEventListener{
 
 	@Override
 	public boolean handle(IBEvent e) {
+		if( e.point() != null && e.type() == IBEvent.Type.pointerClick ){
+			System.out.println( "BListenerList (" + source() + "):" + e.point().x() + "," + e.point().y() );
+		}
 		for( IBEventListener l: listAsArray() ){
 			IBPoint p = pointInChildCoordinates( l, e.point() );
 			IBEvent newEvent = new IBEvent( e.type(), p, e.rectangle() );

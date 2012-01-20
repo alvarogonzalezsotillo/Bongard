@@ -26,7 +26,7 @@ import purethought.util.BFactory;
 
 public class BGameField extends BDrawableContainer implements IBFlippableDrawable{
 	
-	private static final boolean SHOW_POINTER = false;
+	private static final boolean SHOW_POINTER = true;
 
 	private BProblem _problem;
 	
@@ -254,6 +254,8 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 		if( SHOW_POINTER ){
 			_pointer.draw(canvas, aditionalTransform);
 		}
+		
+		super.draw_internal(canvas, aditionalTransform);
 	}
 	
 	@Override
