@@ -3,10 +3,10 @@ package purethought.util;
 import purethought.animation.BAnimator;
 import purethought.geom.IBPoint;
 import purethought.geom.IBTransform;
-import purethought.gui.BLabel;
-import purethought.gui.BSprite;
-import purethought.gui.IBGame;
-import purethought.gui.IBRaster;
+import purethought.gui.basic.BLabel;
+import purethought.gui.basic.BSprite;
+import purethought.gui.basic.IBRaster;
+import purethought.gui.game.IBGame;
 import purethought.platform.awt.AWTFactory;
 import purethought.problem.BCardExtractor;
 

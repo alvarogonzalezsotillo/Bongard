@@ -8,9 +8,9 @@ import java.awt.geom.AffineTransform;
 import java.util.Formatter;
 
 import purethought.geom.IBTransform;
-import purethought.gui.BSprite;
-import purethought.gui.IBCanvas;
-import purethought.gui.IBRaster;
+import purethought.gui.basic.BSprite;
+import purethought.gui.basic.IBCanvas;
+import purethought.gui.basic.IBRaster;
 
 public class AWTSprite extends BSprite{
 	

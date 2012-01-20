@@ -13,7 +13,7 @@ import java.util.Formatter;
 import javax.imageio.ImageIO;
 
 import purethought.geom.IBRectangle;
-import purethought.gui.IBRaster;
+import purethought.gui.basic.IBRaster;
 import purethought.problem.BCardExtractor;
 import purethought.problem.BProblem;
 import purethought.problem.BProblemLocator;

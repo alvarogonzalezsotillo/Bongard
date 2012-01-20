@@ -2,7 +2,7 @@ package purethought.problem;
 
 import java.util.Random;
 
-import purethought.gui.IBRaster;
+import purethought.gui.basic.IBRaster;
 import purethought.util.BException;
 
 /**

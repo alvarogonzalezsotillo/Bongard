@@ -6,11 +6,11 @@ import java.awt.Container;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import purethought.gui.BBongardTestField;
-import purethought.gui.BFlippableContainer;
-import purethought.gui.BGameField;
-import purethought.gui.IBFlippableDrawable;
-import purethought.gui.IBGame;
+import purethought.gui.container.BFlippableContainer;
+import purethought.gui.container.IBFlippableDrawable;
+import purethought.gui.game.BBongardTestField;
+import purethought.gui.game.BGameField;
+import purethought.gui.game.IBGame;
 import purethought.problem.BProblemLocator;
 import purethought.util.BFactory;
 

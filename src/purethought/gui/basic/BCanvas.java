@@ -1,8 +1,10 @@
-package purethought.gui;
+package purethought.gui.basic;
 
 
 import purethought.geom.IBRectangle;
 import purethought.geom.IBTransform;
+import purethought.gui.container.IBDrawableContainer;
+import purethought.gui.event.BListenerList;
 import purethought.gui.event.IBEventListener;
 import purethought.util.BFactory;
 

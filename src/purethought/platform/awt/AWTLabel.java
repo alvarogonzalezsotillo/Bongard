@@ -5,8 +5,8 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 
 import purethought.geom.IBTransform;
-import purethought.gui.BLabel;
-import purethought.gui.IBCanvas;
+import purethought.gui.basic.BLabel;
+import purethought.gui.basic.IBCanvas;
 
 public class AWTLabel extends BLabel {
 

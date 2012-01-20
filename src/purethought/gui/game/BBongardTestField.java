@@ -1,7 +1,12 @@
-package purethought.gui;
+package purethought.gui.game;
 
 import purethought.geom.IBRectangle;
 import purethought.geom.IBTransform;
+import purethought.gui.basic.BSprite;
+import purethought.gui.basic.IBCanvas;
+import purethought.gui.container.BDrawableContainer;
+import purethought.gui.container.BFlippableContainer;
+import purethought.gui.container.IBFlippableDrawable;
 import purethought.gui.event.IBEvent;
 import purethought.problem.BCardExtractor;
 import purethought.problem.BProblem;

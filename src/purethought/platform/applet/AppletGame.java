@@ -3,7 +3,7 @@ package purethought.platform.applet;
 import java.applet.Applet;
 import java.awt.BorderLayout;
 
-import purethought.gui.IBGame;
+import purethought.gui.game.IBGame;
 import purethought.platform.awt.AWTCanvas;
 import purethought.platform.awt.AWTGame;
 import purethought.util.BFactory;

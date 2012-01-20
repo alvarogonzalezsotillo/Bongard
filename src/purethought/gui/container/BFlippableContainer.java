@@ -1,9 +1,11 @@
-package purethought.gui;
+package purethought.gui.container;
 
 import purethought.geom.BRectangle;
 import purethought.geom.IBPoint;
 import purethought.geom.IBRectangle;
 import purethought.geom.IBTransform;
+import purethought.gui.basic.BLabel;
+import purethought.gui.basic.IBCanvas;
 import purethought.gui.event.BEventAdapter;
 import purethought.gui.event.IBEvent;
 import purethought.util.BFactory;

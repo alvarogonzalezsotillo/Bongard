@@ -17,7 +17,7 @@ import java.awt.event.MouseWheelEvent;
 
 import purethought.geom.BRectangle;
 import purethought.geom.IBRectangle;
-import purethought.gui.BCanvas;
+import purethought.gui.basic.BCanvas;
 import purethought.gui.event.IBEvent;
 import purethought.util.BFactory;
 

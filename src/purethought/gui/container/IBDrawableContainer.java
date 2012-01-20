@@ -1,6 +1,7 @@
-package purethought.gui;
+package purethought.gui.container;
 
 import purethought.geom.IBRectangle;
+import purethought.gui.basic.IBDrawable;
 import purethought.gui.event.IBEventListener;
 import purethought.gui.event.IBEventSource;
 

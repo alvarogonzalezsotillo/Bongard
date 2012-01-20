@@ -1,8 +1,8 @@
 package purethought.platform.awt;
 
-import purethought.gui.BLabel;
-import purethought.gui.BSprite;
-import purethought.gui.IBRaster;
+import purethought.gui.basic.BLabel;
+import purethought.gui.basic.BSprite;
+import purethought.gui.basic.IBRaster;
 import purethought.util.BFactory;
 
 public class AWTFactory extends BFactory {
