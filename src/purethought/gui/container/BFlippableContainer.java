@@ -13,7 +13,7 @@ import purethought.gui.event.IBEvent;
 import purethought.util.BFactory;
 
 public class BFlippableContainer extends BDrawableContainer {
-	private static final double MARGIN = 20;
+	private static final double MARGIN = 50;
 
 	private int _x;
 
@@ -39,7 +39,6 @@ public class BFlippableContainer extends BDrawableContainer {
 		public void stepAnimation(long millis) {
 			if( Double.isNaN(_ox) ){
 				_ox = drawableOffset();
-				System.out.println( getClass().getName() + "  fx:" + _fx  + "  ox:" + _ox );
 			}
 			stepMillis(millis);
 			double dx = _ox+(_fx-_ox)*currentMillis()/totalMillis();
@@ -129,7 +128,6 @@ public class BFlippableContainer extends BDrawableContainer {
 		}
 		else{
 			newIndex = currentIndex();
-			System.out.println( "No cambio ");
 		}
 		
 		newIndex = Math.max(newIndex, 0);

@@ -16,7 +16,6 @@ public class BPointerSupport extends BEventAdapter{
 	
 	@Override
 	public boolean pointerClick(IBPoint p) {
-		System.out.println("BPointerSupport:" + p.x() + "," + p.y() );
 		IBTransform t = BFactory.instance().identityTransform();
 		t.translate(p.x(),p.y());
 		_pointer.setTransform(t);

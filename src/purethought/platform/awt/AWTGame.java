@@ -37,7 +37,7 @@ public class AWTGame implements IBGame, Runnable{
 		Component canvas = canvas().canvasImpl();
 		f.add(canvas);
 		
-		f.setSize( 480, 640 );
+		f.setSize( 320, 480 );
 		return f;
 	}
 	

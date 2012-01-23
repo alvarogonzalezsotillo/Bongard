@@ -28,7 +28,6 @@ public class AWTCanvas extends BCanvas{
 		
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			System.out.println( "AWTCanvas: click:" + e.getX() + "," + e.getY() );
 			listeners().handle( event( IBEvent.Type.pointerClick, e ) );
 		}
 		
