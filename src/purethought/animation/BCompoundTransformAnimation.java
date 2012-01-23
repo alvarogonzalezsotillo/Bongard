@@ -47,7 +47,7 @@ public class BCompoundTransformAnimation implements IBAnimation {
 			if( a.endReached() ){
 				continue;
 			}
-			a.stepTransform(millis);
+			a.stepMillis(millis);
 			for( IBAnimable an: animables() ){
 				IBTransformAnimable ta = (IBTransformAnimable) an;
 				IBTransform st = a.getTransform(ta);
