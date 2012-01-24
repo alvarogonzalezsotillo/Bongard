@@ -26,6 +26,10 @@ import purethought.util.BFactory;
 
 public class BGameField extends BDrawableContainer implements IBFlippableDrawable{
 	
+	private static final int FOCUS_DELAY = 100;
+
+	private static final double FOCUS_ZOOM = 1.3;
+
 	private static final boolean SHOW_POINTER = false;
 
 	private BProblem _problem;
@@ -53,7 +57,7 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 		@Override
 		public boolean pointerDown(IBPoint p) {
 			if( _questionSprite.inside(p, null) ){
-				_pickUpAnimation = new BScaleAnimation(1.3, 1.3, 100, _questionSprite);
+				_pickUpAnimation = new BScaleAnimation(FOCUS_ZOOM, FOCUS_ZOOM, FOCUS_DELAY, _questionSprite);
 				animator().addAnimation( _pickUpAnimation );
 				_dragQuestion = true;
 				return true;
@@ -75,21 +79,21 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 		private void checkSets() {
 			boolean set1Over = near( _questionSprite, _set1Sprites );
 			if( !_set1Over &&  set1Over ){
-				_set1OverAnimation = new BScaleAnimation( 1.3, 1.3, 100, _set1Sprites );
+				_set1OverAnimation = new BScaleAnimation( FOCUS_ZOOM, FOCUS_ZOOM, FOCUS_DELAY, _set1Sprites );
 				animator().addAnimation(_set1OverAnimation);
 			}
 			if( _set1Over && !set1Over ){
-				animator().addAnimation( new BWaitForAnimation( new BScaleAnimation(1/1.3,1/1.3,100,_set1Sprites), _set1OverAnimation) );
+				animator().addAnimation( new BWaitForAnimation( new BScaleAnimation(1/FOCUS_ZOOM,1/FOCUS_ZOOM,FOCUS_DELAY,_set1Sprites), _set1OverAnimation) );
 			}
 			_set1Over = set1Over;
 			
 			boolean set2Over = near( _questionSprite, _set2Sprites );
 			if( !_set2Over &&  set2Over ){
-				_set2OverAnimation = new BScaleAnimation( 1.3, 1.3, 100, _set2Sprites );
+				_set2OverAnimation = new BScaleAnimation( FOCUS_ZOOM, FOCUS_ZOOM, FOCUS_DELAY, _set2Sprites );
 				animator().addAnimation(_set2OverAnimation);
 			}
 			if( _set2Over && !set2Over ){
-				animator().addAnimation( new BWaitForAnimation( new BScaleAnimation(1/1.3,1/1.3,100,_set2Sprites ), _set2OverAnimation) );
+				animator().addAnimation( new BWaitForAnimation( new BScaleAnimation(1/FOCUS_ZOOM,1/FOCUS_ZOOM,FOCUS_DELAY,_set2Sprites ), _set2OverAnimation) );
 			}
 			_set2Over = set2Over;
 		}
@@ -121,17 +125,17 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 				_dropAnimation = 
 						new BCompoundTransformAnimation(
 								new IBTransformAnimable[]{ _questionSprite }, 
-								new BScaleAnimation(1/1.3, 1/1.3, 100),
-								new BTranslateAnimation( dest, 100)
+								new BScaleAnimation(1/FOCUS_ZOOM, 1/FOCUS_ZOOM, FOCUS_DELAY),
+								new BTranslateAnimation( dest, FOCUS_DELAY)
 						);
 				animator().addAnimation( new BWaitForAnimation(_dropAnimation, _pickUpAnimation) );
 				
 				if( _set1Over ){
-					_set1DropAnimation = new BWaitForAnimation( new BScaleAnimation(1/1.3,1/1.3,100,_set1Sprites ), _set1OverAnimation);
+					_set1DropAnimation = new BWaitForAnimation( new BScaleAnimation(1/FOCUS_ZOOM,1/FOCUS_ZOOM,FOCUS_DELAY,_set1Sprites ), _set1OverAnimation);
 					animator().addAnimation( _set1DropAnimation );
 				}
 				if( _set2Over ){
-					_set2DropAnimation = new BWaitForAnimation( new BScaleAnimation(1/1.3,1/1.3,100,_set2Sprites ), _set2OverAnimation);
+					_set2DropAnimation = new BWaitForAnimation( new BScaleAnimation(1/FOCUS_ZOOM,1/FOCUS_ZOOM,FOCUS_DELAY,_set2Sprites ), _set2OverAnimation);
 					animator().addAnimation( _set2DropAnimation );
 				}
 				
@@ -152,10 +156,7 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 			BFactory instance = BFactory.instance();
 			BProblemLocator test = instance.cardExtractor().randomProblem();
 			setProblem(test);
-			
-			_pointer.setText(p.toString());
-			animator().addAnimation( new BTranslateAnimation(p, 1000, _pointer) );
-			return false;
+			return true;
 		}
 	};
 
