@@ -100,7 +100,16 @@ public abstract class BCardExtractor{
 	}
 
 
-	public abstract BImageLocator[] allProblems();
+
+	public BImageLocator[] allProblems(){
+		int count = 280;
+		BImageLocator[] ret = new BImageLocator[280];
+		for( int i = 0 ; i < count ; i++ ){
+			ret[i] = new BImageLocator(String.format("/images/tests/p%03d.png", i+1 ));
+		}
+		return ret;
+	}
+
 
 	public BImageLocator[] randomProblems(int n){
 		BImageLocator[] ps = allProblems();

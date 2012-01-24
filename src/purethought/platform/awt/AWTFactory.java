@@ -72,6 +72,10 @@ public class AWTFactory extends BFactory {
 	@Override
 	public IBRaster raster(BImageLocator test) {
 		URL f = test.getImpl(URL.class);
+		if( f == null ){
+			f = getClass().getResource(test.toString());
+		}
+		
 		Color bgColor = Color.white;
 		try {
 			BufferedImage image = ImageIO.read(f);

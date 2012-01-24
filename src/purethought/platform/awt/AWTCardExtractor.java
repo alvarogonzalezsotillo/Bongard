@@ -54,7 +54,7 @@ public class AWTCardExtractor extends BCardExtractor{
 	
 
 	public static void main(String[] args) throws IOException {
-		URL imageFile = AWTCardExtractor.class.getResource("/tests/p004.png");
+		URL imageFile = AWTCardExtractor.class.getResource("/images/tests/p004.png");
 
 		BImageLocator test = new BImageLocator(imageFile);
 		
@@ -74,19 +74,5 @@ public class AWTCardExtractor extends BCardExtractor{
 		}
 	}
 	
-
-	@Override
-	public BImageLocator[] allProblems(){
-		int count = 280;
-		BImageLocator[] ret = new BImageLocator[280];
-		for( int i = 0 ; i < count ; i++ ){
-			Formatter f = new Formatter();
-			f.format("/images/tests/p%03d.png", i+1 );
-			URL file = getClass().getResource(f.toString());
-			ret[i] = new BImageLocator(file);
-		}
-		return ret;
-	}
-
 
 }
