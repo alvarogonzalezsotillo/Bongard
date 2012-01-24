@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+<ModulePrefs title="Bongard applet" />
+<Content type="html"><![CDATA[
+
+
+<script src="http://java.com/js/deployJava.js">
+</script>
+<div id='alvaro-gonzalez-sotillo-applet'>
+<script>
+var _jarUrl = "https://sites.google.com/site/alvarogonzalezsotillo/scripts/bongard.jar";
+var _name = "alvaro-gonzalez-sotillo-applet";
+var _code = "purethought.platform.applet.AppletGame";
+var _codebase = ".";
+deployJava.runApplet({
+  archive:_jarUrl, 
+  name: _name,
+  code: _code,
+  codebase: ".",
+  width:"480",
+  height:"640",
+  java_arguments:"-Xmx256m"
+});
+</script>
+</div>
+
+
+]]></Content>
+</Module>
+
