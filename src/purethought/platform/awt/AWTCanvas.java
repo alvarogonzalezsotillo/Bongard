@@ -132,6 +132,12 @@ public class AWTCanvas extends BCanvas{
 		g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
 		g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 		
+		IBRectangle os = drawable().originalSize();
+		double pts[] = { os.x(), os.y(), os.x()+os.w(), os.y()+os.h() };
+		((AWTTransform)transform()).transform(pts, 0, pts, 0, 2);
+		
+		g2d.setClip((int)pts[0], (int)pts[1], (int)(pts[2]-pts[0]), (int)(pts[3]-pts[1]));
+		
 		return g2d;
 	}
 	

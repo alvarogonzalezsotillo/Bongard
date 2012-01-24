@@ -16,13 +16,12 @@ public class AppletGame extends Applet {
 
 	@Override
 	public void init() {
-		IBGame game = BFactory.instance().game();
-		
 		setLayout( new BorderLayout() );
 		Button button = new Button("Start");
 		button.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				System.out.println( "Starting game frame..." );
 				BFactory.instance().game().run();
 			}
 		});

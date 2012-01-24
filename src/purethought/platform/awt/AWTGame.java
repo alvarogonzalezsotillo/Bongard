@@ -2,16 +2,13 @@ package purethought.platform.awt;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import purethought.gui.container.BFlippableContainer;
-import purethought.gui.container.IBFlippableDrawable;
-import purethought.gui.game.BBongardTestField;
-import purethought.gui.game.BGameField;
 import purethought.gui.game.BGameModel;
 import purethought.gui.game.IBGame;
 import purethought.problem.BProblemLocator;
@@ -33,8 +30,8 @@ public class AWTGame implements IBGame, Runnable{
 	}
 	
 	
-	private JFrame createFrame(){
-		final JFrame f = new JFrame( "Bongard" );
+	private Frame createFrame(){
+		final Frame f = new Frame( "Bongard" );
 		f.addWindowListener( new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
