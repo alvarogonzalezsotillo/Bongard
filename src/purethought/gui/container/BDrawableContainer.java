@@ -85,6 +85,6 @@ public abstract class BDrawableContainer extends BDrawable implements IBDrawable
 	
 	@Override
 	protected void draw_internal(IBCanvas c, IBTransform t) {
-		_ps.draw_impl(c, t);
+		//_ps.draw_impl(c, t);
 	}
 }

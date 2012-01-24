@@ -26,7 +26,7 @@ import purethought.util.BFactory;
 
 public class BGameField extends BDrawableContainer implements IBFlippableDrawable{
 	
-	private static final boolean SHOW_POINTER = true;
+	private static final boolean SHOW_POINTER = false;
 
 	private BProblem _problem;
 	
