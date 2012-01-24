@@ -2,6 +2,8 @@ package purethought.platform.awt;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -32,8 +34,18 @@ public class AWTGame implements IBGame, Runnable{
 	
 	
 	private JFrame createFrame(){
-		JFrame f = new JFrame( "Bongard" );
-		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		final JFrame f = new JFrame( "Bongard" );
+		f.addWindowListener( new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				f.setVisible(false);
+				try{
+					System.exit(0);
+				}
+				catch( SecurityException se ){
+				}
+			}
+		});
 		Component canvas = canvas().canvasImpl();
 		f.add(canvas);
 		

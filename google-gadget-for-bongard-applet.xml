@@ -17,9 +17,8 @@ deployJava.runApplet({
   name: _name,
   code: _code,
   codebase: ".",
-  width:"480",
-  height:"640",
-  java_arguments:"-Xmx256m"
+  width:"200",
+  height:"75"
 });
 </script>
 </div>
