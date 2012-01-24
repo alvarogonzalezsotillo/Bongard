@@ -14,21 +14,14 @@ import javax.imageio.ImageIO;
 
 import purethought.geom.IBRectangle;
 import purethought.gui.basic.IBRaster;
+import purethought.platform.BImageLocator;
 import purethought.problem.BCardExtractor;
 import purethought.problem.BProblem;
-import purethought.problem.BProblemLocator;
 import purethought.util.BException;
 
 
 public class AWTCardExtractor extends BCardExtractor{
 
-	/**
-	 * 
-	 */
-	@Override
-	public IBRaster getTestImage(BProblemLocator test) {
-		return readImage( test.getImpl(URL.class), Color.white );
-	}
 
 	/**
 	 * Extract one tile of a Bongard problem
@@ -37,7 +30,7 @@ public class AWTCardExtractor extends BCardExtractor{
 	 * @return
 	 */
 	@Override
-	protected IBRaster extract( IBRectangle r, IBRaster i ){
+	public IBRaster extract( IBRectangle r, IBRaster i ){
 		BufferedImage ret = new BufferedImage((int)r.w(), (int)r.h(), BufferedImage.TYPE_INT_RGB);
 		Graphics g = ret.getGraphics();
 		Color bgcolor = Color.white;
@@ -52,19 +45,6 @@ public class AWTCardExtractor extends BCardExtractor{
 		return new AWTRaster(ret);
 	}
 	
-	private static IBRaster readImage(URL f, Color bgColor){
-		try {
-			BufferedImage image = ImageIO.read(f);
-			BufferedImage ret = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
-			Graphics g = ret.getGraphics();
-			g.drawImage(image, 0, 0, bgColor, null );
-			g.dispose();
-			
-			return new AWTRaster(ret);
-		} catch (IOException ex) {
-			throw new BException( "Unable to read:" + f, ex );
-		}
-	}
 	
 	private static void writeImage( File f, IBRaster image ) throws IOException{
 		String format = "png";
@@ -76,7 +56,7 @@ public class AWTCardExtractor extends BCardExtractor{
 	public static void main(String[] args) throws IOException {
 		URL imageFile = AWTCardExtractor.class.getResource("/tests/p004.png");
 
-		BProblemLocator test = new BProblemLocator(imageFile);
+		BImageLocator test = new BImageLocator(imageFile);
 		
 		BProblem problem = extract(test);
 		System.out.println( problem );
@@ -96,14 +76,14 @@ public class AWTCardExtractor extends BCardExtractor{
 	
 
 	@Override
-	public BProblemLocator[] allProblems(){
+	public BImageLocator[] allProblems(){
 		int count = 280;
-		BProblemLocator[] ret = new BProblemLocator[280];
+		BImageLocator[] ret = new BImageLocator[280];
 		for( int i = 0 ; i < count ; i++ ){
 			Formatter f = new Formatter();
-			f.format("/tests/p%03d.png", i+1 );
+			f.format("/images/tests/p%03d.png", i+1 );
 			URL file = getClass().getResource(f.toString());
-			ret[i] = new BProblemLocator(file);
+			ret[i] = new BImageLocator(file);
 		}
 		return ret;
 	}

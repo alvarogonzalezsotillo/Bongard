@@ -1,10 +1,20 @@
 package purethought.platform.awt;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
+
+import javax.imageio.ImageIO;
+
 import purethought.geom.IBRectangle;
 import purethought.gui.basic.BLabel;
 import purethought.gui.basic.BSprite;
 import purethought.gui.basic.IBRaster;
 import purethought.platform.BFactory;
+import purethought.platform.BImageLocator;
+import purethought.util.BException;
 
 public class AWTFactory extends BFactory {
 
@@ -58,6 +68,24 @@ public class AWTFactory extends BFactory {
 	public AWTBox box(IBRectangle r) {
 		return new AWTBox(r);
 	}
+
+	@Override
+	public IBRaster raster(BImageLocator test) {
+		URL f = test.getImpl(URL.class);
+		Color bgColor = Color.white;
+		try {
+			BufferedImage image = ImageIO.read(f);
+			BufferedImage ret = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
+			Graphics g = ret.getGraphics();
+			g.drawImage(image, 0, 0, bgColor, null );
+			g.dispose();
+			
+			return new AWTRaster(ret);
+		} catch (IOException ex) {
+			throw new BException( "Unable to read:" + f, ex );
+		}
+	}
+	
 	
 
 }

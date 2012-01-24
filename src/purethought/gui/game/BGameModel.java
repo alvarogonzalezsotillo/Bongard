@@ -2,23 +2,23 @@ package purethought.gui.game;
 
 import purethought.gui.container.IBFlippableDrawable;
 import purethought.gui.container.IBFlippableModel;
-import purethought.problem.BProblemLocator;
+import purethought.platform.BImageLocator;
 
 public class BGameModel implements IBFlippableModel{
 	
 	
-	private BProblemLocator[] _problems;
+	private BImageLocator[] _problems;
 	private BGameField[] _drawables;
 
-	public BGameModel( BProblemLocator[] problems ){
+	public BGameModel( BImageLocator[] problems ){
 		setProblems(problems);
 	}
 
-	private void setProblems(BProblemLocator[] problems) {
+	private void setProblems(BImageLocator[] problems) {
 		_problems = problems;
 		_drawables = new BGameField[problems.length];
 		for (int i = 0; i < problems.length; i++) {
-			BProblemLocator l = problems[i];
+			BImageLocator l = problems[i];
 			_drawables[i] = new BGameField(l);
 		}
 	}

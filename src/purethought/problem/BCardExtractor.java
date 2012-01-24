@@ -8,6 +8,7 @@ import purethought.geom.BRectangle;
 import purethought.geom.IBRectangle;
 import purethought.gui.basic.IBRaster;
 import purethought.platform.BFactory;
+import purethought.platform.BImageLocator;
 
 public abstract class BCardExtractor{
 	
@@ -38,9 +39,9 @@ public abstract class BCardExtractor{
 		
 	}
 	
-	public static BProblem extract( BProblemLocator test ){
+	public static BProblem extract( BImageLocator test ){
 		BCardExtractor ce = BFactory.instance().cardExtractor();
-		IBRaster testImage = ce.getTestImage(test);
+		IBRaster testImage = BFactory.instance().raster(test);
 		IBRaster[][] images = ce.extractImages(testImage);
 		return new BProblem(testImage,images[0], images[1]);
 	}
@@ -71,12 +72,6 @@ public abstract class BCardExtractor{
 		return ret;
 	}
 
-	/**
-	 * 
-	 * @param test
-	 * @return
-	 */
-	protected abstract IBRaster getTestImage(BProblemLocator test);
 
 	/**
 	 * 
@@ -91,8 +86,8 @@ public abstract class BCardExtractor{
 	 * 
 	 * @return
 	 */
-	public BProblemLocator randomProblem(){
-		BProblemLocator[] ps = allProblems();
+	public BImageLocator randomProblem(){
+		BImageLocator[] ps = allProblems();
 		int r = random().nextInt( ps.length );
 		return ps[r];
 	}
@@ -105,17 +100,17 @@ public abstract class BCardExtractor{
 	}
 
 
-	public abstract BProblemLocator[] allProblems();
+	public abstract BImageLocator[] allProblems();
 
-	public BProblemLocator[] randomProblems(int n){
-		BProblemLocator[] ps = allProblems();
-		BProblemLocator[] ret = new BProblemLocator[n];
+	public BImageLocator[] randomProblems(int n){
+		BImageLocator[] ps = allProblems();
+		BImageLocator[] ret = new BImageLocator[n];
 		
-		ArrayList<BProblemLocator> list = new ArrayList<BProblemLocator>();
+		ArrayList<BImageLocator> list = new ArrayList<BImageLocator>();
 		list.addAll( Arrays.asList(ps) );
 		
 		for( int i = 0 ; i < n ; i++ ){
-			BProblemLocator l = list.remove( random().nextInt(list.size()) );
+			BImageLocator l = list.remove( random().nextInt(list.size()) );
 			ret[i] = l;
 		}
 		

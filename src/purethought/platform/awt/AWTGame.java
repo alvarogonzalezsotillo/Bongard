@@ -12,7 +12,7 @@ import purethought.gui.container.BFlippableContainer;
 import purethought.gui.game.BGameModel;
 import purethought.gui.game.IBGame;
 import purethought.platform.BFactory;
-import purethought.problem.BProblemLocator;
+import purethought.platform.BImageLocator;
 
 public class AWTGame implements IBGame, Runnable{
 
@@ -64,7 +64,7 @@ public class AWTGame implements IBGame, Runnable{
 	@Override
 	public void run() {
 		Container c = container();
-		BProblemLocator[] problems = f().cardExtractor().randomProblems(6);
+		BImageLocator[] problems = f().cardExtractor().randomProblems(6);
 		canvas().setDrawable( new BFlippableContainer( new BGameModel(problems ) ) );
 		c.setVisible(true);
 	}

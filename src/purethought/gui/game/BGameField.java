@@ -20,9 +20,9 @@ import purethought.gui.container.BFlippableContainer;
 import purethought.gui.container.IBFlippableDrawable;
 import purethought.gui.event.BEventAdapter;
 import purethought.platform.BFactory;
+import purethought.platform.BImageLocator;
 import purethought.problem.BCardExtractor;
 import purethought.problem.BProblem;
-import purethought.problem.BProblemLocator;
 
 public class BGameField extends BDrawableContainer implements IBFlippableDrawable{
 	
@@ -154,7 +154,7 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 		@Override
 		public boolean pointerClick(IBPoint p) {
 			BFactory instance = BFactory.instance();
-			BProblemLocator test = instance.cardExtractor().randomProblem();
+			BImageLocator test = instance.cardExtractor().randomProblem();
 			setProblem(test);
 			return true;
 		}
@@ -170,7 +170,7 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 		this(null);
 	}
 	
-	public BGameField(BProblemLocator test){
+	public BGameField(BImageLocator test){
 		listener().addListener( _adapter );
 		setProblem(test);
 	}
@@ -179,7 +179,7 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	 * 
 	 * @param test
 	 */
-	public void setProblem( BProblemLocator test ){
+	public void setProblem( BImageLocator test ){
 		if( test == null ){
 			return;
 		}
