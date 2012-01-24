@@ -1,8 +1,12 @@
 package purethought.platform.awt;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 
 import purethought.geom.IBRectangle;
 import purethought.geom.IBTransform;
@@ -23,10 +27,12 @@ public class AWTBox extends BBox{
 		g2d.transform((AffineTransform) t);
 		
 		g2d.setColor( Color.white );
+		g2d.setStroke( new BasicStroke(2) );
 
 		IBRectangle r = originalSize();
 		
-		g2d.drawRect((int)r.x(), (int)r.y(), (int)r.w(), (int)r.h() );
+		Shape s = new Rectangle2D.Double( r.x(), r.y(), r.w(), r.h() );
+		g2d.draw(s);
 		
 		g2d.dispose();
 

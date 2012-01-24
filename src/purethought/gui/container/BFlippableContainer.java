@@ -7,6 +7,7 @@ import purethought.geom.BRectangle;
 import purethought.geom.IBPoint;
 import purethought.geom.IBRectangle;
 import purethought.geom.IBTransform;
+import purethought.gui.basic.BBox;
 import purethought.gui.basic.IBCanvas;
 import purethought.gui.event.BEventAdapter;
 import purethought.gui.event.IBEvent;
@@ -217,7 +218,34 @@ public class BFlippableContainer extends BDrawableContainer {
 		if (current() != null)
 			current().draw(c, t);
 
+		{
+			BBox b = BFactory.instance().box( BRectangle.grow(originalSize(), -1) );
+			b.draw(c, t);
+		}
+		
+		draw_boxes( c, t );
+		
 		super.draw_internal(c, t);
+		
+	}
+	
+	protected void draw_boxes(IBCanvas c, IBTransform t){
+		double boxsize = 10;
+		double boxspacing = 20;
+		
+		int n = _model.width();
+		double widthofboxes = boxsize*n + boxspacing*(n-1);
+		IBRectangle os = originalSize();
+		double x0 = os.x() + ( os.w() - widthofboxes )/2;
+		
+		for( int i = 0 ; i < n ; i++ ){
+			IBRectangle r = new BRectangle( x0+boxspacing/2+i*(boxspacing+boxsize), os.y() + os.h() - boxspacing*1.5, boxsize/2, boxsize/2 );
+			if( i == currentIndex() ){
+				r = BRectangle.grow(r, 3);
+			}
+			BBox b = BFactory.instance().box( r );
+			b.draw(c, t);
+		}
 	}
 
 	private int currentIndex(){

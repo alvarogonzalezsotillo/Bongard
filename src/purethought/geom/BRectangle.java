@@ -28,4 +28,13 @@ public class BRectangle implements IBRectangle{
 		}
 		return true;
 	}
+	
+	public static IBRectangle grow( IBRectangle r, double d ){
+		double y = r.y()-d;
+		double x = r.x()-d;
+		double w = r.w()+d*2;
+		double h = r.h()+d*2;
+		IBRectangle ret = new BRectangle(x, y, w, h);
+		return ret;
+	}
 }
