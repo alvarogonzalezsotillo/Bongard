@@ -1,7 +1,9 @@
 package purethought.platform;
 
 import purethought.geom.IBPoint;
+import purethought.geom.IBRectangle;
 import purethought.geom.IBTransform;
+import purethought.gui.basic.BBox;
 import purethought.gui.basic.BLabel;
 import purethought.gui.basic.BSprite;
 import purethought.gui.basic.IBRaster;
@@ -30,4 +32,5 @@ public abstract class BFactory {
 	public abstract IBGame game();
 	public abstract BSprite sprite( IBRaster raster );
 	public abstract BLabel label( String text );
+	public abstract BBox box( IBRectangle r );
 }

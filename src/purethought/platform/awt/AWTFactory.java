@@ -1,5 +1,6 @@
 package purethought.platform.awt;
 
+import purethought.geom.IBRectangle;
 import purethought.gui.basic.BLabel;
 import purethought.gui.basic.BSprite;
 import purethought.gui.basic.IBRaster;
@@ -43,14 +44,19 @@ public class AWTFactory extends BFactory {
 
 
 	@Override
-	public BSprite sprite(IBRaster raster) {
+	public AWTSprite sprite(IBRaster raster) {
 		return new AWTSprite(raster);
 	}
 
 
 	@Override
-	public BLabel label(String text) {
+	public AWTLabel label(String text) {
 		return new AWTLabel(text);
+	}
+
+	@Override
+	public AWTBox box(IBRectangle r) {
+		return new AWTBox(r);
 	}
 	
 
