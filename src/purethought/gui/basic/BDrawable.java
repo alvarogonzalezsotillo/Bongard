@@ -3,7 +3,7 @@ package purethought.gui.basic;
 import purethought.animation.IBTransformAnimable;
 import purethought.geom.IBPoint;
 import purethought.geom.IBTransform;
-import purethought.util.BFactory;
+import purethought.platform.BFactory;
 
 
 

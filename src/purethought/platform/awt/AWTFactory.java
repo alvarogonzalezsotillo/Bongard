@@ -3,7 +3,7 @@ package purethought.platform.awt;
 import purethought.gui.basic.BLabel;
 import purethought.gui.basic.BSprite;
 import purethought.gui.basic.IBRaster;
-import purethought.util.BFactory;
+import purethought.platform.BFactory;
 
 public class AWTFactory extends BFactory {
 

@@ -1,6 +1,5 @@
-package purethought.util;
+package purethought.platform;
 
-import purethought.animation.BAnimator;
 import purethought.geom.IBPoint;
 import purethought.geom.IBTransform;
 import purethought.gui.basic.BLabel;

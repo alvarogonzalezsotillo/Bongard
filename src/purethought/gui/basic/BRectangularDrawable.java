@@ -4,7 +4,7 @@ import purethought.geom.BRectangle;
 import purethought.geom.IBPoint;
 import purethought.geom.IBRectangle;
 import purethought.geom.IBTransform;
-import purethought.util.BFactory;
+import purethought.platform.BFactory;
 
 public abstract class BRectangularDrawable extends BDrawable{
 	

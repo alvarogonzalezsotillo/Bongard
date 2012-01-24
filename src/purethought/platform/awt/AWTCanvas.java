@@ -19,7 +19,7 @@ import purethought.geom.BRectangle;
 import purethought.geom.IBRectangle;
 import purethought.gui.basic.BCanvas;
 import purethought.gui.event.IBEvent;
-import purethought.util.BFactory;
+import purethought.platform.BFactory;
 
 public class AWTCanvas extends BCanvas{
 	

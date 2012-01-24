@@ -7,7 +7,7 @@ import java.util.Random;
 import purethought.geom.BRectangle;
 import purethought.geom.IBRectangle;
 import purethought.gui.basic.IBRaster;
-import purethought.util.BFactory;
+import purethought.platform.BFactory;
 
 public abstract class BCardExtractor{
 	

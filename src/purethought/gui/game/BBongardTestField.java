@@ -7,11 +7,10 @@ import purethought.gui.basic.IBCanvas;
 import purethought.gui.container.BDrawableContainer;
 import purethought.gui.container.BFlippableContainer;
 import purethought.gui.container.IBFlippableDrawable;
-import purethought.gui.event.IBEvent;
+import purethought.platform.BFactory;
 import purethought.problem.BCardExtractor;
 import purethought.problem.BProblem;
 import purethought.problem.BProblemLocator;
-import purethought.util.BFactory;
 
 public class BBongardTestField extends BDrawableContainer implements IBFlippableDrawable{
 

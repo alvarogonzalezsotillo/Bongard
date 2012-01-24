@@ -10,7 +10,7 @@ import purethought.geom.IBTransform;
 import purethought.gui.basic.IBCanvas;
 import purethought.gui.event.BEventAdapter;
 import purethought.gui.event.IBEvent;
-import purethought.util.BFactory;
+import purethought.platform.BFactory;
 
 public class BFlippableContainer extends BDrawableContainer {
 	private static final double MARGIN = 50;

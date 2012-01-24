@@ -11,8 +11,8 @@ import javax.swing.SwingUtilities;
 import purethought.gui.container.BFlippableContainer;
 import purethought.gui.game.BGameModel;
 import purethought.gui.game.IBGame;
+import purethought.platform.BFactory;
 import purethought.problem.BProblemLocator;
-import purethought.util.BFactory;
 
 public class AWTGame implements IBGame, Runnable{
 

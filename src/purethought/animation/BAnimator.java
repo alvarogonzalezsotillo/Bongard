@@ -2,7 +2,7 @@ package purethought.animation;
 
 import java.util.ArrayList;
 
-import purethought.util.BFactory;
+import purethought.platform.BFactory;
 
 public abstract class BAnimator {
 

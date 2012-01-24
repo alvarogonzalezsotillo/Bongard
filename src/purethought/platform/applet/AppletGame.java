@@ -6,10 +6,7 @@ import java.awt.Button;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import purethought.gui.game.IBGame;
-import purethought.platform.awt.AWTCanvas;
-import purethought.platform.awt.AWTGame;
-import purethought.util.BFactory;
+import purethought.platform.BFactory;
 
 @SuppressWarnings("serial")
 public class AppletGame extends Applet {

@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import javax.swing.Timer;
 
 import purethought.animation.BAnimator;
-import purethought.util.BFactory;
 
 
 public class AWTAnimator extends BAnimator{

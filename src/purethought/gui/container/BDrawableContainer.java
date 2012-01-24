@@ -9,7 +9,7 @@ import purethought.gui.event.BListenerList;
 import purethought.gui.event.IBEvent;
 import purethought.gui.event.IBEventListener;
 import purethought.gui.event.IBEventSource;
-import purethought.util.BFactory;
+import purethought.platform.BFactory;
 import purethought.util.BPointerSupport;
 
 public abstract class BDrawableContainer extends BDrawable implements IBDrawableContainer{

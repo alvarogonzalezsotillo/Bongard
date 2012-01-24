@@ -6,7 +6,7 @@ import purethought.geom.IBTransform;
 import purethought.gui.container.IBDrawableContainer;
 import purethought.gui.event.BListenerList;
 import purethought.gui.event.IBEventListener;
-import purethought.util.BFactory;
+import purethought.platform.BFactory;
 
 public abstract class BCanvas implements IBCanvas{
 	

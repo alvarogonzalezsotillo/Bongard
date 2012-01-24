@@ -5,6 +5,7 @@ import purethought.geom.IBTransform;
 import purethought.gui.basic.BLabel;
 import purethought.gui.basic.IBCanvas;
 import purethought.gui.event.BEventAdapter;
+import purethought.platform.BFactory;
 
 public class BPointerSupport extends BEventAdapter{
 	
