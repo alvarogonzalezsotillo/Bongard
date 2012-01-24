@@ -34,7 +34,8 @@ public class AWTAnimator extends BAnimator{
 				int c = (int) System.currentTimeMillis();
 				_step = c - _lastMillis;
 				_lastMillis = c;
-				int m = Math.min(2*_millis, _step);
+				
+				int m = Math.min(10*_millis, _step);
 				
 				boolean update = needsUpdate();
 				stepAnimations(m);

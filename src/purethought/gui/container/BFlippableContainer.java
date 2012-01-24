@@ -241,11 +241,6 @@ public class BFlippableContainer extends BDrawableContainer {
 		if (current() != null)
 			current().draw(c, t);
 
-		{
-			BBox b = BFactory.instance().box( BRectangle.grow(originalSize(), -1) );
-			b.draw(c, t);
-		}
-		
 		draw_boxes( c, t );
 		
 		super.draw_internal(c, t);
