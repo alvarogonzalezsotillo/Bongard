@@ -1,5 +1,7 @@
 package purethought.gui.container;
 
+import javax.crypto.IllegalBlockSizeException;
+
 import purethought.animation.BFixedDurationAnimation;
 import purethought.animation.BWaitForAnimation;
 import purethought.animation.IBAnimation;
@@ -8,10 +10,13 @@ import purethought.geom.IBPoint;
 import purethought.geom.IBRectangle;
 import purethought.geom.IBTransform;
 import purethought.gui.basic.BBox;
+import purethought.gui.basic.BSprite;
 import purethought.gui.basic.IBCanvas;
+import purethought.gui.basic.IBRaster;
 import purethought.gui.event.BEventAdapter;
 import purethought.gui.event.IBEvent;
 import purethought.platform.BFactory;
+import purethought.platform.BImageLocator;
 
 public class BFlippableContainer extends BDrawableContainer {
 	private static final double MARGIN = 50;
@@ -142,13 +147,29 @@ public class BFlippableContainer extends BDrawableContainer {
 
 	private double _dx;
 
+
+	private BSprite _backgroundSprite;
+
 	public BFlippableContainer(IBFlippableModel model) {
 		this(0, model);
 	}
 
 	public BFlippableContainer(int x, IBFlippableModel model) {
-		_model = model;
+		setModel(model);
 		setCurrent(x);
+	}
+
+	private void setModel(IBFlippableModel model) {
+		_model = model;
+		BImageLocator background = _model.background();
+		if( background != null ){
+			IBRaster r = BFactory.instance().raster( background );
+			_backgroundSprite = BFactory.instance().sprite(r);
+			_backgroundSprite.setAlfa(.3);
+		}
+		else{
+			_backgroundSprite = null;
+		}
 	}
 
 	private double drawableOffset(){
@@ -211,6 +232,8 @@ public class BFlippableContainer extends BDrawableContainer {
 
 	@Override
 	protected void draw_internal(IBCanvas c, IBTransform t) {
+		draw_background(c,t);
+
 		if (left() != null)
 			left().draw(c, t);
 		if (right() != null)
@@ -229,7 +252,31 @@ public class BFlippableContainer extends BDrawableContainer {
 		
 	}
 	
+	private void draw_background(IBCanvas c, IBTransform t) {
+		if( _backgroundSprite == null ){
+			return;
+		}
+		
+		double scale = (originalSize().h())/_backgroundSprite.originalSize().h();
+		double dx = _backgroundSprite.originalSize().w()/2;
+		
+		double offsetAtLastIndex = -_backgroundSprite.originalSize().w() + originalSize().w()/scale;
+		double offsetPerIndex = offsetAtLastIndex/(_model.width()-1);
+		double offset = offsetPerIndex*currentIndex();
+		double offsetFromAnimation = -offsetPerIndex*drawableOffset()/(originalSize().w()+MARGIN);
+		offset += offsetFromAnimation;
+		dx += offset;
+		
+		dx *= scale;
+		double dy = originalSize().h()/2;
+		_backgroundSprite.setTransform( BFactory.instance().identityTransform() );
+		_backgroundSprite.translate(dx, dy);
+		_backgroundSprite.scale(scale, scale);
+		_backgroundSprite.draw(c, t);
+	}
+
 	protected void draw_boxes(IBCanvas c, IBTransform t){
+		// TODO OPTIMIZE CREATION OF BOXES
 		double boxsize = 10;
 		double boxspacing = 20;
 		
