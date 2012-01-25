@@ -41,7 +41,7 @@ public abstract class BCardExtractor{
 	
 	public static BProblem extract( BImageLocator test ){
 		BCardExtractor ce = BFactory.instance().cardExtractor();
-		IBRaster testImage = BFactory.instance().raster(test);
+		IBRaster testImage = BFactory.instance().raster(test,false);
 		IBRaster[][] images = ce.extractImages(testImage);
 		return new BProblem(testImage,images[0], images[1]);
 	}

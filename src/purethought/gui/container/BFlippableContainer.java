@@ -151,10 +151,10 @@ public class BFlippableContainer extends BDrawableContainer {
 	private BSprite _backgroundSprite;
 
 	public BFlippableContainer(IBFlippableModel model) {
-		this(0, model);
+		this( model, model.width()/2);
 	}
 
-	public BFlippableContainer(int x, IBFlippableModel model) {
+	public BFlippableContainer(IBFlippableModel model,int x) {
 		setModel(model);
 		setCurrent(x);
 	}
@@ -163,7 +163,7 @@ public class BFlippableContainer extends BDrawableContainer {
 		_model = model;
 		BImageLocator background = _model.background();
 		if( background != null ){
-			IBRaster r = BFactory.instance().raster( background );
+			IBRaster r = BFactory.instance().raster( background, true );
 			_backgroundSprite = BFactory.instance().sprite(r);
 			_backgroundSprite.setAlfa(.3);
 		}

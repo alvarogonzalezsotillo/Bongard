@@ -33,6 +33,6 @@ public abstract class BFactory {
 	public abstract BSprite sprite( IBRaster raster );
 	public abstract BLabel label( String text );
 	public abstract BBox box( IBRectangle r );
-	public abstract IBRaster raster(BImageLocator test);
+	public abstract IBRaster raster(BImageLocator test, boolean transparent);
 	
 }
