@@ -64,7 +64,7 @@ public class AWTGame implements IBGame, Runnable{
 	@Override
 	public void run() {
 		Container c = container();
-		BImageLocator[] problems = f().cardExtractor().randomProblems(13);
+		BImageLocator[] problems = f().cardExtractor().randomProblems(7);
 		canvas().setDrawable( new BFlippableContainer( new BGameModel(problems ) ) );
 		c.setVisible(true);
 	}

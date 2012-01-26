@@ -65,8 +65,8 @@ public class AWTFactory extends BFactory {
 	}
 
 	@Override
-	public AWTBox box(IBRectangle r) {
-		return new AWTBox(r);
+	public AWTBox box(IBRectangle r, String color) {
+		return new AWTBox(r, color);
 	}
 
 	@Override

@@ -12,9 +12,11 @@ import purethought.geom.BRectangle;
 import purethought.geom.IBPoint;
 import purethought.geom.IBRectangle;
 import purethought.geom.IBTransform;
+import purethought.gui.basic.BBox;
 import purethought.gui.basic.BLabel;
 import purethought.gui.basic.BSprite;
 import purethought.gui.basic.IBCanvas;
+import purethought.gui.basic.IBDrawable;
 import purethought.gui.container.BDrawableContainer;
 import purethought.gui.container.BFlippableContainer;
 import purethought.gui.container.IBFlippableDrawable;
@@ -117,6 +119,12 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 				boolean correctAnswer = _set1Over && _problem.isOfSet1(_questionSprite.raster()) ||
 										_set2Over && _problem.isOfSet2(_questionSprite.raster());
 				
+				boolean badAnswer =  _set2Over && _problem.isOfSet1(_questionSprite.raster()) ||
+									 _set1Over && _problem.isOfSet2(_questionSprite.raster());
+				
+				if( correctAnswer && !_badAnswer ) _correctAnswer = true;
+				if( badAnswer && !_correctAnswer ) _badAnswer = true;
+				
 				IBPoint dest = f.point(105*2, 105*3);
 				if( correctAnswer ){
 					dest = _questionSprite.temporaryPosition();
@@ -150,6 +158,7 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 			_set1Over = _set2Over = _dragQuestion = false;
 			return false;
 		}
+<<<<<<< HEAD
 
 		@Override
 		public boolean pointerClick(IBPoint p) {
@@ -158,23 +167,52 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 			//setProblem(test);
 			return true;
 		}
+=======
+>>>>>>> 44cf15fe139ff4a37780c070e16bbc9cf734c9d1
 	};
 
 	private BFlippableContainer _container;
+
+	private BGameModel _model;
+
+	private boolean _badAnswer;
+
+	private boolean _correctAnswer;
+
+	private BBox _icon;
+
+	private BBox _correctIcon;
+
+	private BBox _badIcon;
 
 	/**
 	 * 
 	 * @param canvas
 	 */
 	public BGameField(){
-		this(null);
+		this(null,null);
 	}
 	
-	public BGameField(BImageLocator test){
+
+	public BGameField(BImageLocator test,BGameModel model){
 		listener().addListener( _adapter );
 		setProblem(test);
+		setModel(model);
+		IBRectangle r = new BRectangle(0, 0, BFlippableContainer.ICON_SIZE, BFlippableContainer.ICON_SIZE);
+		_icon = BFactory.instance().box(r, "ffffff");
+		_icon.setFilled(false);
+		_correctIcon = BFactory.instance().box(r, "ffffff");
+		_badIcon = BFactory.instance().box(r, "000000");
 	}
 	
+	private void setModel(BGameModel model) {
+		_model = model;
+	}
+	
+	private BGameModel model(){
+		return _model;
+	}
+
 	/**
 	 * 
 	 * @param test
@@ -233,7 +271,6 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 				new BRotateAnimation(2*Math.PI/millis, millis)
 			)
 		);
-		
 	}
 
 	
@@ -274,17 +311,28 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	}
 
 	@Override
-	public void hided() {
-	}
-
-	@Override
 	public void setFlippableContainer(BFlippableContainer c) {
 		_container = c;
-		
+	}
+	
+	public boolean goodAnswer(){
+		return _correctAnswer;
+	}
+	
+	public boolean badAnswer(){
+		return _badAnswer;
 	}
 
+	
 	@Override
-	public void showed() {
+	public BBox icon(){
+		if( goodAnswer() ){
+			return _correctIcon;
+		}
+		if( badAnswer() ){
+			return _badIcon;
+		}
+		return _icon;
 	}
 
 }
