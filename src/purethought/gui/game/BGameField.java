@@ -170,6 +170,10 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 
 	private BBox _icon;
 
+	private BBox _correctIcon;
+
+	private BBox _badIcon;
+
 	/**
 	 * 
 	 * @param canvas
@@ -183,8 +187,11 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 		listener().addListener( _adapter );
 		setProblem(test);
 		setModel(model);
-		IBRectangle r = new BRectangle(-1, -1, 2, 2);
-		_icon = BFactory.instance().box(r);
+		IBRectangle r = new BRectangle(0, 0, BFlippableContainer.ICON_SIZE, BFlippableContainer.ICON_SIZE);
+		_icon = BFactory.instance().box(r, "ffffff");
+		_icon.setFilled(false);
+		_correctIcon = BFactory.instance().box(r, "ffffff");
+		_badIcon = BFactory.instance().box(r, "000000");
 	}
 	
 	private void setModel(BGameModel model) {
@@ -253,7 +260,6 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 				new BRotateAnimation(2*Math.PI/millis, millis)
 			)
 		);
-		
 	}
 
 	
@@ -309,6 +315,12 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	
 	@Override
 	public BBox icon(){
+		if( goodAnswer() ){
+			return _correctIcon;
+		}
+		if( badAnswer() ){
+			return _badIcon;
+		}
 		return _icon;
 	}
 

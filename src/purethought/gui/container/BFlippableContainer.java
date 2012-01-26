@@ -7,7 +7,6 @@ import purethought.geom.BRectangle;
 import purethought.geom.IBPoint;
 import purethought.geom.IBRectangle;
 import purethought.geom.IBTransform;
-import purethought.gui.basic.BBox;
 import purethought.gui.basic.BSprite;
 import purethought.gui.basic.IBCanvas;
 import purethought.gui.basic.IBRaster;
@@ -149,6 +148,11 @@ public class BFlippableContainer extends BDrawableContainer {
 
 	private BSprite _backgroundSprite;
 
+	public static final double ICON_SIZE = 15;
+	private static final double BOX_SPACING = 20;
+	
+
+
 	public BFlippableContainer(IBFlippableModel model) {
 		this( model, model.width()/2);
 	}
@@ -270,27 +274,24 @@ public class BFlippableContainer extends BDrawableContainer {
 	}
 
 	protected void draw_boxes(IBCanvas c, IBTransform t){
-		// TODO OPTIMIZE CREATION OF BOXES
-		double boxsize = 10;
-		double boxspacing = 20;
 		
 		int n = _model.width();
-		double widthofboxes = boxsize*n + boxspacing*(n-1);
+		double widthofboxes = ICON_SIZE*n + BOX_SPACING*(n-1);
 		IBRectangle os = originalSize();
 		double x0 = os.x() + ( os.w() - widthofboxes )/2;
 		
 		for( int i = 0 ; i < n ; i++ ){
-			IBRectangle r = new BRectangle( x0+boxspacing/2+i*(boxspacing+boxsize), os.y() + os.h() - boxspacing*1.5, boxsize/2, boxsize/2 );
+			IBRectangle r = new BRectangle( x0+BOX_SPACING/2+i*(BOX_SPACING+ICON_SIZE), os.y() + os.h() - BOX_SPACING*1.5, ICON_SIZE/2, ICON_SIZE/2 );
 			if( i == currentIndex() ){
 				r = BRectangle.grow(r, 3);
 			}
 			IBRectangularDrawable rd = _model.drawable(i).icon();
 			if( rd == null ){
-				rd = BFactory.instance().box( r );
+				rd = BFactory.instance().box( r, "aaaaaa" );
 			}
 			else{
-				t = rd.transform();
-				t.setTo(rd.originalSize(), r);
+				IBTransform rdt = rd.transform();
+				rdt.setTo(rd.originalSize(), r);
 			}
 			
 			rd.draw(c, t);

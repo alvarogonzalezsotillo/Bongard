@@ -16,8 +16,12 @@ import purethought.gui.basic.IBCanvas;
 
 public class AWTBox extends BBox{
 
-	public AWTBox(IBRectangle r) {
-		super(r);
+	private Color _c;
+	
+	public AWTBox(IBRectangle r, String color ){
+		super(r,color);
+		
+		_c = Color.decode("#" + color );
 	}
 
 	@Override
@@ -27,12 +31,16 @@ public class AWTBox extends BBox{
 		Graphics2D g2d = canvas.getGraphics();
 		g2d.transform((AffineTransform) t);
 		
-		g2d.setColor( Color.white );
+		g2d.setColor( _c );
 		g2d.setStroke( new BasicStroke(2) );
 
 		IBRectangle r = originalSize();
 		
 		Shape s = new Rectangle2D.Double( r.x(), r.y(), r.w(), r.h() );
+		if( filled() ){
+			g2d.setPaint(_c);
+			g2d.fill(s);
+		}
 		g2d.draw(s);
 		
 		g2d.dispose();

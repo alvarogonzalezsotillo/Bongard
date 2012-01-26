@@ -127,9 +127,9 @@ public class AWTCanvas extends BCanvas{
 		Image i = getOffscreenImage();
 		Graphics2D g2d = (Graphics2D) i.getGraphics();
 		
-		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-		g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
+		//g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		//g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+		//g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
 		g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 		
 		IBRectangle os = drawable().originalSize();
@@ -153,7 +153,7 @@ public class AWTCanvas extends BCanvas{
 	public void eraseBackground(){
 		Image i = getOffscreenImage();
 		Graphics graphics = i.getGraphics();
-		graphics.setColor( Color.gray );
+		graphics.setColor( Color.darkGray );
 		graphics.fillRect(0, 0, i.getWidth(null), i.getHeight(null));
 		graphics.dispose();
 	}
