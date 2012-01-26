@@ -56,26 +56,26 @@ public class AWTTransform extends AffineTransform implements IBTransform{
 
 	
 	
-	public static void test(String[] args) {
+	public static void main(String[] args) {
 		AWTTransform t = new AWTTransform();
 		
-		IBRectangle o = new BRectangle(-100, -100, 200, 200);
-		IBRectangle d = new BRectangle(0, 0, 50, 100);
+		IBRectangle o = new BRectangle(-1, -1, 2, 2);
+		IBRectangle d = new BRectangle(0, 0, 50, 50);
 		
 		t.setTo(o, d);
 		
 		IBPoint p; 
 		
-		p = new AWTPoint(-100,-100);
+		p = new AWTPoint(-1,-1);
 		System.out.println( p + " --> " + t.transform(p) );
 
-		p = new AWTPoint(100,100);
+		p = new AWTPoint(1,1);
 		System.out.println( p + " --> " + t.transform(p) );
 
-		p = new AWTPoint(-100,100);
+		p = new AWTPoint(-1,1);
 		System.out.println( p + " --> " + t.transform(p) );
 
-		p = new AWTPoint(100,-100);
+		p = new AWTPoint(1,-1);
 		System.out.println( p + " --> " + t.transform(p) );
 
 		p = new AWTPoint(-0,0);

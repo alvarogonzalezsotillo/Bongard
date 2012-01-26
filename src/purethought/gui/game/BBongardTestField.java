@@ -4,6 +4,7 @@ import purethought.geom.IBRectangle;
 import purethought.geom.IBTransform;
 import purethought.gui.basic.BSprite;
 import purethought.gui.basic.IBCanvas;
+import purethought.gui.basic.IBRectangularDrawable;
 import purethought.gui.container.BDrawableContainer;
 import purethought.gui.container.BFlippableContainer;
 import purethought.gui.container.IBFlippableDrawable;
@@ -55,9 +56,6 @@ public class BBongardTestField extends BDrawableContainer implements IBFlippable
 		return _container;
 	}
 
-	@Override
-	public void hided() {
-	}
 
 	@Override
 	public void setFlippableContainer(BFlippableContainer c) {
@@ -66,6 +64,8 @@ public class BBongardTestField extends BDrawableContainer implements IBFlippable
 	}
 
 	@Override
-	public void showed() {
+	public IBRectangularDrawable icon() {
+		return null;
 	}
+
 }

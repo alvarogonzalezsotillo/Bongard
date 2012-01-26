@@ -1,7 +1,5 @@
 package purethought.gui.container;
 
-import javax.crypto.IllegalBlockSizeException;
-
 import purethought.animation.BFixedDurationAnimation;
 import purethought.animation.BWaitForAnimation;
 import purethought.animation.IBAnimation;
@@ -13,6 +11,7 @@ import purethought.gui.basic.BBox;
 import purethought.gui.basic.BSprite;
 import purethought.gui.basic.IBCanvas;
 import purethought.gui.basic.IBRaster;
+import purethought.gui.basic.IBRectangularDrawable;
 import purethought.gui.event.BEventAdapter;
 import purethought.gui.event.IBEvent;
 import purethought.platform.BFactory;
@@ -285,8 +284,16 @@ public class BFlippableContainer extends BDrawableContainer {
 			if( i == currentIndex() ){
 				r = BRectangle.grow(r, 3);
 			}
-			BBox b = BFactory.instance().box( r );
-			b.draw(c, t);
+			IBRectangularDrawable rd = _model.drawable(i).icon();
+			if( rd == null ){
+				rd = BFactory.instance().box( r );
+			}
+			else{
+				t = rd.transform();
+				t.setTo(rd.originalSize(), r);
+			}
+			
+			rd.draw(c, t);
 		}
 	}
 

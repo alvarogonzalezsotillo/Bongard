@@ -17,7 +17,7 @@ public class BGameModel implements IBFlippableModel{
 		_drawables = new BGameField[problems.length];
 		for (int i = 0; i < problems.length; i++) {
 			BImageLocator l = problems[i];
-			_drawables[i] = new BGameField(l);
+			_drawables[i] = new BGameField(l,this);
 		}
 	}
 
