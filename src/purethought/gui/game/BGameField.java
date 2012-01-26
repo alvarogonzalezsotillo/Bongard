@@ -158,17 +158,6 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 			_set1Over = _set2Over = _dragQuestion = false;
 			return false;
 		}
-<<<<<<< HEAD
-
-		@Override
-		public boolean pointerClick(IBPoint p) {
-			//BFactory instance = BFactory.instance();
-			//BImageLocator test = instance.cardExtractor().randomProblem();
-			//setProblem(test);
-			return true;
-		}
-=======
->>>>>>> 44cf15fe139ff4a37780c070e16bbc9cf734c9d1
 	};
 
 	private BFlippableContainer _container;
