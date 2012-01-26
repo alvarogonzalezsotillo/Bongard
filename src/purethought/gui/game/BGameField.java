@@ -153,9 +153,9 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 
 		@Override
 		public boolean pointerClick(IBPoint p) {
-			BFactory instance = BFactory.instance();
-			BImageLocator test = instance.cardExtractor().randomProblem();
-			setProblem(test);
+			//BFactory instance = BFactory.instance();
+			//BImageLocator test = instance.cardExtractor().randomProblem();
+			//setProblem(test);
 			return true;
 		}
 	};
