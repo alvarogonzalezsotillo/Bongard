@@ -43,6 +43,7 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	private BLabel _pointer = BFactory.instance().label("O");
 	
 	public void autoSolve(){
+		
 		boolean isOfSet1 = _problem.isOfSet1(_questionSprite.raster());
 		
 		IBPoint orig = spritePosition(-1,1);
@@ -56,6 +57,7 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 		animation = new BConcatenateAnimation( animation,createOutSetAnimation(isOfSet1?_set1Sprites:_set2Sprites, null) );
 		
 		BAnimator a = BFactory.instance().game().animator();
+		a.finishAnimations();
 		a.addAnimation(animation);
 	}
 
@@ -243,7 +245,7 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 		System.arraycopy(_set2Sprites, 0, _allSprites, _set1Sprites.length, _set2Sprites.length );
 		_allSprites[_set1Sprites.length+_set2Sprites.length] = _questionSprite;
 		
-		alignSprites();
+		alignSprites(400);
 	}
 	
 	private IBPoint spritePosition( int column, int row ){
@@ -259,9 +261,8 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	}
 	
 	
-	private void alignSprites(){
+	private void alignSprites(int millis){
 		int s = 105;
-		int millis = 400;
 		
 		BAnimator animator = animator();
 
