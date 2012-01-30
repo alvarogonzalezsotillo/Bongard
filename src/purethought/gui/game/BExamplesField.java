@@ -66,8 +66,7 @@ public class BExamplesField extends BDrawableContainer{
 			_autosolving = false;
 			_problemIndex++;
 			if( _problemIndex >= _problems.length ){
-				BImageLocator[] problems = BFactory.instance().cardExtractor().randomProblems(7);
-				BFactory.instance().game().canvas().setDrawable( new BFlippableContainer( new BGameModel(problems ) ) );
+				BFactory.instance().game().canvas().setDrawable( new BStartField() );
 			}
 			else{
 				_gameField.setProblem(_problems[_problemIndex]);
@@ -79,7 +78,7 @@ public class BExamplesField extends BDrawableContainer{
 		listener().addListener( _adapter );
 		_gameField.setProblem(_problems[_problemIndex]);
 		
-		BImageLocator loc = new BImageLocator( "/images/arrecibo.png");
+		BImageLocator loc = new BImageLocator( "/images/backgrounds/arrecibo.png");
 		IBRaster raster = BFactory.instance().raster(loc, true);
 		_background = BFactory.instance().sprite(raster);
 		

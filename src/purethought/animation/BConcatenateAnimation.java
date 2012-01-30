@@ -20,6 +20,7 @@ public class BConcatenateAnimation implements IBAnimation{
 	
 	@Override
 	public boolean endReached() {
+		System.out.println( currentAnimation() );
 		return currentAnimation() == null;
 	}
 	
