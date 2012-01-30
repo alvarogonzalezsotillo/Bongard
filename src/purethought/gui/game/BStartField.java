@@ -69,16 +69,9 @@ public class BStartField extends BDrawableContainer{
 	@Override
 	protected void draw_internal(IBCanvas c, IBTransform t) {
 		super.draw_internal(c, t);
-		BFactory.instance().box( BRectangle.grow( originalSize(), -3), "888888").draw(c, t);
 		
 		_startSprite.draw(c,t);
 		_helpSprite.draw(c,t);
-		
-		{
-			BLabel l = BFactory.instance().label("*");
-			l.transform().translate(70,300);
-			l.draw(c, t);
-		}
 		
 	}
 

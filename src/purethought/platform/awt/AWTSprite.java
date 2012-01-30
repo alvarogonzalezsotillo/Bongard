@@ -14,7 +14,7 @@ import purethought.gui.basic.IBRaster;
 
 public class AWTSprite extends BSprite{
 	
-	private static final boolean SHOW_POSITION = true;
+	private static final boolean SHOW_POSITION = false;
 
 	public AWTSprite(IBRaster raster) {
 		super(raster);
