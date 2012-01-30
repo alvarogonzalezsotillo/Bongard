@@ -13,6 +13,10 @@ public class BConcatenateAnimation implements IBAnimation{
 		this(a,animations);
 	}
 	
+	public BConcatenateAnimation(IBAnimation ... animations ){
+		_animations = animations;
+	}
+	
 	
 	@Override
 	public boolean endReached() {

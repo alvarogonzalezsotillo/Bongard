@@ -37,4 +37,9 @@ public class BRectangle implements IBRectangle{
 		IBRectangle ret = new BRectangle(x, y, w, h);
 		return ret;
 	}
+	
+	@Override
+	public String toString() {
+		return "(" + x() + "," + y() + "," + w() + "," + h() + ")";
+	}
 }

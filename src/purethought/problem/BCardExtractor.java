@@ -103,12 +103,22 @@ public abstract class BCardExtractor{
 
 	public BImageLocator[] allProblems(){
 		int count = 280;
-		BImageLocator[] ret = new BImageLocator[280];
+		BImageLocator[] ret = new BImageLocator[count];
 		for( int i = 0 ; i < count ; i++ ){
 			ret[i] = new BImageLocator(String.format("/images/tests/p%03d.png", i+1 ));
 		}
 		return ret;
 	}
+	
+	public BImageLocator[] exampleProblems(){
+		int count = 3;
+		BImageLocator[] ret = new BImageLocator[count];
+		for( int i = 0 ; i < count ; i++ ){
+			ret[i] = new BImageLocator(String.format("/images/examples/p%03d.png", i+1 ));
+		}
+		return ret;
+	}
+
 
 
 	public BImageLocator[] randomProblems(int n){

@@ -28,6 +28,12 @@ public abstract class BAnimator {
 		}
 	}
 	
+	public void finishAnimations(){
+		while(needsUpdate()){
+			stepAnimations(1000);
+		}
+	}
+	
 	protected void refresh() {
 		BFactory.instance().game().canvas().refresh();
 	}

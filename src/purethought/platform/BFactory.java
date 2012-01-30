@@ -32,7 +32,7 @@ public abstract class BFactory {
 	public abstract IBGame game();
 	public abstract BSprite sprite( IBRaster raster );
 	public abstract BLabel label( String text );
-	public abstract BBox box( IBRectangle r );
+	public abstract BBox box( IBRectangle r, String color );
 	public abstract IBRaster raster(BImageLocator test, boolean transparent);
 	
 }

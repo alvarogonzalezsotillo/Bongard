@@ -8,6 +8,7 @@ import purethought.geom.BRectangle;
 import purethought.geom.IBPoint;
 import purethought.geom.IBRectangle;
 import purethought.geom.IBTransform;
+import purethought.platform.BFactory;
 
 @SuppressWarnings("serial")
 public class AWTTransform extends AffineTransform implements IBTransform{
@@ -35,53 +36,102 @@ public class AWTTransform extends AffineTransform implements IBTransform{
 		transform((Point2D) p, ret);
 		return ret;
 	}
+	private static void testPoint(String s, IBRectangle o, AWTTransform t) {
+		IBPoint p; 
+		System.out.println( s + "-------------------------------------" );
+		
+		p = new AWTPoint(o.x(), o.y());
+		System.out.println( p + " --> " + t.transform(p) );
 
+		p = new AWTPoint(o.x()+o.w(), o.y()+o.h() );
+		System.out.println( p + " --> " + t.transform(p) );
+
+		p = new AWTPoint(o.x(),o.y()+o.h());
+		System.out.println( p + " --> " + t.transform(p) );
+
+		p = new AWTPoint(o.x()+o.w(), o.y());
+		System.out.println( p + " --> " + t.transform(p) );
+
+		p = new AWTPoint(-0,0);
+		System.out.println( p + " --> " + t.transform(p) );
+	}
+	
 	@Override
-	public void setTo(IBRectangle origin, IBRectangle destination){
+	public void setTo(IBRectangle origin, IBRectangle destination, boolean keepAspectRatio, boolean fitInside){
 		double sx = destination.w() / origin.w();
 		double sy = destination.h() / origin.h();
 		
-		/*if keep aspect ratio*/{
-		sx = Math.min( sx, sy );
-		sy = Math.min( sx, sy );
+		if( keepAspectRatio ){
+			if( fitInside ){
+				sx = Math.min( sx, sy );
+			}
+			else{
+				sx = Math.max( sx, sy );
+			}
+			sy = sx;
 		}
+		
+		IBPoint oCenter = new AWTPoint( origin.x() + origin.w()/2, origin.y() + origin.h()/2 );
+		IBPoint dCenter = new AWTPoint( destination.x() + destination.w()/2, destination.y() + destination.h()/2 );
 
-		double dx = (destination.w()/sx-origin.w())/2;
-		double dy = (destination.h()/sy-origin.h())/2;
 		
 		setToIdentity();
-		scale(sx, sy);
-		translate(dx, dy);
+
+		// AL ORIGEN
+		IBTransform t = BFactory.instance().identityTransform();
+		t.translate( -oCenter.x(), -oCenter.y() );
+		preConcatenate(t);
+		//testPoint("origen", origin, this);
+		
+		// CAMBIO TAMA�O
+		t = BFactory.instance().identityTransform();
+		t.scale(sx, sy);
+		preConcatenate(t);
+		//testPoint("tama�o", origin, this);
+		
+		// LO LLEVO A SU SITIO DE DESTINO
+		translate(dCenter.x()/sx, dCenter.y()/sy );
+		//testPoint("destino", origin, this);
+		
+		//testSetTo(origin, destination, this);
 	}
 
 	
 	
+
 	public static void main(String[] args) {
 		AWTTransform t = new AWTTransform();
 		
 		IBRectangle o = new BRectangle(-1, -1, 2, 2);
 		IBRectangle d = new BRectangle(0, 0, 50, 50);
+
+		t.setTo(o, d, true, true);
 		
-		t.setTo(o, d);
-		
-		IBPoint p; 
-		
-		p = new AWTPoint(-1,-1);
-		System.out.println( p + " --> " + t.transform(p) );
-
-		p = new AWTPoint(1,1);
-		System.out.println( p + " --> " + t.transform(p) );
-
-		p = new AWTPoint(-1,1);
-		System.out.println( p + " --> " + t.transform(p) );
-
-		p = new AWTPoint(1,-1);
-		System.out.println( p + " --> " + t.transform(p) );
-
-		p = new AWTPoint(-0,0);
-		System.out.println( p + " --> " + t.transform(p) );
+		testPoint("Final", o, t);
 
 	}
+		
+		
+	private static void testSetTo(IBRectangle o, IBRectangle d, IBTransform t) {
+		IBPoint tp, p;
+
+		
+		p = BFactory.instance().point(o.x(), o.y() );
+		tp = t.transform(p);
+		if( Math.abs(tp.x()-d.x())>0.01 ) 
+			throw new IllegalStateException( o + " -- " + d + "--" + p + "--" + tp );
+		if( Math.abs(tp.y()-d.y())>0.01 ) 
+			throw new IllegalStateException( o + " -- " + d + "--" +p + "--" + tp );
+		
+		p = BFactory.instance().point(o.x()+o.w(), o.y()+o.h() );
+		tp = t.transform(p);
+		if( Math.abs(tp.x()-d.x()-d.w())>0.01 ) 
+			throw new IllegalStateException( o + " -- " + d + "--" +p + "--" + tp );
+		if( Math.abs(tp.y()-d.y()-d.h())>0.01 ) 
+			throw new IllegalStateException( o + " -- " + d + "--" +p + "--" + tp );
+	}
+
+
 
 	@Override
 	public IBTransform inverse() {
