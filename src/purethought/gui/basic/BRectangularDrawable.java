@@ -6,7 +6,7 @@ import purethought.geom.IBRectangle;
 import purethought.geom.IBTransform;
 import purethought.platform.BFactory;
 
-public abstract class BRectangularDrawable extends BDrawable{
+public abstract class BRectangularDrawable extends BDrawable implements IBRectangularDrawable{
 	
 	private IBRectangle _originalPosition;
 

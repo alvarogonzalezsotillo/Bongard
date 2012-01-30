@@ -12,9 +12,11 @@ import purethought.geom.BRectangle;
 import purethought.geom.IBPoint;
 import purethought.geom.IBRectangle;
 import purethought.geom.IBTransform;
+import purethought.gui.basic.BBox;
 import purethought.gui.basic.BLabel;
 import purethought.gui.basic.BSprite;
 import purethought.gui.basic.IBCanvas;
+import purethought.gui.basic.IBDrawable;
 import purethought.gui.container.BDrawableContainer;
 import purethought.gui.container.BFlippableContainer;
 import purethought.gui.container.IBFlippableDrawable;
@@ -117,6 +119,12 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 				boolean correctAnswer = _set1Over && _problem.isOfSet1(_questionSprite.raster()) ||
 										_set2Over && _problem.isOfSet2(_questionSprite.raster());
 				
+				boolean badAnswer =  _set2Over && _problem.isOfSet1(_questionSprite.raster()) ||
+									 _set1Over && _problem.isOfSet2(_questionSprite.raster());
+				
+				if( correctAnswer && !_badAnswer ) _correctAnswer = true;
+				if( badAnswer && !_correctAnswer ) _badAnswer = true;
+				
 				IBPoint dest = f.point(105*2, 105*3);
 				if( correctAnswer ){
 					dest = _questionSprite.temporaryPosition();
@@ -150,31 +158,43 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 			_set1Over = _set2Over = _dragQuestion = false;
 			return false;
 		}
-
-		@Override
-		public boolean pointerClick(IBPoint p) {
-			BFactory instance = BFactory.instance();
-			BImageLocator test = instance.cardExtractor().randomProblem();
-			setProblem(test);
-			return true;
-		}
 	};
 
 	private BFlippableContainer _container;
+
+	private BGameModel _model;
+
+	private boolean _badAnswer;
+
+	private boolean _correctAnswer;
+
+	private BBox _icon;
 
 	/**
 	 * 
 	 * @param canvas
 	 */
 	public BGameField(){
-		this(null);
+		this(null,null);
 	}
 	
-	public BGameField(BImageLocator test){
+
+	public BGameField(BImageLocator test,BGameModel model){
 		listener().addListener( _adapter );
 		setProblem(test);
+		setModel(model);
+		IBRectangle r = new BRectangle(-1, -1, 2, 2);
+		_icon = BFactory.instance().box(r);
 	}
 	
+	private void setModel(BGameModel model) {
+		_model = model;
+	}
+	
+	private BGameModel model(){
+		return _model;
+	}
+
 	/**
 	 * 
 	 * @param test
@@ -274,17 +294,22 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	}
 
 	@Override
-	public void hided() {
-	}
-
-	@Override
 	public void setFlippableContainer(BFlippableContainer c) {
 		_container = c;
-		
+	}
+	
+	public boolean goodAnswer(){
+		return _correctAnswer;
+	}
+	
+	public boolean badAnswer(){
+		return _badAnswer;
 	}
 
+	
 	@Override
-	public void showed() {
+	public BBox icon(){
+		return _icon;
 	}
 
 }
