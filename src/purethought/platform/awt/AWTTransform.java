@@ -57,13 +57,18 @@ public class AWTTransform extends AffineTransform implements IBTransform{
 	}
 	
 	@Override
-	public void setTo(IBRectangle origin, IBRectangle destination){
+	public void setTo(IBRectangle origin, IBRectangle destination, boolean keepAspectRatio, boolean fitInside){
 		double sx = destination.w() / origin.w();
 		double sy = destination.h() / origin.h();
 		
-		/*if keep aspect ratio*/{
-		sx = Math.min( sx, sy );
-		sy = Math.min( sx, sy );
+		if( keepAspectRatio ){
+			if( fitInside ){
+				sx = Math.min( sx, sy );
+			}
+			else{
+				sx = Math.max( sx, sy );
+			}
+			sy = sx;
 		}
 		
 		IBPoint oCenter = new AWTPoint( origin.x() + origin.w()/2, origin.y() + origin.h()/2 );
@@ -121,7 +126,7 @@ public class AWTTransform extends AffineTransform implements IBTransform{
 //		IBRectangle o = new BRectangle(0,0,2,2);
 //		IBRectangle d = new BRectangle(0, 0, 50, 50);
 
-		t.setTo(o, d);
+		t.setTo(o, d, true, true);
 		
 		testPoint("Final", o, t);
 

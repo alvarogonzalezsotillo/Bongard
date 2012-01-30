@@ -5,7 +5,9 @@ import purethought.animation.BRunnableAnimation;
 import purethought.geom.IBPoint;
 import purethought.geom.IBRectangle;
 import purethought.geom.IBTransform;
+import purethought.gui.basic.BSprite;
 import purethought.gui.basic.IBCanvas;
+import purethought.gui.basic.IBRaster;
 import purethought.gui.container.BDrawableContainer;
 import purethought.gui.container.BFlippableContainer;
 import purethought.gui.event.BEventAdapter;
@@ -15,6 +17,7 @@ import purethought.platform.BImageLocator;
 public class BExamplesField extends BDrawableContainer{
 
 	private BGameField _gameField = new BGameField();
+	private BSprite _background;
 	
 	@Override
 	public IBRectangle originalSize() {
@@ -23,6 +26,9 @@ public class BExamplesField extends BDrawableContainer{
 	
 	@Override
 	protected void draw_internal(IBCanvas c, IBTransform t) {
+		_background.transform().setTo(_background.originalSize(), originalSize(), true, false );
+		_background.setAlfa(.3);
+		_background.draw(c, t);
 		_gameField.draw(c,t);
 	}
 	
@@ -72,6 +78,11 @@ public class BExamplesField extends BDrawableContainer{
 	public BExamplesField() {
 		listener().addListener( _adapter );
 		_gameField.setProblem(_problems[_problemIndex]);
+		
+		BImageLocator loc = new BImageLocator( "/images/arrecibo.png");
+		IBRaster raster = BFactory.instance().raster(loc, true);
+		_background = BFactory.instance().sprite(raster);
+		
 	}
 
 }

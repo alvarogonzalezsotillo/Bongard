@@ -65,7 +65,7 @@ public abstract class BCanvas implements IBCanvas{
 		IBRectangle origin = drawable().originalSize();
 		IBRectangle destination = originalSize();
 		
-		transform().setTo(origin, destination);
+		transform().setTo(origin, destination, true, true);
 	}
 
 }

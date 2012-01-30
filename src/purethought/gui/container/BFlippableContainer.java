@@ -291,7 +291,7 @@ public class BFlippableContainer extends BDrawableContainer {
 			}
 			else{
 				IBTransform rdt = rd.transform();
-				rdt.setTo(rd.originalSize(), r);
+				rdt.setTo(rd.originalSize(), r, true, true);
 			}
 			
 			rd.draw(c, t);
@@ -339,7 +339,7 @@ public class BFlippableContainer extends BDrawableContainer {
 		}
 		IBRectangle origin = current().originalSize();
 		IBRectangle destination = originalSize();
-		transform().setTo(origin, destination);
+		transform().setTo(origin, destination, true, true);
 	}
 
 	@Override
