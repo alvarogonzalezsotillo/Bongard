@@ -33,7 +33,7 @@ public class BGameModel implements IBFlippableModel{
 
 	@Override
 	public BImageLocator background() {
-		return new BImageLocator( "/images/arrecibo.png" );
+		return new BImageLocator( "/images/backgrounds/arrecibo.png" );
 	}
 
 }

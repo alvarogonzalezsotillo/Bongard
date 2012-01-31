@@ -57,13 +57,18 @@ public class AWTTransform extends AffineTransform implements IBTransform{
 	}
 	
 	@Override
-	public void setTo(IBRectangle origin, IBRectangle destination){
+	public void setTo(IBRectangle origin, IBRectangle destination, boolean keepAspectRatio, boolean fitInside){
 		double sx = destination.w() / origin.w();
 		double sy = destination.h() / origin.h();
 		
-		/*if keep aspect ratio*/{
-		sx = Math.min( sx, sy );
-		sy = Math.min( sx, sy );
+		if( keepAspectRatio ){
+			if( fitInside ){
+				sx = Math.min( sx, sy );
+			}
+			else{
+				sx = Math.max( sx, sy );
+			}
+			sy = sx;
 		}
 		
 		IBPoint oCenter = new AWTPoint( origin.x() + origin.w()/2, origin.y() + origin.h()/2 );
@@ -78,11 +83,11 @@ public class AWTTransform extends AffineTransform implements IBTransform{
 		preConcatenate(t);
 		//testPoint("origen", origin, this);
 		
-		// CAMBIO TAMAÑO
+		// CAMBIO TAMAï¿½O
 		t = BFactory.instance().identityTransform();
 		t.scale(sx, sy);
 		preConcatenate(t);
-		//testPoint("tamaño", origin, this);
+		//testPoint("tamaï¿½o", origin, this);
 		
 		// LO LLEVO A SU SITIO DE DESTINO
 		translate(dCenter.x()/sx, dCenter.y()/sy );
@@ -93,8 +98,23 @@ public class AWTTransform extends AffineTransform implements IBTransform{
 
 	
 	
+
+	public static void main(String[] args) {
+		AWTTransform t = new AWTTransform();
+		
+		IBRectangle o = new BRectangle(-1, -1, 2, 2);
+		IBRectangle d = new BRectangle(0, 0, 50, 50);
+
+		t.setTo(o, d, true, true);
+		
+		testPoint("Final", o, t);
+
+	}
+		
+		
 	private static void testSetTo(IBRectangle o, IBRectangle d, IBTransform t) {
 		IBPoint tp, p;
+
 		
 		p = BFactory.instance().point(o.x(), o.y() );
 		tp = t.transform(p);
@@ -111,21 +131,6 @@ public class AWTTransform extends AffineTransform implements IBTransform{
 			throw new IllegalStateException( o + " -- " + d + "--" +p + "--" + tp );
 	}
 
-	public static void main(String[] args) {
-		AWTTransform t = new AWTTransform();
-		
-		IBRectangle o = new BRectangle(-1, -1, 2, 2);
-		IBRectangle d = new BRectangle(-50, -50, 50, 50);
-
-		
-//		IBRectangle o = new BRectangle(0,0,2,2);
-//		IBRectangle d = new BRectangle(0, 0, 50, 50);
-
-		t.setTo(o, d);
-		
-		testPoint("Final", o, t);
-
-	}
 
 
 	@Override

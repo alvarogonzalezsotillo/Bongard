@@ -9,6 +9,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.SwingUtilities;
 
 import purethought.gui.game.BExamplesField;
+import purethought.gui.game.BStartField;
 import purethought.gui.game.IBGame;
 import purethought.platform.BFactory;
 
@@ -64,7 +65,8 @@ public class AWTGame implements IBGame, Runnable{
 		Container c = container();
 //		BImageLocator[] problems = f().cardExtractor().randomProblems(7);
 //		canvas().setDrawable( new BFlippableContainer( new BGameModel(problems ) ) );
-		canvas().setDrawable( new BExamplesField() );
+//		canvas().setDrawable( new BExamplesField() );
+		canvas().setDrawable( new BStartField() );
 		c.setVisible(true);
 	}
 

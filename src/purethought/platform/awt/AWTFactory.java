@@ -70,7 +70,7 @@ public class AWTFactory extends BFactory {
 	}
 
 	@Override
-	public IBRaster raster(BImageLocator test, boolean transparent ) {
+	public AWTRaster raster(BImageLocator test, boolean transparent ) {
 		URL f = test.getImpl(URL.class);
 		if( f == null ){
 			f = getClass().getResource(test.toString());
