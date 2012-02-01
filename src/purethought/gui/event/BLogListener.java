@@ -1,10 +1,15 @@
 package purethought.gui.event;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.PrintStream;
+import java.io.Reader;
 import java.util.Formatter;
 import java.util.Locale;
 import java.util.Scanner;
 
+import purethought.animation.IBAnimable;
+import purethought.animation.IBAnimation;
 import purethought.geom.BRectangle;
 import purethought.geom.IBPoint;
 import purethought.geom.IBRectangle;
@@ -12,6 +17,68 @@ import purethought.gui.event.IBEvent.Type;
 import purethought.platform.BFactory;
 
 public class BLogListener implements IBEventListener{
+	
+	public static class ReplayAnimation implements IBAnimation{
+
+		private BufferedReader _reader;
+		private ParsedEvent _nextEvent;
+		private long _acumMillis;
+		private IBEventListener _listener;
+		
+		public ReplayAnimation( Reader r, IBEventListener listener ){
+			if( r instanceof BufferedReader ){
+				_reader = (BufferedReader) r;
+			}
+			else{
+				_reader = new BufferedReader(r);
+			}
+			_listener = listener;
+			_nextEvent = readNextEvent();
+		}
+		
+		private ParsedEvent readNextEvent() {
+			ParsedEvent ret = null;
+			try {
+				String line = _reader.readLine();
+				ret = parseEvent(line);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return ret;
+		}
+
+		@Override
+		public void stepAnimation(long millis) {
+			if( endReached() ){
+				return;
+			}
+			_acumMillis += millis;
+			while( _nextEvent != null && _acumMillis > _nextEvent.millis() ){
+				_listener.handle(_nextEvent.event());
+				_acumMillis -= _nextEvent.millis();
+				_nextEvent = readNextEvent();
+			}
+		}
+
+		@Override
+		public IBAnimable[] animables() {
+			return null;
+		}
+
+		@Override
+		public void setAnimables(IBAnimable... a) {
+		}
+
+		@Override
+		public boolean endReached() {
+			return _nextEvent == null;
+		}
+
+		@Override
+		public boolean needsUpdate(){
+			return !endReached();
+		}
+	}
 
 	private PrintStream _stream;
 	private long _lastMillis;
@@ -36,7 +103,7 @@ public class BLogListener implements IBEventListener{
 		return false;
 	}
 	
-	public static String formatEvent(long millis, IBEvent e){
+	private static String formatEvent(long millis, IBEvent e){
 		
 		Type t = e.type();
 		IBPoint p = e.point();
@@ -56,7 +123,7 @@ public class BLogListener implements IBEventListener{
 		return String.format( "%s\t%s\t%s", t.name(), sPoint, sRectangle );
 	}
 	
-	public static class ParsedEvent{
+	private static class ParsedEvent{
 		private IBEvent _e;
 		private long _millis;
 		public IBEvent event(){ return _e; }
@@ -65,7 +132,7 @@ public class BLogListener implements IBEventListener{
 
 	}
 	
-	public static ParsedEvent parseEvent( String s ){
+	private static ParsedEvent parseEvent( String s ){
 		Scanner scanner = new Scanner(s);
 		scanner.useLocale(Locale.US);
 		scanner.useDelimiter(" ,\t");
