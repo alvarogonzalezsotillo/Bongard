@@ -25,7 +25,7 @@ public class BStartField extends BDrawableContainer{
 
 	@Override
 	public IBRectangle originalSize() {
-		return new BRectangle(0, 0, 240, 320);
+		return BGameField.computeOriginalSize();
 	}
 	
 	public BStartField() {

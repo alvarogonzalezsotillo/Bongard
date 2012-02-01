@@ -12,6 +12,7 @@ import purethought.gui.basic.IBCanvas;
 import purethought.gui.basic.IBRaster;
 import purethought.gui.basic.IBRectangularDrawable;
 import purethought.gui.event.BEventAdapter;
+import purethought.gui.event.BLogListener;
 import purethought.gui.event.IBEvent;
 import purethought.platform.BFactory;
 import purethought.platform.BImageLocator;
@@ -204,28 +205,12 @@ public class BFlippableContainer extends BDrawableContainer {
 			removeListener(current().listener());
 			current().setFlippableContainer(null);
 		}
-		if (left() != null) {
-			removeListener(left().listener());
-			left().setFlippableContainer(null);
-		}
-		if (right() != null) {
-			removeListener(right().listener());
-			right().setFlippableContainer(null);
-		}
 
 		_x = x;
 
 		if (current() != null) {
 			addListener(current().listener());
 			current().setFlippableContainer(this);
-		}
-		if (left() != null) {
-			addListener(left().listener());
-			left().setFlippableContainer(this);
-		}
-		if (right() != null) {
-			addListener(right().listener());
-			right().setFlippableContainer(this);
 		}
 
 		adjustTransformToSize();
@@ -321,8 +306,14 @@ public class BFlippableContainer extends BDrawableContainer {
 		return drawable(currentIndex() + 1);
 	}
 
+	private BLogListener _logListener = new BLogListener();
+	
 	@Override
 	protected boolean handleEvent(IBEvent e) {
+		if( _logListener != null ){
+			_logListener.handle(e);
+		}
+
 		if (e.type() == IBEvent.Type.containerResized) {
 			adjustTransformToSize();
 			return true;

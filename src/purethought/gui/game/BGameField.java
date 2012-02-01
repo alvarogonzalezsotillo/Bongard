@@ -17,11 +17,11 @@ import purethought.gui.basic.BBox;
 import purethought.gui.basic.BLabel;
 import purethought.gui.basic.BSprite;
 import purethought.gui.basic.IBCanvas;
-import purethought.gui.basic.IBDrawable;
 import purethought.gui.container.BDrawableContainer;
 import purethought.gui.container.BFlippableContainer;
 import purethought.gui.container.IBFlippableDrawable;
 import purethought.gui.event.BEventAdapter;
+import purethought.gui.event.BLogListener;
 import purethought.platform.BFactory;
 import purethought.platform.BImageLocator;
 import purethought.problem.BCardExtractor;
@@ -31,6 +31,8 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	
 	private static final int FOCUS_DELAY = 100;
 	private static final double FOCUS_ZOOM = 1.3;
+	private static final int TILE_SIZE = 105;
+	
 	private static final boolean SHOW_POINTER = false;
 
 	private BProblem _problem;
@@ -209,6 +211,13 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 		_icon.setFilled(false);
 		_correctIcon = BFactory.instance().box(r, "ffffff");
 		_badIcon = BFactory.instance().box(r, "000000");
+		_size = computeOriginalSize();
+		
+	}
+
+
+	public static  BRectangle computeOriginalSize() {
+		return new BRectangle(0, 0, TILE_SIZE*4, TILE_SIZE*6);
 	}
 	
 	private void setModel(BGameModel model) {
@@ -249,24 +258,20 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	}
 	
 	private IBPoint spritePosition( int column, int row ){
-		int s = 105;
-		
 		if( column < 0 || row < 0 ){
-			return BFactory.instance().point(s*2,s*3);
+			return BFactory.instance().point(TILE_SIZE*2,TILE_SIZE*3);
 		}
 		
 		double colx = column == 0 ? .8 : 3.2;
 		
-		return BFactory.instance().point(s*colx, s*(row+1) );
+		return BFactory.instance().point(TILE_SIZE*colx, TILE_SIZE*(row+1) );
 	}
 	
 	
 	private void alignSprites(int millis){
-		int s = 105;
 		
 		BAnimator animator = animator();
 
-		_size = new BRectangle(0, 0, s*4, s*6);
 		
 		for (int i = 0; i < _set1Sprites.length; i++) {
 			IBTransformAnimable a = _set1Sprites[i];
