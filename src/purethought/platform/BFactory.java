@@ -1,5 +1,7 @@
 package purethought.platform;
 
+import java.io.InputStream;
+
 import purethought.geom.IBPoint;
 import purethought.geom.IBRectangle;
 import purethought.geom.IBTransform;
@@ -33,6 +35,7 @@ public abstract class BFactory {
 	public abstract BSprite sprite( IBRaster raster );
 	public abstract BLabel label( String text );
 	public abstract BBox box( IBRectangle r, String color );
-	public abstract IBRaster raster(BImageLocator test, boolean transparent);
+	public abstract IBRaster raster(BResourceLocator test, boolean transparent);
+	public abstract InputStream open(BResourceLocator r);
 	
 }

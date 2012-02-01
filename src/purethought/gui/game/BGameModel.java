@@ -2,21 +2,21 @@ package purethought.gui.game;
 
 import purethought.gui.container.IBFlippableDrawable;
 import purethought.gui.container.IBFlippableModel;
-import purethought.platform.BImageLocator;
+import purethought.platform.BResourceLocator;
 
 public class BGameModel implements IBFlippableModel{
 	
 	
 	private BGameField[] _drawables;
 
-	public BGameModel( BImageLocator[] problems ){
+	public BGameModel( BResourceLocator[] problems ){
 		setProblems(problems);
 	}
 
-	private void setProblems(BImageLocator[] problems) {
+	private void setProblems(BResourceLocator[] problems) {
 		_drawables = new BGameField[problems.length];
 		for (int i = 0; i < problems.length; i++) {
-			BImageLocator l = problems[i];
+			BResourceLocator l = problems[i];
 			_drawables[i] = new BGameField(l,this);
 		}
 	}
@@ -32,8 +32,8 @@ public class BGameModel implements IBFlippableModel{
 	}
 
 	@Override
-	public BImageLocator background() {
-		return new BImageLocator( "/images/backgrounds/arrecibo.png" );
+	public BResourceLocator background() {
+		return new BResourceLocator( "/images/backgrounds/arrecibo.png" );
 	}
 
 }

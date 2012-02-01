@@ -14,7 +14,7 @@ import javax.imageio.ImageIO;
 
 import purethought.geom.IBRectangle;
 import purethought.gui.basic.IBRaster;
-import purethought.platform.BImageLocator;
+import purethought.platform.BResourceLocator;
 import purethought.problem.BCardExtractor;
 import purethought.problem.BProblem;
 import purethought.util.BException;
@@ -56,7 +56,7 @@ public class AWTCardExtractor extends BCardExtractor{
 	public static void main(String[] args) throws IOException {
 		URL imageFile = AWTCardExtractor.class.getResource("/images/tests/p004.png");
 
-		BImageLocator test = new BImageLocator(imageFile);
+		BResourceLocator test = new BResourceLocator(imageFile);
 		
 		BProblem problem = extract(test);
 		System.out.println( problem );

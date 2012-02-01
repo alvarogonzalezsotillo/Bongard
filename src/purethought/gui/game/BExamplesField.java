@@ -15,7 +15,7 @@ import purethought.gui.container.BDrawableContainer;
 import purethought.gui.container.BFlippableContainer;
 import purethought.gui.event.BLogListener;
 import purethought.platform.BFactory;
-import purethought.platform.BImageLocator;
+import purethought.platform.BResourceLocator;
 
 public class BExamplesField extends BDrawableContainer{
 
@@ -32,13 +32,14 @@ public class BExamplesField extends BDrawableContainer{
 	}
 	
 	public BExamplesField() {
-		BImageLocator[] problems = BFactory.instance().cardExtractor().exampleProblems();
+		BResourceLocator[] problems = BFactory.instance().cardExtractor().exampleProblems();
 		_fc = new BFlippableContainer( new BGameModel(problems ) );
 		
 		try {
-			Reader r = new InputStreamReader( new FileInputStream("test.events") );
+			BResourceLocator rl = new BResourceLocator("/examples.events"):
+			Reader r = new InputStreamReader( BFactory.instance().open(rl) );
 			IBAnimation replayAnimation = new BLogListener.ReplayAnimation(r, _fc.listener() );
-			IBAnimation backToStartAnimation = new BRunnableAnimation(1000, new Runnable(){
+			IBAnimation backToStartAnimation = new BRunnableAnimation(2000, new Runnable(){
 				@Override
 				public void run() {
 					BFactory.instance().game().canvas().setDrawable( new BStartField() );

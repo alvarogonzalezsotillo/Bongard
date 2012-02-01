@@ -18,7 +18,7 @@ import purethought.gui.game.BGameModel;
 import purethought.gui.game.BStartField;
 import purethought.gui.game.IBGame;
 import purethought.platform.BFactory;
-import purethought.platform.BImageLocator;
+import purethought.platform.BResourceLocator;
 
 public class AWTGame implements IBGame, Runnable{
 
@@ -72,7 +72,7 @@ public class AWTGame implements IBGame, Runnable{
 		Container c = container();
 		
 		if( false /*TEST*/){
-			BImageLocator[] problems = f().cardExtractor().randomProblems(7);
+			BResourceLocator[] problems = f().cardExtractor().randomProblems(7);
 			BFlippableContainer fc = new BFlippableContainer( new BGameModel(problems ) );
 			try {
 				Reader r = new InputStreamReader( new FileInputStream( "test.events") );

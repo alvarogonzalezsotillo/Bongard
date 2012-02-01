@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
@@ -13,7 +14,7 @@ import purethought.gui.basic.BLabel;
 import purethought.gui.basic.BSprite;
 import purethought.gui.basic.IBRaster;
 import purethought.platform.BFactory;
-import purethought.platform.BImageLocator;
+import purethought.platform.BResourceLocator;
 import purethought.util.BException;
 
 public class AWTFactory extends BFactory {
@@ -70,15 +71,10 @@ public class AWTFactory extends BFactory {
 	}
 
 	@Override
-	public AWTRaster raster(BImageLocator test, boolean transparent ) {
-		URL f = test.getImpl(URL.class);
-		if( f == null ){
-			f = getClass().getResource(test.toString());
-		}
-		
+	public AWTRaster raster(BResourceLocator test, boolean transparent ) {
 		Color bgColor = Color.white;
 		try {
-			BufferedImage image = ImageIO.read(f);
+			BufferedImage image = ImageIO.read( open(test) );
 			if( transparent ){
 				return new AWTRaster(image);
 			}
@@ -89,7 +85,24 @@ public class AWTFactory extends BFactory {
 			
 			return new AWTRaster(ret);
 		} catch (IOException ex) {
-			throw new BException( "Unable to read:" + f, ex );
+			throw new BException( "Unable to read:" + test, ex );
+		}
+	}
+
+	@Override
+	public InputStream open(BResourceLocator r){
+		URL f = r.getImpl(URL.class);
+		if( f == null ){
+			f = getClass().getResource(r.toString());
+		}
+		if( f == null ){
+			return null;
+		}
+		try{
+			return f.openStream();
+		}
+		catch( IOException e ){
+			throw new BException( "Unable to open:" + r, e );
 		}
 	}
 	

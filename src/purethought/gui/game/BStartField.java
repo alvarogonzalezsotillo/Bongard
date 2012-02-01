@@ -16,7 +16,7 @@ import purethought.gui.container.BDrawableContainer;
 import purethought.gui.container.BFlippableContainer;
 import purethought.gui.event.BEventAdapter;
 import purethought.platform.BFactory;
-import purethought.platform.BImageLocator;
+import purethought.platform.BResourceLocator;
 
 public class BStartField extends BDrawableContainer{
 
@@ -30,7 +30,7 @@ public class BStartField extends BDrawableContainer{
 	
 	public BStartField() {
 		BFactory f = BFactory.instance();
-		IBRaster ss = f.raster( new BImageLocator("/images/start/start.png"), false );
+		IBRaster ss = f.raster( new BResourceLocator("/images/start/start.png"), false );
 		_startSprite = f.sprite(ss);
 		double x = originalSize().x() + (originalSize().w())/2;
 		double y = originalSize().y() + (originalSize().h())/4;
@@ -39,7 +39,7 @@ public class BStartField extends BDrawableContainer{
 		System.out.println( "x:" + x + "  y:" + y );
 		_startSprite.transform().translate(x, y);
 		
-		IBRaster hs = f.raster( new BImageLocator("/images/start/help.png"), false );
+		IBRaster hs = f.raster( new BResourceLocator("/images/start/help.png"), false );
 		_helpSprite = f.sprite(hs);
 		x = originalSize().x() + (originalSize().w())/2;
 		y = originalSize().y() + 3*(originalSize().h())/4;
@@ -84,7 +84,7 @@ public class BStartField extends BDrawableContainer{
 		a = new BConcatenateAnimation( a, new BRunnableAnimation(10, new Runnable(){
 			@Override
 			public void run() {
-				BImageLocator[] problems = BFactory.instance().cardExtractor().randomProblems(7);
+				BResourceLocator[] problems = BFactory.instance().cardExtractor().randomProblems(7);
 				BFactory.instance().game().canvas().setDrawable( new BFlippableContainer( new BGameModel(problems ) ) );
 			}
 		}));

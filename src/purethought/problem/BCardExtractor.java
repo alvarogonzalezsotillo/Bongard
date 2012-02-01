@@ -8,7 +8,7 @@ import purethought.geom.BRectangle;
 import purethought.geom.IBRectangle;
 import purethought.gui.basic.IBRaster;
 import purethought.platform.BFactory;
-import purethought.platform.BImageLocator;
+import purethought.platform.BResourceLocator;
 
 public abstract class BCardExtractor{
 	
@@ -39,7 +39,7 @@ public abstract class BCardExtractor{
 		
 	}
 	
-	public static BProblem extract( BImageLocator test ){
+	public static BProblem extract( BResourceLocator test ){
 		BCardExtractor ce = BFactory.instance().cardExtractor();
 		IBRaster testImage = BFactory.instance().raster(test,false);
 		IBRaster[][] images = ce.extractImages(testImage);
@@ -86,8 +86,8 @@ public abstract class BCardExtractor{
 	 * 
 	 * @return
 	 */
-	public BImageLocator randomProblem(){
-		BImageLocator[] ps = allProblems();
+	public BResourceLocator randomProblem(){
+		BResourceLocator[] ps = allProblems();
 		int r = random().nextInt( ps.length );
 		return ps[r];
 	}
@@ -101,35 +101,35 @@ public abstract class BCardExtractor{
 
 
 
-	public BImageLocator[] allProblems(){
+	public BResourceLocator[] allProblems(){
 		int count = 280;
-		BImageLocator[] ret = new BImageLocator[count];
+		BResourceLocator[] ret = new BResourceLocator[count];
 		for( int i = 0 ; i < count ; i++ ){
-			ret[i] = new BImageLocator(String.format("/images/tests/p%03d.png", i+1 ));
+			ret[i] = new BResourceLocator(String.format("/images/tests/p%03d.png", i+1 ));
 		}
 		return ret;
 	}
 	
-	public BImageLocator[] exampleProblems(){
+	public BResourceLocator[] exampleProblems(){
 		int count = 3;
-		BImageLocator[] ret = new BImageLocator[count];
+		BResourceLocator[] ret = new BResourceLocator[count];
 		for( int i = 0 ; i < count ; i++ ){
-			ret[i] = new BImageLocator(String.format("/images/examples/p%03d.png", i+1 ));
+			ret[i] = new BResourceLocator(String.format("/images/examples/p%03d.png", i+1 ));
 		}
 		return ret;
 	}
 
 
 
-	public BImageLocator[] randomProblems(int n){
-		BImageLocator[] ps = allProblems();
-		BImageLocator[] ret = new BImageLocator[n];
+	public BResourceLocator[] randomProblems(int n){
+		BResourceLocator[] ps = allProblems();
+		BResourceLocator[] ret = new BResourceLocator[n];
 		
-		ArrayList<BImageLocator> list = new ArrayList<BImageLocator>();
+		ArrayList<BResourceLocator> list = new ArrayList<BResourceLocator>();
 		list.addAll( Arrays.asList(ps) );
 		
 		for( int i = 0 ; i < n ; i++ ){
-			BImageLocator l = list.remove( random().nextInt(list.size()) );
+			BResourceLocator l = list.remove( random().nextInt(list.size()) );
 			ret[i] = l;
 		}
 		

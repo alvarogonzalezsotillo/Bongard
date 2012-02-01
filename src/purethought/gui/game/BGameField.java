@@ -23,7 +23,7 @@ import purethought.gui.container.IBFlippableDrawable;
 import purethought.gui.event.BEventAdapter;
 import purethought.gui.event.BLogListener;
 import purethought.platform.BFactory;
-import purethought.platform.BImageLocator;
+import purethought.platform.BResourceLocator;
 import purethought.problem.BCardExtractor;
 import purethought.problem.BProblem;
 
@@ -202,7 +202,7 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	}
 	
 
-	public BGameField(BImageLocator test,BGameModel model){
+	public BGameField(BResourceLocator test,BGameModel model){
 		listener().addListener( _adapter );
 		setProblem(test);
 		setModel(model);
@@ -232,7 +232,7 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	 * 
 	 * @param test
 	 */
-	public void setProblem( BImageLocator test ){
+	public void setProblem( BResourceLocator test ){
 		if( test == null ){
 			return;
 		}

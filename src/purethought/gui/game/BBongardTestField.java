@@ -9,7 +9,7 @@ import purethought.gui.container.BDrawableContainer;
 import purethought.gui.container.BFlippableContainer;
 import purethought.gui.container.IBFlippableDrawable;
 import purethought.platform.BFactory;
-import purethought.platform.BImageLocator;
+import purethought.platform.BResourceLocator;
 import purethought.problem.BCardExtractor;
 import purethought.problem.BProblem;
 
@@ -23,7 +23,7 @@ public class BBongardTestField extends BDrawableContainer implements IBFlippable
 		this(null);
 	}
 	
-	public BBongardTestField(BImageLocator l){
+	public BBongardTestField(BResourceLocator l){
 		setProblem(l);
 	}
 
@@ -32,7 +32,7 @@ public class BBongardTestField extends BDrawableContainer implements IBFlippable
 	 * 
 	 * @param test
 	 */
-	public void setProblem( BImageLocator test ){
+	public void setProblem( BResourceLocator test ){
 		BFactory f = BFactory.instance();
 		_problem = BCardExtractor.extract(test);
 		

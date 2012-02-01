@@ -15,7 +15,7 @@ import purethought.gui.event.BEventAdapter;
 import purethought.gui.event.BLogListener;
 import purethought.gui.event.IBEvent;
 import purethought.platform.BFactory;
-import purethought.platform.BImageLocator;
+import purethought.platform.BResourceLocator;
 
 public class BFlippableContainer extends BDrawableContainer {
 	private static final double MARGIN = 50;
@@ -165,7 +165,7 @@ public class BFlippableContainer extends BDrawableContainer {
 
 	private void setModel(IBFlippableModel model) {
 		_model = model;
-		BImageLocator background = _model.background();
+		BResourceLocator background = _model.background();
 		if( background != null ){
 			IBRaster r = BFactory.instance().raster( background, true );
 			_backgroundSprite = BFactory.instance().sprite(r);
