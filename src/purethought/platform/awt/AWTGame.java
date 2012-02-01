@@ -5,13 +5,20 @@ import java.awt.Container;
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 
 import javax.swing.SwingUtilities;
 
-import purethought.gui.game.BExamplesField;
+import purethought.gui.container.BFlippableContainer;
+import purethought.gui.event.BLogListener;
+import purethought.gui.game.BGameModel;
 import purethought.gui.game.BStartField;
 import purethought.gui.game.IBGame;
 import purethought.platform.BFactory;
+import purethought.platform.BImageLocator;
 
 public class AWTGame implements IBGame, Runnable{
 
@@ -63,10 +70,22 @@ public class AWTGame implements IBGame, Runnable{
 	@Override
 	public void run() {
 		Container c = container();
-//		BImageLocator[] problems = f().cardExtractor().randomProblems(7);
-//		canvas().setDrawable( new BFlippableContainer( new BGameModel(problems ) ) );
-//		canvas().setDrawable( new BExamplesField() );
-		canvas().setDrawable( new BStartField() );
+		
+		if( false /*TEST*/){
+			BImageLocator[] problems = f().cardExtractor().randomProblems(7);
+			BFlippableContainer fc = new BFlippableContainer( new BGameModel(problems ) );
+			try {
+				Reader r = new InputStreamReader( new FileInputStream( "test.events") );
+				f().game().animator().addAnimation( new BLogListener.ReplayAnimation(r, fc.listener() ) );
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+			canvas().setDrawable( fc );
+		}
+		
+		else{
+			canvas().setDrawable( new BStartField() );
+		}
 		c.setVisible(true);
 	}
 

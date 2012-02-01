@@ -120,7 +120,7 @@ public class BLogListener implements IBEventListener{
 			sRectangle = f.format("%f,%f,%f,%f", r.x(), r.y(), r.w(), r.h()).toString();
 		}
 
-		return String.format( "%s\t%s\t%s", t.name(), sPoint, sRectangle );
+		return String.format( "%d %s %s %s", millis, t.name(), sPoint, sRectangle );
 	}
 	
 	private static class ParsedEvent{
@@ -133,11 +133,16 @@ public class BLogListener implements IBEventListener{
 	}
 	
 	private static ParsedEvent parseEvent( String s ){
+		if( s == null ){
+			return null;
+		}
 		Scanner scanner = new Scanner(s);
 		scanner.useLocale(Locale.US);
-		scanner.useDelimiter(" ,\t");
+		scanner.useDelimiter(" |,|\\t");
 		
-		long millis = scanner.nextLong();
+		System.err.println( s );
+		String next = scanner.next(); System.err.println(next);
+		long millis = Long.parseLong(next);
 		
 		String sType = scanner.next();
 		IBEvent.Type t = IBEvent.Type.valueOf(sType);
