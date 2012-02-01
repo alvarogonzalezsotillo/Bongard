@@ -307,10 +307,12 @@ public class BFlippableContainer extends BDrawableContainer {
 	}
 
 	private BLogListener _logListener = new BLogListener();
+
+	public static boolean USE_LOG_LISTENER = false;
 	
 	@Override
 	protected boolean handleEvent(IBEvent e) {
-		if( _logListener != null ){
+		if( USE_LOG_LISTENER && _logListener != null ){
 			_logListener.handle(e);
 		}
 

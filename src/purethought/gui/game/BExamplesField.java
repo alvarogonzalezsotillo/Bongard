@@ -14,12 +14,14 @@ import purethought.gui.basic.IBCanvas;
 import purethought.gui.container.BDrawableContainer;
 import purethought.gui.container.BFlippableContainer;
 import purethought.gui.event.BLogListener;
+import purethought.gui.event.BLogListener.ReplayAnimation;
 import purethought.platform.BFactory;
 import purethought.platform.BResourceLocator;
 
 public class BExamplesField extends BDrawableContainer{
 
 	private BFlippableContainer _fc;
+	private ReplayAnimation _replayAnimation;
 	
 	@Override
 	public IBRectangle originalSize() {
@@ -29,6 +31,9 @@ public class BExamplesField extends BDrawableContainer{
 	@Override
 	protected void draw_internal(IBCanvas c, IBTransform t) {
 		_fc.draw(c,t);
+		if( _replayAnimation != null && _replayAnimation.cursor() != null ){
+			_replayAnimation.cursor().draw(c, t);
+		}
 	}
 	
 	public BExamplesField() {
@@ -37,14 +42,14 @@ public class BExamplesField extends BDrawableContainer{
 		
 		BResourceLocator rl = new BResourceLocator("/examples.events");
 		Reader r = new InputStreamReader( BFactory.instance().open(rl) );
-		IBAnimation replayAnimation = new BLogListener.ReplayAnimation(r, _fc.listener() );
+		_replayAnimation = new BLogListener.ReplayAnimation(r, _fc.listener() );
 		IBAnimation backToStartAnimation = new BRunnableAnimation(2000, new Runnable(){
 			@Override
 			public void run() {
 				BFactory.instance().game().canvas().setDrawable( new BStartField() );
 			}
 		});
-		IBAnimation a = new BConcatenateAnimation(replayAnimation,backToStartAnimation);
+		IBAnimation a = new BConcatenateAnimation(_replayAnimation,backToStartAnimation);
 		BFactory.instance().game().animator().addAnimation( a );
 	}
 }

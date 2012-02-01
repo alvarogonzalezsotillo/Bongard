@@ -70,22 +70,7 @@ public class AWTGame implements IBGame, Runnable{
 	@Override
 	public void run() {
 		Container c = container();
-		
-		if( false /*TEST*/){
-			BResourceLocator[] problems = f().cardExtractor().randomProblems(7);
-			BFlippableContainer fc = new BFlippableContainer( new BGameModel(problems ) );
-			try {
-				Reader r = new InputStreamReader( new FileInputStream( "test.events") );
-				f().game().animator().addAnimation( new BLogListener.ReplayAnimation(r, fc.listener() ) );
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}
-			canvas().setDrawable( fc );
-		}
-		
-		else{
-			canvas().setDrawable( new BStartField() );
-		}
+		canvas().setDrawable( new BStartField() );
 		c.setVisible(true);
 	}
 

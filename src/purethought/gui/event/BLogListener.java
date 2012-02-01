@@ -13,8 +13,12 @@ import purethought.animation.IBAnimation;
 import purethought.geom.BRectangle;
 import purethought.geom.IBPoint;
 import purethought.geom.IBRectangle;
+import purethought.gui.basic.BSprite;
+import purethought.gui.basic.IBDrawable;
+import purethought.gui.basic.IBRaster;
 import purethought.gui.event.IBEvent.Type;
 import purethought.platform.BFactory;
+import purethought.platform.BResourceLocator;
 
 public class BLogListener implements IBEventListener{
 	
@@ -24,6 +28,7 @@ public class BLogListener implements IBEventListener{
 		private ParsedEvent _nextEvent;
 		private long _acumMillis;
 		private IBEventListener _listener;
+		private BSprite _finger;
 		
 		public ReplayAnimation( Reader r, IBEventListener listener ){
 			if( r instanceof BufferedReader ){
@@ -34,6 +39,16 @@ public class BLogListener implements IBEventListener{
 			}
 			_listener = listener;
 			_nextEvent = readNextEvent();
+			
+			
+			BResourceLocator rl = new BResourceLocator( "/images/examples/finger.png" );
+			IBRaster raster = BFactory.instance().raster(rl, true);
+			_finger = BFactory.instance().sprite(raster);
+			_finger.transform().scale(.5, .5);
+		}
+		
+		public IBDrawable cursor(){
+			return _finger;
 		}
 		
 		private ParsedEvent readNextEvent() {
