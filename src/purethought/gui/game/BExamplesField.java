@@ -35,20 +35,16 @@ public class BExamplesField extends BDrawableContainer{
 		BResourceLocator[] problems = BFactory.instance().cardExtractor().exampleProblems();
 		_fc = new BFlippableContainer( new BGameModel(problems ) );
 		
-		try {
-			BResourceLocator rl = new BResourceLocator("/examples.events"):
-			Reader r = new InputStreamReader( BFactory.instance().open(rl) );
-			IBAnimation replayAnimation = new BLogListener.ReplayAnimation(r, _fc.listener() );
-			IBAnimation backToStartAnimation = new BRunnableAnimation(2000, new Runnable(){
-				@Override
-				public void run() {
-					BFactory.instance().game().canvas().setDrawable( new BStartField() );
-				}
-			});
-			IBAnimation a = new BConcatenateAnimation(replayAnimation,backToStartAnimation);
-			BFactory.instance().game().animator().addAnimation( a );
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+		BResourceLocator rl = new BResourceLocator("/examples.events");
+		Reader r = new InputStreamReader( BFactory.instance().open(rl) );
+		IBAnimation replayAnimation = new BLogListener.ReplayAnimation(r, _fc.listener() );
+		IBAnimation backToStartAnimation = new BRunnableAnimation(2000, new Runnable(){
+			@Override
+			public void run() {
+				BFactory.instance().game().canvas().setDrawable( new BStartField() );
+			}
+		});
+		IBAnimation a = new BConcatenateAnimation(replayAnimation,backToStartAnimation);
+		BFactory.instance().game().animator().addAnimation( a );
 	}
 }
