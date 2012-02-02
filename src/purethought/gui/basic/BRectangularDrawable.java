@@ -15,7 +15,7 @@ public abstract class BRectangularDrawable extends BDrawable implements IBRectan
 	}
 
 	@Override
-	public boolean inside(IBPoint p, IBTransform aditionalTransform) {
+	public final boolean inside(IBPoint p, IBTransform aditionalTransform) {
 		IBTransform t = transform();
 		if( aditionalTransform != null ){
 			IBTransform tt = BFactory.instance().identityTransform();

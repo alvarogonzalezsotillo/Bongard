@@ -34,9 +34,6 @@ public class BStartField extends BDrawableContainer{
 		_startSprite = f.sprite(ss);
 		double x = originalSize().x() + (originalSize().w())/2;
 		double y = originalSize().y() + (originalSize().h())/4;
-		System.out.println( originalSize() );
-		System.out.println( _startSprite.originalSize() );
-		System.out.println( "x:" + x + "  y:" + y );
 		_startSprite.transform().translate(x, y);
 		
 		IBRaster hs = f.raster( new BResourceLocator("/images/start/help.png"), false );
@@ -44,7 +41,6 @@ public class BStartField extends BDrawableContainer{
 		x = originalSize().x() + (originalSize().w())/2;
 		y = originalSize().y() + 3*(originalSize().h())/4;
 		_helpSprite.transform().translate(x, y);
-		System.out.println( "x:" + x + "  y:" + y );
 		
 		
 		listener().addListener(_adapter);
@@ -68,8 +64,6 @@ public class BStartField extends BDrawableContainer{
 	
 	@Override
 	protected void draw_internal(IBCanvas c, IBTransform t) {
-		super.draw_internal(c, t);
-		
 		_startSprite.draw(c,t);
 		_helpSprite.draw(c,t);
 		

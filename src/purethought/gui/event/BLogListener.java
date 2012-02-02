@@ -28,7 +28,7 @@ public class BLogListener implements IBEventListener{
 		private ParsedEvent _nextEvent;
 		private long _acumMillis;
 		private IBEventListener _listener;
-		private BSprite _finger;
+		private BSprite _cursor;
 		
 		public ReplayAnimation( Reader r, IBEventListener listener ){
 			if( r instanceof BufferedReader ){
@@ -40,15 +40,15 @@ public class BLogListener implements IBEventListener{
 			_listener = listener;
 			_nextEvent = readNextEvent();
 			
-			
-			BResourceLocator rl = new BResourceLocator( "/images/examples/finger.png" );
+			BResourceLocator rl = new BResourceLocator( "/images/examples/cursor.png" );
 			IBRaster raster = BFactory.instance().raster(rl, true);
-			_finger = BFactory.instance().sprite(raster);
-			_finger.transform().scale(.5, .5);
+			_cursor = BFactory.instance().sprite(raster);
+			_cursor.transform().scale(.5, .5);
+			_cursor.setVisible(false);
 		}
 		
 		public IBDrawable cursor(){
-			return _finger;
+			return _cursor;
 		}
 		
 		private ParsedEvent readNextEvent() {
@@ -69,7 +69,14 @@ public class BLogListener implements IBEventListener{
 			}
 			_acumMillis += millis;
 			while( _nextEvent != null && _acumMillis > _nextEvent.millis() ){
-				_listener.handle(_nextEvent.event());
+				IBEvent e = _nextEvent.event();
+				switch(e.type()){
+					case pointerDown: _cursor.setVisible(true); break;
+					case pointerUp: _cursor.setVisible(false); break;
+				}
+				_cursor.transform().setToIdentity();
+				_cursor.transform().translate(e.point().x(), e.point().y());
+				_listener.handle(e);
 				_acumMillis -= _nextEvent.millis();
 				_nextEvent = readNextEvent();
 			}
@@ -155,8 +162,7 @@ public class BLogListener implements IBEventListener{
 		scanner.useLocale(Locale.US);
 		scanner.useDelimiter(" |,|\\t");
 		
-		System.err.println( s );
-		String next = scanner.next(); System.err.println(next);
+		String next = scanner.next();
 		long millis = Long.parseLong(next);
 		
 		String sType = scanner.next();

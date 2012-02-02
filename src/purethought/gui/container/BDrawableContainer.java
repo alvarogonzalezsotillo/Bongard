@@ -3,24 +3,20 @@ package purethought.gui.container;
 import purethought.geom.BRectangle;
 import purethought.geom.IBPoint;
 import purethought.geom.IBTransform;
-import purethought.gui.basic.BDrawable;
-import purethought.gui.basic.IBCanvas;
+import purethought.gui.basic.BRectangularDrawable;
 import purethought.gui.event.BListenerList;
 import purethought.gui.event.IBEvent;
 import purethought.gui.event.IBEventListener;
 import purethought.gui.event.IBEventSource;
 import purethought.platform.BFactory;
-import purethought.util.BPointerSupport;
 
-public abstract class BDrawableContainer extends BDrawable implements IBDrawableContainer{
+public abstract class BDrawableContainer extends BRectangularDrawable implements IBDrawableContainer{
 
-	private BPointerSupport _ps = new BPointerSupport();
-	
 	private MyListenerList _listeners = new MyListenerList(this);
 	
 	
 	protected BDrawableContainer(){
-		_listeners.addListener(_ps);
+		super( new BRectangle(0, 0, 0, 0) );
 	}
 	
 	class MyListenerList extends BListenerList{
@@ -64,27 +60,5 @@ public abstract class BDrawableContainer extends BDrawable implements IBDrawable
 	@Override
 	public BListenerList listener() {
 		return _listeners;
-	}
-
-	@Override
-	public boolean inside(IBPoint p, IBTransform aditionalTransform ){
-		IBTransform t = transform();
-		if( aditionalTransform != null ){
-			IBTransform tt = BFactory.instance().identityTransform();
-			tt.concatenate(t);
-			tt.concatenate(aditionalTransform);
-			t = tt;
-		}
-		
-		IBTransform inverseT = t.inverse();
-		
-		IBPoint inverseP = inverseT.transform(p);		
-		
-		return BRectangle.inside( originalSize(), inverseP);
-	}
-	
-	@Override
-	protected void draw_internal(IBCanvas c, IBTransform t) {
-		//_ps.draw_impl(c, t);
 	}
 }

@@ -153,11 +153,12 @@ public class AWTCanvas extends BCanvas{
 	public void eraseBackground(){
 		Image i = getOffscreenImage();
 		Graphics graphics = i.getGraphics();
-		graphics.setColor( Color.darkGray );
+		graphics.setColor( (Color) backgroundColor() );
 		graphics.fillRect(0, 0, i.getWidth(null), i.getHeight(null));
 		graphics.dispose();
 	}
 	
+
 
 	/**
 	 * 

@@ -203,14 +203,15 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	
 
 	public BGameField(BResourceLocator test,BGameModel model){
+
 		listener().addListener( _adapter );
 		setProblem(test);
 		setModel(model);
 		IBRectangle r = new BRectangle(0, 0, BFlippableContainer.ICON_SIZE, BFlippableContainer.ICON_SIZE);
-		_icon = BFactory.instance().box(r, "ffffff");
+		_icon = BFactory.instance().box(r, BFactory.COLOR_WHITE);
 		_icon.setFilled(false);
-		_correctIcon = BFactory.instance().box(r, "ffffff");
-		_badIcon = BFactory.instance().box(r, "000000");
+		_correctIcon = BFactory.instance().box(r, BFactory.COLOR_WHITE);
+		_badIcon = BFactory.instance().box(r, BFactory.COLOR_BLACK);
 		_size = computeOriginalSize();
 		
 	}
@@ -311,8 +312,6 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 		if( SHOW_POINTER ){
 			_pointer.draw(canvas, aditionalTransform);
 		}
-		
-		super.draw_internal(canvas, aditionalTransform);
 	}
 	
 	@Override

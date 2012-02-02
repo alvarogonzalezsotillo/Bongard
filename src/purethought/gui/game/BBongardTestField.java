@@ -48,7 +48,6 @@ public class BBongardTestField extends BDrawableContainer implements IBFlippable
 	@Override
 	protected void draw_internal(IBCanvas c, IBTransform t) {
 		_sprite.draw(c, t);
-		super.draw_internal(c, t);
 	}
 
 	@Override

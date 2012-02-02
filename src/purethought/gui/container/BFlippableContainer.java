@@ -19,6 +19,9 @@ import purethought.platform.BResourceLocator;
 
 public class BFlippableContainer extends BDrawableContainer {
 	private static final double MARGIN = 50;
+	
+	private static final boolean LOG_EVENTS = false;
+
 
 	private int _x;
 
@@ -230,9 +233,6 @@ public class BFlippableContainer extends BDrawableContainer {
 			current().draw(c, t);
 
 		draw_boxes( c, t );
-		
-		super.draw_internal(c, t);
-		
 	}
 	
 	private void draw_background(IBCanvas c, IBTransform t) {
@@ -252,9 +252,10 @@ public class BFlippableContainer extends BDrawableContainer {
 		
 		dx *= scale;
 		double dy = originalSize().h()/2;
-		_backgroundSprite.setTransform( BFactory.instance().identityTransform() );
-		_backgroundSprite.translate(dx, dy);
-		_backgroundSprite.scale(scale, scale);
+		IBTransform bst = _backgroundSprite.transform();
+		bst.setToIdentity();
+		bst.translate(dx, dy);
+		bst.scale(scale, scale);
 		_backgroundSprite.draw(c, t);
 	}
 
@@ -272,7 +273,7 @@ public class BFlippableContainer extends BDrawableContainer {
 			}
 			IBRectangularDrawable rd = _model.drawable(i).icon();
 			if( rd == null ){
-				rd = BFactory.instance().box( r, "aaaaaa" );
+				rd = BFactory.instance().box( r, BFactory.COLOR_GRAY );
 			}
 			else{
 				IBTransform rdt = rd.transform();
@@ -308,11 +309,9 @@ public class BFlippableContainer extends BDrawableContainer {
 
 	private BLogListener _logListener = new BLogListener();
 
-	public static boolean USE_LOG_LISTENER = false;
-	
 	@Override
 	protected boolean handleEvent(IBEvent e) {
-		if( USE_LOG_LISTENER && _logListener != null ){
+		if( LOG_EVENTS && _logListener != null ){
 			_logListener.handle(e);
 		}
 

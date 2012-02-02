@@ -11,6 +11,15 @@ public abstract class BDrawable implements IBDrawable, IBTransformAnimable{
 
 	protected IBTransform _t = BFactory.instance().identityTransform();
 	protected IBTransform _tt;
+	private boolean _visible = true;
+	
+	public boolean visible(){
+		return _visible;
+	}
+	
+	public void setVisible(boolean b){
+		_visible = b;
+	}
 	
 	@Override
 	public IBTransform temporaryTransform(){
@@ -95,6 +104,10 @@ public abstract class BDrawable implements IBDrawable, IBTransformAnimable{
 
 	@Override
 	public void draw(IBCanvas c, IBTransform aditionalTransform ){
+		if( !visible() ){
+			return;
+		}
+		
 		IBTransform t = transformWithTemporary();
 		
 		if( aditionalTransform != null ){

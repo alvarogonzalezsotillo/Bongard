@@ -1,6 +1,8 @@
 package purethought.gui.basic;
 
 
+import java.awt.Color;
+
 import purethought.geom.IBRectangle;
 import purethought.geom.IBTransform;
 import purethought.gui.container.IBDrawableContainer;
@@ -67,5 +69,10 @@ public abstract class BCanvas implements IBCanvas{
 		
 		transform().setTo(origin, destination, true, true);
 	}
+
+	public IBColor backgroundColor() {
+		return BFactory.COLOR_DARKGRAY;
+	}
+
 
 }

@@ -6,14 +6,14 @@ public abstract class BBox extends BRectangularDrawable{
 
 	
 	private boolean _filled = true;
-	private String _color;
+	private IBColor _color;
 
-	public BBox( IBRectangle r, String color ){
+	public BBox( IBRectangle r, IBColor color ){
 		super(r);
 		_color = color;
 	}
 	
-	public String color(){
+	public IBColor color(){
 		return _color;
 	}
 	

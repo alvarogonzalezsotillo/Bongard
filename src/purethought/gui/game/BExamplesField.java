@@ -1,7 +1,5 @@
 package purethought.gui.game;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
@@ -40,7 +38,7 @@ public class BExamplesField extends BDrawableContainer{
 		BResourceLocator[] problems = BFactory.instance().cardExtractor().exampleProblems();
 		_fc = new BFlippableContainer( new BGameModel(problems ) );
 		
-		BResourceLocator rl = new BResourceLocator("/examples.events");
+		BResourceLocator rl = new BResourceLocator("/images/examples/examples.events");
 		Reader r = new InputStreamReader( BFactory.instance().open(rl) );
 		_replayAnimation = new BLogListener.ReplayAnimation(r, _fc.listener() );
 		IBAnimation backToStartAnimation = new BRunnableAnimation(2000, new Runnable(){
