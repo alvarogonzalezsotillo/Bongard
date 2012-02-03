@@ -6,6 +6,7 @@ import purethought.gui.container.IBFlippableDrawable;
 import purethought.gui.container.IBFlippableModel;
 import purethought.platform.BFactory;
 import purethought.platform.BResourceLocator;
+import purethought.problem.BCardExtractor;
 
 public class BGameModel implements IBFlippableModel{
 	
@@ -60,7 +61,17 @@ public class BGameModel implements IBFlippableModel{
 	}
 	
 	public static void goToLevel(boolean demo, int width) {
-		BResourceLocator[] problems = BFactory.instance().cardExtractor().randomProblems(width);
+		BCardExtractor ce = BFactory.instance().cardExtractor();
+		BResourceLocator[] problems;
+		if( width <= 3 ){
+			problems = ce.randomProblems(width,10);
+		}
+		else if( width <= 5 ){
+			problems = ce.randomProblems(width,30);
+		}
+		else{
+			problems = ce.randomProblems(width);
+		}
 		goToProblems(demo,problems);
 	}
 

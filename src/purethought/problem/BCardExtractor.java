@@ -9,6 +9,7 @@ import purethought.geom.IBRectangle;
 import purethought.gui.basic.IBRaster;
 import purethought.platform.BFactory;
 import purethought.platform.BResourceLocator;
+import purethought.util.BException;
 
 public abstract class BCardExtractor{
 	
@@ -29,7 +30,7 @@ public abstract class BCardExtractor{
 	}
 
 
-	private Random _random;
+	private int TOTAL = 280;
 
 	
 	/**
@@ -91,7 +92,10 @@ public abstract class BCardExtractor{
 		int r = random().nextInt( ps.length );
 		return ps[r];
 	}
-	
+
+	private Random _random;
+
+
 	private Random random() {
 		if (_random == null) {
 			_random = new Random();
@@ -102,9 +106,8 @@ public abstract class BCardExtractor{
 
 
 	public BResourceLocator[] allProblems(){
-		int count = 280;
-		BResourceLocator[] ret = new BResourceLocator[count];
-		for( int i = 0 ; i < count ; i++ ){
+		BResourceLocator[] ret = new BResourceLocator[TOTAL];
+		for( int i = 0 ; i < TOTAL ; i++ ){
 			ret[i] = new BResourceLocator(String.format("/images/tests/p%03d.png", i+1 ));
 		}
 		return ret;
@@ -122,18 +125,30 @@ public abstract class BCardExtractor{
 
 
 	public BResourceLocator[] randomProblems(int n){
+		return randomProblems(  n, TOTAL, random() );
+	}
+	
+	public BResourceLocator[] randomProblems( int n, int total){
+		return randomProblems(n,total,random());
+	}
+	
+	public BResourceLocator[] randomProblems( int n, int total, Random random ){
+		if( n > total ){
+			throw new BException( "n>total", null);
+		}
 		BResourceLocator[] ps = allProblems();
 		BResourceLocator[] ret = new BResourceLocator[n];
 		
 		ArrayList<BResourceLocator> list = new ArrayList<BResourceLocator>();
-		list.addAll( Arrays.asList(ps) );
+		for( int i = 0 ; i < total ; i ++){
+			list.add( ps[i] );
+		}
 		
 		for( int i = 0 ; i < n ; i++ ){
-			BResourceLocator l = list.remove( random().nextInt(list.size()) );
+			BResourceLocator l = list.remove( random.nextInt(list.size()) );
 			ret[i] = l;
 		}
 		
 		return ret;
-		
 	}
 }
