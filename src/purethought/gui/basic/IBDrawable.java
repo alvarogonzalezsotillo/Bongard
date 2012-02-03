@@ -1,10 +1,11 @@
 package purethought.gui.basic;
 
+import purethought.animation.IBTransformAnimable;
 import purethought.geom.IBPoint;
 import purethought.geom.IBTransform;
 import purethought.geom.IBTransformable;
 
-public interface IBDrawable extends IBTransformable{
+public interface IBDrawable extends IBTransformable, IBTransformAnimable{
 	public IBTransform transform();
 	public void setTransform(IBTransform t);
 	public void draw(IBCanvas c,IBTransform aditionalTransform);

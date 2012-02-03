@@ -9,6 +9,9 @@ public abstract class BAnimator {
 	private ArrayList<IBAnimation> _animations = new ArrayList<IBAnimation>();
 
 	public void addAnimation(IBAnimation a){
+		if( a == null ){
+			return;
+		}
 		_animations.add(a);
 	}
 	

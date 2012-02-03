@@ -25,7 +25,7 @@ public class BConcatenateAnimation implements IBAnimation{
 	
 	private IBAnimation currentAnimation(){
 		for( IBAnimation ta : _animations ){
-			if( !ta.endReached() ){
+			if( ta != null && !ta.endReached() ){
 				return ta;
 			}
 		}

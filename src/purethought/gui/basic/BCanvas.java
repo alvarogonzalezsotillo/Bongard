@@ -1,6 +1,12 @@
 package purethought.gui.basic;
 
 
+import purethought.animation.BConcatenateAnimation;
+import purethought.animation.BRunnableAnimation;
+import purethought.animation.BTranslateAnimation;
+import purethought.animation.BWaitForAnimation;
+import purethought.animation.IBAnimation;
+import purethought.geom.IBPoint;
 import purethought.geom.IBRectangle;
 import purethought.geom.IBTransform;
 import purethought.gui.container.IBDrawableContainer;
@@ -10,6 +16,7 @@ import purethought.platform.BFactory;
 
 public abstract class BCanvas implements IBCanvas{
 	
+	private static final int ENTER_LEAVE_MILLIS = 400;
 	private IBTransform _t = BFactory.instance().identityTransform();
 	private IBDrawableContainer _d;
 	private BListenerList _listeners = new BListenerList(this);
@@ -23,15 +30,37 @@ public abstract class BCanvas implements IBCanvas{
 	}
 
 	@Override
-	public void setDrawable(IBDrawableContainer d) {
+	public void setDrawable(final IBDrawableContainer d) {
+		BFactory f = BFactory.instance();
+		IBAnimation a = null;
 		if( _d != null ){
 			removeListener(_d.listener());
+			Runnable r = new Runnable(){
+				public void run(){
+					_d = d;
+				}
+			};
+			
+			IBPoint src = f.point(0, 0 );
+			IBPoint dst = f.point(0, _d.originalSize().h() );
+			_d.transform().translate(src.x(),src.y());
+			a = new BTranslateAnimation(dst, ENTER_LEAVE_MILLIS, _d);
+			a = new BConcatenateAnimation(a, new BRunnableAnimation(10, r));
 		}
-		_d = d;
 		if( _d != null ){
-			addListener(_d.listener());
 			adjustTransformToSize();
+			Runnable r = new Runnable(){
+				public void run(){
+					addListener(_d.listener());
+				}
+			};
+			IBPoint src = f.point(0, -_d.originalSize().h() );
+			IBPoint dst = f.point(0, 0 );
+			_d.transform().translate(src.x(),src.y());
+			a = new BConcatenateAnimation( a, new BTranslateAnimation(dst, ENTER_LEAVE_MILLIS, _d) );
+			a = new BConcatenateAnimation(a, new BRunnableAnimation(10, r));
 		}
+		f.game().animator().addAnimation(a);
 	}
 
 	@Override

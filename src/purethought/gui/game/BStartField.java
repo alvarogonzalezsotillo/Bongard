@@ -3,6 +3,7 @@ package purethought.gui.game;
 import purethought.animation.BConcatenateAnimation;
 import purethought.animation.BRunnableAnimation;
 import purethought.animation.BScaleAnimation;
+import purethought.animation.BTranslateAnimation;
 import purethought.animation.IBAnimation;
 import purethought.geom.IBPoint;
 import purethought.geom.IBRectangle;
@@ -67,7 +68,8 @@ public class BStartField extends BDrawableContainer{
 	}
 
 	private IBAnimation createPressedAnimation(BSprite s){
-		return new BScaleAnimation(10, 10, 400, s);
+		//return new BScaleAnimation(10, 10, 400, s);
+		return null;
 	}
 	
 	protected void startPressed() {
