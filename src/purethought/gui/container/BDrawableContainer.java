@@ -1,14 +1,11 @@
 package purethought.gui.container;
 
 import purethought.geom.BRectangle;
-import purethought.geom.IBPoint;
-import purethought.geom.IBTransform;
 import purethought.gui.basic.BRectangularDrawable;
 import purethought.gui.event.BListenerList;
 import purethought.gui.event.IBEvent;
 import purethought.gui.event.IBEventListener;
 import purethought.gui.event.IBEventSource;
-import purethought.platform.BFactory;
 
 public abstract class BDrawableContainer extends BRectangularDrawable implements IBDrawableContainer{
 

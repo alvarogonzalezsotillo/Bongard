@@ -4,16 +4,13 @@ import purethought.animation.BConcatenateAnimation;
 import purethought.animation.BRunnableAnimation;
 import purethought.animation.BScaleAnimation;
 import purethought.animation.IBAnimation;
-import purethought.geom.BRectangle;
 import purethought.geom.IBPoint;
 import purethought.geom.IBRectangle;
 import purethought.geom.IBTransform;
-import purethought.gui.basic.BLabel;
 import purethought.gui.basic.BSprite;
 import purethought.gui.basic.IBCanvas;
 import purethought.gui.basic.IBRaster;
 import purethought.gui.container.BDrawableContainer;
-import purethought.gui.container.BFlippableContainer;
 import purethought.gui.event.BEventAdapter;
 import purethought.platform.BFactory;
 import purethought.platform.BResourceLocator;
@@ -78,7 +75,7 @@ public class BStartField extends BDrawableContainer{
 		a = new BConcatenateAnimation( a, new BRunnableAnimation(10, new Runnable(){
 			@Override
 			public void run() {
-				BGameModel.goToLevel(false,3);
+				BGameModel.goToLevel(false,3,true);
 			}
 		}));
 		BFactory.instance().game().animator().addAnimation(a);

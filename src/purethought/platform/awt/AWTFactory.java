@@ -10,8 +10,6 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 
 import purethought.geom.IBRectangle;
-import purethought.gui.basic.BLabel;
-import purethought.gui.basic.BSprite;
 import purethought.gui.basic.IBColor;
 import purethought.gui.basic.IBRaster;
 import purethought.platform.BFactory;

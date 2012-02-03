@@ -2,7 +2,6 @@ package purethought.gui.game;
 
 import purethought.animation.BRunnableAnimation;
 import purethought.gui.container.BFlippableContainer;
-import purethought.gui.container.IBFlippableDrawable;
 import purethought.gui.container.IBFlippableModel;
 import purethought.platform.BFactory;
 import purethought.platform.BResourceLocator;
@@ -10,6 +9,7 @@ import purethought.problem.BCardExtractor;
 
 public class BGameModel implements IBFlippableModel{
 	
+	private static final int MAX_WIDTH = 13;
 	private BGameField[] _drawables;
 	private boolean _demo;
 
@@ -46,30 +46,38 @@ public class BGameModel implements IBFlippableModel{
 			return;
 		}
 		if( allAnswered() ){
-			int width = width();
-			if( allCorrectAnswered() ){
-				width += 2;
+			int width = width()+2;
+			if( !allCorrectAnswered() ){
+				width = 3;
 			}
-			final int goTo =width;
+			final int goTo = width;
 			BFactory.instance().game().animator().addAnimation( new BRunnableAnimation(1000, new Runnable(){
 				@Override
 				public void run() {
-					goToLevel(_demo,goTo);
+					goToLevel(_demo,goTo,true);
 				}
 			}));
 		}
 	}
 	
-	public static void goToLevel(boolean demo, int width) {
+	public static void goToLevel(boolean demo, int width, boolean limitDificulty) {
+		
+		if( width > MAX_WIDTH ){
+			width = MAX_WIDTH;
+		}
+		
 		BCardExtractor ce = BFactory.instance().cardExtractor();
-		BResourceLocator[] problems;
-		if( width <= 3 ){
-			problems = ce.randomProblems(width,10);
+		BResourceLocator[] problems = null;
+		if( limitDificulty ){
+			if( width <= 3 ){
+				problems = ce.randomProblems(width,10);
+			}
+			else if( width <= 5 ){
+				problems = ce.randomProblems(width,30);
+			}
 		}
-		else if( width <= 5 ){
-			problems = ce.randomProblems(width,30);
-		}
-		else{
+		
+		if( problems == null ){
 			problems = ce.randomProblems(width);
 		}
 		goToProblems(demo,problems);

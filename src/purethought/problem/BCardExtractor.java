@@ -1,7 +1,6 @@
 package purethought.problem;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 
 import purethought.geom.BRectangle;

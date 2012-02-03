@@ -1,8 +1,6 @@
 package purethought.gui.basic;
 
 
-import java.awt.Color;
-
 import purethought.geom.IBRectangle;
 import purethought.geom.IBTransform;
 import purethought.gui.container.IBDrawableContainer;

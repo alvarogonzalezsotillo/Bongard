@@ -6,7 +6,6 @@ package purethought.gui.event;
 import java.util.ArrayList;
 
 import purethought.geom.IBPoint;
-import purethought.geom.IBRectangle;
 
 public class BListenerList implements IBEventListener{
 	

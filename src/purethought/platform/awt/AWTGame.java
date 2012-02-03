@@ -5,20 +5,12 @@ import java.awt.Container;
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
-import java.io.Reader;
 
 import javax.swing.SwingUtilities;
 
-import purethought.gui.container.BFlippableContainer;
-import purethought.gui.event.BLogListener;
-import purethought.gui.game.BGameModel;
 import purethought.gui.game.BStartField;
 import purethought.gui.game.IBGame;
 import purethought.platform.BFactory;
-import purethought.platform.BResourceLocator;
 
 public class AWTGame implements IBGame, Runnable{
 

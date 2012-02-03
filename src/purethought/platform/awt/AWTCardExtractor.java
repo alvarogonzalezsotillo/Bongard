@@ -8,7 +8,6 @@ import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Formatter;
 
 import javax.imageio.ImageIO;
 
@@ -17,7 +16,6 @@ import purethought.gui.basic.IBRaster;
 import purethought.platform.BResourceLocator;
 import purethought.problem.BCardExtractor;
 import purethought.problem.BProblem;
-import purethought.util.BException;
 
 
 public class AWTCardExtractor extends BCardExtractor{

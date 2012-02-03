@@ -243,8 +243,12 @@ public class BFlippableContainer extends BDrawableContainer {
 		double scale = (originalSize().h())/_backgroundSprite.originalSize().h();
 		double dx = _backgroundSprite.originalSize().w()/2;
 		
+		double offsetAtFirstIndex = 0;
 		double offsetAtLastIndex = -_backgroundSprite.originalSize().w() + originalSize().w()/scale;
-		double offsetPerIndex = offsetAtLastIndex/(_model.width()-1);
+		double offsetPerIndex = (offsetAtFirstIndex + offsetAtLastIndex)/(_model.width()-1);
+		if( offsetPerIndex < -originalSize().w()/scale ){
+			offsetPerIndex = -originalSize().w()/scale;
+		}
 		double offset = offsetPerIndex*currentIndex();
 		double offsetFromAnimation = -offsetPerIndex*drawableOffset()/(originalSize().w()+MARGIN);
 		offset += offsetFromAnimation;

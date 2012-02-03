@@ -21,7 +21,6 @@ import purethought.gui.container.BDrawableContainer;
 import purethought.gui.container.BFlippableContainer;
 import purethought.gui.container.IBFlippableDrawable;
 import purethought.gui.event.BEventAdapter;
-import purethought.gui.event.BLogListener;
 import purethought.platform.BFactory;
 import purethought.platform.BResourceLocator;
 import purethought.problem.BCardExtractor;
