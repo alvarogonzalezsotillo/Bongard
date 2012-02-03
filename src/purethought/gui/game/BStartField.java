@@ -78,8 +78,7 @@ public class BStartField extends BDrawableContainer{
 		a = new BConcatenateAnimation( a, new BRunnableAnimation(10, new Runnable(){
 			@Override
 			public void run() {
-				BResourceLocator[] problems = BFactory.instance().cardExtractor().randomProblems(7);
-				BFactory.instance().game().canvas().setDrawable( new BFlippableContainer( new BGameModel(problems ) ) );
+				BGameModel.goToLevel(false,3);
 			}
 		}));
 		BFactory.instance().game().animator().addAnimation(a);

@@ -145,8 +145,8 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 				boolean badAnswer =  _set2Over && _problem.isOfSet1(_questionSprite.raster()) ||
 									 _set1Over && _problem.isOfSet2(_questionSprite.raster());
 				
-				if( correctAnswer && !_badAnswer ) _correctAnswer = true;
-				if( badAnswer && !_correctAnswer ) _badAnswer = true;
+				if( correctAnswer && !_badAnswer ) setCorrectAnswer(true);
+				if( badAnswer && !_correctAnswer ) setBadAnswer(true);
 				
 				IBPoint dest = f.point(105*2, 105*3);
 				if( correctAnswer ){
@@ -201,6 +201,16 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 		this(null,null);
 	}
 	
+
+	protected void setBadAnswer(boolean b) {
+		_badAnswer = b;
+		model().answered(this);
+	}
+
+	protected void setCorrectAnswer(boolean b) {
+		_correctAnswer = b;
+		model().answered(this);
+	}
 
 	public BGameField(BResourceLocator test,BGameModel model){
 
@@ -333,7 +343,7 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 		_container = c;
 	}
 	
-	public boolean goodAnswer(){
+	public boolean correctAnswer(){
 		return _correctAnswer;
 	}
 	
@@ -344,7 +354,7 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	
 	@Override
 	public BBox icon(){
-		if( goodAnswer() ){
+		if( correctAnswer() ){
 			return _correctIcon;
 		}
 		if( badAnswer() ){

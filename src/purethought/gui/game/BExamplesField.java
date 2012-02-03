@@ -36,7 +36,7 @@ public class BExamplesField extends BDrawableContainer{
 	
 	public BExamplesField() {
 		BResourceLocator[] problems = BFactory.instance().cardExtractor().exampleProblems();
-		_fc = new BFlippableContainer( new BGameModel(problems ) );
+		_fc = new BFlippableContainer( new BGameModel(true,problems ) );
 		
 		BResourceLocator rl = new BResourceLocator("/images/examples/examples.events");
 		Reader r = new InputStreamReader( BFactory.instance().open(rl) );
