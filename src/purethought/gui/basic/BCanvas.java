@@ -16,7 +16,7 @@ import purethought.platform.BFactory;
 
 public abstract class BCanvas implements IBCanvas{
 	
-	private static final int ENTER_LEAVE_MILLIS = 400;
+	private static final int ENTER_LEAVE_MILLIS = 250;
 	private IBTransform _t = BFactory.instance().identityTransform();
 	private IBDrawableContainer _d;
 	private BListenerList _listeners = new BListenerList(this);
@@ -35,9 +35,9 @@ public abstract class BCanvas implements IBCanvas{
 		IBAnimation a = null;
 		if( _d != null ){
 			removeListener(_d.listener());
-			Runnable r = new Runnable(){
+			Runnable rSet = new Runnable(){
 				public void run(){
-					_d = d;
+					_d = null;
 				}
 			};
 			
@@ -45,20 +45,27 @@ public abstract class BCanvas implements IBCanvas{
 			IBPoint dst = f.point(0, _d.originalSize().h() );
 			_d.transform().translate(src.x(),src.y());
 			a = new BTranslateAnimation(dst, ENTER_LEAVE_MILLIS, _d);
-			a = new BConcatenateAnimation(a, new BRunnableAnimation(10, r));
+			a = new BConcatenateAnimation(a, new BRunnableAnimation(10, rSet));
 		}
-		if( _d != null ){
-			adjustTransformToSize();
-			Runnable r = new Runnable(){
+		if( d != null ){
+			Runnable rSet = new Runnable(){
+				public void run(){
+					_d = d;
+					adjustTransformToSize();
+				}
+			};
+			
+			Runnable rListener = new Runnable(){
 				public void run(){
 					addListener(_d.listener());
 				}
 			};
-			IBPoint src = f.point(0, -_d.originalSize().h() );
+			IBPoint src = f.point(0, -d.originalSize().h() );
 			IBPoint dst = f.point(0, 0 );
-			_d.transform().translate(src.x(),src.y());
-			a = new BConcatenateAnimation( a, new BTranslateAnimation(dst, ENTER_LEAVE_MILLIS, _d) );
-			a = new BConcatenateAnimation(a, new BRunnableAnimation(10, r));
+			d.transform().translate(src.x(),src.y());
+			a = new BConcatenateAnimation( a, new BRunnableAnimation(10, rSet));
+			a = new BConcatenateAnimation( a, new BTranslateAnimation(dst, ENTER_LEAVE_MILLIS, d) );
+			a = new BConcatenateAnimation( a, new BRunnableAnimation(10, rListener));
 		}
 		f.game().animator().addAnimation(a);
 	}
