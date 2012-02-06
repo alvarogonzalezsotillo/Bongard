@@ -18,6 +18,7 @@
 		<copy todir="${bin}">
 			<fileset dir="${src}">
 				<include name="**/*.png" />
+				<include name="**/*.events" />
 			</fileset>
 		</copy>
 		<jar destfile="${jar.file}">

@@ -1,4 +1,4 @@
-<jnlp codebase="https://sites.google.com/site/alvarogonzalezsotillo/scripts" href="bongard.jnlp" spec="1.0+">
+<jnlp codebase="https://raw.github.com/alvarogonzalezsotillo/Bongard/master" href="bongard.jnlp" spec="1.0+">
  <information>
     <title>Bongard tests</title>
     <vendor>Alvaro Gonzalez Sotillo</vendor>
