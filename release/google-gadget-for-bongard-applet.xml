@@ -8,7 +8,7 @@
 </script>
 <div id='alvaro-gonzalez-sotillo-applet'>
 <script>
-var _jarUrl = "https://raw.github.com/alvarogonzalezsotillo/Bongard/master/bongard.jar";
+var _jarUrl = "https://raw.github.com/alvarogonzalezsotillo/Bongard/master/release/bongard.jar";
 var _name = "alvaro-gonzalez-sotillo-applet";
 var _code = "purethought.platform.applet.AppletGame";
 var _codebase = ".";
