@@ -1,4 +1,4 @@
-package purethought.platform.awt;
+package bongard.platform.awt;
 
 import java.awt.Color;
 

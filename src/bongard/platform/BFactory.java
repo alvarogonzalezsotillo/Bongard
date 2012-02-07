@@ -11,9 +11,9 @@ import bongard.gui.basic.BSprite;
 import bongard.gui.basic.IBColor;
 import bongard.gui.basic.IBRaster;
 import bongard.gui.game.IBGame;
+import bongard.platform.awt.AWTFactory;
 import bongard.problem.BCardExtractor;
 
-import purethought.platform.awt.AWTFactory;
 
 public abstract class BFactory {
 	

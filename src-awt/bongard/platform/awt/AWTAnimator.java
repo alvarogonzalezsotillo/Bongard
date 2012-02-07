@@ -1,4 +1,4 @@
-package purethought.platform.awt;
+package bongard.platform.awt;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

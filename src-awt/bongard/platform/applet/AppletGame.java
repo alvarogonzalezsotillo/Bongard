@@ -1,4 +1,4 @@
-package purethought.platform.applet;
+package bongard.platform.applet;
 
 import java.applet.Applet;
 import java.awt.BorderLayout;
