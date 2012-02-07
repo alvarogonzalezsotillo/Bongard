@@ -11,7 +11,6 @@ import bongard.gui.basic.BSprite;
 import bongard.gui.basic.IBColor;
 import bongard.gui.basic.IBRaster;
 import bongard.gui.game.IBGame;
-import bongard.platform.awt.AWTFactory;
 import bongard.problem.BCardExtractor;
 
 
@@ -26,9 +25,39 @@ public abstract class BFactory {
 	
 	public static BFactory instance(){
 		if (_instance == null) {
-			_instance = new AWTFactory();
+			_instance = createInstance();
 		}
 		return _instance;
+	}
+
+
+	private static BFactory createInstance() {
+		Class<?> c = null;
+		try {
+			c = Class.forName("bongard.platform.awt.AWTFactory");
+		} 
+		catch (Throwable e) {
+			//e.printStackTrace();
+		}
+		
+		try {
+			c = Class.forName("bongard.platform.android.ANDRFactory");
+		} 
+		catch (Throwable e) {
+			//e.printStackTrace();
+		}
+		
+		if( c == null ){
+			return null;
+		}
+		
+		try{
+			return (BFactory) c.newInstance();
+		}
+		catch( Throwable e ){
+			//e.printStackTrace();
+		}
+		return null;
 	}
 
 
@@ -45,4 +74,8 @@ public abstract class BFactory {
 	public abstract IBRaster raster(BResourceLocator test, boolean transparent);
 	public abstract InputStream open(BResourceLocator r);
 	public abstract IBColor color(String c);
+	
+	public static void main(String[] args) {
+		System.getProperties().save(System.out, "");
+	}
 }

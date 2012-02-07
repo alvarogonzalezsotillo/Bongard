@@ -2,12 +2,16 @@
 
 	<property name="jar.file" value="bongard.jar" />
 	<property name="src" value="src" />
+	<property name="src-awt" value="src-awt" />
 	<property name="bin" value="bin" />
 	<property name="exec.dir" value="." />
 
 	<target name="compile">
 		<mkdir dir="${bin}" />
-		<javac srcdir="${src}" destdir="${bin}" fork="true" source="1.5" target="1.5" />
+		<javac destdir="${bin}" fork="true" source="1.5" target="1.5">
+			<src path="${src}"/>
+			<src path="${src-awt}"/>
+		</javac>
 	</target>
 
 	<target name="clean">
@@ -24,7 +28,7 @@
 		<jar destfile="${jar.file}">
 			<fileset dir="${bin}" casesensitive="yes" />
 			<manifest>
-				<attribute name="Main-Class" value="purethought.platform.awt.AWTGame" />
+				<attribute name="Main-Class" value="bongard.platform.awt.AWTGame" />
 			</manifest>
 		</jar>
 	</target>
