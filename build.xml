@@ -1,37 +1,46 @@
 <project name="bongard" default="run">
 
-	<property name="jar.file" value="bongard.jar" />
-	<property name="src" value="src" />
+	<property name="src-common" value="src/src-common" />
+	<property name="src-awt" value="src/src-awt" />
+	<property name="src-andr" value="src/src-andr" />
 	<property name="bin" value="bin" />
+	<property name="bin.classes" value="${bin}/classes" />
 	<property name="exec.dir" value="." />
+	<property name="release.dir" value="release" />
+	<property name="jar.file" value="${bin}/bongard.jar" />
+
 
 	<target name="compile">
-		<mkdir dir="${bin}" />
-		<javac srcdir="${src}" destdir="${bin}" fork="true" source="1.5" target="1.5" />
+		<mkdir dir="${bin.classes}" />
+		<javac destdir="${bin.classes}" fork="true" source="1.5" target="1.5">
+			<src path="${src-common}"/>
+			<src path="${src-awt}"/>
+		</javac>
 	</target>
 
 	<target name="clean">
 		<delete dir="${bin}" />
+		<delete file="${jar.file}" />
 	</target>
 
 	<target name="jar" depends="compile">
-		<copy todir="${bin}">
-			<fileset dir="${src}">
+		<copy todir="${bin.classes}">
+			<fileset dir="${src-common}">
 				<include name="**/*.png" />
 				<include name="**/*.events" />
 			</fileset>
 		</copy>
 		<jar destfile="${jar.file}">
-			<fileset dir="${bin}" casesensitive="yes" />
+			<fileset dir="${bin.classes}" casesensitive="yes"/>
 			<manifest>
-				<attribute name="Main-Class" value="purethought.platform.awt.AWTGame" />
+				<attribute name="Main-Class" value="bongard.platform.awt.AWTGame" />
 			</manifest>
 		</jar>
 	</target>
 
 	<target name="run-applet" depends="jar">
 		<java classname="sun.applet.AppletViewer" fork="true">
-			<arg value="bongard.html" />
+			<arg value="${release.dir}/bongard.html" />
 		</java>
 	</target>
 
@@ -55,6 +64,10 @@
 
 	<target name="dist-src">
 		<zip basedir="." destfile="bongard.zip" includes="*.xml, ${src}/**/*.*" />
+	</target>
+
+	<target name="release" depends="jar">
+		<copy file="${jar.file}" todir="${release.dir}"/>
 	</target>
 
 </project>
