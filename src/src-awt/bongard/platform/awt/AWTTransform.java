@@ -113,6 +113,7 @@ public class AWTTransform extends AffineTransform implements IBTransform{
 	}
 		
 		
+	@SuppressWarnings("unused")
 	private static void testSetTo(IBRectangle o, IBRectangle d, IBTransform t) {
 		IBPoint tp, p;
 

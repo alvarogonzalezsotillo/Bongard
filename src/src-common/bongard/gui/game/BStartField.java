@@ -2,8 +2,6 @@ package bongard.gui.game;
 
 import bongard.animation.BConcatenateAnimation;
 import bongard.animation.BRunnableAnimation;
-import bongard.animation.BScaleAnimation;
-import bongard.animation.BTranslateAnimation;
 import bongard.animation.IBAnimation;
 import bongard.geom.IBPoint;
 import bongard.geom.IBRectangle;

@@ -9,6 +9,8 @@
 	<property name="release.dir" value="release" />
 	<property name="jar.file" value="${bin}/bongard.jar" />
 
+	<property name="android.assets" value="android/assets"/>
+
 
 	<target name="compile">
 		<mkdir dir="${bin.classes}" />
@@ -21,6 +23,15 @@
 	<target name="clean">
 		<delete dir="${bin}" />
 		<delete file="${jar.file}" />
+	</target>
+
+	<target name="copy-images-to-assets">
+		<copy todir="${android.assets}">
+			<fileset dir="${src-common}">
+				<include name="**/*.png" />
+				<include name="**/*.events" />
+			</fileset>
+		</copy>
 	</target>
 
 	<target name="jar" depends="compile">

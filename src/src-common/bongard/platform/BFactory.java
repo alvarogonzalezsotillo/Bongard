@@ -75,6 +75,7 @@ public abstract class BFactory {
 	public abstract InputStream open(BResourceLocator r);
 	public abstract IBColor color(String c);
 	
+	@SuppressWarnings("deprecation")
 	public static void main(String[] args) {
 		System.getProperties().save(System.out, "");
 	}

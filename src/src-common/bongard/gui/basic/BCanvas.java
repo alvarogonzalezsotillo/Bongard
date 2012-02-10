@@ -4,7 +4,6 @@ package bongard.gui.basic;
 import bongard.animation.BConcatenateAnimation;
 import bongard.animation.BRunnableAnimation;
 import bongard.animation.BTranslateAnimation;
-import bongard.animation.BWaitForAnimation;
 import bongard.animation.IBAnimation;
 import bongard.geom.IBPoint;
 import bongard.geom.IBRectangle;
