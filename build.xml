@@ -73,10 +73,6 @@
 
 	</target>
 
-	<target name="dist-src">
-		<zip basedir="." destfile="bongard.zip" includes="*.xml, ${src}/**/*.*" />
-	</target>
-
 	<target name="release" depends="jar">
 		<copy file="${jar.file}" todir="${release.dir}"/>
 	</target>
