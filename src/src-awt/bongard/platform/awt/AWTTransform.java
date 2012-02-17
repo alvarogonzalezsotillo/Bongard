@@ -9,6 +9,7 @@ import bongard.geom.IBPoint;
 import bongard.geom.IBRectangle;
 import bongard.geom.IBTransform;
 import bongard.platform.BFactory;
+import bongard.util.BTransformUtil;
 
 
 @SuppressWarnings("serial")
@@ -57,45 +58,6 @@ public class AWTTransform extends AffineTransform implements IBTransform{
 		System.out.println( p + " --> " + t.transform(p) );
 	}
 	
-	@Override
-	public void setTo(IBRectangle origin, IBRectangle destination, boolean keepAspectRatio, boolean fitInside){
-		double sx = destination.w() / origin.w();
-		double sy = destination.h() / origin.h();
-		
-		if( keepAspectRatio ){
-			if( fitInside ){
-				sx = Math.min( sx, sy );
-			}
-			else{
-				sx = Math.max( sx, sy );
-			}
-			sy = sx;
-		}
-		
-		IBPoint oCenter = new AWTPoint( origin.x() + origin.w()/2, origin.y() + origin.h()/2 );
-		IBPoint dCenter = new AWTPoint( destination.x() + destination.w()/2, destination.y() + destination.h()/2 );
-
-		
-		setToIdentity();
-
-		// AL ORIGEN
-		IBTransform t = BFactory.instance().identityTransform();
-		t.translate( -oCenter.x(), -oCenter.y() );
-		preConcatenate(t);
-		//testPoint("origen", origin, this);
-		
-		// CAMBIO TAMA�O
-		t = BFactory.instance().identityTransform();
-		t.scale(sx, sy);
-		preConcatenate(t);
-		//testPoint("tama�o", origin, this);
-		
-		// LO LLEVO A SU SITIO DE DESTINO
-		translate(dCenter.x()/sx, dCenter.y()/sy );
-		//testPoint("destino", origin, this);
-		
-		//testSetTo(origin, destination, this);
-	}
 
 	
 	
@@ -106,7 +68,7 @@ public class AWTTransform extends AffineTransform implements IBTransform{
 		IBRectangle o = new BRectangle(-1, -1, 2, 2);
 		IBRectangle d = new BRectangle(0, 0, 50, 50);
 
-		t.setTo(o, d, true, true);
+		BTransformUtil.setTo(t,o, d, true, true);
 		
 		testPoint("Final", o, t);
 

@@ -12,6 +12,7 @@ import bongard.gui.container.IBDrawableContainer;
 import bongard.gui.event.BListenerList;
 import bongard.gui.event.IBEventListener;
 import bongard.platform.BFactory;
+import bongard.util.BTransformUtil;
 
 public abstract class BCanvas implements IBCanvas{
 	
@@ -100,7 +101,9 @@ public abstract class BCanvas implements IBCanvas{
 		IBRectangle origin = drawable().originalSize();
 		IBRectangle destination = originalSize();
 		
-		transform().setTo(origin, destination, true, true);
+		IBTransform t = transform();
+		BTransformUtil.setTo(t,origin, destination, true, true);
+		setTransform(t);
 	}
 
 	public IBColor backgroundColor() {

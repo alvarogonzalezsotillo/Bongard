@@ -16,6 +16,7 @@ import bongard.gui.event.BLogListener;
 import bongard.gui.event.IBEvent;
 import bongard.platform.BFactory;
 import bongard.platform.BResourceLocator;
+import bongard.util.BTransformUtil;
 
 public class BFlippableContainer extends BDrawableContainer {
 	private static final double MARGIN = 50;
@@ -281,7 +282,7 @@ public class BFlippableContainer extends BDrawableContainer {
 			}
 			else{
 				IBTransform rdt = rd.transform();
-				rdt.setTo(rd.originalSize(), r, true, true);
+				BTransformUtil.setTo(rdt,rd.originalSize(), r, true, true);
 			}
 			
 			rd.draw(c, t);
@@ -336,7 +337,7 @@ public class BFlippableContainer extends BDrawableContainer {
 		}
 		IBRectangle origin = current().originalSize();
 		IBRectangle destination = originalSize();
-		transform().setTo(origin, destination, true, true);
+		BTransformUtil.setTo(transform(),origin, destination, true, true);
 	}
 
 	@Override
