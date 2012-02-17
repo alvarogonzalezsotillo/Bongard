@@ -1,16 +1,9 @@
 package bongard.platform.andr;
 
-import com.example.DrawView;
-
-import bongard.platform.andr.R;
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 
 public class AndrActivity extends Activity {
     /** Called when the activity is first created. */

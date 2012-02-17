@@ -48,7 +48,7 @@ public class AndrView extends View{
 
 	private Bitmap createBitmap() throws IOException {
 
-		InputStream is = getContext().getAssets().open( "prueba.png" );
+		InputStream is = getContext().getAssets().open( "images/backgrounds/arrecibo.png" );
 		
 		return BitmapFactory.decodeStream(is);
 	}
