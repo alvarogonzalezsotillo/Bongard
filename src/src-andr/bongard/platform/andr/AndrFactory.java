@@ -2,7 +2,7 @@ package bongard.platform.andr;
 
 import java.io.InputStream;
 
-import android.graphics.Matrix;
+import android.content.Context;
 import bongard.geom.IBPoint;
 import bongard.geom.IBRectangle;
 import bongard.geom.IBTransform;
@@ -18,13 +18,16 @@ import bongard.problem.BCardExtractor;
 
 public class AndrFactory extends BFactory{
 
+	private static Context _context;
+	private AndrGame _game;
+
 	@Override
-	public IBTransform identityTransform() {
+	public AndrTransform identityTransform() {
 		return new AndrTransform();
 	}
 
 	@Override
-	public IBPoint point(double x, double y) {
+	public AndrPoint point(double x, double y) {
 		return new AndrPoint(x,y);
 	}
 
@@ -35,9 +38,12 @@ public class AndrFactory extends BFactory{
 	}
 
 	@Override
-	public IBGame game() {
-		// TODO Auto-generated method stub
-		return null;
+	public AndrGame game() {
+		if (_game == null) {
+			_game = new AndrGame( context() );
+		}
+
+		return _game;
 	}
 
 	@Override
@@ -74,6 +80,10 @@ public class AndrFactory extends BFactory{
 	public IBColor color(String c) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public static Context context() {
+		return _context;
 	}
 
 }

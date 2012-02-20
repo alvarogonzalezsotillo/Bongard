@@ -3,6 +3,8 @@ package bongard.platform.andr;
 import java.io.IOException;
 import java.io.InputStream;
 
+import bongard.geom.IBRectangle;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,15 +17,18 @@ import android.view.View;
 public class AndrView extends View{
 
 	private Bitmap _bitmap;
+	private AndrCanvas _canvas;
 
-	public AndrView(Context context) {
+	AndrView(Context context, AndrCanvas canvas) {
 		super(context);
+		_canvas = canvas;
 		Log.d("-", getMeasuredWidth() + "," + getMeasuredHeight() );
 	}
 	
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
+		_canvas.drawable().draw(_canvas, );
 		Paint paint = new Paint();
 		paint.setColor(Color.WHITE);
 		canvas.drawLine(0, 0, getMeasuredWidth(), getMeasuredHeight(), paint);
@@ -42,20 +47,18 @@ public class AndrView extends View{
 			}
 			
 		}
-
 		return _bitmap;
 	}
 
 	private Bitmap createBitmap() throws IOException {
-
 		InputStream is = getContext().getAssets().open( "images/backgrounds/arrecibo.png" );
-		
 		return BitmapFactory.decodeStream(is);
 	}
 
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		setMeasuredDimension(500, 500);
+		IBRectangle s = _canvas.originalSize();
+		setMeasuredDimension( (int)s.w(), (int)s.h() );
 	}
 
 }

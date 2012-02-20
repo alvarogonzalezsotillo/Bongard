@@ -1,5 +1,6 @@
 package bongard.platform.andr;
 
+import bongard.platform.BFactory;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,7 +18,7 @@ public class AndrActivity extends Activity {
 
 	private View createView() {
 		//return new Kk( this );
-		return new AndrView(this);
+		return ((AndrFactory)BFactory.instance()).game().canvas().view();
 		//return new DrawView(this);
 	}
 	

@@ -1,9 +1,8 @@
 package bongard.platform.andr;
 
-import bongard.geom.IBPoint;
-import bongard.geom.IBRectangle;
-import bongard.geom.IBTransform;
 import android.graphics.Matrix;
+import bongard.geom.IBPoint;
+import bongard.geom.IBTransform;
 
 public class AndrTransform extends Matrix implements IBTransform{
 	
