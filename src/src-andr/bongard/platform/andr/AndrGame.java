@@ -3,6 +3,7 @@ package bongard.platform.andr;
 import android.content.Context;
 import bongard.animation.BAnimator;
 import bongard.gui.basic.IBCanvas;
+import bongard.gui.game.BStartField;
 import bongard.gui.game.IBGame;
 
 public class AndrGame implements IBGame{
@@ -15,16 +16,20 @@ public class AndrGame implements IBGame{
 		_context =c;
 	}
 	
+	public Context context(){
+		return _context;
+	}
+	
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
+		canvas().setDrawable( new BStartField() );
 		
 	}
 
 	@Override
 	public AndrCanvas canvas() {
 		if( _canvas == null ){
-			_canvas = new AndrCanvas( _context );
+			_canvas = new AndrCanvas( context() );
 		}
 		return _canvas;
 	}

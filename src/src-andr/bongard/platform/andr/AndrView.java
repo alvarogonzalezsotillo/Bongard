@@ -29,6 +29,7 @@ public class AndrView extends View{
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 		if( _canvas.drawable() != null ){
+			_canvas.setAndroidCanvas(canvas);
 			_canvas.drawable().draw(_canvas, _canvas.transform());
 		}
 //		Paint paint = new Paint();

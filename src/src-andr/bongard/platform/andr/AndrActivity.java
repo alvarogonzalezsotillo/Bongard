@@ -12,6 +12,7 @@ public class AndrActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.main);
+		AndrFactory.initContext(this);
         setContentView( createView() );
         Log.d("-", "oncreate" );
     }

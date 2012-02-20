@@ -1,20 +1,23 @@
 package bongard.platform.andr;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 
 import android.content.Context;
-import bongard.geom.IBPoint;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import bongard.geom.IBRectangle;
-import bongard.geom.IBTransform;
 import bongard.gui.basic.BBox;
 import bongard.gui.basic.BLabel;
 import bongard.gui.basic.BSprite;
 import bongard.gui.basic.IBColor;
 import bongard.gui.basic.IBRaster;
-import bongard.gui.game.IBGame;
 import bongard.platform.BFactory;
 import bongard.platform.BResourceLocator;
 import bongard.problem.BCardExtractor;
+import bongard.util.BException;
 
 public class AndrFactory extends BFactory{
 
@@ -48,8 +51,7 @@ public class AndrFactory extends BFactory{
 
 	@Override
 	public BSprite sprite(IBRaster raster) {
-		// TODO Auto-generated method stub
-		return null;
+		return new AndrSprite(raster);
 	}
 
 	@Override
@@ -66,24 +68,35 @@ public class AndrFactory extends BFactory{
 
 	@Override
 	public IBRaster raster(BResourceLocator test, boolean transparent) {
-		// TODO Auto-generated method stub
-		return null;
+		InputStream is = open(test);
+		Bitmap b = BitmapFactory.decodeStream(is);
+		return new AndrRaster(b);
 	}
 
 	@Override
 	public InputStream open(BResourceLocator r) {
-		// TODO Auto-generated method stub
-		return null;
+		try{
+			URL f = r.getImpl(URL.class);
+			if( f != null ){
+				return f.openStream();
+			}
+			return context().getAssets().open(r.toString());
+		}
+		catch( IOException e ){
+			throw new BException("Unable to open:" + r, e );
+		}
 	}
 
 	@Override
 	public IBColor color(String c) {
-		// TODO Auto-generated method stub
-		return null;
+		return new AndrColor( Color.parseColor("#" + c ) );
 	}
 
 	public static Context context() {
 		return _context;
 	}
 
+	public static void initContext(AndrActivity context) {
+		_context = context;
+	}
 }
