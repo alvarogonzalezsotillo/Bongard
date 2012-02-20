@@ -28,13 +28,15 @@ public class AndrView extends View{
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-		_canvas.drawable().draw(_canvas, );
-		Paint paint = new Paint();
-		paint.setColor(Color.WHITE);
-		canvas.drawLine(0, 0, getMeasuredWidth(), getMeasuredHeight(), paint);
-		Log.d("-", getMeasuredWidth() + "," + getMeasuredHeight() );
-		Bitmap bitmap = bitmap();
-		canvas.drawBitmap(bitmap, 0, 0, paint);
+		if( _canvas.drawable() != null ){
+			_canvas.drawable().draw(_canvas, _canvas.transform());
+		}
+//		Paint paint = new Paint();
+//		paint.setColor(Color.WHITE);
+//		canvas.drawLine(0, 0, getMeasuredWidth(), getMeasuredHeight(), paint);
+//		Log.d("-", getMeasuredWidth() + "," + getMeasuredHeight() );
+//		Bitmap bitmap = bitmap();
+//		canvas.drawBitmap(bitmap, 0, 0, paint);
 	}
 	
 	private Bitmap bitmap() {
