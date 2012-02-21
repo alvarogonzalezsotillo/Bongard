@@ -16,6 +16,17 @@ public abstract class BAnimator {
 		_animations.add(a);
 	}
 	
+	public long currentMillis(){
+		if( false ){
+			long nanos = System.nanoTime();
+			long ret = (long) (nanos/10e6);
+			return ret;
+		}
+		else{
+			return System.currentTimeMillis();
+		}
+	}
+	
 	/**
 	 * 
 	 * @param millis

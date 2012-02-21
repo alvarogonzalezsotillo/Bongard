@@ -23,7 +23,6 @@ public class AndrGame implements IBGame{
 	@Override
 	public void run() {
 		canvas().setDrawable( new BStartField() );
-		
 	}
 
 	@Override

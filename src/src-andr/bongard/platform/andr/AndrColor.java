@@ -1,13 +1,16 @@
 package bongard.platform.andr;
 
-import android.graphics.Color;
 import bongard.gui.basic.IBColor;
 
 public class AndrColor implements IBColor {
 
-	private Color _color;
+	private int _color;
 	
-	public AndrColor( Color c ){
-		
+	public AndrColor( int c ){
+		_color = c;
+	}
+	
+	public int color(){
+		return _color;
 	}
 }

@@ -41,7 +41,7 @@ public abstract class BFactory {
 		}
 		
 		try {
-			c = Class.forName("bongard.platform.android.ANDRFactory");
+			c = Class.forName("bongard.platform.andr.AndrFactory");
 		} 
 		catch (Throwable e) {
 			//e.printStackTrace();

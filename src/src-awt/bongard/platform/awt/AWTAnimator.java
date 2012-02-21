@@ -12,18 +12,18 @@ import bongard.animation.BAnimator;
 public class AWTAnimator extends BAnimator{
 	private int _millis;
 	private Timer _timer;
-	private int _lastMillis;
-	private int _step;
+	private long _lastMillis;
+	private long _step;
 
 	public AWTAnimator(){
-		this(1000/100);
+		this(1);
 	}
 	
 	public AWTAnimator(int millis){
 		_millis = millis;
 		_timer = createTimer();
 		_timer.start();
-		_lastMillis = (int) System.currentTimeMillis();
+		_lastMillis = currentMillis();
 	}
 
 	private Timer createTimer() {
@@ -32,14 +32,16 @@ public class AWTAnimator extends BAnimator{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int c = (int) System.currentTimeMillis();
+				long c = currentMillis();
+				System.out.println(c);
 				_step = c - _lastMillis;
 				_lastMillis = c;
 				
-				int m = Math.min(10*_millis, _step);
+				long m = Math.min(10*_millis, _step);
+				_step = m;
 				
 				boolean update = needsUpdate();
-				stepAnimations(m);
+				stepAnimations(_step);
 				
 				if( update ){
 					refresh();
@@ -49,7 +51,7 @@ public class AWTAnimator extends BAnimator{
 	}
 	
 
-	public int lastStep(){
+	public long lastStep(){
 		return _step;
 	}
 }

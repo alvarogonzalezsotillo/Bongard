@@ -14,6 +14,7 @@ public class AndrActivity extends Activity {
         //setContentView(R.layout.main);
 		AndrFactory.initContext(this);
         setContentView( createView() );
+        BFactory.instance().game().run();
         Log.d("-", "oncreate" );
     }
 

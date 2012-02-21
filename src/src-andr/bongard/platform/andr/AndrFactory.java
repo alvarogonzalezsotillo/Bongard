@@ -80,7 +80,11 @@ public class AndrFactory extends BFactory{
 			if( f != null ){
 				return f.openStream();
 			}
-			return context().getAssets().open(r.toString());
+			String s = r.toString();
+			if( s.startsWith("/") ){
+				s = s.substring(1);
+			}
+			return context().getAssets().open(s);
 		}
 		catch( IOException e ){
 			throw new BException("Unable to open:" + r, e );
