@@ -8,6 +8,48 @@ import bongard.platform.BFactory;
 public abstract class BAnimator {
 
 	private ArrayList<IBAnimation> _animations = new ArrayList<IBAnimation>();
+	
+	protected static final boolean NOT_SO_REAL_TIME = false;
+	private int _millis;
+	private long _lastMillis;
+	private long _step;
+	
+	protected BAnimator(){
+		this(1);
+	}
+	
+	protected BAnimator(int millis){
+		_millis = millis;
+		_lastMillis = currentMillis();
+	}
+	
+	protected void tick() {
+		long c = currentMillis();
+		_step = c - _lastMillis;
+		_lastMillis = c;
+		
+		if( NOT_SO_REAL_TIME ){
+			long m = Math.min(10*millis(), _step);
+			_step = m;
+		}
+		
+		boolean update = needsUpdate();
+		stepAnimations(_step);
+		
+		if( update ){
+			refresh();
+		}
+	}
+	
+
+	public long lastStep(){
+		return _step;
+	}
+	
+	public int millis(){
+		return _millis;
+	}
+	
 
 	public void addAnimation(IBAnimation a){
 		if( a == null ){

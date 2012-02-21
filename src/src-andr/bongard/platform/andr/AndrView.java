@@ -32,12 +32,12 @@ public class AndrView extends View{
 			_canvas.setAndroidCanvas(canvas);
 			_canvas.drawable().draw(_canvas, _canvas.transform());
 		}
-//		Paint paint = new Paint();
-//		paint.setColor(Color.WHITE);
-//		canvas.drawLine(0, 0, getMeasuredWidth(), getMeasuredHeight(), paint);
-//		Log.d("-", getMeasuredWidth() + "," + getMeasuredHeight() );
-//		Bitmap bitmap = bitmap();
-//		canvas.drawBitmap(bitmap, 0, 0, paint);
+		Paint paint = new Paint();
+		paint.setColor(Color.WHITE);
+		canvas.drawLine(0, 0, getMeasuredWidth(), getMeasuredHeight(), paint);
+		Log.d("-", getMeasuredWidth() + "," + getMeasuredHeight() );
+		Bitmap bitmap = bitmap();
+		canvas.drawBitmap(bitmap, 0, 0, paint);
 	}
 	
 	private Bitmap bitmap() {
@@ -60,8 +60,9 @@ public class AndrView extends View{
 
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		IBRectangle s = _canvas.originalSize();
-		setMeasuredDimension( (int)s.w(), (int)s.h() );
+		 int width = MeasureSpec.getSize(widthMeasureSpec);
+		 int height = MeasureSpec.getSize(heightMeasureSpec);
+		 setMeasuredDimension(width, height);		
 	}
 
 }

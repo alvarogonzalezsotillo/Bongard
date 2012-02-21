@@ -10,6 +10,7 @@ public class AndrGame implements IBGame{
 
 	private AndrCanvas _canvas;
 	private Context _context;
+	private AndrAnimator _animator;
 
 	
 	public AndrGame( Context c ){
@@ -34,9 +35,11 @@ public class AndrGame implements IBGame{
 	}
 
 	@Override
-	public BAnimator animator() {
-		// TODO Auto-generated method stub
-		return null;
+	public AndrAnimator animator() {
+		if (_animator == null) {
+			_animator = new AndrAnimator();
+		}
+		return _animator;
 	}
 	
 }

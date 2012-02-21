@@ -10,48 +10,20 @@ import bongard.animation.BAnimator;
 
 
 public class AWTAnimator extends BAnimator{
-	private int _millis;
 	private Timer _timer;
-	private long _lastMillis;
-	private long _step;
 
 	public AWTAnimator(){
-		this(1);
-	}
-	
-	public AWTAnimator(int millis){
-		_millis = millis;
 		_timer = createTimer();
 		_timer.start();
-		_lastMillis = currentMillis();
 	}
 
 	private Timer createTimer() {
-		return new Timer(_millis, new ActionListener() {
-			
-
+		return new Timer( millis(), new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				long c = currentMillis();
-				System.out.println(c);
-				_step = c - _lastMillis;
-				_lastMillis = c;
-				
-				long m = Math.min(10*_millis, _step);
-				_step = m;
-				
-				boolean update = needsUpdate();
-				stepAnimations(_step);
-				
-				if( update ){
-					refresh();
-				}
+				tick();
 			}
 		});
 	}
-	
 
-	public long lastStep(){
-		return _step;
-	}
 }
