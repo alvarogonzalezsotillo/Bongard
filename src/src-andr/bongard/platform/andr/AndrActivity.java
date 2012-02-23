@@ -11,15 +11,14 @@ public class AndrActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.main);
-		AndrFactory.initContext(this);
         setContentView( createView() );
         BFactory.instance().game().run();
         Log.d("-", "oncreate" );
     }
 
 	private View createView() {
-		View ret = ((AndrFactory)BFactory.instance()).game().canvas().view();
+	  AndrCanvas canvas = ((AndrFactory)BFactory.instance()).game().canvas();
+		View ret = canvas.resetView();
 		return ret;
 	}
 	

@@ -6,22 +6,79 @@ import android.view.View;
 import bongard.geom.BRectangle;
 import bongard.geom.IBRectangle;
 import bongard.gui.basic.BCanvas;
+import java.io.IOException;
+import java.io.InputStream;
+
+import bongard.geom.IBRectangle;
+
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.util.Log;
+import android.view.View;
+
 
 public class AndrCanvas extends BCanvas{
+
+  private class AndrView extends View{
+
+    private Bitmap _bitmap;
+
+    public AndrView(Context context) {
+      super(context);
+      Log.d("-", getMeasuredWidth() + "," + getMeasuredHeight() );
+    }
+    
+    @Override
+    protected void onDraw(Canvas canvas) {
+      _currentAndroidCanvas = canvas;
+      try{
+        super.onDraw(_currentAndroidCanvas);
+        if( drawable() != null ){
+          drawable().draw(AndrView.this, transform());
+        }
+        Paint paint = new Paint();
+        paint.setColor(Color.WHITE);
+        _currentAndroidCanvas.drawLine(0, 0, getMeasuredWidth(), getMeasuredHeight(), paint);
+      }
+      finally{
+        _currentAndroidCanvas = null;
+      }
+    }
+    private Canvas _currentAndoridCanvas;
+    public Canvas currentAndroidCanvas(){
+      return _currentAndoridCanvas;
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+       int width = MeasureSpec.getSize(widthMeasureSpec);
+       int height = MeasureSpec.getSize(heightMeasureSpec);
+       setMeasuredDimension(width, height);		
+    }
+
+  }
+
 	
 	private AndrView _view;
-	private Context _context;
-	private Canvas _canvas;
 	
-	public AndrCanvas(Context c){
-		_context = c;
-	}
-
 	public AndrView view(){
 		if( _view == null ){
-			_view = new AndrView( _context, this );
+			_view = new AndrView( context());
 		}
 		return _view;
+	}
+	
+	public void resetView(){
+	  _view = null;
+	  return view();
+	}
+	
+	public Context context(){
+    return ((AndrFactory)BFactory.instance()).context;
 	}
 
 	@Override
@@ -35,11 +92,7 @@ public class AndrCanvas extends BCanvas{
 		return new BRectangle(v.getRight(), v.getTop(), v.getWidth(), v.getHeight() );
 	}
 
-	public void setAndroidCanvas(Canvas canvas) {
-		_canvas = canvas;
-	}
-	
 	public Canvas androidCanvas(){
-		return _canvas;
+		return _view.currentAndroidCanvas();
 	}
 }

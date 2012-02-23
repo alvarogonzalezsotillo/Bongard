@@ -56,8 +56,7 @@ public class AndrFactory extends BFactory{
 
 	@Override
 	public BLabel label(String text) {
-		// TODO Auto-generated method stub
-		return null;
+	  return new AndrLabel(text);
 	}
 
 	@Override
@@ -100,7 +99,7 @@ public class AndrFactory extends BFactory{
 		return _context;
 	}
 
-	public static void initContext(AndrActivity context) {
+	public static void initContext(Context context) {
 		_context = context;
 	}
 }

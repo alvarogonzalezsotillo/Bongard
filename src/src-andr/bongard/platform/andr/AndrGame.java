@@ -9,18 +9,8 @@ import bongard.gui.game.IBGame;
 public class AndrGame implements IBGame{
 
 	private AndrCanvas _canvas;
-	private Context _context;
 	private AndrAnimator _animator;
 
-	
-	public AndrGame( Context c ){
-		_context =c;
-	}
-	
-	public Context context(){
-		return _context;
-	}
-	
 	@Override
 	public void run() {
 		canvas().setDrawable( new BStartField() );
@@ -29,7 +19,7 @@ public class AndrGame implements IBGame{
 	@Override
 	public AndrCanvas canvas() {
 		if( _canvas == null ){
-			_canvas = new AndrCanvas( context() );
+			_canvas = new AndrCanvas();
 		}
 		return _canvas;
 	}
