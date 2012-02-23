@@ -30,7 +30,27 @@ public abstract class BCanvas implements IBCanvas{
 	}
 
 	@Override
-	public void setDrawable(final IBDrawableContainer d) {
+	public void setDrawable(IBDrawableContainer d){
+		if( true ){
+			setDrawable_simple(d);
+		}
+		else{
+			setDrawable_animation(d);
+		}
+	}
+
+	private void setDrawable_simple(IBDrawableContainer d) {
+		if( _d != null ){
+			removeListener(_d.listener());
+		}
+		_d = d;
+		if( _d != null ){
+			addListener(_d.listener());
+		}
+		adjustTransformToSize();
+		refresh();
+	}
+	public void setDrawable_animation(final IBDrawableContainer d) {
 		BFactory f = BFactory.instance();
 		IBAnimation a = null;
 		if( _d != null ){

@@ -43,7 +43,7 @@ public class AndrFactory extends BFactory{
 	@Override
 	public AndrGame game() {
 		if (_game == null) {
-			_game = new AndrGame( context() );
+			_game = new AndrGame();
 		}
 
 		return _game;
