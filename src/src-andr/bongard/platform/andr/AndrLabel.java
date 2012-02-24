@@ -15,7 +15,7 @@ public class AndrLabel extends BLabel {
 
 	public AndrLabel(String text) {
 		super(text);
-		_paint.setColor(Color.BLUE);
+		_paint.setColor(Color.YELLOW);
 		_paint.setTextAlign(Align.LEFT);
 	}
 
@@ -23,7 +23,9 @@ public class AndrLabel extends BLabel {
 	protected void draw_internal(IBCanvas c, IBTransform t) {
 		AndrCanvas canvas = (AndrCanvas) c;
 		Canvas ac = canvas.androidCanvas();
+		Matrix m = ac.getMatrix();
 		ac.setMatrix((Matrix) t);
 		ac.drawText(text(), 0, 0, _paint);
+		ac.setMatrix(m);
 	}
 }

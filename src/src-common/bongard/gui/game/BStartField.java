@@ -6,6 +6,7 @@ import bongard.animation.IBAnimation;
 import bongard.geom.IBPoint;
 import bongard.geom.IBRectangle;
 import bongard.geom.IBTransform;
+import bongard.gui.basic.BLabel;
 import bongard.gui.basic.BSprite;
 import bongard.gui.basic.IBCanvas;
 import bongard.gui.basic.IBRaster;
@@ -28,16 +29,24 @@ public class BStartField extends BDrawableContainer{
 		BFactory f = BFactory.instance();
 		IBRaster ss = f.raster( new BResourceLocator("/images/start/start.png"), false );
 		_startSprite = f.sprite(ss);
-		double x = originalSize().x() + (originalSize().w())/2;
-		double y = originalSize().y() + (originalSize().h())/4;
-		_startSprite.transform().translate(x, y);
+		double x1 = originalSize().x() + (originalSize().w())/2;
+		double y1 = originalSize().y() + (originalSize().h())/4;
+		_startSprite.transform().translate(x1, y1);
 		
 		IBRaster hs = f.raster( new BResourceLocator("/images/start/help.png"), false );
 		_helpSprite = f.sprite(hs);
-		x = originalSize().x() + (originalSize().w())/2;
-		y = originalSize().y() + 3*(originalSize().h())/4;
-		_helpSprite.transform().translate(x, y);
+		double x2 = originalSize().x() + (originalSize().w())/2;
+		double y2 = originalSize().y() + 3*(originalSize().h())/4;
+		_helpSprite.transform().translate(x2, y2);
 		
+		
+		f.logger().log( "BStartField:" );
+		f.logger().log( "  originalSize:" + originalSize() );
+		f.logger().log( "  originalSize:" + originalSize() );
+		f.logger().log( "  x1 y1:" + x1 + " "  + y1 );
+		f.logger().log( "  _startSprite:" + _startSprite.position() );
+		f.logger().log( "  x2 y2:" + x2 + " "  + y2 );
+		f.logger().log( "  _helpSprite:" + _helpSprite.position() );
 		
 		listener().addListener(_adapter);
 	}
@@ -62,6 +71,15 @@ public class BStartField extends BDrawableContainer{
 	protected void draw_internal(IBCanvas c, IBTransform t) {
 		_startSprite.draw(c,t);
 		_helpSprite.draw(c,t);
+		
+		{
+			IBRectangle os = originalSize();
+			for( int i = 0 ; i < os.h() ; i += 50 ){
+				BLabel l = BFactory.instance().label(i + "," + i);
+				l.transform().translate(os.x() + i, os.y() + i );
+				l.draw(c, t);
+			}
+		}
 		
 	}
 

@@ -1,6 +1,5 @@
 package bongard.gui.basic;
 
-
 import bongard.animation.BConcatenateAnimation;
 import bongard.animation.BRunnableAnimation;
 import bongard.animation.BTranslateAnimation;
@@ -14,9 +13,9 @@ import bongard.gui.event.IBEventListener;
 import bongard.platform.BFactory;
 import bongard.util.BTransformUtil;
 
-public abstract class BCanvas implements IBCanvas{
-	
-	private static final int ENTER_LEAVE_MILLIS = 250;
+public abstract class BCanvas implements IBCanvas {
+
+	private static final int ENTER_LEAVE_MILLIS = 10000;
 	private IBTransform _t = BFactory.instance().identityTransform();
 	private IBDrawableContainer _d;
 	private BListenerList _listeners = new BListenerList(this);
@@ -30,62 +29,64 @@ public abstract class BCanvas implements IBCanvas{
 	}
 
 	@Override
-	public void setDrawable(IBDrawableContainer d){
-		if( true ){
+	public void setDrawable(IBDrawableContainer d) {
+		if (false) {
 			setDrawable_simple(d);
-		}
-		else{
+		} else {
 			setDrawable_animation(d);
 		}
 	}
 
 	private void setDrawable_simple(IBDrawableContainer d) {
-		if( _d != null ){
+		if (_d != null) {
 			removeListener(_d.listener());
 		}
 		_d = d;
-		if( _d != null ){
+		if (_d != null) {
 			addListener(_d.listener());
 		}
 		adjustTransformToSize();
 		refresh();
 	}
+
 	public void setDrawable_animation(final IBDrawableContainer d) {
 		BFactory f = BFactory.instance();
 		IBAnimation a = null;
-		if( _d != null ){
+		if (_d != null) {
 			removeListener(_d.listener());
-			Runnable rSet = new Runnable(){
-				public void run(){
+			Runnable rSet = new Runnable() {
+				public void run() {
 					_d = null;
 				}
 			};
-			
-			IBPoint src = f.point(0, 0 );
-			IBPoint dst = f.point(0, _d.originalSize().h() );
-			_d.transform().translate(src.x(),src.y());
+
+			IBPoint src = f.point(0, 0);
+			IBPoint dst = f.point(0, _d.originalSize().h());
+			_d.transform().translate(src.x(), src.y());
 			a = new BTranslateAnimation(dst, ENTER_LEAVE_MILLIS, _d);
 			a = new BConcatenateAnimation(a, new BRunnableAnimation(10, rSet));
 		}
-		if( d != null ){
-			Runnable rSet = new Runnable(){
-				public void run(){
+		if (d != null) {
+			Runnable rSet = new Runnable() {
+				public void run() {
 					_d = d;
 					adjustTransformToSize();
 				}
 			};
-			
-			Runnable rListener = new Runnable(){
-				public void run(){
+
+			Runnable rListener = new Runnable() {
+				public void run() {
 					addListener(_d.listener());
 				}
 			};
-			IBPoint src = f.point(0, -d.originalSize().h() );
-			IBPoint dst = f.point(0, 0 );
-			d.transform().translate(src.x(),src.y());
-			a = new BConcatenateAnimation( a, new BRunnableAnimation(10, rSet));
-			a = new BConcatenateAnimation( a, new BTranslateAnimation(dst, ENTER_LEAVE_MILLIS, d) );
-			a = new BConcatenateAnimation( a, new BRunnableAnimation(10, rListener));
+			IBPoint src = f.point(0, -d.originalSize().h());
+			IBPoint dst = f.point(0, 0);
+			d.transform().translate(src.x(), src.y());
+			a = new BConcatenateAnimation(a, new BRunnableAnimation(10, rSet));
+			a = new BConcatenateAnimation(a, new BTranslateAnimation(dst,
+					ENTER_LEAVE_MILLIS, d));
+			a = new BConcatenateAnimation(a, new BRunnableAnimation(10,
+					rListener));
 		}
 		f.game().animator().addAnimation(a);
 	}
@@ -94,41 +95,54 @@ public abstract class BCanvas implements IBCanvas{
 	public IBDrawableContainer drawable() {
 		return _d;
 	}
-	
+
 	@Override
 	public void addListener(IBEventListener l) {
-		if( l != null ){
+		if (l != null) {
 			_listeners.addListener(l);
 		}
 	}
-	
+
 	@Override
 	public void removeListener(IBEventListener l) {
-		if( l != null ){
+		if (l != null) {
 			_listeners.removeListener(l);
 		}
 	}
-	
-	protected IBEventListener listeners(){
+
+	protected IBEventListener listeners() {
 		return _listeners;
 	}
 
-	
-	public void adjustTransformToSize(){
-		if( drawable() == null ){
+	public void adjustTransformToSize() {
+		if (drawable() == null) {
 			return;
 		}
 		IBRectangle origin = drawable().originalSize();
 		IBRectangle destination = originalSize();
-		
+
 		IBTransform t = transform();
-		BTransformUtil.setTo(t,origin, destination, true, true);
+		BTransformUtil.setTo(t, origin, destination, true, true);
 		setTransform(t);
+
+		{
+			IBPoint p1 = BFactory.instance().point(origin.x(), origin.y());
+			IBPoint p1t = t.transform(p1);
+			BFactory.instance().logger().log( "origin:" + origin );
+			BFactory.instance().logger().log( "destination:" + destination );
+			BFactory.instance().logger().log( "p1:" + p1 + "  ---  p1t:" + p1t );
+		}
+		
+		{
+			IBPoint p1 = BFactory.instance().point(origin.w(), origin.h() );
+			IBPoint p1t = t.transform(p1);
+			BFactory.instance().logger().log( "p1:" + p1 + "  ---  p1t:" + p1t );
+		}
+
 	}
 
 	public IBColor backgroundColor() {
 		return BFactory.COLOR_DARKGRAY;
 	}
-
 
 }

@@ -11,28 +11,28 @@ public class AndrTransform extends Matrix implements IBTransform{
 
 	@Override
 	public void scale(double x, double y) {
-		this.postScale((float)x, (float)y);
+		this.preScale((float)x, (float)y);
 	}
 
 	@Override
 	public void rotate(double a) {
-		this.postRotate((float)a, 0, 0);
+		this.preRotate((float)a, 0, 0);
 	}
 
 	@Override
 	public void translate(double x, double y) {
-		this.postTranslate((float)x, (float)y);
+		this.preTranslate((float)x, (float)y);
 	}
 
 	@Override
 	public void concatenate(IBTransform t) {
-		this.postConcat((Matrix)t);
+		this.preConcat((Matrix)t);
 		
 	}
 
 	@Override
 	public void preConcatenate(IBTransform t) {
-		this.preConcat((Matrix)t);
+		this.postConcat((Matrix)t);
 	}
 
 	@Override
@@ -62,5 +62,4 @@ public class AndrTransform extends Matrix implements IBTransform{
 		ret.set(this);
 		return ret;
 	}
-
 }

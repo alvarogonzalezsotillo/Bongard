@@ -14,12 +14,14 @@ import bongard.gui.basic.IBColor;
 import bongard.gui.basic.IBRaster;
 import bongard.platform.BFactory;
 import bongard.platform.BResourceLocator;
+import bongard.platform.IBLogger;
 import bongard.util.BException;
 
 
 public class AWTFactory extends BFactory {
 
 	private AWTGame _game;
+	private AWTLogger _logger;
 	
 	/**
 	 * 
@@ -107,7 +109,15 @@ public class AWTFactory extends BFactory {
 	}
 
 	@Override
-	public IBColor color(String c) {
+	public AWTColor color(String c) {
 		return new AWTColor( Color.decode("#"+c) );
+	}
+
+	@Override
+	public AWTLogger logger(){
+		if (_logger == null) {
+			_logger = new AWTLogger();
+		}
+		return _logger;
 	}
 }

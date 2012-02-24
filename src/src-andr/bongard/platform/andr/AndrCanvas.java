@@ -1,7 +1,6 @@
 package bongard.platform.andr;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -10,14 +9,16 @@ import android.view.View;
 import bongard.geom.BRectangle;
 import bongard.geom.IBRectangle;
 import bongard.gui.basic.BCanvas;
+import bongard.gui.basic.BSprite;
+import bongard.gui.basic.IBRaster;
 import bongard.platform.BFactory;
+import bongard.platform.BResourceLocator;
 
 
 public class AndrCanvas extends BCanvas{
 
   private class AndrView extends View{
 
-    private Bitmap _bitmap;
 
     public AndrView(Context context) {
       super(context);
@@ -34,14 +35,29 @@ public class AndrCanvas extends BCanvas{
         if( drawable() != null ){
           drawable().draw(AndrCanvas.this, transform());
         }
-        Paint paint = new Paint();
-        paint.setColor(Color.WHITE);
-        _currentAndroidCanvas.drawLine(0, 0, getMeasuredWidth(), getMeasuredHeight(), paint);
+        drawTest();
       }
       finally{
         _currentAndroidCanvas = null;
       }
     }
+
+	private void drawTest() {
+		Paint paint = new Paint();
+        paint.setColor(Color.WHITE);
+        _currentAndroidCanvas.drawLine(0, 0, getMeasuredWidth(), getMeasuredHeight(), paint);
+        _currentAndroidCanvas.drawCircle(getMeasuredWidth(), getMeasuredHeight(), 20, paint);
+        
+        BResourceLocator l = new BResourceLocator("/images/backgrounds/arrecibo.png");
+        IBRaster r = BFactory.instance().raster(l, false);
+        BSprite s = BFactory.instance().sprite(r);
+        
+        s.draw(AndrCanvas.this, null);
+	}
+	
+	
+	
+	
     private Canvas _currentAndroidCanvas;
     public Canvas currentAndroidCanvas(){
       return _currentAndroidCanvas;

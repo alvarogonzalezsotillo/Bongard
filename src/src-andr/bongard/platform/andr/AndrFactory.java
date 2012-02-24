@@ -16,6 +16,7 @@ import bongard.gui.basic.IBColor;
 import bongard.gui.basic.IBRaster;
 import bongard.platform.BFactory;
 import bongard.platform.BResourceLocator;
+import bongard.platform.IBLogger;
 import bongard.problem.BCardExtractor;
 import bongard.util.BException;
 
@@ -23,6 +24,7 @@ public class AndrFactory extends BFactory{
 
 	private static Context _context;
 	private AndrGame _game;
+	private AndrLogger _logger;
 
 	@Override
 	public AndrTransform identityTransform() {
@@ -101,5 +103,13 @@ public class AndrFactory extends BFactory{
 
 	public static void initContext(Context context) {
 		_context = context;
+	}
+
+	@Override
+	public AndrLogger logger() {
+		if (_logger == null) {
+			_logger = new AndrLogger();
+		}
+		return _logger;
 	}
 }

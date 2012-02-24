@@ -24,5 +24,10 @@ public class AndrPoint implements IBPoint{
 	public double y() {
 		return coords[1];
 	}
+	
+	@Override
+	public String toString() {
+		return "(" + x() + ", " + y() + ")";
+	}
 
 }

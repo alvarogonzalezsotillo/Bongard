@@ -60,6 +60,7 @@ public abstract class BFactory {
 		return null;
 	}
 
+	
 
 	protected BFactory() {
 	}
@@ -74,6 +75,7 @@ public abstract class BFactory {
 	public abstract IBRaster raster(BResourceLocator test, boolean transparent);
 	public abstract InputStream open(BResourceLocator r);
 	public abstract IBColor color(String c);
+	public abstract IBLogger logger();
 	
 	@SuppressWarnings("deprecation")
 	public static void main(String[] args) {

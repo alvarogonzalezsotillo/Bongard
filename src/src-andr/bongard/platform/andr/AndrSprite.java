@@ -23,7 +23,14 @@ public class AndrSprite extends BSprite {
 		AndrCanvas canvas = (AndrCanvas) c;
 		Canvas ac = canvas.androidCanvas();
 		Bitmap bitmap = ((AndrRaster)raster()).bitmap();
-		ac.drawBitmap(bitmap, (Matrix)t, _paint);
+
+		int x = -bitmap.getWidth()/2;
+		int y = -bitmap.getHeight()/2;
+
+		Matrix m = new Matrix((Matrix) t);
+		m.preTranslate(x, y);
+		
+		ac.drawBitmap(bitmap, m, _paint);
 	}
 
 }
