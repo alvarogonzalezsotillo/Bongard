@@ -10,6 +10,10 @@ public abstract class BBox extends BRectangularDrawable{
 
 	public BBox( IBRectangle r, IBColor color ){
 		super(r);
+		setColor(color);
+	}
+
+	protected void setColor(IBColor color) {
 		_color = color;
 	}
 	

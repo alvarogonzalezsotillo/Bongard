@@ -25,6 +25,7 @@ public class AndrFactory extends BFactory{
 	private static Context _context;
 	private AndrGame _game;
 	private AndrLogger _logger;
+	private AndrCardExtractor _extractor;
 
 	@Override
 	public AndrTransform identityTransform() {
@@ -37,9 +38,13 @@ public class AndrFactory extends BFactory{
 	}
 
 	@Override
-	public BCardExtractor cardExtractor() {
-		// TODO Auto-generated method stub
-		return null;
+	public AndrCardExtractor cardExtractor() {
+		if (_extractor == null) {
+			_extractor = new AndrCardExtractor();
+			
+		}
+
+		return _extractor;
 	}
 
 	@Override
@@ -62,9 +67,8 @@ public class AndrFactory extends BFactory{
 	}
 
 	@Override
-	public BBox box(IBRectangle r, IBColor color) {
-		// TODO Auto-generated method stub
-		return null;
+	public AndrBox box(IBRectangle r, IBColor color) {
+		return new AndrBox(r,color);
 	}
 
 	@Override

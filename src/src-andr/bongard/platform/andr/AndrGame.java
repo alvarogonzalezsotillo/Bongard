@@ -3,6 +3,7 @@ package bongard.platform.andr;
 import android.content.Context;
 import bongard.animation.BAnimator;
 import bongard.gui.basic.IBCanvas;
+import bongard.gui.game.BGameModel;
 import bongard.gui.game.BStartField;
 import bongard.gui.game.IBGame;
 
@@ -13,7 +14,8 @@ public class AndrGame implements IBGame{
 
 	@Override
 	public void run() {
-		canvas().setDrawable( new BStartField() );
+		//canvas().setDrawable( new BStartField() );
+		BGameModel.goToLevel(false,3,true);
 	}
 
 	@Override

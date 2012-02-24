@@ -8,10 +8,10 @@ import bongard.platform.BFactory;
 
 public abstract class BRectangularDrawable extends BDrawable implements IBRectangularDrawable{
 	
-	private IBRectangle _originalPosition;
+	private IBRectangle _originalSize;
 
 	public BRectangularDrawable(IBRectangle r) {
-		_originalPosition = r;
+		_originalSize = r;
 	}
 
 	@Override
@@ -32,7 +32,7 @@ public abstract class BRectangularDrawable extends BDrawable implements IBRectan
 	}
 
 	public IBRectangle originalSize(){
-		return _originalPosition;
+		return _originalSize;
 	}
 
 
