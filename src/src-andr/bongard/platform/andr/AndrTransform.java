@@ -16,6 +16,7 @@ public class AndrTransform extends Matrix implements IBTransform{
 
 	@Override
 	public void rotate(double a) {
+		a = Math.toDegrees(a);
 		this.preRotate((float)a, 0, 0);
 	}
 

@@ -85,12 +85,15 @@ public class BFlippableContainer extends BDrawableContainer {
 		private BWaitForAnimation _dragAnimation;
 		private BWaitForAnimation _releaseAnimation;
 
+		@Override
 		public boolean pointerDown(IBPoint pInMyCoordinates) {
 			_initialPoint = pInMyCoordinates;
 			_lastPoint = _initialPoint;
-			return false;
+			BFactory.instance().logger().log(this,"PointerDown:" + pInMyCoordinates );
+			return true;
 		}
 
+		@Override
 		public boolean pointerDrag(IBPoint pInMyCoordinates) {
 
 			if (_lastPoint != null) {
@@ -99,7 +102,7 @@ public class BFlippableContainer extends BDrawableContainer {
 
 			_lastPoint = _currentPoint;
 			_currentPoint = pInMyCoordinates;
-
+			
 			double dx = _currentPoint.x() - _initialPoint.x();
 
 			IBAnimation oldDragAnimation = _dragAnimation; 
@@ -109,6 +112,7 @@ public class BFlippableContainer extends BDrawableContainer {
 			return true;
 		}
 
+		@Override
 		public boolean pointerUp(IBPoint pInMyCoordinates) {
 
 			if( _initialPoint != null ){

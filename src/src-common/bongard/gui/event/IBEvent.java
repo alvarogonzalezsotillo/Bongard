@@ -48,4 +48,8 @@ public class IBEvent {
 		_r = r;
 	}
 	
+	@Override
+	public String toString() {
+		return "IBEvent(" + type() + " -- " + point() + " -- " + rectangle() + ")";
+	}
 }

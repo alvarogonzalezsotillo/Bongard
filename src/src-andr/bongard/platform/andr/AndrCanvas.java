@@ -14,7 +14,6 @@ import bongard.gui.basic.BCanvas;
 import bongard.gui.basic.BSprite;
 import bongard.gui.basic.IBRaster;
 import bongard.gui.event.IBEvent;
-import bongard.gui.event.IBEvent.Type;
 import bongard.platform.BFactory;
 import bongard.platform.BResourceLocator;
 
@@ -27,6 +26,7 @@ public class AndrCanvas extends BCanvas {
 			@Override
 			public boolean onTouch(View v, MotionEvent e){
 				
+				BFactory.instance().logger().log( e.toString() );
 				IBEvent ev = event( e );
 				
 				if( ev != null ){
@@ -40,9 +40,9 @@ public class AndrCanvas extends BCanvas {
 				int action = e.getAction();
 				IBEvent.Type t = null;
 				switch( action ){
-					case MotionEvent.ACTION_DOWN: t = IBEvent.Type.pointerDown;
-					case MotionEvent.ACTION_UP:	t = IBEvent.Type.pointerUp;
-					case MotionEvent.ACTION_MOVE: t = IBEvent.Type.pointerDragged;
+					case MotionEvent.ACTION_DOWN: t = IBEvent.Type.pointerDown; break;
+					case MotionEvent.ACTION_UP:	t = IBEvent.Type.pointerUp; break;
+					case MotionEvent.ACTION_MOVE: t = IBEvent.Type.pointerDragged; break;
 				}
 				if( t == null ){
 					return null;
@@ -58,8 +58,10 @@ public class AndrCanvas extends BCanvas {
 		
 		public AndrView(Context context) {
 			super(context);
-			Log.d("-", getMeasuredWidth() + "," + getMeasuredHeight());
 			setBackgroundColor(Color.BLUE);
+			AndrListener al = new AndrListener();
+			setOnTouchListener(al);
+			setBackgroundColor( ((AndrColor)backgroundColor()).color() );
 		}
 
 		@Override
@@ -71,7 +73,7 @@ public class AndrCanvas extends BCanvas {
 				if (drawable() != null) {
 					drawable().draw(AndrCanvas.this, transform());
 				}
-				drawTest();
+				//drawTest();
 			}
 			finally {
 				_currentAndroidCanvas = null;
@@ -81,10 +83,8 @@ public class AndrCanvas extends BCanvas {
 		private void drawTest() {
 			Paint paint = new Paint();
 			paint.setColor(Color.WHITE);
-			_currentAndroidCanvas.drawLine(0, 0, getMeasuredWidth(),
-					getMeasuredHeight(), paint);
-			_currentAndroidCanvas.drawCircle(getMeasuredWidth(),
-					getMeasuredHeight(), 20, paint);
+			_currentAndroidCanvas.drawLine(0, 0, getMeasuredWidth(),getMeasuredHeight(), paint);
+			_currentAndroidCanvas.drawCircle(getMeasuredWidth(), getMeasuredHeight(), 20, paint);
 
 			BResourceLocator l = new BResourceLocator(
 					"/images/backgrounds/arrecibo.png");

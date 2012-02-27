@@ -1,10 +1,6 @@
 package bongard.platform.andr;
 
-import android.content.Context;
-import bongard.animation.BAnimator;
-import bongard.gui.basic.IBCanvas;
 import bongard.gui.game.BGameModel;
-import bongard.gui.game.BStartField;
 import bongard.gui.game.IBGame;
 
 public class AndrGame implements IBGame{

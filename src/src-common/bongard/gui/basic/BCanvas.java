@@ -9,16 +9,22 @@ import bongard.geom.IBRectangle;
 import bongard.geom.IBTransform;
 import bongard.gui.container.IBDrawableContainer;
 import bongard.gui.event.BListenerList;
+import bongard.gui.event.IBEvent;
 import bongard.gui.event.IBEventListener;
 import bongard.platform.BFactory;
 import bongard.util.BTransformUtil;
 
 public abstract class BCanvas implements IBCanvas {
 
-	private static final int ENTER_LEAVE_MILLIS = 10000;
+	private static final int ENTER_LEAVE_MILLIS = 500;
 	private IBTransform _t = BFactory.instance().identityTransform();
 	private IBDrawableContainer _d;
-	private BListenerList _listeners = new BListenerList(this);
+	private BListenerList _listeners = new BListenerList(this){
+		public boolean handle(IBEvent e) {
+			BFactory.instance().logger().log(e);
+			return super.handle(e);
+		};
+	};
 
 	public IBTransform transform() {
 		return _t;
@@ -125,18 +131,20 @@ public abstract class BCanvas implements IBCanvas {
 		BTransformUtil.setTo(t, origin, destination, true, true);
 		setTransform(t);
 
-		{
-			IBPoint p1 = BFactory.instance().point(origin.x(), origin.y());
-			IBPoint p1t = t.transform(p1);
-			BFactory.instance().logger().log( "origin:" + origin );
-			BFactory.instance().logger().log( "destination:" + destination );
-			BFactory.instance().logger().log( "p1:" + p1 + "  ---  p1t:" + p1t );
-		}
-		
-		{
-			IBPoint p1 = BFactory.instance().point(origin.w(), origin.h() );
-			IBPoint p1t = t.transform(p1);
-			BFactory.instance().logger().log( "p1:" + p1 + "  ---  p1t:" + p1t );
+		if( false){
+			{
+				IBPoint p1 = BFactory.instance().point(origin.x(), origin.y());
+				IBPoint p1t = t.transform(p1);
+				BFactory.instance().logger().log( "origin:" + origin );
+				BFactory.instance().logger().log( "destination:" + destination );
+				BFactory.instance().logger().log( "p1:" + p1 + "  ---  p1t:" + p1t );
+			}
+			
+			{
+				IBPoint p1 = BFactory.instance().point(origin.w(), origin.h() );
+				IBPoint p1t = t.transform(p1);
+				BFactory.instance().logger().log( "p1:" + p1 + "  ---  p1t:" + p1t );
+			}
 		}
 
 	}

@@ -9,15 +9,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import bongard.geom.IBRectangle;
-import bongard.gui.basic.BBox;
 import bongard.gui.basic.BLabel;
 import bongard.gui.basic.BSprite;
 import bongard.gui.basic.IBColor;
 import bongard.gui.basic.IBRaster;
 import bongard.platform.BFactory;
 import bongard.platform.BResourceLocator;
-import bongard.platform.IBLogger;
-import bongard.problem.BCardExtractor;
 import bongard.util.BException;
 
 public class AndrFactory extends BFactory{
@@ -75,7 +72,10 @@ public class AndrFactory extends BFactory{
 	public IBRaster raster(BResourceLocator test, boolean transparent) {
 		InputStream is = open(test);
 		Bitmap b = BitmapFactory.decodeStream(is);
-		return new AndrRaster(b);
+		if( transparent ){
+			return new AndrRaster(b);
+		}
+		
 	}
 
 	@Override

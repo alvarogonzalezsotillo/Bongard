@@ -14,7 +14,6 @@ import bongard.gui.basic.IBColor;
 import bongard.gui.basic.IBRaster;
 import bongard.platform.BFactory;
 import bongard.platform.BResourceLocator;
-import bongard.platform.IBLogger;
 import bongard.util.BException;
 
 
