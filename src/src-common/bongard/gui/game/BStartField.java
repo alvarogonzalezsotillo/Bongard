@@ -53,6 +53,18 @@ public class BStartField extends BDrawableContainer{
 
 	
 	private BEventAdapter _adapter = new BEventAdapter(this) {
+		@Override
+		public boolean pointerDown(IBPoint pInMyCoordinates) {
+			if( _helpSprite.inside(pInMyCoordinates, null) ){
+				return true;
+			}
+
+			if( _startSprite.inside(pInMyCoordinates, null) ){
+				return true;
+			}
+			return false;
+		}
+		@Override
 		public boolean pointerClick(IBPoint pInMyCoordinates) {
 			
 			if( _helpSprite.inside(pInMyCoordinates, null) ){
