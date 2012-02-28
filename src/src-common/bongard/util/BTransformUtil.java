@@ -6,6 +6,13 @@ import bongard.geom.IBTransform;
 import bongard.platform.BFactory;
 
 public class BTransformUtil {
+	
+	public static double distance( IBPoint a, IBPoint b){
+		double dx = a.x() - b.x();
+		double dy = a.y() - b.y();
+		double d2 = dx*dx + dy*dy;
+		return Math.sqrt(d2);
+	}
 
 	public static void setTo(IBTransform trans, IBRectangle origin, IBRectangle destination, boolean keepAspectRatio, boolean fitInside){
 		double sx = destination.w() / origin.w();

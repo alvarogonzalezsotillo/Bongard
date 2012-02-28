@@ -21,6 +21,7 @@ public abstract class BSprite extends BRectangularDrawable{
 	public BSprite(IBRaster raster){
 		super( computeOriginalPosition(raster) );
 		_raster = raster;
+		setAlfa(1);
 	}
 	
 	

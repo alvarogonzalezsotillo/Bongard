@@ -7,7 +7,9 @@ import java.net.URL;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import bongard.geom.IBRectangle;
 import bongard.gui.basic.BLabel;
 import bongard.gui.basic.BSprite;
@@ -72,10 +74,23 @@ public class AndrFactory extends BFactory{
 	public IBRaster raster(BResourceLocator test, boolean transparent) {
 		InputStream is = open(test);
 		Bitmap b = BitmapFactory.decodeStream(is);
+		if( b == null ){
+			throw new BException("Cant open image:" + test, null);
+		}
 		if( transparent ){
 			return new AndrRaster(b);
 		}
-		
+		Bitmap.Config config = b.getConfig();
+		if( config == null ){
+			config = Bitmap.Config.ARGB_8888;
+		}
+		Bitmap ret = b.copy(config, true);
+		Canvas c = new Canvas(ret);
+		Paint p = new Paint();
+		p.setColor( Color.WHITE );
+		c.drawRect(0, 0, ret.getWidth(), ret.getHeight(), p);
+		c.drawBitmap(b, 0, 0, p);
+		return new AndrRaster(ret);
 	}
 
 	@Override

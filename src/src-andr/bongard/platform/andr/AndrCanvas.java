@@ -4,7 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.Log;
+import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import bongard.geom.BRectangle;
@@ -16,6 +16,7 @@ import bongard.gui.basic.IBRaster;
 import bongard.gui.event.IBEvent;
 import bongard.platform.BFactory;
 import bongard.platform.BResourceLocator;
+import bongard.util.BTransformUtil;
 
 public class AndrCanvas extends BCanvas {
 
@@ -23,37 +24,69 @@ public class AndrCanvas extends BCanvas {
 
 		private class AndrListener implements OnTouchListener{
 
+			private static final int CLICK_THRESHOLD = 20;
+			private IBPoint _lastPointerDown;
+
 			@Override
 			public boolean onTouch(View v, MotionEvent e){
 				
 				BFactory.instance().logger().log( e.toString() );
-				IBEvent ev = event( e );
+				final IBEvent ev = event( e );
 				
+				if( ev != null && ev.type() == IBEvent.Type.pointerDown ){
+					_lastPointerDown = ev.point();
+				}
+				
+				if( ev != null && ev.type() == IBEvent.Type.pointerUp ){
+					double distance = BTransformUtil.distance(ev.point(), _lastPointerDown );
+					BFactory.instance().logger().log( this, "distance:" + distance );
+					if( distance < CLICK_THRESHOLD ){
+						BFactory.instance().logger().log( this, "CLICK" );
+						new Handler().post( new Runnable(){
+							public void run() {
+								IBEvent click = new IBEvent( IBEvent.Type.pointerClick, ev.point() );
+								listeners().handle(click);
+							}
+						});
+					}
+					_lastPointerDown = null;
+				}
+
 				if( ev != null ){
 					return listeners().handle(ev);
 				}
+
 				return false;
 			}
 
 			private IBEvent event(MotionEvent e) {
 				int id = e.getPointerId(0);
 				int action = e.getAction();
+				
+				float x = e.getX(id);
+				float y = e.getY(id);
+				AndrPoint op = new AndrPoint(x, y);
+
 				IBEvent.Type t = null;
 				switch( action ){
-					case MotionEvent.ACTION_DOWN: t = IBEvent.Type.pointerDown; break;
-					case MotionEvent.ACTION_UP:	t = IBEvent.Type.pointerUp; break;
-					case MotionEvent.ACTION_MOVE: t = IBEvent.Type.pointerDragged; break;
+					case MotionEvent.ACTION_DOWN: 
+						t = IBEvent.Type.pointerDown;
+						break;
+					case MotionEvent.ACTION_UP:	
+						t = IBEvent.Type.pointerUp;
+						break;
+					case MotionEvent.ACTION_MOVE: 
+						t = IBEvent.Type.pointerDragged; 
+						break;
 				}
 				if( t == null ){
 					return null;
 				}
 				IBRectangle r = null;
-				float x = e.getX(id);
-				float y = e.getY(id);
-				AndrPoint op = new AndrPoint(x, y);
 				IBPoint p = transform().inverse().transform(op);
 				return new IBEvent(t, p, r);
 			}
+
 		}
 		
 		public AndrView(Context context) {
@@ -80,6 +113,7 @@ public class AndrCanvas extends BCanvas {
 			}
 		}
 
+		@SuppressWarnings("unused")
 		private void drawTest() {
 			Paint paint = new Paint();
 			paint.setColor(Color.WHITE);
