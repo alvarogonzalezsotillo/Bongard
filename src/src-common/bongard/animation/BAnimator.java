@@ -3,6 +3,7 @@ package bongard.animation;
 import java.util.ArrayList;
 
 import bongard.platform.BFactory;
+import bongard.platform.IBLogger;
 
 
 public abstract class BAnimator {
@@ -52,6 +53,7 @@ public abstract class BAnimator {
 	
 
 	public void addAnimation(IBAnimation a){
+		BFactory.instance().logger().log( this, a );
 		if( a == null ){
 			return;
 		}
