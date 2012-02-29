@@ -10,6 +10,7 @@ import javax.swing.SwingUtilities;
 
 import bongard.gui.game.BStartField;
 import bongard.gui.game.IBGame;
+import bongard.gui.game.BState;
 import bongard.platform.BFactory;
 
 
@@ -89,4 +90,13 @@ public class AWTGame implements IBGame, Runnable{
 
 		return _animator;
 	}
+
+
+	@Override
+	public void restore(BState state) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
 }

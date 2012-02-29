@@ -19,22 +19,22 @@ public class BBongardTestField extends BDrawableContainer implements IBFlippable
 	private BSprite _sprite;
 	private BFlippableContainer _container;
 	
-	public BBongardTestField(){
-		this(null);
-	}
 	
 	public BBongardTestField(BResourceLocator l){
-		setProblem(l);
+		this(new BProblem(l));
 	}
 
+	public BBongardTestField(BProblem l){
+		setProblem(l);
+	}
 	
 	/**
 	 * 
 	 * @param test
 	 */
-	public void setProblem( BResourceLocator test ){
+	public void setProblem( BProblem problem ){
 		BFactory f = BFactory.instance();
-		_problem = BCardExtractor.extract(test);
+		_problem = problem;
 		
 		_sprite = f.sprite(_problem.testImage());
 		_sprite.translate( originalSize().w()/2, originalSize().h()/2 );

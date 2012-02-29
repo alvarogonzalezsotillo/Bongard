@@ -57,7 +57,7 @@ public class AWTCardExtractor extends BCardExtractor{
 
 		BResourceLocator test = new BResourceLocator(imageFile);
 		
-		BProblem problem = extract(test);
+		BProblem problem = new BProblem(test);
 		System.out.println( problem );
 		
 		for( int j= 0 ; j < problem.aImages().length ; j++ ){

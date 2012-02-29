@@ -1,6 +1,7 @@
 package bongard.platform.andr;
 
 import bongard.gui.game.BStartField;
+import bongard.gui.game.BState;
 import bongard.gui.game.IBGame;
 
 public class AndrGame implements IBGame{
@@ -28,6 +29,12 @@ public class AndrGame implements IBGame{
 			_animator = new AndrAnimator();
 		}
 		return _animator;
+	}
+
+	@Override
+	public void restore(BState state) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

@@ -3,6 +3,8 @@ package bongard.problem;
 import java.util.Random;
 
 import bongard.gui.basic.IBRaster;
+import bongard.platform.BFactory;
+import bongard.platform.BResourceLocator;
 import bongard.util.BException;
 
 
@@ -26,19 +28,36 @@ public class BProblem {
 	
 	private boolean _image1_with_set1;
 
+	
+	public BProblem( BResourceLocator test ){
+		this( test, newSeed() );
+	}
+
+	
+	private static long newSeed() {
+		return(long)(Math.random()*Long.MAX_VALUE);
+	}
+
+
+	public BProblem( BResourceLocator test, long seed ){
+		BCardExtractor ce = BFactory.instance().cardExtractor();
+		IBRaster testImage = BFactory.instance().raster(test,false);
+		IBRaster[][] images = ce.extractImages(testImage);
+		init( testImage, images[0], images[1], seed );
+	}
 	/**
 	 * 
 	 * @param loc
 	 */
 	public BProblem( IBRaster testImage, IBRaster[] a, IBRaster[] b ){
-		init( testImage, a, b );
+		init( testImage, a, b, newSeed() );
 	}
 	
 	/**
 	 * 
 	 * @param loc
 	 */
-	public void init( IBRaster testImage, IBRaster[] a, IBRaster[] b ){
+	public void init( IBRaster testImage, IBRaster[] a, IBRaster[] b, long seed ){
 		
 		_testImage = testImage;
 		
@@ -54,7 +73,7 @@ public class BProblem {
 		System.arraycopy(_a, 0, _images, 0, 6);
 		System.arraycopy(_b, 0, _images, 6, 6);
 		
-		shuffle();
+		shuffle(seed);
 	}
 
 	/**
@@ -116,9 +135,10 @@ public class BProblem {
 	/**
 	 * 
 	 */
-	public void shuffle(){
-		IBRaster[] a = shuffle( aImages() );
-		IBRaster[] b = shuffle( bImages() );
+	public void shuffle(long seed){
+		Random r = new Random(seed);
+		IBRaster[] a = shuffle( aImages(), r );
+		IBRaster[] b = shuffle( bImages(), r);
 		
 		_set1 = new IBRaster[5];
 		System.arraycopy(a, 0, _set1, 0, 5);
@@ -128,7 +148,7 @@ public class BProblem {
 		System.arraycopy(b, 0, _set2, 0, 5);
 		_image2 = b[5];
 		
-		_image1_with_set1 = Math.random() > .5;
+		_image1_with_set1 = r.nextBoolean();
 		if( !_image1_with_set1 ){
 			IBRaster temp = _image1;
 			_image1 = _image2;
@@ -136,8 +156,8 @@ public class BProblem {
 		}
 	}
 	
-	private static <T> T[] shuffle( T[] array ){
-		Random r = new Random();
+	private static <T> T[] shuffle( T[] array, Random r ){
+		
 		
 		for( int i = 0 ; i < array.length ; i++ ){
 			int i1 = r.nextInt(array.length );

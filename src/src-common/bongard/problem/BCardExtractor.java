@@ -6,7 +6,6 @@ import java.util.Random;
 import bongard.geom.BRectangle;
 import bongard.geom.IBRectangle;
 import bongard.gui.basic.IBRaster;
-import bongard.platform.BFactory;
 import bongard.platform.BResourceLocator;
 import bongard.util.BException;
 
@@ -40,19 +39,13 @@ public abstract class BCardExtractor{
 		
 	}
 	
-	public static BProblem extract( BResourceLocator test ){
-		BCardExtractor ce = BFactory.instance().cardExtractor();
-		IBRaster testImage = BFactory.instance().raster(test,false);
-		IBRaster[][] images = ce.extractImages(testImage);
-		return new BProblem(testImage,images[0], images[1]);
-	}
 	
 	/**
 	 * Extract all tiles of a Bongard problem
 	 * @param i
 	 * @return first dimension are sides of problem, second dimension is tiles of side
 	 */
-	private IBRaster[][] extractImages( IBRaster testImage ){
+	public IBRaster[][] extractImages( IBRaster testImage ){
 		IBRaster ret[][] = new IBRaster[2][];
 		ret[0] = new IBRaster[A.length];
 		ret[1] = new IBRaster[B.length];

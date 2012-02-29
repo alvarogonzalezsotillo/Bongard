@@ -211,7 +211,7 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 		model().answered(this);
 	}
 
-	public BGameField(BResourceLocator test,BGameModel model){
+	public BGameField(BProblem test,BGameModel model){
 
 		listener().addListener( _adapter );
 		setProblem(test);
@@ -240,14 +240,14 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 
 	/**
 	 * 
-	 * @param test
+	 * @param problem
 	 */
-	public void setProblem( BResourceLocator test ){
-		if( test == null ){
+	public void setProblem( BProblem problem ){
+		if( problem == null ){
 			return;
 		}
 		BFactory f = BFactory.instance();
-		_problem = BCardExtractor.extract(test);
+		_problem = problem;
 		
 		_set1Sprites = new BSprite[_problem.set1().length];
 		for( int i = 0 ; i < _set1Sprites.length ; i++ ){

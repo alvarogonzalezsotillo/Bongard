@@ -6,6 +6,7 @@ import bongard.gui.container.IBFlippableModel;
 import bongard.platform.BFactory;
 import bongard.platform.BResourceLocator;
 import bongard.problem.BCardExtractor;
+import bongard.problem.BProblem;
 
 public class BGameModel implements IBFlippableModel{
 	
@@ -22,7 +23,8 @@ public class BGameModel implements IBFlippableModel{
 		_drawables = new BGameField[problems.length];
 		for (int i = 0; i < problems.length; i++) {
 			BResourceLocator l = problems[i];
-			_drawables[i] = new BGameField(l,this);
+			BProblem p = new BProblem(l);
+			_drawables[i] = new BGameField(p,this);
 		}
 	}
 

@@ -3,7 +3,9 @@ package bongard.gui.basic;
 import bongard.animation.IBTransformAnimable;
 import bongard.geom.IBPoint;
 import bongard.geom.IBTransform;
+import bongard.gui.game.BState;
 import bongard.platform.BFactory;
+import bongard.util.BException;
 
 
 
@@ -140,4 +142,9 @@ public abstract class BDrawable implements IBDrawable, IBTransformAnimable{
 	 * @param t
 	 */
 	protected abstract void draw_internal(IBCanvas c, IBTransform t);
+	
+	@Override
+	public BState save() {
+		throw new BException("save must be implemented or not called:"+ getClass().getName(), null);
+	}
 }
