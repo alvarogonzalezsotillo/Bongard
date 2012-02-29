@@ -3,7 +3,6 @@ package bongard.animation;
 import java.util.ArrayList;
 
 import bongard.platform.BFactory;
-import bongard.platform.IBLogger;
 
 
 public abstract class BAnimator {
@@ -105,4 +104,6 @@ public abstract class BAnimator {
 		}
 		return false;
 	}
+	
+	public abstract void post( Runnable r );
 }

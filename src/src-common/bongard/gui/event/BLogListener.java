@@ -19,6 +19,8 @@ import bongard.gui.basic.IBRaster;
 import bongard.gui.event.IBEvent.Type;
 import bongard.platform.BFactory;
 import bongard.platform.BResourceLocator;
+import bongard.platform.IBLogger;
+import bongard.util.BException;
 
 
 public class BLogListener implements IBEventListener{
@@ -53,32 +55,51 @@ public class BLogListener implements IBEventListener{
 		}
 		
 		private ParsedEvent readNextEvent() {
+			IBLogger logger = BFactory.instance().logger();
 			ParsedEvent ret = null;
+			String line = "not readed";
 			try {
-				String line = _reader.readLine();
+				logger.log( this, "readline" );
+				line = _reader.readLine();
+				logger.log( this, "parseEvent" );
 				ret = parseEvent(line);
-			} catch (IOException e) {
-				e.printStackTrace();
+			}
+			catch (IOException e) {
+				throw new BException( "Bad event:" + line , e );
 			}
 			return ret;
 		}
 
 		@Override
 		public void stepAnimation(long millis) {
+			IBLogger logger = BFactory.instance().logger();
+			logger.log(this, "millis:" + millis );
 			if( endReached() ){
 				return;
 			}
 			_acumMillis += millis;
 			while( _nextEvent != null && _acumMillis > _nextEvent.millis() ){
-				IBEvent e = _nextEvent.event();
-				switch(e.type()){
-					case pointerDown: _cursor.setVisible(true); break;
-					case pointerUp: _cursor.setVisible(false); break;
-				}
-				_cursor.transform().setToIdentity();
-				_cursor.transform().translate(e.point().x(), e.point().y());
-				_listener.handle(e);
+				final IBEvent e = _nextEvent.event();
+				logger.log( this, "event:" + e );
+				logger.log( this, "post");
+				BFactory.instance().game().animator().post( new Runnable(){
+					@Override
+					public void run() {
+						switch (e.type()) {
+						case pointerDown:
+							_cursor.setVisible(true);
+							break;
+						case pointerUp:
+							_cursor.setVisible(false);
+							break;
+						}
+						_cursor.transform().setToIdentity();
+						_cursor.transform().translate(e.point().x(), e.point().y());
+						_listener.handle(e);
+					}
+				});
 				_acumMillis -= _nextEvent.millis();
+				logger.log( this, "readNextEvent");
 				_nextEvent = readNextEvent();
 			}
 		}
@@ -159,27 +180,34 @@ public class BLogListener implements IBEventListener{
 		if( s == null ){
 			return null;
 		}
+		IBLogger log = BFactory.instance().logger();
+		
+		log.log( "new Scanner");
 		Scanner scanner = new Scanner(s);
 		scanner.useLocale(Locale.US);
 		scanner.useDelimiter(" |,|\\t");
 		
+		log.log( "millis");
 		String next = scanner.next();
 		long millis = Long.parseLong(next);
 		
+		log.log( "type");
 		String sType = scanner.next();
 		IBEvent.Type t = IBEvent.Type.valueOf(sType);
 		
-		double x = scanner.nextDouble();
-		double y = scanner.nextDouble();
+		log.log( "point");
+		double x = Float.parseFloat(scanner.next());
+		double y = Float.parseFloat(scanner.next());
 		IBPoint p = BFactory.instance().point(x, y);
 		
-		x = scanner.nextDouble();
-		y = scanner.nextDouble();
-		double w = scanner.nextDouble();
-		double h = scanner.nextDouble();
-		
+		log.log( "rectangle");
+		x = Float.parseFloat(scanner.next());
+		y = Float.parseFloat(scanner.next());
+		double w = Float.parseFloat(scanner.next());
+		double h = Float.parseFloat(scanner.next());
 		IBRectangle r = new BRectangle(x, y, w, h);
-		
+
+		scanner.close();
 		return new ParsedEvent( millis, new IBEvent(t, p, r) );
 	}
 	

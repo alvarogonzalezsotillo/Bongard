@@ -3,6 +3,7 @@ package bongard.platform.awt;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 import bongard.animation.BAnimator;
@@ -24,6 +25,11 @@ public class AWTAnimator extends BAnimator{
 				tick();
 			}
 		});
+	}
+
+	@Override
+	public void post(Runnable r) {
+		SwingUtilities.invokeLater(r);
 	}
 
 }

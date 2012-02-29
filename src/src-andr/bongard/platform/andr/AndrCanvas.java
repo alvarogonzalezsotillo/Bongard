@@ -88,6 +88,8 @@ public class AndrCanvas extends BCanvas {
 			}
 
 		}
+
+		private Object _lastOriginalSize;
 		
 		public AndrView(Context context) {
 			super(context);
@@ -100,9 +102,9 @@ public class AndrCanvas extends BCanvas {
 		@Override
 		protected void onDraw(Canvas canvas) {
 			_currentAndroidCanvas = canvas;
+			adjustTransformIfNecesary();
 			try {
 				super.onDraw(_currentAndroidCanvas);
-				adjustTransformToSize();
 				if (drawable() != null) {
 					drawable().draw(AndrCanvas.this, transform());
 				}
@@ -110,6 +112,13 @@ public class AndrCanvas extends BCanvas {
 			}
 			finally {
 				_currentAndroidCanvas = null;
+			}
+		}
+
+		private void adjustTransformIfNecesary() {
+			IBRectangle os = originalSize();
+			if( !os.equals( _lastOriginalSize) ){
+				adjustTransformToSize();
 			}
 		}
 
