@@ -4,7 +4,6 @@ import bongard.animation.BConcatenateAnimation;
 import bongard.animation.BRunnableAnimation;
 import bongard.animation.BTranslateAnimation;
 import bongard.animation.IBAnimation;
-import bongard.animation.IBTransformAnimable;
 import bongard.geom.IBPoint;
 import bongard.geom.IBRectangle;
 import bongard.geom.IBTransform;

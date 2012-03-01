@@ -10,7 +10,6 @@ import bongard.gui.container.BFlippableContainer;
 import bongard.gui.container.IBFlippableDrawable;
 import bongard.platform.BFactory;
 import bongard.platform.BResourceLocator;
-import bongard.problem.BCardExtractor;
 import bongard.problem.BProblem;
 
 public class BBongardTestField extends BDrawableContainer implements IBFlippableDrawable{

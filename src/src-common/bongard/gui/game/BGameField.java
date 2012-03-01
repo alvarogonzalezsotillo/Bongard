@@ -22,8 +22,6 @@ import bongard.gui.container.BFlippableContainer;
 import bongard.gui.container.IBFlippableDrawable;
 import bongard.gui.event.BEventAdapter;
 import bongard.platform.BFactory;
-import bongard.platform.BResourceLocator;
-import bongard.problem.BCardExtractor;
 import bongard.problem.BProblem;
 
 public class BGameField extends BDrawableContainer implements IBFlippableDrawable{

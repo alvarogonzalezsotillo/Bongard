@@ -92,7 +92,7 @@ public class AWTFactory extends BFactory {
 
 	@Override
 	public InputStream open(BResourceLocator r){
-		URL f = r.getImpl(URL.class);
+		URL f = r.url();
 		if( f == null ){
 			f = getClass().getResource(r.toString());
 		}

@@ -19,7 +19,7 @@ public class AndrSprite extends BSprite {
 	
 	private Paint paint(){
 		if (_paint == null) {
-			_paint = new Paint();
+			_paint = new Paint(Paint.FILTER_BITMAP_FLAG);
 		}
 		return _paint;
 	}
@@ -42,7 +42,7 @@ public class AndrSprite extends BSprite {
 		Matrix m = new Matrix((Matrix) t);
 		m.preTranslate(x, y);
 		
-
+		
 		ac.drawBitmap(bitmap, m, paint());
 	}
 

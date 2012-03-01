@@ -96,7 +96,7 @@ public class AndrFactory extends BFactory{
 	@Override
 	public InputStream open(BResourceLocator r) {
 		try{
-			URL f = r.getImpl(URL.class);
+			URL f = r.url();
 			if( f != null ){
 				return f.openStream();
 			}

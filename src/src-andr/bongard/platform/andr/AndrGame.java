@@ -36,5 +36,11 @@ public class AndrGame implements IBGame{
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public BState state() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

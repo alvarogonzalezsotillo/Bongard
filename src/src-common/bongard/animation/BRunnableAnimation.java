@@ -1,6 +1,5 @@
 package bongard.animation;
 
-import java.util.Arrays;
 
 public class BRunnableAnimation extends BFixedDurationAnimation{
 

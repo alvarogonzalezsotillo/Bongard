@@ -1,5 +1,6 @@
 package bongard.problem;
 
+import java.io.Serializable;
 import java.util.Random;
 
 import bongard.gui.basic.IBRaster;
@@ -12,21 +13,24 @@ import bongard.util.BException;
  * Stores 12 images of a problem
  * @author alvaro
  */
-public class BProblem {
+@SuppressWarnings("serial")
+public class BProblem implements Serializable{
 	
-	private IBRaster _testImage;
+	transient private IBRaster _testImage;
 	
-	private IBRaster[] _a;
-	private IBRaster[] _b;
-	private IBRaster[] _images;
+	transient private IBRaster[] _a;
+	transient private IBRaster[] _b;
+	transient private IBRaster[] _images;
 
 	
-	private IBRaster[] _set1;
-	private IBRaster[] _set2;
-	private IBRaster _image1;
-	private IBRaster _image2;
+	transient private IBRaster[] _set1;
+	transient private IBRaster[] _set2;
+	transient private IBRaster _image1;
+	transient private IBRaster _image2;
 	
-	private boolean _image1_with_set1;
+	transient private boolean _image1_with_set1;
+	
+	private long _seed;
 
 	
 	public BProblem( BResourceLocator test ){
@@ -59,6 +63,7 @@ public class BProblem {
 	 */
 	public void init( IBRaster testImage, IBRaster[] a, IBRaster[] b, long seed ){
 		
+		_seed = seed;
 		_testImage = testImage;
 		
 		if( a == null || a.length != 6 ){
@@ -73,7 +78,7 @@ public class BProblem {
 		System.arraycopy(_a, 0, _images, 0, 6);
 		System.arraycopy(_b, 0, _images, 6, 6);
 		
-		shuffle(seed);
+		shuffle();
 	}
 
 	/**
@@ -135,8 +140,8 @@ public class BProblem {
 	/**
 	 * 
 	 */
-	public void shuffle(long seed){
-		Random r = new Random(seed);
+	public void shuffle(){
+		Random r = new Random(seed());
 		IBRaster[] a = shuffle( aImages(), r );
 		IBRaster[] b = shuffle( bImages(), r);
 		
@@ -156,6 +161,11 @@ public class BProblem {
 		}
 	}
 	
+	private long seed() {
+		return _seed;
+	}
+
+
 	private static <T> T[] shuffle( T[] array, Random r ){
 		
 		

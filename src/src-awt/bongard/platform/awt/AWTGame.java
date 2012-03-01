@@ -97,6 +97,13 @@ public class AWTGame implements IBGame, Runnable{
 		// TODO Auto-generated method stub
 		
 	}
+
+
+	@Override
+	public BState state() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 }

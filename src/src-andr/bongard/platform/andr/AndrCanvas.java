@@ -60,11 +60,10 @@ public class AndrCanvas extends BCanvas {
 			}
 
 			private IBEvent event(MotionEvent e) {
-				int id = e.getPointerId(0);
 				int action = e.getAction();
 				
-				float x = e.getX(id);
-				float y = e.getY(id);
+				float x = e.getX();
+				float y = e.getY();
 				AndrPoint op = new AndrPoint(x, y);
 
 				IBEvent.Type t = null;

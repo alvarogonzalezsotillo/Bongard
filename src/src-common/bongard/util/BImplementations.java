@@ -3,7 +3,7 @@ import java.util.HashMap;
 
 
 public class BImplementations implements IBImplementations{
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings("rawtypes")
 	private HashMap<Class, Object> _map = new HashMap<Class, Object>();
 	
 	public BImplementations( Object obj ){
