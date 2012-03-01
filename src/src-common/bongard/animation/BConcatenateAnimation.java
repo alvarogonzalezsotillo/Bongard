@@ -1,5 +1,7 @@
 package bongard.animation;
 
+import java.util.Arrays;
+
 public class BConcatenateAnimation implements IBAnimation{
 
 	private IBAnimation[] _animations;
@@ -58,4 +60,8 @@ public class BConcatenateAnimation implements IBAnimation{
 		return !endReached();
 	}
 
+	@Override
+	public String toString() {
+		return "BConcatenateAnimation(" + Arrays.asList(_animations).toString() + ")";
+	}
 }

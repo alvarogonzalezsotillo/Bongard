@@ -5,6 +5,7 @@ import java.io.Reader;
 
 import bongard.animation.BConcatenateAnimation;
 import bongard.animation.BRunnableAnimation;
+import bongard.animation.BWaitAnimation;
 import bongard.animation.IBAnimation;
 import bongard.geom.IBRectangle;
 import bongard.geom.IBTransform;
@@ -48,7 +49,7 @@ public class BExamplesField extends BDrawableContainer{
 				BFactory.instance().game().canvas().setDrawable( new BStartField() );
 			}
 		});
-		IBAnimation a = new BConcatenateAnimation(_replayAnimation,backToStartAnimation);
+		IBAnimation a = new BConcatenateAnimation(new BWaitAnimation(1000), _replayAnimation,backToStartAnimation);
 		BFactory.instance().game().animator().addAnimation( a );
 	}
 }

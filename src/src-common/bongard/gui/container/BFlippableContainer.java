@@ -106,6 +106,9 @@ public class BFlippableContainer extends BDrawableContainer {
 			double dx = _currentPoint.x() - _initialPoint.x();
 
 			IBAnimation oldDragAnimation = _dragAnimation; 
+			if( oldDragAnimation != null && oldDragAnimation.endReached() ){
+				oldDragAnimation = null;
+			}
 			
 			_dragAnimation = new BWaitForAnimation( new DragAnimation(dx, 5), oldDragAnimation );
 			BFactory.instance().game().animator().addAnimation(_dragAnimation);
@@ -122,6 +125,8 @@ public class BFlippableContainer extends BDrawableContainer {
 
 			_initialPoint = null;
 			_currentPoint = null;
+			_dragAnimation = null;
+			_releaseAnimation = null;
 			
 			
 

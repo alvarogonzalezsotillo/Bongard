@@ -43,7 +43,18 @@ public class AndrBox extends BBox{
 		
 		Matrix m = ac.getMatrix();
 		ac.setMatrix((Matrix) tr);
-		ac.drawRect(l, t, r, b, paint());
+		if( filled() ){
+			ac.drawRect(l, t, r, b, paint());
+		}
+		else{
+			float pts[] = {
+					l, t, r, t,
+					r, t, r, b,
+					r, b, l, b,
+					l, b, l, t
+			};
+			ac.drawLines(pts, paint());
+		}
 		ac.setMatrix(m);
 	}
 

@@ -84,7 +84,7 @@ public class BStartField extends BDrawableContainer{
 		_startSprite.draw(c,t);
 		_helpSprite.draw(c,t);
 		
-		{
+		if( false ){
 			IBRectangle os = originalSize();
 			for( int i = 0 ; i < os.h() ; i += 50 ){
 				BLabel l = BFactory.instance().label(i + "," + i);

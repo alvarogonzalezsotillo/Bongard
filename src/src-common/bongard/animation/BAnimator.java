@@ -52,6 +52,7 @@ public abstract class BAnimator {
 	
 
 	public void addAnimation(IBAnimation a){
+		BFactory.instance().logger().log( this, a );
 		if( a == null ){
 			return;
 		}
@@ -103,4 +104,6 @@ public abstract class BAnimator {
 		}
 		return false;
 	}
+	
+	public abstract void post( Runnable r );
 }

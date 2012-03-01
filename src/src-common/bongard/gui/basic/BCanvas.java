@@ -4,6 +4,7 @@ import bongard.animation.BConcatenateAnimation;
 import bongard.animation.BRunnableAnimation;
 import bongard.animation.BTranslateAnimation;
 import bongard.animation.IBAnimation;
+import bongard.animation.IBTransformAnimable;
 import bongard.geom.IBPoint;
 import bongard.geom.IBRectangle;
 import bongard.geom.IBTransform;
@@ -66,9 +67,7 @@ public abstract class BCanvas implements IBCanvas {
 				}
 			};
 
-			IBPoint src = f.point(0, 0);
 			IBPoint dst = f.point(0, _d.originalSize().h());
-			_d.transform().translate(src.x(), src.y());
 			a = new BTranslateAnimation(dst, ENTER_LEAVE_MILLIS, _d);
 			a = new BConcatenateAnimation(a, new BRunnableAnimation(10, rSet));
 		}
@@ -89,10 +88,8 @@ public abstract class BCanvas implements IBCanvas {
 			IBPoint dst = f.point(0, 0);
 			d.transform().translate(src.x(), src.y());
 			a = new BConcatenateAnimation(a, new BRunnableAnimation(10, rSet));
-			a = new BConcatenateAnimation(a, new BTranslateAnimation(dst,
-					ENTER_LEAVE_MILLIS, d));
-			a = new BConcatenateAnimation(a, new BRunnableAnimation(10,
-					rListener));
+			a = new BConcatenateAnimation(a, new BTranslateAnimation(dst, ENTER_LEAVE_MILLIS, d));
+			a = new BConcatenateAnimation(a, new BRunnableAnimation(10,	rListener));
 		}
 		f.game().animator().addAnimation(a);
 	}

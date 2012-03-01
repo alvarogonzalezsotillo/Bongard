@@ -2,6 +2,7 @@ package bongard.platform.andr;
 
 import android.os.Handler;
 import bongard.animation.BAnimator;
+import bongard.animation.IBAnimation;
 
 public class AndrAnimator extends BAnimator{
 	private Handler _handler;
@@ -14,7 +15,22 @@ public class AndrAnimator extends BAnimator{
 	};
 	
 	public AndrAnimator(){
+		super(1);
 		_handler = new Handler();
 		_handler.postDelayed(_runnable, millis() );
+	}
+
+	@Override
+	public void post(Runnable r) {
+		_handler.post(r);
+	}
+	
+	@Override
+	public void addAnimation(final IBAnimation a) {
+		post( new Runnable(){
+			public void run(){
+				AndrAnimator.super.addAnimation(a);
+			}
+		});
 	}
 }

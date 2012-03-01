@@ -1,5 +1,7 @@
 package bongard.animation;
 
+import java.util.Arrays;
+
 public class BRunnableAnimation extends BFixedDurationAnimation{
 
 	private boolean _runned;
@@ -22,4 +24,10 @@ public class BRunnableAnimation extends BFixedDurationAnimation{
 	public void cancel(){
 		_runned = true;
 	}
+	
+	@Override
+	public String toString() {
+		return "BRunnableAnimation(" + totalMillis() + ")";
+	}
+
 }
