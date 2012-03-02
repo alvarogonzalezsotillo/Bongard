@@ -11,6 +11,8 @@ import bongard.gui.basic.IBRaster;
 
 public class AndrSprite extends BSprite {
 
+	public static final boolean ANTIALIAS = false;
+	
 	private Paint _paint;
 
 	public AndrSprite(IBRaster raster) {
@@ -19,7 +21,7 @@ public class AndrSprite extends BSprite {
 	
 	private Paint paint(){
 		if (_paint == null) {
-			_paint = new Paint(Paint.FILTER_BITMAP_FLAG);
+			_paint = ANTIALIAS ? new Paint(Paint.FILTER_BITMAP_FLAG) : new Paint();
 		}
 		return _paint;
 	}
