@@ -8,6 +8,7 @@ public abstract class BSprite extends BRectangularDrawable{
 
 	private IBRaster _raster;
 	private double _alpha = 1;
+	private boolean _antialias = false;
 	
 	private static IBRectangle computeOriginalPosition(IBRaster ra){
 		IBRectangle re = ra.originalSize();
@@ -37,6 +38,14 @@ public abstract class BSprite extends BRectangularDrawable{
 
 	public double alpha() {
 		return _alpha;
+	}
+	
+	public boolean antialias(){
+		return _antialias;
+	}
+	
+	public void setAntialias( boolean a ){
+		_antialias = a;
 	}
 	
 }

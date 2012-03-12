@@ -3,6 +3,7 @@ package bongard.platform.awt;
 import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.util.Formatter;
 
@@ -26,6 +27,11 @@ public class AWTSprite extends BSprite{
 		
 		
 		Graphics2D g2d = canvas.getGraphics();
+		
+		if( antialias() ){
+			g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+		}
+		
 		g2d.transform((AffineTransform) t);
 		g2d.setComposite( AlphaComposite.getInstance( AlphaComposite.SRC_OVER, (float)alpha() ) );
 		

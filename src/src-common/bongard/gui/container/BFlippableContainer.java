@@ -14,6 +14,7 @@ import bongard.gui.basic.IBRectangularDrawable;
 import bongard.gui.event.BEventAdapter;
 import bongard.gui.event.BLogListener;
 import bongard.gui.event.IBEvent;
+import bongard.gui.game.BState;
 import bongard.platform.BFactory;
 import bongard.platform.BResourceLocator;
 import bongard.util.BTransformUtil;
@@ -22,7 +23,6 @@ public class BFlippableContainer extends BDrawableContainer {
 	private static final double MARGIN = 50;
 	
 	private static final boolean LOG_EVENTS = false;
-
 
 	private int _x;
 
@@ -357,4 +357,21 @@ public class BFlippableContainer extends BDrawableContainer {
 		return new BRectangle(0, 0, 240, 320);
 	}
 
+	@Override
+	public BState save() {
+		@SuppressWarnings("serial")
+		class MyState extends BState{
+			private IBFlippableModel _myModel;
+			public MyState(IBFlippableModel model) {
+				_myModel = model;
+			}
+
+			@Override
+			public IBDrawableContainer createDrawable() {
+				return new BFlippableContainer(_myModel);
+			}
+			
+		};
+		return new MyState(_model);
+	}
 }

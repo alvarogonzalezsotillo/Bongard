@@ -128,10 +128,7 @@ public class AWTCanvas extends BCanvas{
 		Image i = getOffscreenImage();
 		Graphics2D g2d = (Graphics2D) i.getGraphics();
 		
-		//g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		//g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-		//g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
-		g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+		//g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 		
 		IBRectangle os = drawable().originalSize();
 		double pts[] = { os.x(), os.y(), os.x()+os.w(), os.y()+os.h() };

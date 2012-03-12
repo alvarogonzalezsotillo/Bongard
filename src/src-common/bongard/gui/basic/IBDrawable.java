@@ -12,7 +12,6 @@ public interface IBDrawable extends IBTransformable, IBTransformAnimable{
 	public void draw(IBCanvas c,IBTransform aditionalTransform);
 	public IBPoint position();
 	
-	public BState save();
 	
 	/**
 	 * Decides where the point is inside de drawable

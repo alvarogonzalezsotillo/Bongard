@@ -1,19 +1,13 @@
 package bongard.platform.andr;
 
-import bongard.gui.game.BStartField;
-import bongard.gui.game.BState;
-import bongard.gui.game.IBGame;
+import bongard.gui.game.BGame;
 
-public class AndrGame implements IBGame{
+public class AndrGame extends BGame{
 
 	private AndrCanvas _canvas;
 	private AndrAnimator _animator;
 
-	@Override
-	public void run() {
-		canvas().setDrawable( new BStartField() );
-		//BGameModel.goToLevel(false,3,true);
-	}
+
 
 	@Override
 	public AndrCanvas canvas() {
@@ -29,18 +23,6 @@ public class AndrGame implements IBGame{
 			_animator = new AndrAnimator();
 		}
 		return _animator;
-	}
-
-	@Override
-	public void restore(BState state) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public BState state() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 }

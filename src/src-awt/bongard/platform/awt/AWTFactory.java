@@ -97,6 +97,9 @@ public class AWTFactory extends BFactory {
 			f = getClass().getResource(r.toString());
 		}
 		if( f == null ){
+			f = getClass().getResource("/assets" + r.toString());
+		}
+		if( f == null ){
 			return null;
 		}
 		try{

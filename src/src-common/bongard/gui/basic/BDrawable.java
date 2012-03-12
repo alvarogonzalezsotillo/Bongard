@@ -143,8 +143,4 @@ public abstract class BDrawable implements IBDrawable, IBTransformAnimable{
 	 */
 	protected abstract void draw_internal(IBCanvas c, IBTransform t);
 	
-	@Override
-	public BState save() {
-		throw new BException("save must be implemented or not called:"+ getClass().getName(), null);
-	}
 }

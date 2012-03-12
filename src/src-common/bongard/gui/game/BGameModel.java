@@ -8,11 +8,14 @@ import bongard.platform.BResourceLocator;
 import bongard.problem.BCardExtractor;
 import bongard.problem.BProblem;
 
+@SuppressWarnings("serial")
 public class BGameModel implements IBFlippableModel{
 	
 	private static final int MAX_WIDTH = 13;
-	private BGameField[] _drawables;
+	transient private BResourceLocator _background;
 	private boolean _demo;
+	private BResourceLocator[] _problems;
+	private BGameField[] _drawables;
 
 	public BGameModel( boolean demo, BResourceLocator[] problems ){
 		setProblems(problems);
@@ -20,27 +23,38 @@ public class BGameModel implements IBFlippableModel{
 	}
 
 	private void setProblems(BResourceLocator[] problems) {
-		_drawables = new BGameField[problems.length];
-		for (int i = 0; i < problems.length; i++) {
-			BResourceLocator l = problems[i];
-			BProblem p = new BProblem(l);
-			_drawables[i] = new BGameField(p,this);
-		}
+		_problems = problems;
+		_drawables = null;
 	}
 
+	private BGameField[] drawables(){
+		if( _drawables == null ){
+			_drawables = new BGameField[_problems.length];
+			for (int i = 0; i < _problems.length; i++) {
+				BResourceLocator l = _problems[i];
+				BProblem p = new BProblem(l);
+				_drawables[i] = new BGameField(p,this);
+			}
+		}
+		return _drawables;
+	}
+	
 	@Override
 	public BGameField drawable(int x) {
-		return _drawables[x];
+		return drawables()[x];
 	}
 
 	@Override
 	public int width() {
-		return _drawables.length;
+		return drawables().length;
 	}
 
 	@Override
-	public BResourceLocator background() {
-		return new BResourceLocator( "/images/backgrounds/arrecibo.png" );
+	public BResourceLocator background(){
+		if( _background == null ){
+			_background = new BResourceLocator( "/images/backgrounds/arrecibo.png" );
+		}
+		return _background;
 	}
 
 	public void answered(BGameField bGameField) {
@@ -110,5 +124,4 @@ public class BGameModel implements IBFlippableModel{
 		}
 		return true;
 	}
-
 }

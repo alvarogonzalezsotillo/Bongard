@@ -1,5 +1,9 @@
 package bongard.gui.game;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import bongard.animation.BAnimator;
 import bongard.animation.BCompoundTransformAnimation;
 import bongard.animation.BConcatenateAnimation;
@@ -19,6 +23,7 @@ import bongard.gui.basic.BSprite;
 import bongard.gui.basic.IBCanvas;
 import bongard.gui.container.BDrawableContainer;
 import bongard.gui.container.BFlippableContainer;
+import bongard.gui.container.IBDrawableContainer;
 import bongard.gui.container.IBFlippableDrawable;
 import bongard.gui.event.BEventAdapter;
 import bongard.platform.BFactory;
@@ -34,13 +39,35 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 
 	private BProblem _problem;
 	
+	private BFlippableContainer _container;
+
+	private BGameModel _model;
+
+	private boolean _badAnswer;
+
+	private boolean _correctAnswer;
+
+	private BBox _icon;
+
+	private BBox _correctIcon;
+
+	private BBox _badIcon;
 	private BSprite[] _set1Sprites;
 	private BSprite[] _set2Sprites;
 	private BSprite _questionSprite;
 	private BSprite[] _allSprites;
 	private IBRectangle _size;
 	private BLabel _pointer = BFactory.instance().label("O");
-	
+
+
+	private IBAnimation _pickUpAnimation;
+	private IBAnimation _dropAnimation;
+	private IBAnimation _set1OverAnimation;
+	private IBAnimation _set2OverAnimation;
+	private BWaitForAnimation _set1DropAnimation;
+	private BWaitForAnimation _set2DropAnimation;
+
+
 	public void autoSolve(){
 		
 		boolean isOfSet1 = _problem.isOfSet1(_questionSprite.raster());
@@ -59,14 +86,6 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 		a.finishAnimations();
 		a.addAnimation(animation);
 	}
-
-	private IBAnimation _pickUpAnimation;
-	private IBAnimation _dropAnimation;
-	private IBAnimation _set1OverAnimation;
-	private IBAnimation _set2OverAnimation;
-	private BWaitForAnimation _set1DropAnimation;
-	private BWaitForAnimation _set2DropAnimation;
-
 	
 	private BEventAdapter _adapter = new BEventAdapter(this) {
 		
@@ -176,19 +195,6 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 		}
 	};
 
-	private BFlippableContainer _container;
-
-	private BGameModel _model;
-
-	private boolean _badAnswer;
-
-	private boolean _correctAnswer;
-
-	private BBox _icon;
-
-	private BBox _correctIcon;
-
-	private BBox _badIcon;
 
 	/**
 	 * 
@@ -261,6 +267,10 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 		System.arraycopy(_set1Sprites, 0, _allSprites, 0, _set1Sprites.length );
 		System.arraycopy(_set2Sprites, 0, _allSprites, _set1Sprites.length, _set2Sprites.length );
 		_allSprites[_set1Sprites.length+_set2Sprites.length] = _questionSprite;
+		
+		for( BSprite s: _allSprites ){
+			s.setAntialias(true);
+		}
 		
 		alignSprites(400);
 	}
@@ -387,4 +397,48 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 				_pickUpAnimation );
 	}
 
+	@SuppressWarnings("serial")
+	private class MyState extends BState{
+		
+		private BProblem _myProblem;
+		private boolean _myBadAnswer;
+		private boolean _myCorrectAnswer;
+		private IBPoint _myPoint;
+
+		public MyState(BGameField gf) {
+			_myProblem = gf._problem;
+			_myBadAnswer = gf.badAnswer();
+			_myCorrectAnswer = gf.correctAnswer();
+			_myPoint = gf._questionSprite.position();
+		}
+
+		@Override
+		public IBDrawableContainer createDrawable() {
+			BGameField ret = new BGameField();
+			ret.restore(this);
+			return ret;
+		}
+	}
+	
+	@Override
+	public BState save() {
+		return new MyState(this);
+	}
+	
+	private void restore(MyState state){
+		setProblem(state._myProblem);
+		_badAnswer = state._myBadAnswer;
+		_correctAnswer = state._myCorrectAnswer;
+		IBPoint p = state._myPoint;
+		_questionSprite.transform().translate(p.x(),p.y());
+	}
+	
+	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+		MyState state = (MyState) stream.readObject();
+		restore(state);
+	}
+
+	private void writeObject(ObjectOutputStream stream)	throws IOException {
+		stream.writeObject(save());
+	}
 }

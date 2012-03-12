@@ -8,13 +8,13 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.SwingUtilities;
 
-import bongard.gui.game.BStartField;
-import bongard.gui.game.IBGame;
+import bongard.gui.container.IBDrawableContainer;
+import bongard.gui.game.BGame;
 import bongard.gui.game.BState;
 import bongard.platform.BFactory;
 
 
-public class AWTGame implements IBGame, Runnable{
+public class AWTGame extends BGame{
 
 	private Container _c;
 	
@@ -63,8 +63,8 @@ public class AWTGame implements IBGame, Runnable{
 	 */
 	@Override
 	public void run() {
+		super.run();
 		Container c = container();
-		canvas().setDrawable( new BStartField() );
 		c.setVisible(true);
 	}
 
@@ -90,20 +90,5 @@ public class AWTGame implements IBGame, Runnable{
 
 		return _animator;
 	}
-
-
-	@Override
-	public void restore(BState state) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public BState state() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 	
 }

@@ -1,8 +1,10 @@
 package bongard.gui.container;
 
+import java.io.Serializable;
+
 import bongard.platform.BResourceLocator;
 
-public interface IBFlippableModel{
+public interface IBFlippableModel extends Serializable{
 	int width();
 	IBFlippableDrawable drawable(int x);
 	BResourceLocator background();

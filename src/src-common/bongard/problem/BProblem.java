@@ -31,6 +31,7 @@ public class BProblem implements Serializable{
 	transient private boolean _image1_with_set1;
 	
 	private long _seed;
+	private BResourceLocator _test;
 
 	
 	public BProblem( BResourceLocator test ){
@@ -44,27 +45,25 @@ public class BProblem implements Serializable{
 
 
 	public BProblem( BResourceLocator test, long seed ){
-		BCardExtractor ce = BFactory.instance().cardExtractor();
-		IBRaster testImage = BFactory.instance().raster(test,false);
-		IBRaster[][] images = ce.extractImages(testImage);
-		init( testImage, images[0], images[1], seed );
+		init( test, seed );
 	}
-	/**
-	 * 
-	 * @param loc
-	 */
-	public BProblem( IBRaster testImage, IBRaster[] a, IBRaster[] b ){
-		init( testImage, a, b, newSeed() );
-	}
+
 	
 	/**
 	 * 
 	 * @param loc
 	 */
-	public void init( IBRaster testImage, IBRaster[] a, IBRaster[] b, long seed ){
+	public void init( BResourceLocator test, long seed ){
 		
+		_test = test;
 		_seed = seed;
-		_testImage = testImage;
+		
+		BCardExtractor ce = BFactory.instance().cardExtractor();
+		_testImage = BFactory.instance().raster(_test,false);
+		IBRaster[][] images = ce.extractImages(_testImage);
+
+		IBRaster[] a = images[0];
+		IBRaster[] b = images[1];
 		
 		if( a == null || a.length != 6 ){
 			throw new BException("incorrect a", null );

@@ -2,9 +2,9 @@ package bongard.gui.game;
 
 import java.io.Serializable;
 
-import bongard.gui.basic.IBDrawable;
+import bongard.gui.container.IBDrawableContainer;
 
 @SuppressWarnings("serial")
 public abstract class BState implements Serializable{
-	public abstract IBDrawable createDrawable();
+	public abstract IBDrawableContainer createDrawable();
 }

@@ -35,7 +35,7 @@
 	</target>
 
 	<target name="jar" depends="compile">
-		<copy todir="${bin.classes}">
+		<copy todir="${bin.classes}/assets">
 			<fileset dir="${src-common}">
 				<include name="**/*.png" />
 				<include name="**/*.events" />

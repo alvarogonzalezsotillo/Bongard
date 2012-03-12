@@ -6,6 +6,8 @@ import bongard.gui.event.BListenerList;
 import bongard.gui.event.IBEvent;
 import bongard.gui.event.IBEventListener;
 import bongard.gui.event.IBEventSource;
+import bongard.gui.game.BState;
+import bongard.util.BException;
 
 public abstract class BDrawableContainer extends BRectangularDrawable implements IBDrawableContainer{
 
@@ -58,4 +60,10 @@ public abstract class BDrawableContainer extends BRectangularDrawable implements
 	public BListenerList listener() {
 		return _listeners;
 	}
+	
+	@Override
+	public BState save() {
+		throw new BException("save must be implemented or not called:"+ getClass().getName(), null);
+	}
+
 }
