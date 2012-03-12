@@ -11,8 +11,8 @@ import bongard.gui.basic.IBRaster;
 
 public class AndrSprite extends BSprite {
 
-	public static final boolean ANTIALIAS = false;
 	
+	private Paint _paintA;
 	private Paint _paint;
 
 	public AndrSprite(IBRaster raster) {
@@ -20,16 +20,13 @@ public class AndrSprite extends BSprite {
 	}
 	
 	private Paint paint(){
-		if (_paint == null) {
-			_paint = ANTIALIAS ? new Paint(Paint.FILTER_BITMAP_FLAG) : new Paint();
+		if (_paintA == null) {
+			_paintA = new Paint(Paint.FILTER_BITMAP_FLAG);
 		}
-		return _paint;
-	}
-	
-	@Override
-	public void setAlfa(double alfa) {
-		super.setAlfa(alfa);
-		paint().setAlpha((int) (alfa*255));
+		if (_paint == null) {
+			_paint = new Paint();
+		}
+		return antialias() ? _paintA : _paint;
 	}
 
 	@Override
@@ -44,7 +41,7 @@ public class AndrSprite extends BSprite {
 		Matrix m = new Matrix((Matrix) t);
 		m.preTranslate(x, y);
 		
-		
+		paint().setAlpha((int) (alpha()*255));
 		ac.drawBitmap(bitmap, m, paint());
 	}
 
