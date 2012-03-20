@@ -88,7 +88,7 @@ public class AWTGame extends BGame{
 					BState state = load();
 					f().game().restore(state);
 				}
-				catch( BException e ){
+				catch( Throwable e ){
 					e.printStackTrace();
 					f().game().run();
 				}
