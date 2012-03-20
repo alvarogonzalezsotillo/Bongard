@@ -3,6 +3,7 @@ package bongard.gui.game;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 import bongard.animation.BAnimator;
 import bongard.animation.BCompoundTransformAnimation;
@@ -29,43 +30,45 @@ import bongard.gui.event.BEventAdapter;
 import bongard.platform.BFactory;
 import bongard.problem.BProblem;
 
-public class BGameField extends BDrawableContainer implements IBFlippableDrawable{
+@SuppressWarnings("serial")
+public class BGameField extends BDrawableContainer implements IBFlippableDrawable, Serializable{
 	
 	private static final int FOCUS_DELAY = 100;
 	private static final double FOCUS_ZOOM = 1.3;
 	private static final int TILE_SIZE = 105;
-	
 	private static final boolean SHOW_POINTER = false;
+	
 
 	private BProblem _problem;
-	
-	private BFlippableContainer _container;
-
-	private BGameModel _model;
-
 	private boolean _badAnswer;
-
 	private boolean _correctAnswer;
 
-	private BBox _icon;
+	private BGameModel _model;
+	
+	transient private BFlippableContainer _container;
 
-	private BBox _correctIcon;
+	transient private BBox _icon;
 
-	private BBox _badIcon;
-	private BSprite[] _set1Sprites;
-	private BSprite[] _set2Sprites;
-	private BSprite _questionSprite;
-	private BSprite[] _allSprites;
-	private IBRectangle _size;
-	private BLabel _pointer = BFactory.instance().label("O");
+	transient private BBox _correctIcon;
+
+	transient private BBox _badIcon;
+	transient private BSprite[] _set1Sprites;
+	transient private BSprite[] _set2Sprites;
+	transient private BSprite _questionSprite;
+	transient private BSprite[] _allSprites;
+	transient private IBRectangle _size;
+	transient private BLabel _pointer = BFactory.instance().label("O");
 
 
-	private IBAnimation _pickUpAnimation;
-	private IBAnimation _dropAnimation;
-	private IBAnimation _set1OverAnimation;
-	private IBAnimation _set2OverAnimation;
-	private BWaitForAnimation _set1DropAnimation;
-	private BWaitForAnimation _set2DropAnimation;
+	transient private IBAnimation _pickUpAnimation;
+	transient private IBAnimation _dropAnimation;
+	transient private IBAnimation _set1OverAnimation;
+	transient private IBAnimation _set2OverAnimation;
+	transient private BWaitForAnimation _set1DropAnimation;
+	transient private BWaitForAnimation _set2DropAnimation;
+
+	transient private BEventAdapter _adapter;
+	
 
 
 	public void autoSolve(){
@@ -87,11 +90,23 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 		a.addAnimation(animation);
 	}
 	
-	private BEventAdapter _adapter = new BEventAdapter(this) {
+	private BEventAdapter adapter(){
+		if (_adapter == null) {
+			_adapter = new MyEventAdapter();
+		}
+		return _adapter;
+	}
+	
+	
+	private class MyEventAdapter extends BEventAdapter{
 		
 		private boolean _dragQuestion = false;
 		private boolean _set1Over;
 		private boolean _set2Over;
+		
+		public MyEventAdapter(){
+			super(BGameField.this);
+		}
 		
 		@Override
 		public boolean pointerDown(IBPoint p) {
@@ -217,16 +232,19 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 
 	public BGameField(BProblem test,BGameModel model){
 
-		listener().addListener( _adapter );
 		setProblem(test);
 		setModel(model);
+		init();
+	}
+
+
+	private void init() {
+		listener().addListener( adapter() );
 		IBRectangle r = new BRectangle(0, 0, BFlippableContainer.ICON_SIZE, BFlippableContainer.ICON_SIZE);
 		_icon = BFactory.instance().box(r, BFactory.COLOR_WHITE);
 		_icon.setFilled(false);
 		_correctIcon = BFactory.instance().box(r, BFactory.COLOR_WHITE);
 		_badIcon = BFactory.instance().box(r, BFactory.COLOR_BLACK);
-		_size = computeOriginalSize();
-		
 	}
 
 
@@ -247,6 +265,10 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	 * @param problem
 	 */
 	public void setProblem( BProblem problem ){
+		setProblem( problem, spritePosition(-1, -1));
+	}
+	
+	private void setProblem( BProblem problem, IBPoint questionPosition ){
 		if( problem == null ){
 			return;
 		}
@@ -272,7 +294,7 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 			s.setAntialias(true);
 		}
 		
-		alignSprites(400);
+		alignSprites(400, questionPosition);
 	}
 	
 	private IBPoint spritePosition( int column, int row ){
@@ -286,7 +308,7 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	}
 	
 	
-	private void alignSprites(int millis){
+	private void alignSprites(int millis, IBPoint questionPosition ){
 		
 		BAnimator animator = animator();
 
@@ -304,7 +326,7 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 		animator.addAnimation(
 			new BCompoundTransformAnimation(
 				new IBTransformAnimable[]{_questionSprite },
-				new BTranslateAnimation( spritePosition(-1,-1) , millis ),
+				new BTranslateAnimation( questionPosition , millis ),
 				new BRotateAnimation(2*Math.PI/millis, millis)
 			)
 		);
@@ -333,6 +355,9 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	
 	@Override
 	public IBRectangle originalSize() {
+		if (_size == null) {
+			_size = computeOriginalSize();
+		}
 		return _size;
 	}
 	
@@ -398,18 +423,20 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	}
 
 	@SuppressWarnings("serial")
-	private class MyState extends BState{
+	private static class MyState extends BState{
 		
 		private BProblem _myProblem;
 		private boolean _myBadAnswer;
 		private boolean _myCorrectAnswer;
 		private IBPoint _myPoint;
+		private BGameModel _myModel;
 
 		public MyState(BGameField gf) {
 			_myProblem = gf._problem;
 			_myBadAnswer = gf.badAnswer();
 			_myCorrectAnswer = gf.correctAnswer();
 			_myPoint = gf._questionSprite.position();
+			_myModel = gf._model;
 		}
 
 		@Override
@@ -426,11 +453,11 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	}
 	
 	private void restore(MyState state){
-		setProblem(state._myProblem);
+		init();
 		_badAnswer = state._myBadAnswer;
 		_correctAnswer = state._myCorrectAnswer;
-		IBPoint p = state._myPoint;
-		_questionSprite.transform().translate(p.x(),p.y());
+		setModel(state._myModel);
+		setProblem(state._myProblem,state._myPoint);
 	}
 	
 	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {

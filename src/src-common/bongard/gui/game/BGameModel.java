@@ -1,5 +1,8 @@
 package bongard.gui.game;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+
 import bongard.animation.BRunnableAnimation;
 import bongard.gui.container.BFlippableContainer;
 import bongard.gui.container.IBFlippableModel;
@@ -13,9 +16,9 @@ public class BGameModel implements IBFlippableModel{
 	
 	private static final int MAX_WIDTH = 13;
 	transient private BResourceLocator _background;
+	private BGameField[] _drawables;
 	private boolean _demo;
 	private BResourceLocator[] _problems;
-	private BGameField[] _drawables;
 
 	public BGameModel( boolean demo, BResourceLocator[] problems ){
 		setProblems(problems);

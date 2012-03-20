@@ -1,5 +1,7 @@
 package bongard.problem;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Random;
 
@@ -217,4 +219,11 @@ public class BProblem implements Serializable{
 	public IBRaster testImage() {
 		return _testImage;
 	}
+	
+	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+		stream.defaultReadObject();
+		init(_test,_seed);
+	}
+
+	
 }

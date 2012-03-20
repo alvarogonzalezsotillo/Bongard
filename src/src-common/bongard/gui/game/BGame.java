@@ -1,6 +1,7 @@
 package bongard.gui.game;
 
 import bongard.gui.container.IBDrawableContainer;
+import bongard.platform.BFactory;
 
 
 public abstract class BGame implements IBGame{
@@ -13,7 +14,7 @@ public abstract class BGame implements IBGame{
 	 * 
 	 */
 	@Override
-	public void run() {
+	public final void run() {
 		restore(null);
 	}
 
@@ -33,9 +34,8 @@ public abstract class BGame implements IBGame{
 
 	@Override
 	public BState state() {
-		return canvas().drawable().save();
+		BState ret = canvas().drawable().save();
+		BFactory.instance().logger().log(this, "State:" + ret );
+		return ret;
 	}
-
-
-
 }

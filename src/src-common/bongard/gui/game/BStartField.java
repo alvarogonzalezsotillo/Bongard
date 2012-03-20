@@ -121,4 +121,9 @@ public class BStartField extends BDrawableContainer{
 		}));
 		BFactory.instance().game().animator().addAnimation(a);
 	}
+	
+	@Override
+	public BState save() {
+		return null;
+	}
 }

@@ -17,6 +17,7 @@ import bongard.gui.event.IBEvent;
 import bongard.gui.game.BState;
 import bongard.platform.BFactory;
 import bongard.platform.BResourceLocator;
+import bongard.util.BException;
 import bongard.util.BTransformUtil;
 
 public class BFlippableContainer extends BDrawableContainer {
@@ -346,6 +347,12 @@ public class BFlippableContainer extends BDrawableContainer {
 		}
 		IBRectangle origin = current().originalSize();
 		IBRectangle destination = originalSize();
+		if( origin == null ){
+			throw new BException("originalSize of current is null:" + current(),null );
+		}
+		if( destination == null ){
+			throw new BException("originalSize is null:" + this,null );
+		}
 		BTransformUtil.setTo(transform(),origin, destination, true, true);
 	}
 
@@ -357,21 +364,27 @@ public class BFlippableContainer extends BDrawableContainer {
 		return new BRectangle(0, 0, 240, 320);
 	}
 
+	@SuppressWarnings("serial")
+	private static class MyState extends BState{
+		private IBFlippableModel _myModel;
+		private int _index;
+		public MyState(BFlippableContainer fc) {
+			_myModel = fc._model;
+			_index = fc.currentIndex();
+		}
+
+		@Override
+		public IBDrawableContainer createDrawable() {
+			BFlippableContainer ret = new BFlippableContainer(_myModel);
+			ret.setCurrent( _index );
+			return ret;
+		}
+		
+	};
+
+	
 	@Override
 	public BState save() {
-		@SuppressWarnings("serial")
-		class MyState extends BState{
-			private IBFlippableModel _myModel;
-			public MyState(IBFlippableModel model) {
-				_myModel = model;
-			}
-
-			@Override
-			public IBDrawableContainer createDrawable() {
-				return new BFlippableContainer(_myModel);
-			}
-			
-		};
-		return new MyState(_model);
+		return new MyState(this);
 	}
 }

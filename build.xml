@@ -25,8 +25,17 @@
 		<delete file="${jar.file}" />
 	</target>
 
-	<target name="copy-images-to-assets">
+	<target name="copy-assets-to-apk">
 		<copy todir="${android.assets}">
+			<fileset dir="${src-common}/assets">
+				<include name="**/*.png" />
+				<include name="**/*.events" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="copy-assets-to-jar">
+		<copy todir="${bin.classes}">
 			<fileset dir="${src-common}">
 				<include name="**/*.png" />
 				<include name="**/*.events" />
@@ -34,13 +43,7 @@
 		</copy>
 	</target>
 
-	<target name="jar" depends="compile">
-		<copy todir="${bin.classes}/assets">
-			<fileset dir="${src-common}">
-				<include name="**/*.png" />
-				<include name="**/*.events" />
-			</fileset>
-		</copy>
+	<target name="jar" depends="compile,copy-assets-to-jar">
 		<jar destfile="${jar.file}">
 			<fileset dir="${bin.classes}" casesensitive="yes"/>
 			<manifest>
@@ -73,7 +76,7 @@
 
 	</target>
 
-	<target name="release" depends="jar">
+	<target name="release" depends="jar,copy-assets-to-apk">
 		<copy file="${jar.file}" todir="${release.dir}"/>
 	</target>
 

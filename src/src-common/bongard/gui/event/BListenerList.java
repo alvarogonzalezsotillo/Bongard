@@ -6,6 +6,7 @@ package bongard.gui.event;
 import java.util.ArrayList;
 
 import bongard.geom.IBPoint;
+import bongard.util.BException;
 
 
 public class BListenerList implements IBEventListener{
@@ -21,6 +22,9 @@ public class BListenerList implements IBEventListener{
 	}
 	
 	public void addListener(IBEventListener listener){
+		if( listener == null ){
+			throw new BException("listener is null", null);
+		}
 		_list.add(listener);
 		_listAsArray = null;
 	}

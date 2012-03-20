@@ -5,6 +5,9 @@ import java.awt.Container;
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.ByteArrayInputStream;
+import java.util.prefs.Preferences;
+import java.util.prefs.PreferencesFactory;
 
 import javax.swing.SwingUtilities;
 
@@ -12,6 +15,7 @@ import bongard.gui.container.IBDrawableContainer;
 import bongard.gui.game.BGame;
 import bongard.gui.game.BState;
 import bongard.platform.BFactory;
+import bongard.util.BException;
 
 
 public class AWTGame extends BGame{
@@ -36,6 +40,7 @@ public class AWTGame extends BGame{
 			@Override
 			public void windowClosing(WindowEvent e) {
 				f.setVisible(false);
+				save( state() );
 				try{
 					System.exit(0);
 				}
@@ -50,20 +55,53 @@ public class AWTGame extends BGame{
 		return f;
 	}
 	
+	private static void save(BState s){
+		if( s == null ){
+			return;
+		}
+		Preferences ur = preferences();
+		ur.putByteArray("state", s.bytes() );
+	}
+
+	private static BState load(){
+		Preferences ur = preferences();
+		byte[] ba = ur.getByteArray("state", null);
+		return BState.fromBytes(ba);
+	}
+
+
+	private static Preferences preferences() {
+		Preferences ur = Preferences.userRoot();
+		ur = ur.node(AWTGame.class.getName().toLowerCase());
+		return ur;
+	}
+
 	/**
 	 * 
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		SwingUtilities.invokeLater( f().game() );
+		SwingUtilities.invokeLater( new Runnable() {
+			@Override
+			public void run() {
+				try{
+					BState state = load();
+					f().game().restore(state);
+				}
+				catch( BException e ){
+					e.printStackTrace();
+					f().game().run();
+				}
+			}
+		} );
 	}
 
 	/**
 	 * 
 	 */
 	@Override
-	public void run() {
-		super.run();
+	public void restore(BState state) {
+		super.restore(state);
 		Container c = container();
 		c.setVisible(true);
 	}
