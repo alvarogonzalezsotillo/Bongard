@@ -169,7 +169,7 @@ public class BFlippableContainer extends BDrawableContainer {
 
 
 	public BFlippableContainer(IBFlippableModel model) {
-		this( model, model.width()/2);
+		this( model, (model.width()-1)/2);
 	}
 
 	public BFlippableContainer(IBFlippableModel model,int x) {

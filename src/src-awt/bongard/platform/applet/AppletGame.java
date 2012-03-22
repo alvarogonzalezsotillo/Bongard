@@ -20,7 +20,7 @@ public class AppletGame extends Applet {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println( "Starting game frame..." );
-				BFactory.instance().game().run();
+				BFactory.instance().game().restore(null);
 			}
 		});
 		add( button, BorderLayout.CENTER );

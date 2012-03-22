@@ -84,14 +84,14 @@ public class AWTGame extends BGame{
 		SwingUtilities.invokeLater( new Runnable() {
 			@Override
 			public void run() {
+				BState state = null;
 				try{
-					BState state = load();
-					f().game().restore(state);
+					state = load();
 				}
 				catch( Throwable e ){
 					e.printStackTrace();
-					f().game().run();
 				}
+				f().game().restore(state);
 			}
 		} );
 	}

@@ -55,13 +55,10 @@ public class BLogListener implements IBEventListener{
 		}
 		
 		private ParsedEvent readNextEvent() {
-			IBLogger logger = BFactory.instance().logger();
 			ParsedEvent ret = null;
 			String line = "not readed";
 			try {
-				logger.log( this, "readline" );
 				line = _reader.readLine();
-				logger.log( this, "parseEvent" );
 				ret = parseEvent(line);
 			}
 			catch (IOException e) {
@@ -72,16 +69,12 @@ public class BLogListener implements IBEventListener{
 
 		@Override
 		public void stepAnimation(long millis) {
-			IBLogger logger = BFactory.instance().logger();
-			logger.log(this, "millis:" + millis );
 			if( endReached() ){
 				return;
 			}
 			_acumMillis += millis;
 			while( _nextEvent != null && _acumMillis > _nextEvent.millis() ){
 				final IBEvent e = _nextEvent.event();
-				logger.log( this, "event:" + e );
-				logger.log( this, "post");
 				BFactory.instance().game().animator().post( new Runnable(){
 					@Override
 					public void run() {
@@ -99,7 +92,6 @@ public class BLogListener implements IBEventListener{
 					}
 				});
 				_acumMillis -= _nextEvent.millis();
-				logger.log( this, "readNextEvent");
 				_nextEvent = readNextEvent();
 			}
 		}
@@ -180,27 +172,21 @@ public class BLogListener implements IBEventListener{
 		if( s == null ){
 			return null;
 		}
-		IBLogger log = BFactory.instance().logger();
 		
-		log.log( "new Scanner");
 		Scanner scanner = new Scanner(s);
 		scanner.useLocale(Locale.US);
 		scanner.useDelimiter(" |,|\\t");
 		
-		log.log( "millis");
 		String next = scanner.next();
 		long millis = Long.parseLong(next);
 		
-		log.log( "type");
 		String sType = scanner.next();
 		IBEvent.Type t = IBEvent.Type.valueOf(sType);
 		
-		log.log( "point");
 		double x = Float.parseFloat(scanner.next());
 		double y = Float.parseFloat(scanner.next());
 		IBPoint p = BFactory.instance().point(x, y);
 		
-		log.log( "rectangle");
 		x = Float.parseFloat(scanner.next());
 		y = Float.parseFloat(scanner.next());
 		double w = Float.parseFloat(scanner.next());
@@ -219,3 +205,4 @@ public class BLogListener implements IBEventListener{
 	}
 
 }
+	
