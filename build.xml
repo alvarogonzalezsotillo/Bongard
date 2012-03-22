@@ -79,5 +79,11 @@
 	<target name="release" depends="jar,copy-assets-to-apk">
 		<copy file="${jar.file}" todir="${release.dir}"/>
 	</target>
+	
+	<target name="run-jnlp" depends="release">
+	  <exec executable="javaws">
+	    <arg value="https://bit.ly/GAiQSy"/>
+	  </exec>
+	</target>
 
 </project>
