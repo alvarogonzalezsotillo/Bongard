@@ -15,6 +15,8 @@ import bongard.problem.BProblem;
 public class BGameModel implements IBFlippableModel{
 	
 	private static final int MAX_WIDTH = 13;
+	private static final int INITIAL_WIDTH = 2;
+	private static final int WIDTH_INCRMENT = 1;
 	transient private BResourceLocator _background;
 	private BGameField[] _drawables;
 	private boolean _demo;
@@ -65,9 +67,9 @@ public class BGameModel implements IBFlippableModel{
 			return;
 		}
 		if( allAnswered() ){
-			int width = width()+2;
+			int width = width()+WIDTH_INCRMENT;
 			if( !allCorrectAnswered() ){
-				width = 3;
+				width = INITIAL_WIDTH;
 			}
 			final int goTo = width;
 			BFactory.instance().game().animator().addAnimation( new BRunnableAnimation(1000, new Runnable(){
@@ -79,7 +81,7 @@ public class BGameModel implements IBFlippableModel{
 		}
 	}
 	
-	public static void goToLevel(boolean demo, int width, boolean limitDificulty) {
+	private static void goToLevel(boolean demo, int width, boolean limitDificulty) {
 		
 		if( width > MAX_WIDTH ){
 			width = MAX_WIDTH;
@@ -126,5 +128,9 @@ public class BGameModel implements IBFlippableModel{
 			}
 		}
 		return true;
+	}
+
+	public static void goToInitialLevel() {
+		goToLevel(false,INITIAL_WIDTH,true);
 	}
 }

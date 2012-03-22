@@ -105,7 +105,7 @@ public class BStartField extends BDrawableContainer{
 		a = new BConcatenateAnimation( a, new BRunnableAnimation(10, new Runnable(){
 			@Override
 			public void run() {
-				BGameModel.goToLevel(false,3,true);
+				BGameModel.goToInitialLevel();
 			}
 		}));
 		BFactory.instance().game().animator().addAnimation(a);

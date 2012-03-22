@@ -10,14 +10,6 @@ public abstract class BGame implements IBGame{
 		return new BStartField();
 	}
 	
-	/**
-	 * 
-	 */
-	@Override
-	public final void run() {
-		restore(null);
-	}
-
 
 	@Override
 	public void restore(BState state) {
