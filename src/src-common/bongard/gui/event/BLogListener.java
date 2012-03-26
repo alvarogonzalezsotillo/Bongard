@@ -86,7 +86,7 @@ public class BLogListener implements IBEventListener{
 							_cursor.setVisible(false);
 							break;
 						}
-						_cursor.transform().setToIdentity();
+						_cursor.transform().toIdentity();
 						_cursor.transform().translate(e.point().x(), e.point().y());
 						_listener.handle(e);
 					}

@@ -66,4 +66,15 @@ public class BBongardTestField extends BDrawableContainer implements IBFlippable
 		return null;
 	}
 
+	@Override
+	public void setUp() {
+		_problem.setUp();
+		setProblem(_problem);
+	}
+
+	@Override
+	public void dispose() {
+		_problem.dispose();
+	}
+
 }

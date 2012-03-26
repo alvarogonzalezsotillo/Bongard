@@ -46,8 +46,9 @@ public class AndrTransform extends Matrix implements IBTransform{
 
 
 	@Override
-	public void setToIdentity() {
+	public AndrTransform toIdentity() {
 		set( new Matrix() );
+		return this;
 	}
 
 	@Override

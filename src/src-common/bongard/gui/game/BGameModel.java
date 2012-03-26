@@ -11,7 +11,7 @@ import bongard.problem.BProblem;
 @SuppressWarnings("serial")
 public class BGameModel implements IBFlippableModel{
 	
-	private static final int MAX_WIDTH = 13;
+	private static final int MAX_WIDTH = 12;
 	private static final int INITIAL_WIDTH = 2;
 	private static final int WIDTH_INCREMENT = 1;
 	transient private BResourceLocator _background;
@@ -129,5 +129,10 @@ public class BGameModel implements IBFlippableModel{
 
 	public static void goToInitialLevel() {
 		goToLevel(false,INITIAL_WIDTH,true);
+	}
+	
+	@Override
+	public void dispose(int x) {
+		drawable(x).dispose();
 	}
 }

@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.Random;
 
 import bongard.gui.basic.IBRaster;
+import bongard.gui.container.IBDisposable;
 import bongard.platform.BFactory;
 import bongard.platform.BResourceLocator;
 import bongard.util.BException;
@@ -16,7 +17,7 @@ import bongard.util.BException;
  * @author alvaro
  */
 @SuppressWarnings("serial")
-public class BProblem implements Serializable{
+public class BProblem implements Serializable, IBDisposable{
 	
 	transient private IBRaster _testImage;
 	
@@ -223,6 +224,20 @@ public class BProblem implements Serializable{
 	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		stream.defaultReadObject();
 		init(_test,_seed);
+	}
+
+
+	@Override
+	public void dispose() {
+		for( IBRaster r : _images ){
+			r.dispose();
+		}
+	}
+
+
+	@Override
+	public void setUp() {
+		init( _test, _seed );
 	}
 
 	

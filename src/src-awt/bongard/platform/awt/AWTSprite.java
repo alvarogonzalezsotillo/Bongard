@@ -36,7 +36,7 @@ public class AWTSprite extends BSprite{
 		g2d.setComposite( AlphaComposite.getInstance( AlphaComposite.SRC_OVER, (float)alpha() ) );
 		
 		
-		Image img = raster().getImpl(Image.class);
+		Image img = ((AWTRaster)raster()).image();
 		
 		int x = -img.getWidth(null)/2;
 		int y = -img.getHeight(null)/2;

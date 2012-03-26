@@ -265,7 +265,7 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	 * @param problem
 	 */
 	public void setProblem( BProblem problem ){
-		setProblem( problem, spritePosition(-1, -1));
+		_problem = problem;
 	}
 	
 	private void setProblem( BProblem problem, IBPoint questionPosition ){
@@ -308,7 +308,23 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	}
 	
 	
+	
 	private void alignSprites(int millis, IBPoint questionPosition ){
+		_questionSprite.transform().toIdentity().translate(questionPosition.x(), questionPosition.y());
+		for (int i = 0; i < _set1Sprites.length; i++) {
+			IBPoint p = spritePosition(0,i);
+			_set1Sprites[i].transform().toIdentity().translate(p.x(),p.y());
+		}
+
+		for (int i = 0; i < _set2Sprites.length; i++) {
+			IBPoint p = spritePosition(1,i);
+			_set2Sprites[i].transform().toIdentity().translate(p.x(),p.y());
+		}
+		
+	}
+		
+		
+	private void alignSprites_animation(int millis, IBPoint questionPosition ){	
 		
 		BAnimator animator = animator();
 
@@ -430,6 +446,7 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 		private boolean _myCorrectAnswer;
 		private IBPoint _myPoint;
 		private BGameModel _myModel;
+		private int kk;
 
 		public MyState(BGameField gf) {
 			_myProblem = gf._problem;
@@ -467,5 +484,20 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 
 	private void writeObject(ObjectOutputStream stream)	throws IOException {
 		stream.writeObject(save());
+	}
+
+	@Override
+	public void dispose() {
+		_problem.dispose();
+	}
+	
+	@Override
+	public void setUp(){
+		_problem.setUp();
+		IBPoint position = spritePosition(-1, -1);
+		if( _questionSprite != null ){
+			position = _questionSprite.position();
+		}
+		setProblem(_problem, position);
 	}
 }

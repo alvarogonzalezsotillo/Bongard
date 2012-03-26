@@ -32,7 +32,7 @@ public class BTransformUtil {
 		IBPoint dCenter = BFactory.instance().point( destination.x() + destination.w()/2, destination.y() + destination.h()/2 );
 
 		
-		trans.setToIdentity();
+		trans.toIdentity();
 
 		// AL ORIGEN
 		IBTransform t = BFactory.instance().identityTransform();

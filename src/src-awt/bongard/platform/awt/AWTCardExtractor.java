@@ -37,7 +37,7 @@ public class AWTCardExtractor extends BCardExtractor{
 		int x = (int) -r.x();
 		int y = (int) -r.y();
 		
-		Image img = i.getImpl(Image.class);
+		Image img = ((AWTRaster)i).image();
 		g.drawImage(img, x, y, bgcolor, null);
 		g.dispose();
 		
@@ -45,9 +45,9 @@ public class AWTCardExtractor extends BCardExtractor{
 	}
 	
 	
-	private static void writeImage( File f, IBRaster image ) throws IOException{
+	private static void writeImage( File f, AWTRaster image ) throws IOException{
 		String format = "png";
-		RenderedImage i = image.getImpl(RenderedImage.class);
+		RenderedImage i = (RenderedImage) image.image();
 		ImageIO.write(i,format,f);
 	}
 	
@@ -63,13 +63,13 @@ public class AWTCardExtractor extends BCardExtractor{
 		for( int j= 0 ; j < problem.aImages().length ; j++ ){
 			IBRaster card = problem.aImages()[j];
 			File f = new File("a"+j+".png");
-			writeImage(f, card);
+			writeImage(f, (AWTRaster) card);
 		}
 		
 		for( int j= 0 ; j < problem.bImages().length ; j++ ){
 			IBRaster card = problem.bImages()[j];
 			File f = new File("b"+j+".png");
-			writeImage(f, card);
+			writeImage(f, (AWTRaster) card);
 		}
 	}
 	

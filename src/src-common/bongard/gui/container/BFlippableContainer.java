@@ -226,6 +226,16 @@ public class BFlippableContainer extends BDrawableContainer {
 			addListener(current().listener());
 			current().setFlippableContainer(this);
 		}
+		
+		// DISPOSE AND SETUP
+		for( int i = 0 ; i < _model.width() ; i++ ){
+			if( i > _x+1 || i < _x-1 ){
+				_model.drawable(i).dispose();
+			}
+			else{
+				_model.drawable(i).setUp();
+			}
+		}
 
 		adjustTransformToSize();
 		setDrawableOffset(0);
@@ -268,7 +278,7 @@ public class BFlippableContainer extends BDrawableContainer {
 		dx *= scale;
 		double dy = originalSize().h()/2;
 		IBTransform bst = _backgroundSprite.transform();
-		bst.setToIdentity();
+		bst.toIdentity();
 		bst.translate(dx, dy);
 		bst.scale(scale, scale);
 		_backgroundSprite.draw(c, t);
