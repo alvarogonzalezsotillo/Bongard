@@ -41,13 +41,13 @@ public class BBongardTestField extends BDrawableContainer implements IBFlippable
 
 	@Override
 	public IBRectangle originalSize() {
-		return _sprite.raster().originalSize();
+		//return _sprite.raster().originalSize();
+		return BGameField.computeOriginalSize();
 	}
 
 	@Override
 	protected void draw_internal(IBCanvas c, IBTransform t) {
 		BFactory.instance().logger().log(this, t.toString() );
-		BFactory.instance().logger().log(this, temporaryTransform() );
 		_sprite.draw(c, t);
 	}
 
