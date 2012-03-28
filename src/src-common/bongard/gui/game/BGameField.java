@@ -298,7 +298,7 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 		alignSprites(400, questionPosition);
 	}
 	
-	private IBPoint spritePosition( int column, int row ){
+	private static IBPoint spritePosition( int column, int row ){
 		if( column < 0 || row < 0 ){
 			return BFactory.instance().point(TILE_SIZE*2,TILE_SIZE*3);
 		}
@@ -452,7 +452,11 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 			_myProblem = gf._problem;
 			_myBadAnswer = gf.badAnswer();
 			_myCorrectAnswer = gf.correctAnswer();
-			_myPoint = gf._questionSprite.position();
+			IBPoint p = spritePosition(-1,-1);
+			if( gf._questionSprite != null){
+				p = gf._questionSprite.position();
+			}
+			_myPoint = p;
 			_myModel = gf._model;
 		}
 

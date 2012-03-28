@@ -23,7 +23,7 @@ import bongard.util.BTransformUtil;
 public class BFlippableContainer extends BDrawableContainer {
 	private static final double MARGIN = 50;
 	
-	private static final boolean LOG_EVENTS = false;
+	public static final boolean LOG_EVENTS = false;
 
 	private int _x;
 
@@ -169,7 +169,7 @@ public class BFlippableContainer extends BDrawableContainer {
 
 
 	public BFlippableContainer(IBFlippableModel model) {
-		this( model, (model.width()-1)/2);
+		this( model, 0);
 	}
 
 	public BFlippableContainer(IBFlippableModel model,int x) {
