@@ -46,6 +46,8 @@ public class BBongardTestField extends BDrawableContainer implements IBFlippable
 
 	@Override
 	protected void draw_internal(IBCanvas c, IBTransform t) {
+		BFactory.instance().logger().log(this, t.toString() );
+		BFactory.instance().logger().log(this, temporaryTransform() );
 		_sprite.draw(c, t);
 	}
 
@@ -58,7 +60,6 @@ public class BBongardTestField extends BDrawableContainer implements IBFlippable
 	@Override
 	public void setFlippableContainer(BFlippableContainer c) {
 		_container = c;
-		
 	}
 
 	@Override

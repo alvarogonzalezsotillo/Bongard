@@ -11,6 +11,7 @@ import bongard.gui.basic.BSprite;
 import bongard.gui.basic.IBCanvas;
 import bongard.gui.basic.IBRaster;
 import bongard.gui.container.BDrawableContainer;
+import bongard.gui.container.BFlippableContainer;
 import bongard.gui.event.BEventAdapter;
 import bongard.platform.BFactory;
 import bongard.platform.BResourceLocator;
@@ -116,7 +117,10 @@ public class BStartField extends BDrawableContainer{
 		a = new BConcatenateAnimation( a, new BRunnableAnimation(10, new Runnable(){
 			@Override
 			public void run() {
-				BFactory.instance().game().canvas().setDrawable( new BExamplesField() );
+				//BFactory.instance().game().canvas().setDrawable( new BExamplesField() );
+				BBongardGameModel m = new BBongardGameModel();
+				BFlippableContainer d = new BFlippableContainer( m );
+				BFactory.instance().game().canvas().setDrawable( d );
 			}
 		}));
 		BFactory.instance().game().animator().addAnimation(a);

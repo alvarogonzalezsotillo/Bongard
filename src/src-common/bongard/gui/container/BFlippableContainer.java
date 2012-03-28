@@ -14,6 +14,7 @@ import bongard.gui.basic.IBRectangularDrawable;
 import bongard.gui.event.BEventAdapter;
 import bongard.gui.event.BLogListener;
 import bongard.gui.event.IBEvent;
+import bongard.gui.game.BGameModel;
 import bongard.gui.game.BState;
 import bongard.platform.BFactory;
 import bongard.platform.BResourceLocator;
@@ -287,6 +288,9 @@ public class BFlippableContainer extends BDrawableContainer {
 	protected void draw_boxes(IBCanvas c, IBTransform t){
 		
 		int n = _model.width();
+		if( n > BGameModel.MAX_WIDTH ){
+			return;
+		}
 		double widthofboxes = ICON_SIZE*n + BOX_SPACING*(n-1);
 		IBRectangle os = originalSize();
 		double x0 = os.x() + ( os.w() - widthofboxes )/2;
