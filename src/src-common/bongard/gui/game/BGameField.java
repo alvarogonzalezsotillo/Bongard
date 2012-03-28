@@ -35,6 +35,7 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	
 	private static final int FOCUS_DELAY = 100;
 	private static final double FOCUS_ZOOM = 1.3;
+	private static final double SPRITE_OVER_ZOOM = 1.15;
 	private static final int TILE_SIZE = 105;
 	private static final boolean SHOW_POINTER = false;
 	
@@ -320,7 +321,6 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 			IBPoint p = spritePosition(1,i);
 			_set2Sprites[i].transform().toIdentity().translate(p.x(),p.y());
 		}
-		
 	}
 		
 		
@@ -421,11 +421,11 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	}
 
 	private BWaitForAnimation createOutSetAnimation( BSprite[] setSprites, IBAnimation setOverAnimation) {
-		return new BWaitForAnimation( new BScaleAnimation(1/FOCUS_ZOOM,1/FOCUS_ZOOM,FOCUS_DELAY,setSprites), setOverAnimation);
+		return new BWaitForAnimation( new BScaleAnimation(1/SPRITE_OVER_ZOOM,1/SPRITE_OVER_ZOOM,FOCUS_DELAY,setSprites), setOverAnimation);
 	}
 
 	private BScaleAnimation createOverSetAnimation( BSprite[] setSprites ) {
-		return new BScaleAnimation( FOCUS_ZOOM, FOCUS_ZOOM, FOCUS_DELAY, setSprites );
+		return new BScaleAnimation( SPRITE_OVER_ZOOM, SPRITE_OVER_ZOOM, FOCUS_DELAY, setSprites );
 	}
 
 	private BWaitForAnimation createDropAnimation(IBPoint dest) {
@@ -480,6 +480,7 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		MyState state = (MyState) stream.readObject();
 		restore(state);
+		dispose(); // TO SAVE MEMORY UNTIL DISPLAYED
 	}
 
 	private void writeObject(ObjectOutputStream stream)	throws IOException {
