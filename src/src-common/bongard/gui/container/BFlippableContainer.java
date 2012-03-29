@@ -28,7 +28,8 @@ public class BFlippableContainer extends BDrawableContainer {
 	
 	public static final boolean LOG_EVENTS = false;
 
-	private int _x;
+	private int _currentIndex;
+	private int _currentScroll;
 
 	IBPoint _initialPoint;
 	IBPoint _currentPoint;
@@ -225,7 +226,7 @@ public class BFlippableContainer extends BDrawableContainer {
 			current().setFlippableContainer(null);
 		}
 
-		_x = x;
+		_currentIndex = x;
 
 		if (current() != null) {
 			addListener(current().listener());
@@ -234,7 +235,8 @@ public class BFlippableContainer extends BDrawableContainer {
 		
 		// DISPOSE AND SETUP
 		for( int i = 0 ; i < _model.width() ; i++ ){
-			if( i > _x+1 || i < _x-1 ){
+			//if( i > _currentScroll+MAX_DRAWABLES_WIDTH || i < _currentScroll-MAX_DRAWABLES_WIDTH ){
+			if( i > _currentIndex+1 || i < _currentIndex-1 ){
 				_model.drawable(i).dispose();
 			}
 			else{
@@ -299,13 +301,19 @@ public class BFlippableContainer extends BDrawableContainer {
 		double boxY = os.y() + os.h() - BOX_SPACING*1.5;
 
 		BFactory factory = BFactory.instance();
-		int start = 0;
-		int end = _model.width()-1;
-		if( end >= MAX_DRAWABLES_WIDTH ){
-			start = currentIndex() - MAX_DRAWABLES_WIDTH + 1;
-			start = Math.max(0, start);
+		int start = _currentScroll;
+		int end = start + MAX_DRAWABLES_WIDTH;
+		if( currentIndex() >= end ){
+			start = currentIndex();
 			end = start + MAX_DRAWABLES_WIDTH;
 		}
+		
+		if( currentIndex() < start ){
+			start = currentIndex()-MAX_DRAWABLES_WIDTH+1;
+			end = start + MAX_DRAWABLES_WIDTH;
+		}
+		
+		end = Math.min(end,_model.width()-1);
 		
 		if( start > 0 ){
 			BLabel startL = factory.label(  (start) + " ..." );
@@ -313,12 +321,13 @@ public class BFlippableContainer extends BDrawableContainer {
 			startL.draw(c, t);
 		}
 
-		if( end < _model.width() ){
+		if( end < _model.width()-1 ){
 			BLabel startL = factory.label( "... " + (_model.width()-end)  );
 			startL.transform().translate(os.w() - 2*BOX_SPACING, boxY );
 			startL.draw(c, t);
 		}
 
+		_currentScroll = start;
 		
 		IBLogger l = factory.logger();
 		l.log(this,"start:" + start );
@@ -350,7 +359,7 @@ public class BFlippableContainer extends BDrawableContainer {
 	}
 
 	private int currentIndex(){
-		return _x;
+		return _currentIndex;
 	}
 	
 	private IBFlippableDrawable current() {

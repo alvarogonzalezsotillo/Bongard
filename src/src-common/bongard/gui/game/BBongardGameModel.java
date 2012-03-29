@@ -1,11 +1,15 @@
 package bongard.gui.game;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import bongard.gui.container.IBFlippableDrawable;
 import bongard.gui.container.IBFlippableModel;
 import bongard.platform.BFactory;
 import bongard.platform.BResourceLocator;
-import bongard.problem.BProblem;
 
+@SuppressWarnings("serial")
 public class BBongardGameModel implements IBFlippableModel{
 
 	private BResourceLocator[] _resources;
@@ -54,4 +58,11 @@ public class BBongardGameModel implements IBFlippableModel{
 	public BResourceLocator background() {
 		return null;
 	}
+	
+	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+	}
+
+	private void writeObject(ObjectOutputStream stream)	throws IOException {
+	}
+
 }
