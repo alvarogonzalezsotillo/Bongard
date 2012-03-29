@@ -45,4 +45,9 @@ public class AWTRaster implements IBRaster{
 		_image = null;
 	}
 
+	@Override
+	public boolean disposed() {
+		return _image == null;
+	}
+
 }

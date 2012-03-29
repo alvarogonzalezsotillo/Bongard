@@ -240,5 +240,11 @@ public class BProblem implements Serializable, IBDisposable{
 		init( _test, _seed );
 	}
 
+
+	@Override
+	public boolean disposed() {
+		return _images[0].disposed();
+	}
+
 	
 }

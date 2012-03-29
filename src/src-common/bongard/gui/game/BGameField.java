@@ -505,4 +505,9 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 		}
 		setProblem(_problem, position);
 	}
+
+	@Override
+	public boolean disposed() {
+		return _problem.disposed();
+	}
 }

@@ -5,17 +5,13 @@ import java.awt.Container;
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.ByteArrayInputStream;
 import java.util.prefs.Preferences;
-import java.util.prefs.PreferencesFactory;
 
 import javax.swing.SwingUtilities;
 
-import bongard.gui.container.IBDrawableContainer;
 import bongard.gui.game.BGame;
 import bongard.gui.game.BState;
 import bongard.platform.BFactory;
-import bongard.util.BException;
 
 
 public class AWTGame extends BGame{

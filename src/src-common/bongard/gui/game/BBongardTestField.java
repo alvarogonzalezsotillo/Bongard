@@ -84,10 +84,12 @@ public class BBongardTestField extends BDrawableContainer implements IBFlippable
 
 	@Override
 	public void dispose() {
-		if( _problem != null ){
-			_problem.dispose();
-			_problem = null;
-		}
+		_problem.dispose();
+	}
+	
+	@Override
+	public boolean disposed() {
+		return _problem.disposed();
 	}
 
 }
