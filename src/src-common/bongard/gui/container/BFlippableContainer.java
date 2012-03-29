@@ -7,6 +7,7 @@ import bongard.geom.BRectangle;
 import bongard.geom.IBPoint;
 import bongard.geom.IBRectangle;
 import bongard.geom.IBTransform;
+import bongard.gui.basic.BLabel;
 import bongard.gui.basic.BSprite;
 import bongard.gui.basic.IBCanvas;
 import bongard.gui.basic.IBRaster;
@@ -18,6 +19,7 @@ import bongard.gui.game.BGameModel;
 import bongard.gui.game.BState;
 import bongard.platform.BFactory;
 import bongard.platform.BResourceLocator;
+import bongard.platform.IBLogger;
 import bongard.util.BException;
 import bongard.util.BTransformUtil;
 
@@ -166,6 +168,8 @@ public class BFlippableContainer extends BDrawableContainer {
 
 	public static final double ICON_SIZE = 15;
 	private static final double BOX_SPACING = 20;
+
+	private static final int MAX_DRAWABLES_WIDTH = 10;
 	
 
 
@@ -288,21 +292,53 @@ public class BFlippableContainer extends BDrawableContainer {
 	protected void draw_boxes(IBCanvas c, IBTransform t){
 		
 		int n = _model.width();
-		if( n > BGameModel.MAX_WIDTH ){
-			return;
-		}
-		double widthofboxes = ICON_SIZE*n + BOX_SPACING*(n-1);
+		n = Math.min(n, MAX_DRAWABLES_WIDTH);
+		double widthofboxes = ICON_SIZE*n + BOX_SPACING*(n);
 		IBRectangle os = originalSize();
 		double x0 = os.x() + ( os.w() - widthofboxes )/2;
+		double boxY = os.y() + os.h() - BOX_SPACING*1.5;
+
+		BFactory factory = BFactory.instance();
+		int start = 0;
+		int end = _model.width()-1;
+		if( end >= MAX_DRAWABLES_WIDTH ){
+			start = currentIndex() - MAX_DRAWABLES_WIDTH + 1;
+			start = Math.max(0, start);
+			end = start + MAX_DRAWABLES_WIDTH;
+		}
 		
-		for( int i = 0 ; i < n ; i++ ){
-			IBRectangle r = new BRectangle( x0+BOX_SPACING/2+i*(BOX_SPACING+ICON_SIZE), os.y() + os.h() - BOX_SPACING*1.5, ICON_SIZE/2, ICON_SIZE/2 );
-			if( i == currentIndex() ){
+		if( start > 0 ){
+			BLabel startL = factory.label(  (start) + " ..." );
+			startL.transform().translate(BOX_SPACING, boxY );
+			startL.draw(c, t);
+		}
+
+		if( end < _model.width() ){
+			BLabel startL = factory.label( "... " + (_model.width()-end)  );
+			startL.transform().translate(os.w() - 2*BOX_SPACING, boxY );
+			startL.draw(c, t);
+		}
+
+		
+		IBLogger l = factory.logger();
+		l.log(this,"start:" + start );
+		l.log(this,"end:" + end );
+		l.log(this,"_model.width():" + _model.width() );
+		l.log(this,"currentIndex():" + currentIndex() );
+		
+		
+		for( int screenIndex = 0 ; screenIndex < MAX_DRAWABLES_WIDTH ; screenIndex++ ){
+			int index = start + screenIndex;
+			if( index > end ){
+				break;
+			}
+			IBRectangle r = new BRectangle( x0+BOX_SPACING/2+screenIndex*(BOX_SPACING+ICON_SIZE), boxY, ICON_SIZE/2, ICON_SIZE/2 );
+			if( index == currentIndex() ){
 				r = BRectangle.grow(r, 3);
 			}
-			IBRectangularDrawable rd = _model.drawable(i).icon();
+			IBRectangularDrawable rd = _model.drawable(index).icon();
 			if( rd == null ){
-				rd = BFactory.instance().box( r, BFactory.COLOR_GRAY );
+				rd = factory.box( r, BFactory.COLOR_WHITE );
 			}
 			else{
 				IBTransform rdt = rd.transform();

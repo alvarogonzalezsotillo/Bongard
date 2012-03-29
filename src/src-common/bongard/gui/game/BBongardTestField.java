@@ -1,5 +1,7 @@
 package bongard.gui.game;
 
+import java.io.Serializable;
+
 import bongard.geom.IBRectangle;
 import bongard.geom.IBTransform;
 import bongard.gui.basic.BSprite;
@@ -12,37 +14,45 @@ import bongard.platform.BFactory;
 import bongard.platform.BResourceLocator;
 import bongard.problem.BProblem;
 
-public class BBongardTestField extends BDrawableContainer implements IBFlippableDrawable{
+@SuppressWarnings("serial")
+public class BBongardTestField extends BDrawableContainer implements IBFlippableDrawable, Serializable{
 
-	private BProblem _problem;
-	private BSprite _sprite;
-	private BFlippableContainer _container;
+	private static final boolean FOLLOW_SPRITE_SIZE = false;
+	private BResourceLocator _locator;
+	transient private BProblem _problem;
+	transient private BSprite _sprite;
+	transient private BFlippableContainer _container;
 	
 	
 	public BBongardTestField(BResourceLocator l){
-		this(new BProblem(l));
+		setLocator(l);
 	}
 
-	public BBongardTestField(BProblem l){
-		setProblem(l);
-	}
-	
+
+	private void setLocator(BResourceLocator l){
+		_locator = l;
+	}	
 	/**
 	 * 
 	 * @param test
 	 */
-	public void setProblem( BProblem problem ){
+	private void setUpProblem(){
 		BFactory f = BFactory.instance();
-		_problem = problem;
-		
+		_problem = new BProblem(_locator);
 		_sprite = f.sprite(_problem.testImage());
-		_sprite.translate( originalSize().w()/2, originalSize().h()/2 );
+		_sprite.setAntialias(true);
+		_sprite.transform().translate( originalSize().w()/2, originalSize().h()/2 );
+		_sprite.transform().rotate(Math.PI/2);
 	}
 
 	@Override
 	public IBRectangle originalSize() {
-		//return _sprite.raster().originalSize();
-		return BGameField.computeOriginalSize();
+		if( FOLLOW_SPRITE_SIZE){
+			return _sprite.raster().originalSize();
+		}
+		else{
+			return BGameField.computeOriginalSize();
+		}
 	}
 
 	@Override
@@ -69,13 +79,15 @@ public class BBongardTestField extends BDrawableContainer implements IBFlippable
 
 	@Override
 	public void setUp() {
-		_problem.setUp();
-		setProblem(_problem);
+		setUpProblem();
 	}
 
 	@Override
 	public void dispose() {
-		_problem.dispose();
+		if( _problem != null ){
+			_problem.dispose();
+			_problem = null;
+		}
 	}
 
 }

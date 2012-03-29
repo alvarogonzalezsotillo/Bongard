@@ -12,7 +12,7 @@ import bongard.problem.BProblem;
 public class BGameModel implements IBFlippableModel{
 	
 	public static final int MAX_WIDTH = 12;
-	private static final int INITIAL_WIDTH = 3;
+	private static final int INITIAL_WIDTH = 12;
 	private static final int WIDTH_INCREMENT = 1;
 	transient private BResourceLocator _background;
 	private BGameField[] _drawables;
