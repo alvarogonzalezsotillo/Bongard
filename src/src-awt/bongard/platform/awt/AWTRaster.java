@@ -8,13 +8,12 @@ import bongard.gui.basic.IBRaster;
 import bongard.util.BImplementations;
 
 
-public class AWTRaster extends BImplementations implements IBRaster{
+public class AWTRaster implements IBRaster{
 	private Image _image;
 	private IBRectangle _originalSize;
 
 
 	public AWTRaster( Image i ){
-		super(i);
 		_image = i;
 	}
 	
@@ -22,10 +21,7 @@ public class AWTRaster extends BImplementations implements IBRaster{
 	 * 
 	 * @return
 	 */
-	private Image getImage(){
-		if (_image == null) {
-			_image = getImpl(Image.class);
-		}
+	public Image image(){
 		return _image;
 	}
 
@@ -34,9 +30,19 @@ public class AWTRaster extends BImplementations implements IBRaster{
 		if( _originalSize != null ){
 			return _originalSize;
 		}
-		Image i = getImage();
+		Image i = image();
 		_originalSize = new BRectangle(0,0,i.getWidth(null),i.getHeight(null));
 		return _originalSize;
+	}
+
+	@Override
+	public void setUp() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void dispose() {
+		_image = null;
 	}
 
 }

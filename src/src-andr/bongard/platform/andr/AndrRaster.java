@@ -6,13 +6,12 @@ import bongard.geom.IBRectangle;
 import bongard.gui.basic.IBRaster;
 import bongard.util.BImplementations;
 
-public class AndrRaster extends BImplementations implements IBRaster {
+public class AndrRaster implements IBRaster {
 
 	private Bitmap _bitmap;
 	private IBRectangle _originalSize;
 
 	public AndrRaster(Bitmap b) {
-		super(b);
 		_bitmap = b;
 	}
 
@@ -27,6 +26,16 @@ public class AndrRaster extends BImplementations implements IBRaster {
 			_originalSize = new BRectangle(0, 0, bitmap().getWidth(), bitmap().getHeight() );
 		}
 		return _originalSize;
+	}
+
+	@Override
+	public void setUp() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void dispose() {
+		_bitmap = null;
 	}
 
 }

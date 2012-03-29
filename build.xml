@@ -76,7 +76,7 @@
 
 	</target>
 
-	<target name="release" depends="jar,copy-assets-to-apk">
+	<target name="release" depends="jar">
 		<copy file="${jar.file}" todir="${release.dir}"/>
 	</target>
 	

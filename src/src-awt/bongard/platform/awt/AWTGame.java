@@ -40,11 +40,17 @@ public class AWTGame extends BGame{
 			@Override
 			public void windowClosing(WindowEvent e) {
 				f.setVisible(false);
-				save( state() );
+				try{
+					save( state() );
+				}
+				catch( Throwable se ){
+					se.printStackTrace();
+				}
 				try{
 					System.exit(0);
 				}
-				catch( SecurityException se ){
+				catch( SecurityException se){
+					se.printStackTrace();
 				}
 			}
 		});

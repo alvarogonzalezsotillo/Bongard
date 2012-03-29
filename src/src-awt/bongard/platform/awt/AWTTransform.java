@@ -18,6 +18,12 @@ public class AWTTransform extends AffineTransform implements IBTransform{
 	public AWTTransform() {
 	}
 	
+	@Override
+	public AWTTransform toIdentity() {
+		setToIdentity();
+		return this;
+	}
+	
 	public AWTTransform(AffineTransform t){
 		super(t);
 	}

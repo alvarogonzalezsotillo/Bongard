@@ -53,14 +53,12 @@ public abstract class BCardExtractor{
 		for( int j= 0 ; j < A.length ; j++ ){
 			IBRectangle r = A[j];
 			IBRaster card = extract( r, testImage );
-			card.addImpl("A" + j );
 			ret[0][j] = card;
 		}
 		
 		for( int j= 0 ; j < B.length ; j++ ){
 			IBRectangle r = B[j];
 			IBRaster card = extract( r, testImage );
-			card.addImpl("B" + j );
 			ret[1][j] = card;
 		}
 		return ret;

@@ -30,13 +30,15 @@ public class AWTSprite extends BSprite{
 		
 		if( antialias() ){
 			g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 		}
 		
 		g2d.transform((AffineTransform) t);
 		g2d.setComposite( AlphaComposite.getInstance( AlphaComposite.SRC_OVER, (float)alpha() ) );
 		
 		
-		Image img = raster().getImpl(Image.class);
+		Image img = ((AWTRaster)raster()).image();
 		
 		int x = -img.getWidth(null)/2;
 		int y = -img.getHeight(null)/2;

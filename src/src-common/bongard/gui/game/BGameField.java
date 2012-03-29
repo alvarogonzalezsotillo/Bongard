@@ -35,6 +35,7 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	
 	private static final int FOCUS_DELAY = 100;
 	private static final double FOCUS_ZOOM = 1.3;
+	private static final double SPRITE_OVER_ZOOM = 1.15;
 	private static final int TILE_SIZE = 105;
 	private static final boolean SHOW_POINTER = false;
 	
@@ -265,7 +266,7 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	 * @param problem
 	 */
 	public void setProblem( BProblem problem ){
-		setProblem( problem, spritePosition(-1, -1));
+		_problem = problem;
 	}
 	
 	private void setProblem( BProblem problem, IBPoint questionPosition ){
@@ -297,7 +298,7 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 		alignSprites(400, questionPosition);
 	}
 	
-	private IBPoint spritePosition( int column, int row ){
+	private static IBPoint spritePosition( int column, int row ){
 		if( column < 0 || row < 0 ){
 			return BFactory.instance().point(TILE_SIZE*2,TILE_SIZE*3);
 		}
@@ -308,7 +309,22 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	}
 	
 	
+	
 	private void alignSprites(int millis, IBPoint questionPosition ){
+		_questionSprite.transform().toIdentity().translate(questionPosition.x(), questionPosition.y());
+		for (int i = 0; i < _set1Sprites.length; i++) {
+			IBPoint p = spritePosition(0,i);
+			_set1Sprites[i].transform().toIdentity().translate(p.x(),p.y());
+		}
+
+		for (int i = 0; i < _set2Sprites.length; i++) {
+			IBPoint p = spritePosition(1,i);
+			_set2Sprites[i].transform().toIdentity().translate(p.x(),p.y());
+		}
+	}
+		
+		
+	private void alignSprites_animation(int millis, IBPoint questionPosition ){	
 		
 		BAnimator animator = animator();
 
@@ -405,11 +421,11 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	}
 
 	private BWaitForAnimation createOutSetAnimation( BSprite[] setSprites, IBAnimation setOverAnimation) {
-		return new BWaitForAnimation( new BScaleAnimation(1/FOCUS_ZOOM,1/FOCUS_ZOOM,FOCUS_DELAY,setSprites), setOverAnimation);
+		return new BWaitForAnimation( new BScaleAnimation(1/SPRITE_OVER_ZOOM,1/SPRITE_OVER_ZOOM,FOCUS_DELAY,setSprites), setOverAnimation);
 	}
 
 	private BScaleAnimation createOverSetAnimation( BSprite[] setSprites ) {
-		return new BScaleAnimation( FOCUS_ZOOM, FOCUS_ZOOM, FOCUS_DELAY, setSprites );
+		return new BScaleAnimation( SPRITE_OVER_ZOOM, SPRITE_OVER_ZOOM, FOCUS_DELAY, setSprites );
 	}
 
 	private BWaitForAnimation createDropAnimation(IBPoint dest) {
@@ -430,12 +446,17 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 		private boolean _myCorrectAnswer;
 		private IBPoint _myPoint;
 		private BGameModel _myModel;
+		private int kk;
 
 		public MyState(BGameField gf) {
 			_myProblem = gf._problem;
 			_myBadAnswer = gf.badAnswer();
 			_myCorrectAnswer = gf.correctAnswer();
-			_myPoint = gf._questionSprite.position();
+			IBPoint p = spritePosition(-1,-1);
+			if( gf._questionSprite != null){
+				p = gf._questionSprite.position();
+			}
+			_myPoint = p;
 			_myModel = gf._model;
 		}
 
@@ -463,9 +484,25 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		MyState state = (MyState) stream.readObject();
 		restore(state);
+		dispose(); // TO SAVE MEMORY UNTIL DISPLAYED
 	}
 
 	private void writeObject(ObjectOutputStream stream)	throws IOException {
 		stream.writeObject(save());
+	}
+
+	@Override
+	public void dispose() {
+		_problem.dispose();
+	}
+	
+	@Override
+	public void setUp(){
+		_problem.setUp();
+		IBPoint position = spritePosition(-1, -1);
+		if( _questionSprite != null ){
+			position = _questionSprite.position();
+		}
+		setProblem(_problem, position);
 	}
 }

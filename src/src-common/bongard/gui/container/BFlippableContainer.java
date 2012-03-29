@@ -7,6 +7,7 @@ import bongard.geom.BRectangle;
 import bongard.geom.IBPoint;
 import bongard.geom.IBRectangle;
 import bongard.geom.IBTransform;
+import bongard.gui.basic.BLabel;
 import bongard.gui.basic.BSprite;
 import bongard.gui.basic.IBCanvas;
 import bongard.gui.basic.IBRaster;
@@ -14,18 +15,21 @@ import bongard.gui.basic.IBRectangularDrawable;
 import bongard.gui.event.BEventAdapter;
 import bongard.gui.event.BLogListener;
 import bongard.gui.event.IBEvent;
+import bongard.gui.game.BGameModel;
 import bongard.gui.game.BState;
 import bongard.platform.BFactory;
 import bongard.platform.BResourceLocator;
+import bongard.platform.IBLogger;
 import bongard.util.BException;
 import bongard.util.BTransformUtil;
 
 public class BFlippableContainer extends BDrawableContainer {
 	private static final double MARGIN = 50;
 	
-	private static final boolean LOG_EVENTS = false;
+	public static final boolean LOG_EVENTS = false;
 
-	private int _x;
+	private int _currentIndex;
+	private int _currentScroll;
 
 	IBPoint _initialPoint;
 	IBPoint _currentPoint;
@@ -165,11 +169,13 @@ public class BFlippableContainer extends BDrawableContainer {
 
 	public static final double ICON_SIZE = 15;
 	private static final double BOX_SPACING = 20;
+
+	private static final int MAX_DRAWABLES_WIDTH = 10;
 	
 
 
 	public BFlippableContainer(IBFlippableModel model) {
-		this( model, (model.width()-1)/2);
+		this( model, 0);
 	}
 
 	public BFlippableContainer(IBFlippableModel model,int x) {
@@ -220,11 +226,22 @@ public class BFlippableContainer extends BDrawableContainer {
 			current().setFlippableContainer(null);
 		}
 
-		_x = x;
+		_currentIndex = x;
 
 		if (current() != null) {
 			addListener(current().listener());
 			current().setFlippableContainer(this);
+		}
+		
+		// DISPOSE AND SETUP
+		for( int i = 0 ; i < _model.width() ; i++ ){
+			//if( i > _currentScroll+MAX_DRAWABLES_WIDTH || i < _currentScroll-MAX_DRAWABLES_WIDTH ){
+			if( i > _currentIndex+1 || i < _currentIndex-1 ){
+				_model.drawable(i).dispose();
+			}
+			else{
+				_model.drawable(i).setUp();
+			}
 		}
 
 		adjustTransformToSize();
@@ -268,7 +285,7 @@ public class BFlippableContainer extends BDrawableContainer {
 		dx *= scale;
 		double dy = originalSize().h()/2;
 		IBTransform bst = _backgroundSprite.transform();
-		bst.setToIdentity();
+		bst.toIdentity();
 		bst.translate(dx, dy);
 		bst.scale(scale, scale);
 		_backgroundSprite.draw(c, t);
@@ -277,18 +294,60 @@ public class BFlippableContainer extends BDrawableContainer {
 	protected void draw_boxes(IBCanvas c, IBTransform t){
 		
 		int n = _model.width();
-		double widthofboxes = ICON_SIZE*n + BOX_SPACING*(n-1);
+		n = Math.min(n, MAX_DRAWABLES_WIDTH);
+		double widthofboxes = ICON_SIZE*n + BOX_SPACING*(n);
 		IBRectangle os = originalSize();
 		double x0 = os.x() + ( os.w() - widthofboxes )/2;
+		double boxY = os.y() + os.h() - BOX_SPACING*1.5;
+
+		BFactory factory = BFactory.instance();
+		int start = _currentScroll;
+		int end = start + MAX_DRAWABLES_WIDTH;
+		if( currentIndex() >= end ){
+			start = currentIndex();
+			end = start + MAX_DRAWABLES_WIDTH;
+		}
 		
-		for( int i = 0 ; i < n ; i++ ){
-			IBRectangle r = new BRectangle( x0+BOX_SPACING/2+i*(BOX_SPACING+ICON_SIZE), os.y() + os.h() - BOX_SPACING*1.5, ICON_SIZE/2, ICON_SIZE/2 );
-			if( i == currentIndex() ){
+		if( currentIndex() < start ){
+			start = currentIndex()-MAX_DRAWABLES_WIDTH+1;
+			end = start + MAX_DRAWABLES_WIDTH;
+		}
+		
+		end = Math.min(end,_model.width()-1);
+		
+		if( start > 0 ){
+			BLabel startL = factory.label(  (start) + " ..." );
+			startL.transform().translate(BOX_SPACING, boxY );
+			startL.draw(c, t);
+		}
+
+		if( end < _model.width()-1 ){
+			BLabel startL = factory.label( "... " + (_model.width()-end)  );
+			startL.transform().translate(os.w() - 2*BOX_SPACING, boxY );
+			startL.draw(c, t);
+		}
+
+		_currentScroll = start;
+		
+		IBLogger l = factory.logger();
+		l.log(this,"start:" + start );
+		l.log(this,"end:" + end );
+		l.log(this,"_model.width():" + _model.width() );
+		l.log(this,"currentIndex():" + currentIndex() );
+		
+		
+		for( int screenIndex = 0 ; screenIndex < MAX_DRAWABLES_WIDTH ; screenIndex++ ){
+			int index = start + screenIndex;
+			if( index > end ){
+				break;
+			}
+			IBRectangle r = new BRectangle( x0+BOX_SPACING/2+screenIndex*(BOX_SPACING+ICON_SIZE), boxY, ICON_SIZE/2, ICON_SIZE/2 );
+			if( index == currentIndex() ){
 				r = BRectangle.grow(r, 3);
 			}
-			IBRectangularDrawable rd = _model.drawable(i).icon();
+			IBRectangularDrawable rd = _model.drawable(index).icon();
 			if( rd == null ){
-				rd = BFactory.instance().box( r, BFactory.COLOR_GRAY );
+				rd = factory.box( r, BFactory.COLOR_WHITE );
 			}
 			else{
 				IBTransform rdt = rd.transform();
@@ -300,7 +359,7 @@ public class BFlippableContainer extends BDrawableContainer {
 	}
 
 	private int currentIndex(){
-		return _x;
+		return _currentIndex;
 	}
 	
 	private IBFlippableDrawable current() {

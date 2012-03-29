@@ -15,7 +15,7 @@ public class AndrLabel extends BLabel {
 
 	public AndrLabel(String text) {
 		super(text);
-		_paint.setColor(Color.YELLOW);
+		_paint.setColor(Color.WHITE);
 		_paint.setTextAlign(Align.LEFT);
 	}
 
