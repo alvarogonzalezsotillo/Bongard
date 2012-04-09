@@ -1,13 +1,14 @@
 package bongard.gui.container;
 
-import bongard.geom.BRectangle;
-import bongard.gui.basic.BRectangularDrawable;
-import bongard.gui.event.BListenerList;
-import bongard.gui.event.IBEvent;
-import bongard.gui.event.IBEventListener;
-import bongard.gui.event.IBEventSource;
+import ollitos.geom.BRectangle;
+import ollitos.gui.basic.BRectangularDrawable;
+import ollitos.gui.event.BListenerList;
+import ollitos.gui.event.IBEvent;
+import ollitos.gui.event.IBEventListener;
+import ollitos.gui.event.IBEventSource;
+import ollitos.util.BException;
+import bongard.gui.game.BGameField;
 import bongard.gui.game.BState;
-import bongard.util.BException;
 
 public abstract class BDrawableContainer extends BRectangularDrawable implements IBDrawableContainer{
 
@@ -15,7 +16,7 @@ public abstract class BDrawableContainer extends BRectangularDrawable implements
 	
 	
 	protected BDrawableContainer(){
-		super( new BRectangle(0, 0, 0, 0) );
+		super( BGameField.computeOriginalSize() );
 	}
 	
 	class MyListenerList extends BListenerList{

@@ -1,9 +1,9 @@
 package bongard.gui.container;
 
-import bongard.geom.IBRectangle;
-import bongard.gui.basic.IBDrawable;
-import bongard.gui.event.IBEventListener;
-import bongard.gui.event.IBEventSource;
+import ollitos.geom.IBRectangle;
+import ollitos.gui.basic.IBDrawable;
+import ollitos.gui.event.IBEventListener;
+import ollitos.gui.event.IBEventSource;
 import bongard.gui.game.BState;
 
 public interface IBDrawableContainer extends IBDrawable, IBEventSource{

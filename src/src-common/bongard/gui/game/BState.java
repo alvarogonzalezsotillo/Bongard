@@ -7,8 +7,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
+import ollitos.util.BException;
+
 import bongard.gui.container.IBDrawableContainer;
-import bongard.util.BException;
 
 @SuppressWarnings("serial")
 public abstract class BState implements Serializable{

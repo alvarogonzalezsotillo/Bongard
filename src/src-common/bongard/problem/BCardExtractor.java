@@ -3,11 +3,12 @@ package bongard.problem;
 import java.util.ArrayList;
 import java.util.Random;
 
-import bongard.geom.BRectangle;
-import bongard.geom.IBRectangle;
-import bongard.gui.basic.IBRaster;
-import bongard.platform.BResourceLocator;
-import bongard.util.BException;
+import ollitos.geom.BRectangle;
+import ollitos.geom.IBRectangle;
+import ollitos.gui.basic.IBRaster;
+import ollitos.platform.BResourceLocator;
+import ollitos.util.BException;
+
 
 
 public abstract class BCardExtractor{

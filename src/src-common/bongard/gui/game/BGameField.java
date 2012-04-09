@@ -5,29 +5,31 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-import bongard.animation.BAnimator;
-import bongard.animation.BCompoundTransformAnimation;
-import bongard.animation.BConcatenateAnimation;
-import bongard.animation.BRotateAnimation;
-import bongard.animation.BScaleAnimation;
-import bongard.animation.BTranslateAnimation;
-import bongard.animation.BWaitForAnimation;
-import bongard.animation.IBAnimation;
-import bongard.animation.IBTransformAnimable;
-import bongard.geom.BRectangle;
-import bongard.geom.IBPoint;
-import bongard.geom.IBRectangle;
-import bongard.geom.IBTransform;
-import bongard.gui.basic.BBox;
-import bongard.gui.basic.BLabel;
-import bongard.gui.basic.BSprite;
-import bongard.gui.basic.IBCanvas;
+import ollitos.animation.BAnimator;
+import ollitos.animation.BCompoundTransformAnimation;
+import ollitos.animation.BConcatenateAnimation;
+import ollitos.animation.BRotateAnimation;
+import ollitos.animation.BScaleAnimation;
+import ollitos.animation.BTranslateAnimation;
+import ollitos.animation.BWaitForAnimation;
+import ollitos.animation.IBAnimation;
+import ollitos.animation.IBTransformAnimable;
+import ollitos.geom.BRectangle;
+import ollitos.geom.IBPoint;
+import ollitos.geom.IBRectangle;
+import ollitos.geom.IBTransform;
+import ollitos.gui.basic.BBox;
+import ollitos.gui.basic.BLabel;
+import ollitos.gui.basic.BSprite;
+import ollitos.gui.basic.IBCanvas;
+import ollitos.gui.event.BEventAdapter;
+import ollitos.platform.BFactory;
+import ollitos.util.BException;
+
 import bongard.gui.container.BDrawableContainer;
 import bongard.gui.container.BFlippableContainer;
 import bongard.gui.container.IBDrawableContainer;
 import bongard.gui.container.IBFlippableDrawable;
-import bongard.gui.event.BEventAdapter;
-import bongard.platform.BFactory;
 import bongard.problem.BProblem;
 
 @SuppressWarnings("serial")
@@ -355,7 +357,6 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	@Override
 	protected void draw_internal(IBCanvas canvas, IBTransform aditionalTransform){
 		
-		
 		if( _allSprites == null ){
 			return;
 		}
@@ -446,7 +447,6 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 		private boolean _myCorrectAnswer;
 		private IBPoint _myPoint;
 		private BGameModel _myModel;
-		private int kk;
 
 		public MyState(BGameField gf) {
 			_myProblem = gf._problem;

@@ -2,7 +2,8 @@ package bongard.gui.container;
 
 import java.io.Serializable;
 
-import bongard.platform.BResourceLocator;
+import ollitos.platform.BResourceLocator;
+
 
 public interface IBFlippableModel extends Serializable{
 	int width();
