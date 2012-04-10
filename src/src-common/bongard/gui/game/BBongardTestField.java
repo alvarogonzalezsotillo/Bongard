@@ -2,16 +2,18 @@ package bongard.gui.game;
 
 import java.io.Serializable;
 
-import bongard.geom.IBRectangle;
-import bongard.geom.IBTransform;
-import bongard.gui.basic.BSprite;
-import bongard.gui.basic.IBCanvas;
-import bongard.gui.basic.IBRectangularDrawable;
+import ollitos.geom.BRectangle;
+import ollitos.geom.IBRectangle;
+import ollitos.geom.IBTransform;
+import ollitos.gui.basic.BSprite;
+import ollitos.gui.basic.IBCanvas;
+import ollitos.gui.basic.IBRectangularDrawable;
+import ollitos.platform.BFactory;
+import ollitos.platform.BResourceLocator;
+
 import bongard.gui.container.BDrawableContainer;
 import bongard.gui.container.BFlippableContainer;
 import bongard.gui.container.IBFlippableDrawable;
-import bongard.platform.BFactory;
-import bongard.platform.BResourceLocator;
 import bongard.problem.BProblem;
 
 @SuppressWarnings("serial")
@@ -48,7 +50,7 @@ public class BBongardTestField extends BDrawableContainer implements IBFlippable
 	@Override
 	public IBRectangle originalSize() {
 		if( FOLLOW_SPRITE_SIZE){
-			return _sprite.raster().originalSize();
+			return _sprite.originalSize();
 		}
 		else{
 			return BGameField.computeOriginalSize();
@@ -84,10 +86,14 @@ public class BBongardTestField extends BDrawableContainer implements IBFlippable
 
 	@Override
 	public void dispose() {
-		if( _problem != null ){
+		if( !disposed() ){
 			_problem.dispose();
-			_problem = null;
 		}
+	}
+	
+	@Override
+	public boolean disposed() {
+		return _problem == null || _problem.disposed();
 	}
 
 }

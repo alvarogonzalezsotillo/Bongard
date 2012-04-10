@@ -35,7 +35,13 @@ public class AndrRaster implements IBRaster {
 
 	@Override
 	public void dispose() {
+		_bitmap.recycle();
 		_bitmap = null;
 	}
+	
+	@Override
+	public void dispose() {
+	  return _bitmap == null;
+  } 	
 
 }

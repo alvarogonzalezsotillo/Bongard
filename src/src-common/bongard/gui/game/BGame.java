@@ -1,7 +1,7 @@
 package bongard.gui.game;
 
+import ollitos.platform.BFactory;
 import bongard.gui.container.IBDrawableContainer;
-import bongard.platform.BFactory;
 
 
 public abstract class BGame implements IBGame{

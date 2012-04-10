@@ -1,10 +1,10 @@
 package bongard.gui.game;
 
-import bongard.animation.BRunnableAnimation;
+import ollitos.animation.BRunnableAnimation;
+import ollitos.platform.BFactory;
+import ollitos.platform.BResourceLocator;
 import bongard.gui.container.BFlippableContainer;
 import bongard.gui.container.IBFlippableModel;
-import bongard.platform.BFactory;
-import bongard.platform.BResourceLocator;
 import bongard.problem.BCardExtractor;
 import bongard.problem.BProblem;
 

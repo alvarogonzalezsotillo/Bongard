@@ -4,10 +4,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import ollitos.platform.BFactory;
+import ollitos.platform.BResourceLocator;
+
 import bongard.gui.container.IBFlippableDrawable;
 import bongard.gui.container.IBFlippableModel;
-import bongard.platform.BFactory;
-import bongard.platform.BResourceLocator;
 
 @SuppressWarnings("serial")
 public class BBongardGameModel implements IBFlippableModel{

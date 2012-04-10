@@ -3,19 +3,20 @@ package bongard.gui.game;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
-import bongard.animation.BConcatenateAnimation;
-import bongard.animation.BRunnableAnimation;
-import bongard.animation.BWaitAnimation;
-import bongard.animation.IBAnimation;
-import bongard.geom.IBRectangle;
-import bongard.geom.IBTransform;
-import bongard.gui.basic.IBCanvas;
+import ollitos.animation.BConcatenateAnimation;
+import ollitos.animation.BRunnableAnimation;
+import ollitos.animation.BWaitAnimation;
+import ollitos.animation.IBAnimation;
+import ollitos.geom.IBRectangle;
+import ollitos.geom.IBTransform;
+import ollitos.gui.basic.IBCanvas;
+import ollitos.gui.event.BLogListener;
+import ollitos.gui.event.BLogListener.ReplayAnimation;
+import ollitos.platform.BFactory;
+import ollitos.platform.BResourceLocator;
+
 import bongard.gui.container.BDrawableContainer;
 import bongard.gui.container.BFlippableContainer;
-import bongard.gui.event.BLogListener;
-import bongard.gui.event.BLogListener.ReplayAnimation;
-import bongard.platform.BFactory;
-import bongard.platform.BResourceLocator;
 
 
 public class BExamplesField extends BDrawableContainer{

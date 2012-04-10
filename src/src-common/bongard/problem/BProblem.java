@@ -5,11 +5,12 @@ import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Random;
 
-import bongard.gui.basic.IBRaster;
-import bongard.gui.container.IBDisposable;
-import bongard.platform.BFactory;
-import bongard.platform.BResourceLocator;
-import bongard.util.BException;
+import ollitos.gui.basic.IBDisposable;
+import ollitos.gui.basic.IBRaster;
+import ollitos.platform.BFactory;
+import ollitos.platform.BResourceLocator;
+import ollitos.util.BException;
+
 
 
 /**
@@ -48,7 +49,8 @@ public class BProblem implements Serializable, IBDisposable{
 
 
 	public BProblem( BResourceLocator test, long seed ){
-		init( test, seed );
+		_test = test;
+		_seed = seed;
 	}
 
 	
@@ -62,8 +64,7 @@ public class BProblem implements Serializable, IBDisposable{
 		_seed = seed;
 		
 		BCardExtractor ce = BFactory.instance().cardExtractor();
-		_testImage = BFactory.instance().raster(_test,false);
-		IBRaster[][] images = ce.extractImages(_testImage);
+		IBRaster[][] images = ce.extractImages(testImage());
 
 		IBRaster[] a = images[0];
 		IBRaster[] b = images[1];
@@ -88,6 +89,7 @@ public class BProblem implements Serializable, IBDisposable{
 	 * @return
 	 */
 	public IBRaster[] aImages() {
+		if( _a == null ) init(_test,_seed);
 		return _a.clone();
 	}
 
@@ -96,6 +98,7 @@ public class BProblem implements Serializable, IBDisposable{
 	 * @return
 	 */
 	public IBRaster[] bImages() {
+		if( _b == null ) init(_test,_seed);
 		return _b.clone();
 	}
 	
@@ -104,6 +107,7 @@ public class BProblem implements Serializable, IBDisposable{
 	 * @return
 	 */
 	public IBRaster[] images(){
+		if( _images == null ) init(_test,_seed);
 		return _images.clone();
 	}
 	
@@ -112,6 +116,7 @@ public class BProblem implements Serializable, IBDisposable{
 	 * @return
 	 */
 	public IBRaster[] set1(){
+		if( _set1 == null ) init(_test,_seed);
 		return _set1.clone();
 	}
 	
@@ -120,6 +125,7 @@ public class BProblem implements Serializable, IBDisposable{
 	 * @return
 	 */
 	public IBRaster[] set2(){
+		if( _set2 == null ) init(_test,_seed);
 		return _set2.clone();
 	}
 
@@ -128,6 +134,7 @@ public class BProblem implements Serializable, IBDisposable{
 	 * @return
 	 */
 	public IBRaster image1(){
+		if( _image1 == null ) init(_test,_seed);
 		return _image1;
 	}
 	
@@ -136,6 +143,7 @@ public class BProblem implements Serializable, IBDisposable{
 	 * @return
 	 */
 	public IBRaster image2(){
+		if( _image2 == null ) init(_test,_seed);
 		return _image2;
 	}
 	
@@ -218,26 +226,44 @@ public class BProblem implements Serializable, IBDisposable{
 	}
 
 	public IBRaster testImage() {
+		if( _testImage == null ){
+			_testImage = BFactory.instance().raster(_test,false);
+		}
 		return _testImage;
 	}
 	
 	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		stream.defaultReadObject();
-		init(_test,_seed);
+//		init(_test,_seed);
 	}
 
 
 	@Override
 	public void dispose() {
-		for( IBRaster r : _images ){
-			r.dispose();
+		if( _testImage != null ){
+			_testImage.dispose();
 		}
+		if( _images != null ){
+			for( IBRaster r : _images ){
+				r.dispose();
+			}
+		}
+		_a = _b = _images = _set1 = _set2 = null;
+		_testImage = _image1 = _image2 = null;
 	}
 
 
 	@Override
 	public void setUp() {
-		init( _test, _seed );
+	}
+
+
+	@Override
+	public boolean disposed() {
+		if( _images == null || _images[0] == null ){
+			return true;
+		}
+		return _images[0].disposed();
 	}
 
 	
