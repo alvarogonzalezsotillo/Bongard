@@ -37,6 +37,15 @@ public class BRectangle implements IBRectangle{
 		IBRectangle ret = new BRectangle(x, y, w, h);
 		return ret;
 	}
+
+	public static IBRectangle resize( IBRectangle r, double d ){
+		double w = r.w()*d;
+		double h = r.h()*d;
+		double x = r.x()+(r.w()-w);
+		double y = r.y()+(r.h()-h);
+		IBRectangle ret = new BRectangle(x, y, w, h);
+		return ret;
+	}
 	
 	@Override
 	public String toString() {
