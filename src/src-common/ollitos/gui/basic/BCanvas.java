@@ -14,7 +14,7 @@ import ollitos.platform.BFactory;
 import ollitos.util.BTransformUtil;
 import bongard.gui.container.IBDrawableContainer;
 
-public abstract class BCanvas implements IBCanvas {
+public abstract class BCanvas implements IBScreen {
 
 	private static final int ENTER_LEAVE_MILLIS = 500;
 	private IBTransform _t = BFactory.instance().identityTransform();

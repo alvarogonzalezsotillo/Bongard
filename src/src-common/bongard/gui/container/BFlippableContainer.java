@@ -11,6 +11,7 @@ import ollitos.gui.basic.BBox;
 import ollitos.gui.basic.BLabel;
 import ollitos.gui.basic.BSprite;
 import ollitos.gui.basic.IBCanvas;
+import ollitos.gui.basic.IBDisposable;
 import ollitos.gui.basic.IBRaster;
 import ollitos.gui.basic.IBRectangularDrawable;
 import ollitos.gui.event.BEventAdapter;
@@ -308,21 +309,25 @@ public class BFlippableContainer extends BDrawableContainer {
 			addListener(current().listener());
 			current().setFlippableContainer(this);
 		}
+
 		
+		// DISPOSE AND SETUP
+		for( int i = 0 ; i < _model.width() ; i++ ){
+			IBFlippableDrawable drawable = _model.drawable(i);
+			if( i > _currentIndex+1 || i < _currentIndex-1 ){
+				//drawable.dispose();
+				IBDisposable.Util.disposeLater(drawable);
+			}
+			else{
+				drawable.setUp();
+			}
+		}
+
 
 		adjustTransformToSize();
 		setDrawableOffset(0);
 		f().game().canvas().refresh();
 		
-		// DISPOSE AND SETUP
-		for( int i = 0 ; i < _model.width() ; i++ ){
-			if( i > _currentIndex+1 || i < _currentIndex-1 ){
-				_model.drawable(i).dispose();
-			}
-			else{
-				_model.drawable(i).setUp();
-			}
-		}
 	}
 
 	@Override

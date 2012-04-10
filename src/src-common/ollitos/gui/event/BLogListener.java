@@ -13,13 +13,13 @@ import ollitos.animation.IBAnimation;
 import ollitos.geom.BRectangle;
 import ollitos.geom.IBPoint;
 import ollitos.geom.IBRectangle;
+import ollitos.geom.IBTransform;
 import ollitos.gui.basic.BSprite;
 import ollitos.gui.basic.IBDrawable;
 import ollitos.gui.basic.IBRaster;
 import ollitos.gui.event.IBEvent.Type;
 import ollitos.platform.BFactory;
 import ollitos.platform.BResourceLocator;
-import ollitos.platform.IBLogger;
 import ollitos.util.BException;
 
 
@@ -201,7 +201,7 @@ public class BLogListener implements IBEventListener{
 
 
 	@Override
-	public IBEventSource source() {
+	public IBTransform transform() {
 		return null;
 	}
 

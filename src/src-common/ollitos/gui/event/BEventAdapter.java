@@ -2,13 +2,15 @@ package ollitos.gui.event;
 
 import ollitos.geom.IBPoint;
 import ollitos.geom.IBRectangle;
+import ollitos.geom.IBTransform;
+import ollitos.geom.IBTransformHolder;
 
 public class BEventAdapter implements IBEventListener{
 	
-	protected IBEventSource _source;
+	protected IBTransformHolder _transformHolder;
 
-	public BEventAdapter(IBEventSource s){
-		_source = s;
+	public BEventAdapter(IBTransformHolder s){
+		_transformHolder = s;
 	}
 	
 	@Override
@@ -37,8 +39,8 @@ public class BEventAdapter implements IBEventListener{
 	
 
 	@Override
-	public IBEventSource source() {
-		return _source;
+	public IBTransform transform() {
+		return _transformHolder.transform();
 	}
 	
 	public boolean  containerResized(IBRectangle containerSizeInItsCoordiates){return false;}

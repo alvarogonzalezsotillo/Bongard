@@ -2,11 +2,11 @@ package ollitos.gui.basic;
 
 import ollitos.geom.IBRectangle;
 import ollitos.geom.IBTransform;
-import ollitos.gui.event.IBEventSource;
+import ollitos.geom.IBTransformHolder;
 import bongard.gui.container.IBDrawableContainer;
 
 
-public interface IBCanvas extends IBEventSource{
+public interface IBCanvas extends IBTransformHolder{
 	void setTransform(IBTransform t);
 	void refresh();
 	IBRectangle originalSize();

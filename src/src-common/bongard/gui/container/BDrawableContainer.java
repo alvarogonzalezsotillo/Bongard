@@ -1,11 +1,10 @@
 package bongard.gui.container;
 
-import ollitos.geom.BRectangle;
+import ollitos.geom.IBTransformHolder;
 import ollitos.gui.basic.BRectangularDrawable;
 import ollitos.gui.event.BListenerList;
 import ollitos.gui.event.IBEvent;
 import ollitos.gui.event.IBEventListener;
-import ollitos.gui.event.IBEventSource;
 import ollitos.util.BException;
 import bongard.gui.game.BGameField;
 import bongard.gui.game.BState;
@@ -20,7 +19,7 @@ public abstract class BDrawableContainer extends BRectangularDrawable implements
 	}
 	
 	class MyListenerList extends BListenerList{
-		public MyListenerList(IBEventSource container) {
+		public MyListenerList(IBTransformHolder container) {
 			super(container);
 		}
 

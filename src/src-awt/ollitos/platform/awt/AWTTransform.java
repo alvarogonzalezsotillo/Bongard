@@ -121,4 +121,9 @@ public class AWTTransform extends AffineTransform implements IBTransform{
 		return new AWTTransform(this);
 	}
 
+	@Override
+	public IBTransform transform() {
+		return this;
+	}
+
 }

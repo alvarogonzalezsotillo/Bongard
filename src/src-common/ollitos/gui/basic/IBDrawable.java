@@ -3,11 +3,10 @@ package ollitos.gui.basic;
 import ollitos.animation.IBTransformAnimable;
 import ollitos.geom.IBPoint;
 import ollitos.geom.IBTransform;
+import ollitos.geom.IBTransformHolder;
 import ollitos.geom.IBTransformable;
-import bongard.gui.game.BState;
 
-public interface IBDrawable extends IBTransformable, IBTransformAnimable{
-	public IBTransform transform();
+public interface IBDrawable extends IBTransformable, IBTransformAnimable, IBTransformHolder{
 	public void setTransform(IBTransform t);
 	public void draw(IBCanvas c,IBTransform aditionalTransform);
 	public IBPoint position();
