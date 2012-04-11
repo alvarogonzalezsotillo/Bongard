@@ -1,8 +1,8 @@
 package bongard.platform.andr;
 
+import ollitos.geom.IBPoint;
+import ollitos.geom.IBTransform;
 import android.graphics.Matrix;
-import bongard.geom.IBPoint;
-import bongard.geom.IBTransform;
 
 public class AndrTransform extends Matrix implements IBTransform{
 	
@@ -63,5 +63,10 @@ public class AndrTransform extends Matrix implements IBTransform{
 		AndrTransform ret = new AndrTransform();
 		ret.set(this);
 		return ret;
+	}
+
+	@Override
+	public IBTransform transform() {
+		return this;
 	}
 }

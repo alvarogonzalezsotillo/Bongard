@@ -1,13 +1,13 @@
 package bongard.platform.andr;
 
+import ollitos.geom.IBTransform;
+import ollitos.gui.basic.BSprite;
+import ollitos.gui.basic.IBCanvas;
+import ollitos.gui.basic.IBRaster;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import bongard.geom.IBTransform;
-import bongard.gui.basic.BSprite;
-import bongard.gui.basic.IBCanvas;
-import bongard.gui.basic.IBRaster;
 
 public class AndrSprite extends BSprite {
 

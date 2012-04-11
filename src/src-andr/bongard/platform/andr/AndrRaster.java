@@ -1,10 +1,9 @@
 package bongard.platform.andr;
 
+import ollitos.geom.BRectangle;
+import ollitos.geom.IBRectangle;
+import ollitos.gui.basic.IBRaster;
 import android.graphics.Bitmap;
-import bongard.geom.BRectangle;
-import bongard.geom.IBRectangle;
-import bongard.gui.basic.IBRaster;
-import bongard.util.BImplementations;
 
 public class AndrRaster implements IBRaster {
 
@@ -20,13 +19,6 @@ public class AndrRaster implements IBRaster {
 	}
 
 	
-	@Override
-	public IBRectangle originalSize() {
-		if (_originalSize == null) {
-			_originalSize = new BRectangle(0, 0, bitmap().getWidth(), bitmap().getHeight() );
-		}
-		return _originalSize;
-	}
 
 	@Override
 	public void setUp() {
@@ -40,8 +32,18 @@ public class AndrRaster implements IBRaster {
 	}
 	
 	@Override
-	public void dispose() {
+	public boolean disposed() {
 	  return _bitmap == null;
-  } 	
+  }
+
+	@Override
+	public int w() {
+		return bitmap().getWidth();
+	}
+
+	@Override
+	public int h() {
+		return bitmap().getHeight();
+	} 	
 
 }

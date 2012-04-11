@@ -1,7 +1,7 @@
 package bongard.platform.andr;
 
+import ollitos.platform.IBLogger;
 import android.util.Log;
-import bongard.platform.IBLogger;
 
 public class AndrLogger implements IBLogger{
 

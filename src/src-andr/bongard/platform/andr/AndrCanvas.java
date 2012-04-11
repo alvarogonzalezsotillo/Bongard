@@ -1,5 +1,15 @@
 package bongard.platform.andr;
 
+import ollitos.geom.BRectangle;
+import ollitos.geom.IBPoint;
+import ollitos.geom.IBRectangle;
+import ollitos.gui.basic.BCanvas;
+import ollitos.gui.basic.BSprite;
+import ollitos.gui.basic.IBRaster;
+import ollitos.gui.event.IBEvent;
+import ollitos.platform.BFactory;
+import ollitos.platform.BResourceLocator;
+import ollitos.util.BTransformUtil;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -7,16 +17,6 @@ import android.graphics.Paint;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
-import bongard.geom.BRectangle;
-import bongard.geom.IBPoint;
-import bongard.geom.IBRectangle;
-import bongard.gui.basic.BCanvas;
-import bongard.gui.basic.BSprite;
-import bongard.gui.basic.IBRaster;
-import bongard.gui.event.IBEvent;
-import bongard.platform.BFactory;
-import bongard.platform.BResourceLocator;
-import bongard.util.BTransformUtil;
 
 public class AndrCanvas extends BCanvas {
 

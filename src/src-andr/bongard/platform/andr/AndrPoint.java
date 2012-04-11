@@ -1,6 +1,6 @@
 package bongard.platform.andr;
 
-import bongard.geom.IBPoint;
+import ollitos.geom.IBPoint;
 
 public class AndrPoint implements IBPoint{
 

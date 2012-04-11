@@ -1,8 +1,8 @@
 package bongard.platform.andr;
 
+import ollitos.animation.BAnimator;
+import ollitos.animation.IBAnimation;
 import android.os.Handler;
-import bongard.animation.BAnimator;
-import bongard.animation.IBAnimation;
 
 public class AndrAnimator extends BAnimator{
 	private Handler _handler;

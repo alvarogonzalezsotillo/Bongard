@@ -2,6 +2,7 @@ package ollitos.gui.event;
 
 import ollitos.geom.IBPoint;
 import ollitos.geom.IBRectangle;
+import ollitos.gui.event.IBEvent.Type;
 
 public class IBEvent {
 	public static enum Type { 

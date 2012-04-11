@@ -1,5 +1,6 @@
 package bongard.platform.andr;
 
+import ollitos.platform.BFactory;
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -9,7 +10,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import bongard.gui.game.BState;
 import bongard.gui.game.IBGame;
-import bongard.platform.BFactory;
 
 public class AndrActivity extends Activity {
 	private static final String STATE_KEY = "BState";

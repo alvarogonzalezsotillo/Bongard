@@ -1,13 +1,13 @@
 package bongard.platform.andr;
 
+import ollitos.geom.IBTransform;
+import ollitos.gui.basic.BLabel;
+import ollitos.gui.basic.IBCanvas;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
-import bongard.geom.IBTransform;
-import bongard.gui.basic.BLabel;
-import bongard.gui.basic.IBCanvas;
 
 public class AndrLabel extends BLabel {
 

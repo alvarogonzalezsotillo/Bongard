@@ -1,13 +1,13 @@
 package bongard.platform.andr;
 
+import ollitos.geom.IBRectangle;
+import ollitos.geom.IBTransform;
+import ollitos.gui.basic.BBox;
+import ollitos.gui.basic.IBCanvas;
+import ollitos.gui.basic.IBColor;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import bongard.geom.IBRectangle;
-import bongard.geom.IBTransform;
-import bongard.gui.basic.BBox;
-import bongard.gui.basic.IBCanvas;
-import bongard.gui.basic.IBColor;
 
 public class AndrBox extends BBox{
 

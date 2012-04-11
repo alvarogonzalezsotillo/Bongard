@@ -1,6 +1,6 @@
 package bongard.platform.andr;
 
-import bongard.gui.basic.IBColor;
+import ollitos.gui.basic.IBColor;
 
 public class AndrColor implements IBColor {
 

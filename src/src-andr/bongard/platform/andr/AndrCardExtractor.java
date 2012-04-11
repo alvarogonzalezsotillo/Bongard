@@ -1,8 +1,8 @@
 package bongard.platform.andr;
 
+import ollitos.geom.IBRectangle;
+import ollitos.gui.basic.IBRaster;
 import android.graphics.Bitmap;
-import bongard.geom.IBRectangle;
-import bongard.gui.basic.IBRaster;
 import bongard.problem.BCardExtractor;
 
 public class AndrCardExtractor extends BCardExtractor{

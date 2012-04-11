@@ -47,7 +47,7 @@
 		<jar destfile="${jar.file}">
 			<fileset dir="${bin.classes}" casesensitive="yes"/>
 			<manifest>
-				<attribute name="Main-Class" value="bongard.platform.awt.AWTGame" />
+				<attribute name="Main-Class" value="ollitos.platform.awt.AWTGame" />
 			</manifest>
 		</jar>
 	</target>

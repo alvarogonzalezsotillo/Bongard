@@ -4,20 +4,21 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
+import ollitos.geom.IBRectangle;
+import ollitos.gui.basic.BHTMLDrawable;
+import ollitos.gui.basic.BLabel;
+import ollitos.gui.basic.BSprite;
+import ollitos.gui.basic.IBColor;
+import ollitos.gui.basic.IBRaster;
+import ollitos.platform.BFactory;
+import ollitos.platform.BResourceLocator;
+import ollitos.util.BException;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import bongard.geom.IBRectangle;
-import bongard.gui.basic.BLabel;
-import bongard.gui.basic.BSprite;
-import bongard.gui.basic.IBColor;
-import bongard.gui.basic.IBRaster;
-import bongard.platform.BFactory;
-import bongard.platform.BResourceLocator;
-import bongard.util.BException;
 
 public class AndrFactory extends BFactory{
 
@@ -130,5 +131,10 @@ public class AndrFactory extends BFactory{
 			_logger = new AndrLogger();
 		}
 		return _logger;
+	}
+
+	@Override
+	public BHTMLDrawable html(String string) {
+		return null;
 	}
 }
