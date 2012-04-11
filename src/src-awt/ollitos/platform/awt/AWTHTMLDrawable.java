@@ -19,6 +19,8 @@ public class AWTHTMLDrawable extends BHTMLDrawable{
 	
 	private JLabel textArea(){
 		if( _textArea != null ){
+			IBRectangle s = originalSize();
+			_textArea.setSize( (int)s.w(), (int)s.h());
 			return _textArea;
 		}
 		
