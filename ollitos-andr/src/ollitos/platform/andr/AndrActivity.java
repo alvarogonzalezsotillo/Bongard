@@ -1,6 +1,5 @@
 package ollitos.platform.andr;
 
-import bongard.gui.game.BStartField;
 import ollitos.gui.basic.BState;
 import ollitos.gui.basic.IBGame;
 import ollitos.platform.BFactory;
@@ -8,9 +7,11 @@ import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import bongard.gui.game.BStartField;
 
 public class AndrActivity extends Activity {
 	private static final String STATE_KEY = "BState";
@@ -33,6 +34,17 @@ public class AndrActivity extends Activity {
 			}
 		});
 		Log.d("-", "oncreate");
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+			return true;
+
+		}
+
+		return super.onKeyDown(keyCode, event);  
 	}
 	
 	private BState state(Bundle b){
