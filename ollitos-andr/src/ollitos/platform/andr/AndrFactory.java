@@ -127,7 +127,9 @@ public class AndrFactory extends BFactory{
 
 	@Override
 	public BHTMLDrawable html(String string) {
-		return null;
+		BHTMLDrawable ret = new AndrHTMLDrawable();
+		ret.setHtml(string);
+		return ret;
 	}
 
 	@Override
