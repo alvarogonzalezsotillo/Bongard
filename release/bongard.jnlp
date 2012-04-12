@@ -8,7 +8,7 @@
   </resources>
   <application-desc
     name="Bongard tests"
-    main-class="bongard.platform.awt.AWTGame"
+    main-class="ollitos.platform.awt.AWTGame"
     width="480"
     height="640">
   </application-desc>
