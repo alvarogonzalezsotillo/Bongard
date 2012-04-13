@@ -10,6 +10,10 @@ public abstract class BRectangularDrawable extends BDrawable implements IBRectan
 	
 	private IBRectangle _originalSize;
 
+	public BRectangularDrawable() {
+		this( new BRectangle(0, 0, 1, 1));
+	}
+	
 	public BRectangularDrawable(IBRectangle r) {
 		setOriginalSize(r);
 	}

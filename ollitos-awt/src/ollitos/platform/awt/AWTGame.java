@@ -9,9 +9,9 @@ import java.util.prefs.Preferences;
 
 import javax.swing.SwingUtilities;
 
+import ollitos.gui.basic.BGame;
 import ollitos.gui.basic.BState;
 import ollitos.platform.BFactory;
-import bongard.gui.game.BGame;
 import bongard.gui.game.BStartField;
 
 

@@ -52,8 +52,10 @@ public abstract class BSprite extends BRectangularDrawable{
 	@Override
 	public void draw(IBCanvas c, IBTransform aditionalTransform) {
 		if( raster().disposed() ){
-			throw new BException("Raster is disposed", null);
+			new BException("Raster is disposed", null).printStackTrace();
+			return;
 		}
+		
 		super.draw(c, aditionalTransform);
 	}
 }

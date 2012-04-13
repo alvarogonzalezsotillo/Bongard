@@ -1,14 +1,11 @@
 package ollitos.platform.andr;
 
-import ollitos.geom.BRectangle;
-import ollitos.geom.IBRectangle;
 import ollitos.gui.basic.IBRaster;
 import android.graphics.Bitmap;
 
 public class AndrRaster implements IBRaster {
 
 	private Bitmap _bitmap;
-	private IBRectangle _originalSize;
 
 	public AndrRaster(Bitmap b) {
 		_bitmap = b;

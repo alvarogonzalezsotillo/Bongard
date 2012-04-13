@@ -15,11 +15,13 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Handler;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 
 public class AndrCanvas extends BCanvas {
 
+	
 	private class AndrView extends View {
 
 		private class AndrListener implements OnTouchListener{
@@ -151,6 +153,15 @@ public class AndrCanvas extends BCanvas {
 
 	}
 
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			IBEvent e = new IBEvent( IBEvent.Type.back );
+			return listeners().handle(e);
+		}
+
+		return false;
+	}
+	
 	private AndrView _view;
 
 	public AndrView view() {

@@ -1,6 +1,6 @@
 package ollitos.platform.andr;
 
-import bongard.gui.game.BGame;
+import ollitos.gui.basic.BGame;
 
 public class AndrGame extends BGame{
 

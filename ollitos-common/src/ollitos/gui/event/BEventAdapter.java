@@ -40,6 +40,9 @@ public class BEventAdapter implements IBEventListener{
 
 	@Override
 	public IBTransform transform() {
+		if( _transformHolder == null ){
+			return null;
+		}
 		return _transformHolder.transform();
 	}
 	

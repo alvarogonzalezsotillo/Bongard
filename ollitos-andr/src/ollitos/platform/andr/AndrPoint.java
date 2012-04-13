@@ -2,6 +2,7 @@ package ollitos.platform.andr;
 
 import ollitos.geom.IBPoint;
 
+@SuppressWarnings("serial")
 public class AndrPoint implements IBPoint{
 
 	public float coords[] = new float[2];

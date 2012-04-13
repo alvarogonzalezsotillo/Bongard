@@ -148,5 +148,15 @@ public abstract class BCanvas implements IBScreen {
 	public IBColor backgroundColor() {
 		return BFactory.COLOR_DARKGRAY;
 	}
+	
+	@Override
+	public boolean postHandleEvent(IBEvent e) {
+		return false;
+	}
+
+	@Override
+	public boolean preHandleEvent(IBEvent e) {
+		return false;
+	}
 
 }

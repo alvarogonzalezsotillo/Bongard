@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 import ollitos.geom.IBPoint;
 import ollitos.geom.IBTransform;
-import ollitos.geom.IBTransformHolder;
 import ollitos.util.BException;
 
 
@@ -18,10 +17,10 @@ public class BListenerList implements IBEventListener{
 
 	IBEventListener[] _listAsArray;
 
-	private IBTransformHolder _container;
+	private IBEventSource _eventSource;
 	
-	public BListenerList(IBTransformHolder container){
-		_container = container;
+	public BListenerList(IBEventSource eventSource){
+		_eventSource = eventSource;
 	}
 	
 	public void addListener(IBEventListener listener){
@@ -60,11 +59,21 @@ public class BListenerList implements IBEventListener{
 
 	@Override
 	public IBTransform transform() {
-		return _container.transform();
+		return _eventSource.transform();
 	}
 
 	@Override
 	public boolean handle(IBEvent e) {
+		if( _eventSource.preHandleEvent(e) ){
+			return true;
+		}
+		if( dispatchEvent(e) ){
+			return true;
+		}
+		return _eventSource.postHandleEvent(e);
+	}
+
+	private boolean dispatchEvent(IBEvent e) {
 		for( IBEventListener l: listAsArray() ){
 			IBPoint p = pointInChildCoordinates( l, e.point() );
 			IBEvent newEvent = new IBEvent( e.type(), p, e.rectangle() );

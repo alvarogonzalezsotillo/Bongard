@@ -522,9 +522,8 @@ public class BFlippableContainer extends BDrawableContainer {
 
 	private BLogListener _logListener = new BLogListener();
 
-	@SuppressWarnings("unused")
 	@Override
-	protected boolean handleEvent(IBEvent e) {
+	public boolean postHandleEvent(IBEvent e) {
 		if( LOG_EVENTS && _logListener != null ){
 			_logListener.handle(e);
 		}
@@ -533,7 +532,7 @@ public class BFlippableContainer extends BDrawableContainer {
 			adjustTransformToSize();
 			return true;
 		}
-		if (super.handleEvent(e)) {
+		if (super.postHandleEvent(e)) {
 			return true;
 		}
 		return _flipAdapter.handle(e);

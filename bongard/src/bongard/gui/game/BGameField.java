@@ -107,7 +107,7 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 		private boolean _set2Over;
 		
 		public MyEventAdapter(){
-			super(BGameField.this);
+			super(null);
 		}
 		
 		@Override

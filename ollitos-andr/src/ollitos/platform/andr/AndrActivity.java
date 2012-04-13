@@ -33,33 +33,39 @@ public class AndrActivity extends Activity {
 				g.restore(state);
 			}
 		});
-		Log.d("-", "oncreate");
+		BFactory.instance().logger().log(this,"onCreate");
 	}
 	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-
+		boolean ret = andrCanvas().onKeyDown(keyCode,event);
+		if( ret ){
 			return true;
-
 		}
 
 		return super.onKeyDown(keyCode, event);  
 	}
 	
 	private BState state(Bundle b){
+		BFactory.instance().logger().log(this,"state:" + b);
+		if( b == null ){
+			return null;
+		}
 		try{
 			BState state = (BState) b.getSerializable(STATE_KEY);
+			BFactory.instance().logger().log(this,"state:" + state);
 			return state;
 		}
 		catch( Exception e){
-			Log.d("-", "Error readig state:" + e.toString() );
+			BFactory.instance().logger().log(this,"Error readig state:" + e.toString() );
+			e.printStackTrace();
 		}
 		return null;
 	}
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
+		BFactory.instance().logger().log(this,"onSaveInstanceState");
 		super.onSaveInstanceState(outState);
 		BState state = BFactory.instance().game().state();
 		outState.putSerializable(STATE_KEY, state);
@@ -68,6 +74,7 @@ public class AndrActivity extends Activity {
 	
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		BFactory.instance().logger().log(this,"onRestoreInstanceState");
 		super.onRestoreInstanceState(savedInstanceState);
 		final BState state = state(savedInstanceState);
 		final IBGame g = BFactory.instance().game();
@@ -80,9 +87,13 @@ public class AndrActivity extends Activity {
 	
 	
 	private View createView() {
-		AndrCanvas canvas = ((AndrFactory) BFactory.instance()).game().canvas();
+		AndrCanvas canvas = andrCanvas();
 		View ret = canvas.resetView();
 		return ret;
+	}
+
+	private AndrCanvas andrCanvas() {
+		return ((AndrFactory) BFactory.instance()).game().canvas();
 	}
 
 }
