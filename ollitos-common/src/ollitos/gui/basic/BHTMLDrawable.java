@@ -3,6 +3,7 @@ package ollitos.gui.basic;
 import ollitos.geom.IBRectangle;
 import ollitos.platform.BFactory;
 import ollitos.platform.BResourceLocator;
+import ollitos.platform.IBDisposable;
 
 public abstract class BHTMLDrawable extends BRectangularDrawable implements IBDisposable{
 

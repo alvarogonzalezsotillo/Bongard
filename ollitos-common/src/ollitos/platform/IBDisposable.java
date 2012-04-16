@@ -1,6 +1,5 @@
-package ollitos.gui.basic;
+package ollitos.platform;
 
-import ollitos.platform.BFactory;
 
 public interface IBDisposable {
 	
