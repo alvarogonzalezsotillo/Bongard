@@ -123,8 +123,6 @@ public class BFlippableContainer extends BDrawableContainer {
 			for (int i = 0; i < _boxes.length; i++) {
 				IBRectangle r = _boxes[i];
 				r = BRectangle.grow(r, BOX_SPACING);
-				f().logger().log( this, "r:" + r );
-				f().logger().log( this, "pInMyCoordinates:" + pInMyCoordinates );
 				if( BRectangle.inside(r, pInMyCoordinates) ){
 					f().game().animator().addAnimation( new GoToIndexAnimation(_currentScroll+i) );
 					return true;
@@ -157,7 +155,6 @@ public class BFlippableContainer extends BDrawableContainer {
 		public boolean pointerDown(IBPoint pInMyCoordinates) {
 			_initialPoint = pInMyCoordinates;
 			_lastPoint = _initialPoint;
-			f().logger().log(this,"PointerDown:" + pInMyCoordinates );
 			return true;
 		}
 
@@ -316,18 +313,44 @@ public class BFlippableContainer extends BDrawableContainer {
 	}
 
 	private void disposeAndSetup(int oldIndex, int currentIndex) {
-		// MAINTAIN A CACHE OF SETUP DRAWABLES (currentIndex-MAX_DRAWABLES_WIDTH, currentIndex+MAX_DRAWABLES_WIDTH)
+		// MAINTAIN A CACHE OF SETUP DRAWABLES, 
 		// DISPOSE THE REST
-
-		for( int i = 0 ; i < _model.width() ; i++ ){
-			IBFlippableDrawable drawable = _model.drawable(i);
-			if( i > currentIndex+1 || i < currentIndex-1 ){
-				drawable.dispose();
-			}
-			else{
-				drawable.setUp();
-			}
+		int cache = MAX_DRAWABLES_WIDTH;
+		
+		int ini = currentIndex - cache;
+		ini = Math.max(ini, 0);
+		int end = currentIndex + cache;
+		end = Math.min(end, _model.width()-1);
+		
+		int oldIni = oldIndex - cache;
+		oldIni = Math.max(oldIni, 0);
+		int oldEnd = oldIndex + cache;
+		oldEnd = Math.min(oldEnd, _model.width()-1);
+		
+		IBLogger l = BFactory.instance().logger();
+		// SETUP CURRENT
+		for( int i = ini ; i <= end ; i++ ){
+			IBDisposable.Util.setUpLater(_model.drawable(i));
+			//_model.drawable(i).setUp();
 		}
+
+		// DISPOSE OLD
+		for( int i = oldIni ; i < ini ; i++ ){
+			_model.drawable(i).dispose();
+		}
+		for( int i = end+1 ; i <= oldEnd ; i++ ){
+			_model.drawable(i).dispose();
+		}
+		
+		if(false){
+			String s = "";
+			for( int i = 0 ; i < _model.width() ; i++ ){
+				boolean disposed = _model.drawable(i).disposed();
+				s += disposed?".":"S";
+			}
+			l.log(this,s);
+		}
+
 	}
 
 	@Override
@@ -410,14 +433,6 @@ public class BFlippableContainer extends BDrawableContainer {
 			ret[screenIndex] = index;
 		}
 		
-		{
-			String s = "indexOfBoxes:";
-			for( int i: ret ){
-				s += " " + i;
-			}
-			f().logger().log(this, s);
-		}
-		
 		return ret;
 	}
 	
@@ -452,13 +467,6 @@ public class BFlippableContainer extends BDrawableContainer {
 			startL.draw(c, t);
 		}
 
-		IBLogger l = factory.logger();
-		l.log(this,"start:" + start );
-		l.log(this,"end:" + end );
-		l.log(this,"_model.width():" + _model.width() );
-		l.log(this,"currentIndex():" + currentIndex() );
-		
-		
 		for( int screenIndex = 0 ; screenIndex < n ; screenIndex++ ){
 			int index = start + screenIndex;
 			

@@ -33,6 +33,7 @@ public class BProblem implements Serializable, IBDisposable{
 	transient private IBRaster _image2;
 	
 	transient private boolean _image1_with_set1;
+	transient private boolean _disposed = true;
 	
 	private long _seed;
 	private BResourceLocator _test;
@@ -61,11 +62,7 @@ public class BProblem implements Serializable, IBDisposable{
 	 * 
 	 * @param loc
 	 */
-	public void init( BResourceLocator test, long seed ){
-		
-		_test = test;
-		_seed = seed;
-		
+	private void init( ){
 		
 		IBRaster[][] images = BCardExtractor.extractImages(testImage());
 
@@ -85,6 +82,7 @@ public class BProblem implements Serializable, IBDisposable{
 		System.arraycopy(_b, 0, _images, 6, 6);
 		
 		shuffle();
+		setUp();
 	}
 
 	/**
@@ -92,7 +90,7 @@ public class BProblem implements Serializable, IBDisposable{
 	 * @return
 	 */
 	public IBRaster[] aImages() {
-		if( _a == null ) init(_test,_seed);
+		if( _a == null ) init();
 		return _a.clone();
 	}
 
@@ -101,7 +99,7 @@ public class BProblem implements Serializable, IBDisposable{
 	 * @return
 	 */
 	public IBRaster[] bImages() {
-		if( _b == null ) init(_test,_seed);
+		if( _b == null ) init();
 		return _b.clone();
 	}
 	
@@ -110,7 +108,7 @@ public class BProblem implements Serializable, IBDisposable{
 	 * @return
 	 */
 	public IBRaster[] images(){
-		if( _images == null ) init(_test,_seed);
+		if( _images == null ) init();
 		return _images.clone();
 	}
 	
@@ -119,7 +117,7 @@ public class BProblem implements Serializable, IBDisposable{
 	 * @return
 	 */
 	public IBRaster[] set1(){
-		if( _set1 == null ) init(_test,_seed);
+		if( _set1 == null ) init();
 		return _set1.clone();
 	}
 	
@@ -128,7 +126,7 @@ public class BProblem implements Serializable, IBDisposable{
 	 * @return
 	 */
 	public IBRaster[] set2(){
-		if( _set2 == null ) init(_test,_seed);
+		if( _set2 == null ) init();
 		return _set2.clone();
 	}
 
@@ -137,7 +135,7 @@ public class BProblem implements Serializable, IBDisposable{
 	 * @return
 	 */
 	public IBRaster image1(){
-		if( _image1 == null ) init(_test,_seed);
+		if( _image1 == null ) init();
 		return _image1;
 	}
 	
@@ -146,7 +144,7 @@ public class BProblem implements Serializable, IBDisposable{
 	 * @return
 	 */
 	public IBRaster image2(){
-		if( _image2 == null ) init(_test,_seed);
+		if( _image2 == null ) init();
 		return _image2;
 	}
 	
@@ -180,8 +178,6 @@ public class BProblem implements Serializable, IBDisposable{
 
 
 	private static <T> T[] shuffle( T[] array, Random r ){
-		
-		
 		for( int i = 0 ; i < array.length ; i++ ){
 			int i1 = r.nextInt(array.length );
 			int i2 = r.nextInt(array.length );
@@ -211,23 +207,6 @@ public class BProblem implements Serializable, IBDisposable{
 		return !isOfSet1(image);
 	}
 	
-	@Override
-	public String toString() {
-		String ret = "Problem set1:";
-		for( int i = 0 ; i < 5 ;i++ ){
-			ret += _set1[i].toString();
-		}
-		ret += " set2:";
-		for( int i = 0 ; i < 5 ;i++ ){
-			ret += _set2[i].toString();
-		}
-		ret += " image1:" + _image1.toString();
-		ret += " image2:" + _image2.toString();
-		ret += " image1_of_set1:" + _image1_with_set1;
-		
-		return ret;
-	}
-
 	public IBRaster testImage() {
 		if( _testImage == null ){
 			_testImage = BFactory.instance().raster(_test,false);
@@ -237,7 +216,6 @@ public class BProblem implements Serializable, IBDisposable{
 	
 	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		stream.defaultReadObject();
-//		init(_test,_seed);
 	}
 
 
@@ -253,20 +231,19 @@ public class BProblem implements Serializable, IBDisposable{
 		}
 		_a = _b = _images = _set1 = _set2 = null;
 		_testImage = _image1 = _image2 = null;
+		_disposed = true;
 	}
 
 
 	@Override
 	public void setUp() {
+		_disposed = false;
 	}
 
 
 	@Override
 	public boolean disposed() {
-		if( _images == null || _images[0] == null ){
-			return true;
-		}
-		return _images[0].disposed();
+		return _disposed;
 	}
 
 	

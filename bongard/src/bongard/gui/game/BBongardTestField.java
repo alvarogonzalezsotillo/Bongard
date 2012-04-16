@@ -2,7 +2,6 @@ package bongard.gui.game;
 
 import java.io.Serializable;
 
-import ollitos.geom.BRectangle;
 import ollitos.geom.IBRectangle;
 import ollitos.geom.IBTransform;
 import ollitos.gui.basic.BSprite;
@@ -13,7 +12,6 @@ import ollitos.gui.container.BFlippableContainer;
 import ollitos.gui.container.IBFlippableDrawable;
 import ollitos.platform.BFactory;
 import ollitos.platform.BResourceLocator;
-
 import bongard.problem.BProblem;
 
 @SuppressWarnings("serial")
@@ -40,7 +38,10 @@ public class BBongardTestField extends BDrawableContainer implements IBFlippable
 	 */
 	private void setUpProblem(){
 		BFactory f = BFactory.instance();
-		_problem = new BProblem(_locator);
+		if( _problem == null ){
+			_problem = new BProblem(_locator);
+		}
+		_problem.setUp();
 		_sprite = f.sprite(_problem.testImage());
 		_sprite.setAntialias(true);
 		_sprite.transform().translate( originalSize().w()/2, originalSize().h()/2 );
@@ -59,7 +60,6 @@ public class BBongardTestField extends BDrawableContainer implements IBFlippable
 
 	@Override
 	protected void draw_internal(IBCanvas c, IBTransform t) {
-		BFactory.instance().logger().log(this, t.toString() );
 		_sprite.draw(c, t);
 	}
 
@@ -86,7 +86,7 @@ public class BBongardTestField extends BDrawableContainer implements IBFlippable
 
 	@Override
 	public void dispose() {
-		if( !disposed() ){
+		if( _problem != null ){
 			_problem.dispose();
 		}
 	}

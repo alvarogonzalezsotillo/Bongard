@@ -13,6 +13,14 @@ public interface IBDisposable {
 				}
 			});
 		}
+		public static void setUpLater( final IBDisposable d ){
+			BFactory.instance().game().animator().post( new Runnable(){
+				@Override
+				public void run() {
+					d.setUp();
+				}
+			});
+		}
 	}
 	
 	public void setUp();
