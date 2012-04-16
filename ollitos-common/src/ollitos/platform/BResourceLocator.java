@@ -10,19 +10,9 @@ import java.net.URL;
 @SuppressWarnings("serial")
 public class BResourceLocator implements Serializable{
 	private String _s;
-	private URL _u;
 
 	public BResourceLocator(String s) {
-		this(s,null);
-	}
-	
-	public BResourceLocator(URL u) {
-		this(null,u);
-	}
-
-	public BResourceLocator(String s, URL u) {
 		_s = s;
-		_u = u;
 	}
 	
 	@Override
@@ -32,9 +22,5 @@ public class BResourceLocator implements Serializable{
 	
 	public String string(){
 		return _s;
-	}
-	
-	public URL url(){
-		return _u;
 	}
 }

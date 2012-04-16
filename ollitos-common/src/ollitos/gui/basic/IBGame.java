@@ -8,7 +8,8 @@ public interface IBGame{
 	void setDefaultDrawable(IBDrawableContainer d);
 	void restore(BState state);
 	BState state();
-	IBCanvas canvas();
+	IBScreen canvas();
 	BAnimator animator();
 	IBRectangle defaultScreenSize();
+	IBDrawableContainer defaultDrawable();
 }

@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
@@ -97,25 +98,22 @@ public class AWTFactory extends BFactory {
 		}
 	}
 
-	@Override
-	public InputStream open(BResourceLocator r){
-		URL f = r.url();
-		if( f == null ){
-			f = getClass().getResource(r.toString());
-		}
+	public URL url(BResourceLocator r){
+		URL f = getClass().getResource(r.toString());
 		if( f == null ){
 			f = getClass().getResource("/assets" + r.toString());
 		}
 		if( f == null ){
-			return null;
+			try {
+				f = new URL(r.toString());
+			}
+			catch (MalformedURLException ex) {
+				logger().log( this, r );
+			}
 		}
-		try{
-			return f.openStream();
-		}
-		catch( IOException e ){
-			throw new BException( "Unable to open:" + r, e );
-		}
+		return f;
 	}
+	
 
 	@Override
 	public AWTColor color(String c) {
@@ -131,9 +129,8 @@ public class AWTFactory extends BFactory {
 	}
 
 	@Override
-	public AWTHTMLDrawable html(String string) {
+	public AWTHTMLDrawable html() {
 		AWTHTMLDrawable ret = new AWTHTMLDrawable();
-		ret.setHtml(string);
 		return ret;
 	}
 }

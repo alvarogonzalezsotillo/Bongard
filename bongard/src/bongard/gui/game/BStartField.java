@@ -12,6 +12,7 @@ import ollitos.gui.basic.IBRaster;
 import ollitos.gui.container.BDrawableContainer;
 import ollitos.gui.container.BFlippableContainer;
 import ollitos.gui.event.BEventAdapter;
+import ollitos.gui.event.BRestartListener;
 import ollitos.platform.BFactory;
 import ollitos.platform.BResourceLocator;
 
@@ -50,6 +51,8 @@ public class BStartField extends BDrawableContainer{
 		_helpGameSprite = createSprite(0,1,"/images/start/helpGame.png");
 		_startOriginalSprite = createSprite(1,0,"/images/start/startOriginal.png");
 		_helpOriginalSprite = createSprite(1,1,"/images/start/helpOriginal.png");
+		
+		BRestartListener.install();
 		
 		listener().addListener(_adapter);
 	}

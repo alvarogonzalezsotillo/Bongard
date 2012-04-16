@@ -116,12 +116,6 @@ public class BFlippableContainer extends BDrawableContainer {
 		private BWaitForAnimation _releaseAnimation;
 
 		@Override
-		public boolean back(){
-			f().game().restore(null);
-			return true;
-		}
-
-		@Override
 		public boolean pointerClick(IBPoint pInMyCoordinates) {
 			if( _boxes == null ){
 				return false;
@@ -298,6 +292,8 @@ public class BFlippableContainer extends BDrawableContainer {
 
 	private void setCurrent(int x) {
 
+		int oldIndex = _currentIndex;
+		
 		if (current() != null) {
 			removeListener(current().listener());
 			current().setFlippableContainer(null);
@@ -309,25 +305,29 @@ public class BFlippableContainer extends BDrawableContainer {
 			addListener(current().listener());
 			current().setFlippableContainer(this);
 		}
+		
+		disposeAndSetup(oldIndex, _currentIndex );
 
 		
-		// DISPOSE AND SETUP
+
+		adjustTransformToSize();
+		setDrawableOffset(0);
+		f().game().canvas().refresh();
+	}
+
+	private void disposeAndSetup(int oldIndex, int currentIndex) {
+		// MAINTAIN A CACHE OF SETUP DRAWABLES (currentIndex-MAX_DRAWABLES_WIDTH, currentIndex+MAX_DRAWABLES_WIDTH)
+		// DISPOSE THE REST
+
 		for( int i = 0 ; i < _model.width() ; i++ ){
 			IBFlippableDrawable drawable = _model.drawable(i);
-			if( i > _currentIndex+1 || i < _currentIndex-1 ){
-				//drawable.dispose();
-				IBDisposable.Util.disposeLater(drawable);
+			if( i > currentIndex+1 || i < currentIndex-1 ){
+				drawable.dispose();
 			}
 			else{
 				drawable.setUp();
 			}
 		}
-
-
-		adjustTransformToSize();
-		setDrawableOffset(0);
-		f().game().canvas().refresh();
-		
 	}
 
 	@Override

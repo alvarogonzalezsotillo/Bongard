@@ -86,6 +86,11 @@ public abstract class BAnimator {
 			}
 		}
 	}
+
+	public void abortAnimations(){
+		_animations.clear();
+	}
+
 	
 	public void finishAnimations(){
 		while(needsUpdate()){

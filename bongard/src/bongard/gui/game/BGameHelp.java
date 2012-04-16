@@ -35,16 +35,8 @@ public class BGameHelp extends BDrawableContainer{
 	public BHTMLDrawable html(){
 		if (_html == null) {
 			BResourceLocator l = new BResourceLocator("/images/examples/help.html" );
-			
-			String s = "Cant read resource:" + l.string();
-			try{
-				InputStream open = BFactory.instance().open(l);
-				s = read( open );
-			}
-			catch( IOException e ){
-			}
-			
-			_html = BFactory.instance().html(s);
+			_html = BFactory.instance().html();
+			_html.load(l);
 			_html.setOriginalSize( originalSize() );
 		}
 		return _html;

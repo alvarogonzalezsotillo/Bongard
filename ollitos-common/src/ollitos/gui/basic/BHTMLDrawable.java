@@ -2,10 +2,12 @@ package ollitos.gui.basic;
 
 import ollitos.geom.IBRectangle;
 import ollitos.platform.BFactory;
+import ollitos.platform.BResourceLocator;
 
 public abstract class BHTMLDrawable extends BRectangularDrawable implements IBDisposable{
 
 	private String _html;
+	private BResourceLocator _url;
 	
 	public BHTMLDrawable() {
 		super(BFactory.instance().game().defaultScreenSize());
@@ -17,6 +19,13 @@ public abstract class BHTMLDrawable extends BRectangularDrawable implements IBDi
 	
 	public void setHtml(String html){
 		_html = html;
+		_url = null;
+		dispose();
+	}
+	
+	public void load(BResourceLocator url){
+		_url = url;
+		_html = null;
 		dispose();
 	}
 	
@@ -25,4 +34,9 @@ public abstract class BHTMLDrawable extends BRectangularDrawable implements IBDi
 		super.setOriginalSize(r);
 		dispose();
 	}
+
+	public BResourceLocator url() {
+		return _url;
+	}
+
 }

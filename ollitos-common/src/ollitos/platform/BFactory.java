@@ -1,6 +1,8 @@
 package ollitos.platform;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 
 import ollitos.geom.IBPoint;
 import ollitos.geom.IBRectangle;
@@ -13,6 +15,7 @@ import ollitos.gui.basic.IBColor;
 import ollitos.gui.basic.IBGame;
 import ollitos.gui.basic.IBRaster;
 import ollitos.gui.basic.IBRasterUtil;
+import ollitos.util.BException;
 
 
 public abstract class BFactory {
@@ -74,14 +77,29 @@ public abstract class BFactory {
 	public abstract BLabel label( String text );
 	public abstract BBox box( IBRectangle r, IBColor color );
 	public abstract IBRaster raster(BResourceLocator test, boolean transparent);
-	public abstract InputStream open(BResourceLocator r);
 	public abstract IBColor color(String c);
 	public abstract IBLogger logger();
-	public abstract BHTMLDrawable html(String string);
+	public abstract BHTMLDrawable html();
+	
+	public abstract URL url(BResourceLocator l);
 	
 	public BSprite sprite( BResourceLocator l ){
 		return sprite( raster( l, true ) );
 	}
+	
+	public InputStream open(BResourceLocator r){
+		URL f = url(r);
+		if( f == null ){
+			return null;
+		}
+		try{
+			return f.openStream();
+		}
+		catch( IOException e ){
+			throw new BException( "Unable to open:" + r, e );
+		}
+	}
+
 	
 	@SuppressWarnings("deprecation")
 	public static void main(String[] args) {
