@@ -11,7 +11,7 @@ import javax.swing.SwingUtilities;
 
 import ollitos.gui.basic.BGame;
 import ollitos.gui.basic.BState;
-import ollitos.platform.BFactory;
+import ollitos.platform.BPlatform;
 import bongard.gui.game.BStartField;
 
 
@@ -119,8 +119,8 @@ public class AWTGame extends BGame{
 	}
 	
 
-	private static BFactory f() {
-		return BFactory.instance();
+	private static BPlatform f() {
+		return BPlatform.instance();
 	}
 
 	private AWTAnimator _animator;

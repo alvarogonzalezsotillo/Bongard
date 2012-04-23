@@ -10,7 +10,7 @@ import ollitos.gui.basic.IBRectangularDrawable;
 import ollitos.gui.container.BDrawableContainer;
 import ollitos.gui.container.BFlippableContainer;
 import ollitos.gui.container.IBFlippableDrawable;
-import ollitos.platform.BFactory;
+import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 import bongard.problem.BProblem;
 
@@ -37,7 +37,7 @@ public class BBongardTestField extends BDrawableContainer implements IBFlippable
 	 * @param test
 	 */
 	private void setUpProblem(){
-		BFactory f = BFactory.instance();
+		BPlatform f = BPlatform.instance();
 		if( _problem == null ){
 			_problem = new BProblem(_locator);
 		}

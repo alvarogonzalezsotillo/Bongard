@@ -16,7 +16,7 @@ import ollitos.gui.container.BDrawableContainer;
 import ollitos.gui.container.BFlippableContainer;
 import ollitos.gui.event.BLogListener;
 import ollitos.gui.event.BLogListener.ReplayAnimation;
-import ollitos.platform.BFactory;
+import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 
 
@@ -45,15 +45,15 @@ public class BExamplesField extends BDrawableContainer{
 		_fc = new BFlippableContainer( new BGameModel(true,problems,EXAMPLES_SEED) );
 		
 		BResourceLocator rl = new BResourceLocator("/images/examples/examples.events");
-		Reader r = new InputStreamReader( BFactory.instance().open(rl) );
+		Reader r = new InputStreamReader( BPlatform.instance().open(rl) );
 		_replayAnimation = new BLogListener.ReplayAnimation(r, _fc.listener() );
 		IBAnimation backToStartAnimation = new BRunnableAnimation(2000, new Runnable(){
 			@Override
 			public void run() {
-				BFactory.instance().game().canvas().setDrawable( new BStartField() );
+				BPlatform.instance().game().canvas().setDrawable( new BStartField() );
 			}
 		});
 		IBAnimation a = new BConcatenateAnimation(new BWaitAnimation(1000), _replayAnimation,backToStartAnimation);
-		BFactory.instance().game().animator().addAnimation( a );
+		BPlatform.instance().game().animator().addAnimation( a );
 	}
 }

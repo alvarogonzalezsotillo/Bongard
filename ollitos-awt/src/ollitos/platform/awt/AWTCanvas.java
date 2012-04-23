@@ -21,7 +21,7 @@ import ollitos.geom.BRectangle;
 import ollitos.geom.IBRectangle;
 import ollitos.gui.basic.BCanvas;
 import ollitos.gui.event.IBEvent;
-import ollitos.platform.BFactory;
+import ollitos.platform.BPlatform;
 
 
 
@@ -31,7 +31,7 @@ public class AWTCanvas extends BCanvas{
 		@Override
 		public void keyPressed(KeyEvent e) {
 			int c = e.getKeyCode();
-			BFactory.instance().logger().log( this, "KeyTyped:" + c );
+			BPlatform.instance().logger().log( this, "KeyTyped:" + c );
 			if( c == KeyEvent.VK_ESCAPE || c == KeyEvent.VK_BACK_SPACE ){
 				listeners().handle( new IBEvent(IBEvent.Type.back) );
 			}
@@ -109,7 +109,7 @@ public class AWTCanvas extends BCanvas{
 		}
 		
 		public void paint(Graphics g) {
-			BFactory f = BFactory.instance();
+			BPlatform f = BPlatform.instance();
 			eraseBackground();
 			if( drawable() != null ){
 				drawable().draw(AWTCanvas.this, transform());

@@ -5,7 +5,7 @@ import ollitos.geom.IBTransform;
 import ollitos.gui.basic.BLabel;
 import ollitos.gui.basic.IBCanvas;
 import ollitos.gui.event.BEventAdapter;
-import ollitos.platform.BFactory;
+import ollitos.platform.BPlatform;
 
 public class BPointerSupport extends BEventAdapter{
 	
@@ -13,11 +13,11 @@ public class BPointerSupport extends BEventAdapter{
 		super(null);
 	}
 
-	private BLabel _pointer = BFactory.instance().label("O");
+	private BLabel _pointer = BPlatform.instance().label("O");
 	
 	@Override
 	public boolean pointerClick(IBPoint p) {
-		IBTransform t = BFactory.instance().identityTransform();
+		IBTransform t = BPlatform.instance().identityTransform();
 		t.translate(p.x(),p.y());
 		_pointer.setTransform(t);
 		return false;

@@ -17,7 +17,7 @@ import ollitos.gui.basic.IBRectangularDrawable;
 import ollitos.gui.event.BEventAdapter;
 import ollitos.gui.event.BLogListener;
 import ollitos.gui.event.IBEvent;
-import ollitos.platform.BFactory;
+import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 import ollitos.platform.IBDisposable;
 import ollitos.platform.IBLogger;
@@ -197,8 +197,8 @@ public class BFlippableContainer extends BDrawableContainer {
 		}
 	};
 
-	private BFactory f() {
-		return BFactory.instance();
+	private BPlatform f() {
+		return BPlatform.instance();
 	}
 
 	public int computeNewIndexFromDrawableOffset(){
@@ -327,7 +327,7 @@ public class BFlippableContainer extends BDrawableContainer {
 		int oldEnd = oldIndex + cache;
 		oldEnd = Math.min(oldEnd, _model.width()-1);
 		
-		IBLogger l = BFactory.instance().logger();
+		IBLogger l = BPlatform.instance().logger();
 		// SETUP CURRENT
 		for( int i = ini ; i <= end ; i++ ){
 			IBDisposable.Util.setUpLater(_model.drawable(i));
@@ -397,7 +397,7 @@ public class BFlippableContainer extends BDrawableContainer {
 
 	private BBox defaultIcon(){
 		if( _box == null ){
-			_box = f().box( new BRectangle(0, 0, ICON_SIZE, ICON_SIZE), BFactory.COLOR_WHITE );
+			_box = f().box( new BRectangle(0, 0, ICON_SIZE, ICON_SIZE), BPlatform.COLOR_WHITE );
 			_box.setFilled(false);
 		}
 		return _box;
@@ -452,7 +452,7 @@ public class BFlippableContainer extends BDrawableContainer {
 
 		IBRectangle[] boxes = computeBoxes(widthofboxes, x0, boxY, indexes.length);
 		
-		BFactory factory = f();
+		BPlatform factory = f();
 		
 		// DRAW OVERFLOW LABELS
 		if( start > 0 ){

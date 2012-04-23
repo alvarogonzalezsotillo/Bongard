@@ -7,7 +7,7 @@ import ollitos.gui.basic.BCanvas;
 import ollitos.gui.basic.BSprite;
 import ollitos.gui.basic.IBRaster;
 import ollitos.gui.event.IBEvent;
-import ollitos.platform.BFactory;
+import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 import ollitos.util.BTransformUtil;
 import android.content.Context;
@@ -32,7 +32,7 @@ public class AndrCanvas extends BCanvas {
 			@Override
 			public boolean onTouch(View v, MotionEvent e){
 				
-				BFactory.instance().logger().log( e.toString() );
+				BPlatform.instance().logger().log( e.toString() );
 				final IBEvent ev = event( e );
 				
 				if( ev != null && ev.type() == IBEvent.Type.pointerDown ){
@@ -41,9 +41,9 @@ public class AndrCanvas extends BCanvas {
 				
 				if( ev != null && ev.type() == IBEvent.Type.pointerUp ){
 					double distance = BTransformUtil.distance(ev.point(), _lastPointerDown );
-					BFactory.instance().logger().log( this, "distance:" + distance );
+					BPlatform.instance().logger().log( this, "distance:" + distance );
 					if( distance < CLICK_THRESHOLD ){
-						BFactory.instance().logger().log( this, "CLICK" );
+						BPlatform.instance().logger().log( this, "CLICK" );
 						new Handler().post( new Runnable(){
 							public void run() {
 								IBEvent click = new IBEvent( IBEvent.Type.pointerClick, ev.point() );
@@ -132,8 +132,8 @@ public class AndrCanvas extends BCanvas {
 
 			BResourceLocator l = new BResourceLocator(
 					"/images/backgrounds/arrecibo.png");
-			IBRaster r = BFactory.instance().raster(l, false);
-			BSprite s = BFactory.instance().sprite(r);
+			IBRaster r = BPlatform.instance().raster(l, false);
+			BSprite s = BPlatform.instance().sprite(r);
 
 			s.draw(AndrCanvas.this, null);
 		}
@@ -177,7 +177,7 @@ public class AndrCanvas extends BCanvas {
 	}
 
 	public Context context() {
-		return AndrFactory.context();
+		return AndrPlatform.context();
 	}
 
 	@Override

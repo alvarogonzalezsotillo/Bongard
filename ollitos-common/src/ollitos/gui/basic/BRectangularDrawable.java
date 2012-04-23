@@ -4,7 +4,7 @@ import ollitos.geom.BRectangle;
 import ollitos.geom.IBPoint;
 import ollitos.geom.IBRectangle;
 import ollitos.geom.IBTransform;
-import ollitos.platform.BFactory;
+import ollitos.platform.BPlatform;
 
 public abstract class BRectangularDrawable extends BDrawable implements IBRectangularDrawable{
 	
@@ -26,7 +26,7 @@ public abstract class BRectangularDrawable extends BDrawable implements IBRectan
 	public final boolean inside(IBPoint p, IBTransform aditionalTransform) {
 		IBTransform t = transform();
 		if( aditionalTransform != null ){
-			IBTransform tt = BFactory.instance().identityTransform();
+			IBTransform tt = BPlatform.instance().identityTransform();
 			tt.concatenate(t);
 			tt.concatenate(aditionalTransform);
 			t = tt;

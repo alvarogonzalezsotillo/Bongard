@@ -2,7 +2,7 @@ package ollitos.animation;
 
 import ollitos.geom.IBPoint;
 import ollitos.geom.IBTransform;
-import ollitos.platform.BFactory;
+import ollitos.platform.BPlatform;
 
 public class BTranslateAnimation extends BTransformAnimation{
 
@@ -21,7 +21,7 @@ public class BTranslateAnimation extends BTransformAnimation{
 		double tx = currentMillis()*(_dest.x() - origin.x())/totalMillis();
 		double ty = currentMillis()*(_dest.y() - origin.y())/totalMillis();
 		
-		IBTransform ret = BFactory.instance().identityTransform();
+		IBTransform ret = BPlatform.instance().identityTransform();
 		ret.translate(tx, ty);
 		
 		return ret;

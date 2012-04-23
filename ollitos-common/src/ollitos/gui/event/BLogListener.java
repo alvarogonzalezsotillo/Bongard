@@ -18,7 +18,7 @@ import ollitos.gui.basic.BSprite;
 import ollitos.gui.basic.IBDrawable;
 import ollitos.gui.basic.IBRaster;
 import ollitos.gui.event.IBEvent.Type;
-import ollitos.platform.BFactory;
+import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 import ollitos.util.BException;
 
@@ -45,8 +45,8 @@ public class BLogListener implements IBEventListener{
 			_nextEvent = readNextEvent();
 			
 			BResourceLocator rl = new BResourceLocator( "/images/examples/cursor.png" );
-			IBRaster raster = BFactory.instance().raster(rl, true);
-			_cursor = BFactory.instance().sprite(raster);
+			IBRaster raster = BPlatform.instance().raster(rl, true);
+			_cursor = BPlatform.instance().sprite(raster);
 			_cursor.transform().scale(.5, .5);
 			_cursor.setVisible(false);
 		}
@@ -76,7 +76,7 @@ public class BLogListener implements IBEventListener{
 			_acumMillis += millis;
 			while( _nextEvent != null && _acumMillis > _nextEvent.millis() ){
 				final IBEvent e = _nextEvent.event();
-				BFactory.instance().game().animator().post( new Runnable(){
+				BPlatform.instance().game().animator().post( new Runnable(){
 					@Override
 					public void run() {
 						switch (e.type()) {
@@ -186,7 +186,7 @@ public class BLogListener implements IBEventListener{
 		
 		double x = Float.parseFloat(scanner.next());
 		double y = Float.parseFloat(scanner.next());
-		IBPoint p = BFactory.instance().point(x, y);
+		IBPoint p = BPlatform.instance().point(x, y);
 		
 		x = Float.parseFloat(scanner.next());
 		y = Float.parseFloat(scanner.next());

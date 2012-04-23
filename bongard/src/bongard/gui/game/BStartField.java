@@ -13,7 +13,7 @@ import ollitos.gui.container.BDrawableContainer;
 import ollitos.gui.container.BFlippableContainer;
 import ollitos.gui.event.BEventAdapter;
 import ollitos.gui.event.BRestartListener;
-import ollitos.platform.BFactory;
+import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 
 public class BStartField extends BDrawableContainer{
@@ -33,11 +33,11 @@ public class BStartField extends BDrawableContainer{
 		double x = s.x() + width/2 + (1+column*2)*(s.w())/5;
 		double y = s.y() + width/2 + (1+row*2)*(s.h())/5;
 		
-		return BFactory.instance().point(x, y);
+		return BPlatform.instance().point(x, y);
 	}
 	
 	private BSprite createSprite(int row, int column, String resource ){
-		BFactory f = BFactory.instance();
+		BPlatform f = BPlatform.instance();
 		IBRaster ss = f.raster( new BResourceLocator(resource), false );
 		BSprite ret = f.sprite(ss);
 		ret.setAntialias(true);
@@ -117,17 +117,17 @@ public class BStartField extends BDrawableContainer{
 				BGameModel.goToInitialLevel();
 			}
 		});
-		BFactory.instance().game().animator().addAnimation(a);
+		BPlatform.instance().game().animator().addAnimation(a);
 	}
 
 	protected void helpGamePressed() {
 		IBAnimation a = new BRunnableAnimation(10, new Runnable(){
 			@Override
 			public void run() {
-				BFactory.instance().game().canvas().setDrawable( new BExamplesField() );
+				BPlatform.instance().game().canvas().setDrawable( new BExamplesField() );
 			}
 		});
-		BFactory.instance().game().animator().addAnimation(a);
+		BPlatform.instance().game().animator().addAnimation(a);
 	}
 	
 	protected void startOriginalPressed() {
@@ -136,20 +136,20 @@ public class BStartField extends BDrawableContainer{
 			public void run() {
 				BBongardGameModel m = new BBongardGameModel();
 				BFlippableContainer d = new BFlippableContainer( m );
-				BFactory.instance().game().canvas().setDrawable( d );
+				BPlatform.instance().game().canvas().setDrawable( d );
 			}
 		});
-		BFactory.instance().game().animator().addAnimation(a);
+		BPlatform.instance().game().animator().addAnimation(a);
 	}
 
 	protected void helpOriginalPressed() {
 		IBAnimation a = new BRunnableAnimation(10, new Runnable(){
 			@Override
 			public void run() {
-				BFactory.instance().game().canvas().setDrawable( new BGameHelp() );
+				BPlatform.instance().game().canvas().setDrawable( new BGameHelp() );
 			}
 		});
-		BFactory.instance().game().animator().addAnimation(a);
+		BPlatform.instance().game().animator().addAnimation(a);
 	}
 	
 	@Override

@@ -28,7 +28,7 @@ import ollitos.gui.container.BFlippableContainer;
 import ollitos.gui.container.IBDrawableContainer;
 import ollitos.gui.container.IBFlippableDrawable;
 import ollitos.gui.event.BEventAdapter;
-import ollitos.platform.BFactory;
+import ollitos.platform.BPlatform;
 import bongard.problem.BProblem;
 
 @SuppressWarnings("serial")
@@ -59,7 +59,7 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	transient private BSprite _questionSprite;
 	transient private BSprite[] _allSprites;
 	transient private IBRectangle _size;
-	transient private BLabel _pointer = BFactory.instance().label("O");
+	transient private BLabel _pointer = BPlatform.instance().label("O");
 
 
 	transient private IBAnimation _pickUpAnimation;
@@ -79,7 +79,7 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 		
 		IBPoint orig = spritePosition(-1,1);
 		IBPoint dest = spritePosition(isOfSet1?0:1, 2);
-		dest = BFactory.instance().point((dest.x()*2+orig.x())/3, dest.y()+20);
+		dest = BPlatform.instance().point((dest.x()*2+orig.x())/3, dest.y()+20);
 		
 		IBAnimation animation = createPickUpAnimation();
 		animation = new BConcatenateAnimation( animation,createDragAnimation(dest,900) );
@@ -87,7 +87,7 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 		animation = new BConcatenateAnimation( animation,createDropAnimation(dest) );
 		animation = new BConcatenateAnimation( animation,createOutSetAnimation(isOfSet1?_set1Sprites:_set2Sprites, null) );
 		
-		BAnimator a = BFactory.instance().game().animator();
+		BAnimator a = BPlatform.instance().game().animator();
 		a.finishAnimations();
 		a.addAnimation(animation);
 	}
@@ -170,7 +170,7 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 		@Override
 		public boolean pointerUp(IBPoint p) {
 			if( _dragQuestion ){
-				BFactory f = BFactory.instance();
+				BPlatform f = BPlatform.instance();
 				
 				boolean correctAnswer = _set1Over && _problem.isOfSet1(_questionSprite.raster()) ||
 										_set2Over && _problem.isOfSet2(_questionSprite.raster());
@@ -243,10 +243,10 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	private void init() {
 		listener().addListener( adapter() );
 		IBRectangle r = new BRectangle(0, 0, BFlippableContainer.ICON_SIZE, BFlippableContainer.ICON_SIZE);
-		_icon = BFactory.instance().box(r, BFactory.COLOR_WHITE);
+		_icon = BPlatform.instance().box(r, BPlatform.COLOR_WHITE);
 		_icon.setFilled(false);
-		_correctIcon = BFactory.instance().box(r, BFactory.COLOR_WHITE);
-		_badIcon = BFactory.instance().box(r, BFactory.COLOR_BLACK);
+		_correctIcon = BPlatform.instance().box(r, BPlatform.COLOR_WHITE);
+		_badIcon = BPlatform.instance().box(r, BPlatform.COLOR_BLACK);
 	}
 
 
@@ -274,7 +274,7 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 		if( problem == null ){
 			return;
 		}
-		BFactory f = BFactory.instance();
+		BPlatform f = BPlatform.instance();
 		_problem = problem;
 		
 		_set1Sprites = new BSprite[_problem.set1().length];
@@ -301,12 +301,12 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	
 	private static IBPoint spritePosition( int column, int row ){
 		if( column < 0 || row < 0 ){
-			return BFactory.instance().point(TILE_SIZE*2,TILE_SIZE*3);
+			return BPlatform.instance().point(TILE_SIZE*2,TILE_SIZE*3);
 		}
 		
 		double colx = column == 0 ? .8 : 3.2;
 		
-		return BFactory.instance().point(TILE_SIZE*colx, TILE_SIZE*(row+1) );
+		return BPlatform.instance().point(TILE_SIZE*colx, TILE_SIZE*(row+1) );
 	}
 	
 	
@@ -378,7 +378,7 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	}
 	
 	private BAnimator animator(){
-		return BFactory.instance().game().animator();
+		return BPlatform.instance().game().animator();
 	}
 
 	@Override

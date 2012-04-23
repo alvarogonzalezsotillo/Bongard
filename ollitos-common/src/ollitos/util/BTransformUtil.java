@@ -3,7 +3,7 @@ package ollitos.util;
 import ollitos.geom.IBPoint;
 import ollitos.geom.IBRectangle;
 import ollitos.geom.IBTransform;
-import ollitos.platform.BFactory;
+import ollitos.platform.BPlatform;
 
 public class BTransformUtil {
 	
@@ -28,19 +28,19 @@ public class BTransformUtil {
 			sy = sx;
 		}
 		
-		IBPoint oCenter = BFactory.instance().point( origin.x() + origin.w()/2, origin.y() + origin.h()/2 );
-		IBPoint dCenter = BFactory.instance().point( destination.x() + destination.w()/2, destination.y() + destination.h()/2 );
+		IBPoint oCenter = BPlatform.instance().point( origin.x() + origin.w()/2, origin.y() + origin.h()/2 );
+		IBPoint dCenter = BPlatform.instance().point( destination.x() + destination.w()/2, destination.y() + destination.h()/2 );
 
 		
 		trans.toIdentity();
 
 		// AL ORIGEN
-		IBTransform t = BFactory.instance().identityTransform();
+		IBTransform t = BPlatform.instance().identityTransform();
 		t.translate( -oCenter.x(), -oCenter.y() );
 		trans.preConcatenate(t);
 		
 		// CAMBIO TAMAÑO
-		t = BFactory.instance().identityTransform();
+		t = BPlatform.instance().identityTransform();
 		t.scale(sx, sy);
 		trans.preConcatenate(t);
 		

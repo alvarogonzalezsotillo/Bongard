@@ -1,7 +1,7 @@
 package ollitos.animation;
 
 import ollitos.geom.IBTransform;
-import ollitos.platform.BFactory;
+import ollitos.platform.BPlatform;
 
 public class BRotateAnimation extends BTransformAnimation{
 
@@ -15,7 +15,7 @@ public class BRotateAnimation extends BTransformAnimation{
 	
 	@Override
 	public IBTransform getTransform(IBTransformAnimable a) {
-		IBTransform t = BFactory.instance().identityTransform();
+		IBTransform t = BPlatform.instance().identityTransform();
 		double angle = _radMillis*currentMillis(); 
 		t.rotate(angle);
 		return t;

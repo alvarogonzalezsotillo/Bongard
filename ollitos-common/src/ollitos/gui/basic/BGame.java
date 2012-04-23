@@ -2,7 +2,7 @@
 
 import ollitos.geom.IBRectangle;
 import ollitos.gui.container.IBDrawableContainer;
-import ollitos.platform.BFactory;
+import ollitos.platform.BPlatform;
 
 
 public abstract class BGame implements IBGame{
@@ -34,7 +34,7 @@ public abstract class BGame implements IBGame{
 	@Override
 	public BState state() {
 		BState ret = canvas().drawable().save();
-		BFactory.instance().logger().log(this, "State:" + ret );
+		BPlatform.instance().logger().log(this, "State:" + ret );
 		return ret;
 	}
 	

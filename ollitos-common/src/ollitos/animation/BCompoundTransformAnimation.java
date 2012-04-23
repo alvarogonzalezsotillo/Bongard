@@ -1,7 +1,7 @@
 package ollitos.animation;
 
 import ollitos.geom.IBTransform;
-import ollitos.platform.BFactory;
+import ollitos.platform.BPlatform;
 
 public class BCompoundTransformAnimation implements IBAnimation {
 
@@ -42,7 +42,7 @@ public class BCompoundTransformAnimation implements IBAnimation {
 
 	@Override
 	public void stepAnimation(long millis) {
-		IBTransform t = BFactory.instance().identityTransform();
+		IBTransform t = BPlatform.instance().identityTransform();
 		for (BTransformAnimation a : _animations) {
 			if( a.endReached() ){
 				continue;

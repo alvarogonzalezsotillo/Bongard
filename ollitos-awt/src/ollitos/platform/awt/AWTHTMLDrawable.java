@@ -11,7 +11,7 @@ import ollitos.geom.IBRectangle;
 import ollitos.geom.IBTransform;
 import ollitos.gui.basic.BHTMLDrawable;
 import ollitos.gui.basic.IBCanvas;
-import ollitos.platform.BFactory;
+import ollitos.platform.BPlatform;
 import ollitos.util.BException;
 
 
@@ -44,7 +44,7 @@ public class AWTHTMLDrawable extends BHTMLDrawable{
 			u = url().url();
 		}
 		if( u == null ){
-			u = BFactory.instance().platformURL( url() );
+			u = BPlatform.instance().platformURL( url() );
 		}
 		
 		if( u != null ){

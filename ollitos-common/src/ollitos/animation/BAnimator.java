@@ -2,7 +2,7 @@ package ollitos.animation;
 
 import java.util.ArrayList;
 
-import ollitos.platform.BFactory;
+import ollitos.platform.BPlatform;
 
 
 
@@ -53,7 +53,7 @@ public abstract class BAnimator {
 	
 
 	public void addAnimation(IBAnimation a){
-		BFactory.instance().logger().log( this, a );
+		BPlatform.instance().logger().log( this, a );
 		if( a == null ){
 			return;
 		}
@@ -99,7 +99,7 @@ public abstract class BAnimator {
 	}
 	
 	protected void refresh() {
-		BFactory.instance().game().canvas().refresh();
+		BPlatform.instance().game().canvas().refresh();
 	}
 	
 	public boolean needsUpdate(){

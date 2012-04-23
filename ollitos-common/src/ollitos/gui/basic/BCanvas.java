@@ -11,17 +11,17 @@ import ollitos.gui.container.IBDrawableContainer;
 import ollitos.gui.event.BListenerList;
 import ollitos.gui.event.IBEvent;
 import ollitos.gui.event.IBEventListener;
-import ollitos.platform.BFactory;
+import ollitos.platform.BPlatform;
 import ollitos.util.BTransformUtil;
 
 public abstract class BCanvas implements IBScreen {
 
 	private static final int ENTER_LEAVE_MILLIS = 500;
-	private IBTransform _t = BFactory.instance().identityTransform();
+	private IBTransform _t = BPlatform.instance().identityTransform();
 	private IBDrawableContainer _d;
 	private BListenerList _listeners = new BListenerList(this){
 		public boolean handle(IBEvent e) {
-			BFactory.instance().logger().log(e);
+			BPlatform.instance().logger().log(e);
 			return super.handle(e);
 		};
 	};
@@ -56,7 +56,7 @@ public abstract class BCanvas implements IBScreen {
 	}
 
 	public void setDrawable_animation(final IBDrawableContainer d) {
-		BFactory f = BFactory.instance();
+		BPlatform f = BPlatform.instance();
 		IBAnimation a = null;
 		if (_d != null) {
 			removeListener(_d.listener());
@@ -129,24 +129,24 @@ public abstract class BCanvas implements IBScreen {
 
 		if( false){
 			{
-				IBPoint p1 = BFactory.instance().point(origin.x(), origin.y());
+				IBPoint p1 = BPlatform.instance().point(origin.x(), origin.y());
 				IBPoint p1t = t.transform(p1);
-				BFactory.instance().logger().log( "origin:" + origin );
-				BFactory.instance().logger().log( "destination:" + destination );
-				BFactory.instance().logger().log( "p1:" + p1 + "  ---  p1t:" + p1t );
+				BPlatform.instance().logger().log( "origin:" + origin );
+				BPlatform.instance().logger().log( "destination:" + destination );
+				BPlatform.instance().logger().log( "p1:" + p1 + "  ---  p1t:" + p1t );
 			}
 			
 			{
-				IBPoint p1 = BFactory.instance().point(origin.w(), origin.h() );
+				IBPoint p1 = BPlatform.instance().point(origin.w(), origin.h() );
 				IBPoint p1t = t.transform(p1);
-				BFactory.instance().logger().log( "p1:" + p1 + "  ---  p1t:" + p1t );
+				BPlatform.instance().logger().log( "p1:" + p1 + "  ---  p1t:" + p1t );
 			}
 		}
 
 	}
 
 	public IBColor backgroundColor() {
-		return BFactory.COLOR_DARKGRAY;
+		return BPlatform.COLOR_DARKGRAY;
 	}
 	
 	@Override

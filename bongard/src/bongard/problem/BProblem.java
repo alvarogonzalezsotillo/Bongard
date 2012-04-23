@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.Random;
 
 import ollitos.gui.basic.IBRaster;
-import ollitos.platform.BFactory;
+import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 import ollitos.platform.IBDisposable;
 import ollitos.util.BException;
@@ -209,7 +209,7 @@ public class BProblem implements Serializable, IBDisposable{
 	
 	public IBRaster testImage() {
 		if( _testImage == null ){
-			_testImage = BFactory.instance().raster(_test,false);
+			_testImage = BPlatform.instance().raster(_test,false);
 		}
 		return _testImage;
 	}

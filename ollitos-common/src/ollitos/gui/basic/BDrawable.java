@@ -3,13 +3,13 @@ package ollitos.gui.basic;
 import ollitos.animation.IBTransformAnimable;
 import ollitos.geom.IBPoint;
 import ollitos.geom.IBTransform;
-import ollitos.platform.BFactory;
+import ollitos.platform.BPlatform;
 
 
 
 public abstract class BDrawable implements IBDrawable, IBTransformAnimable{
 
-	protected IBTransform _t = BFactory.instance().identityTransform();
+	protected IBTransform _t = BPlatform.instance().identityTransform();
 	protected IBTransform _tt;
 	private boolean _visible = true;
 	
@@ -94,7 +94,7 @@ public abstract class BDrawable implements IBDrawable, IBTransformAnimable{
 		
 		IBTransform tt = temporaryTransform();
 		if( tt != null ){
-			IBTransform temp = BFactory.instance().identityTransform();
+			IBTransform temp = BPlatform.instance().identityTransform();
 			temp.concatenate(t);
 			temp.concatenate(tt);
 			t = temp;
@@ -111,7 +111,7 @@ public abstract class BDrawable implements IBDrawable, IBTransformAnimable{
 		IBTransform t = transformWithTemporary();
 		
 		if( aditionalTransform != null ){
-			IBTransform temp = BFactory.instance().identityTransform();
+			IBTransform temp = BPlatform.instance().identityTransform();
 			temp.concatenate(aditionalTransform);
 			temp.concatenate(t);
 			t = temp;
@@ -123,13 +123,13 @@ public abstract class BDrawable implements IBDrawable, IBTransformAnimable{
 
 	@Override
 	public IBPoint position(){
-		IBPoint ret = BFactory.instance().point(0, 0);
+		IBPoint ret = BPlatform.instance().point(0, 0);
 		ret = transform().transform(ret);
 		return ret;
 	}
 
 	public IBPoint temporaryPosition(){
-		IBPoint ret = BFactory.instance().point(0, 0);
+		IBPoint ret = BPlatform.instance().point(0, 0);
 		ret = transformWithTemporary().transform(ret);
 		return ret;
 	}

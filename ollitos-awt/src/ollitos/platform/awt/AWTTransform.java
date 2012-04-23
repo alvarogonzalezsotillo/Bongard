@@ -8,7 +8,7 @@ import ollitos.geom.BRectangle;
 import ollitos.geom.IBPoint;
 import ollitos.geom.IBRectangle;
 import ollitos.geom.IBTransform;
-import ollitos.platform.BFactory;
+import ollitos.platform.BPlatform;
 import ollitos.util.BTransformUtil;
 
 
@@ -87,14 +87,14 @@ public class AWTTransform extends AffineTransform implements IBTransform{
 		IBPoint tp, p;
 
 		
-		p = BFactory.instance().point(o.x(), o.y() );
+		p = BPlatform.instance().point(o.x(), o.y() );
 		tp = t.transform(p);
 		if( Math.abs(tp.x()-d.x())>0.01 ) 
 			throw new IllegalStateException( o + " -- " + d + "--" + p + "--" + tp );
 		if( Math.abs(tp.y()-d.y())>0.01 ) 
 			throw new IllegalStateException( o + " -- " + d + "--" +p + "--" + tp );
 		
-		p = BFactory.instance().point(o.x()+o.w(), o.y()+o.h() );
+		p = BPlatform.instance().point(o.x()+o.w(), o.y()+o.h() );
 		tp = t.transform(p);
 		if( Math.abs(tp.x()-d.x()-d.w())>0.01 ) 
 			throw new IllegalStateException( o + " -- " + d + "--" +p + "--" + tp );

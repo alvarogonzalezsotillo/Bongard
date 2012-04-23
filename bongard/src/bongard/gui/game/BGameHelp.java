@@ -12,7 +12,7 @@ import ollitos.gui.basic.BState;
 import ollitos.gui.basic.IBCanvas;
 import ollitos.gui.container.BDrawableContainer;
 import ollitos.gui.container.IBDrawableContainer;
-import ollitos.platform.BFactory;
+import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 
 
@@ -35,7 +35,7 @@ public class BGameHelp extends BDrawableContainer{
 	public BHTMLDrawable html(){
 		if (_html == null) {
 			BResourceLocator l = new BResourceLocator("/images/examples/help.html" );
-			_html = BFactory.instance().html();
+			_html = BPlatform.instance().html();
 			_html.load(l);
 			_html.setOriginalSize( originalSize() );
 		}

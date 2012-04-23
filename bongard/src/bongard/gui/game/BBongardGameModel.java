@@ -8,7 +8,7 @@ import bongard.problem.BCardExtractor;
 
 import ollitos.gui.container.IBFlippableDrawable;
 import ollitos.gui.container.IBFlippableModel;
-import ollitos.platform.BFactory;
+import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 
 

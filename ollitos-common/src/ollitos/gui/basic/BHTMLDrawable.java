@@ -1,7 +1,7 @@
 package ollitos.gui.basic;
 
 import ollitos.geom.IBRectangle;
-import ollitos.platform.BFactory;
+import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 import ollitos.platform.IBDisposable;
 
@@ -11,7 +11,7 @@ public abstract class BHTMLDrawable extends BRectangularDrawable implements IBDi
 	private BResourceLocator _url;
 	
 	public BHTMLDrawable() {
-		super(BFactory.instance().game().defaultScreenSize());
+		super(BPlatform.instance().game().defaultScreenSize());
 	}
 	
 	public String html(){

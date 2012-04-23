@@ -2,7 +2,7 @@ package ollitos.platform.andr;
 
 import ollitos.gui.basic.BState;
 import ollitos.gui.basic.IBGame;
-import ollitos.platform.BFactory;
+import ollitos.platform.BPlatform;
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -23,17 +23,17 @@ public class AndrActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-		AndrFactory.initContext(this);
-		AndrFactory.instance().game().setDefaultDrawable( new BStartField() );
+		AndrPlatform.initContext(this);
+		AndrPlatform.instance().game().setDefaultDrawable( new BStartField() );
 		setContentView(createView());
 		final BState state = state(savedInstanceState);
-		final IBGame g = BFactory.instance().game();
+		final IBGame g = BPlatform.instance().game();
 		g.animator().post( new Runnable(){
 			public void run() {
 				g.restore(state);
 			}
 		});
-		BFactory.instance().logger().log(this,"onCreate");
+		BPlatform.instance().logger().log(this,"onCreate");
 	}
 	
 	@Override
@@ -47,17 +47,17 @@ public class AndrActivity extends Activity {
 	}
 	
 	private BState state(Bundle b){
-		BFactory.instance().logger().log(this,"state:" + b);
+		BPlatform.instance().logger().log(this,"state:" + b);
 		if( b == null ){
 			return null;
 		}
 		try{
 			BState state = (BState) b.getSerializable(STATE_KEY);
-			BFactory.instance().logger().log(this,"state:" + state);
+			BPlatform.instance().logger().log(this,"state:" + state);
 			return state;
 		}
 		catch( Exception e){
-			BFactory.instance().logger().log(this,"Error readig state:" + e.toString() );
+			BPlatform.instance().logger().log(this,"Error readig state:" + e.toString() );
 			e.printStackTrace();
 		}
 		return null;
@@ -65,19 +65,19 @@ public class AndrActivity extends Activity {
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
-		BFactory.instance().logger().log(this,"onSaveInstanceState");
+		BPlatform.instance().logger().log(this,"onSaveInstanceState");
 		super.onSaveInstanceState(outState);
-		BState state = BFactory.instance().game().state();
+		BState state = BPlatform.instance().game().state();
 		outState.putSerializable(STATE_KEY, state);
 	}
 
 	
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-		BFactory.instance().logger().log(this,"onRestoreInstanceState");
+		BPlatform.instance().logger().log(this,"onRestoreInstanceState");
 		super.onRestoreInstanceState(savedInstanceState);
 		final BState state = state(savedInstanceState);
-		final IBGame g = BFactory.instance().game();
+		final IBGame g = BPlatform.instance().game();
 		g.animator().post( new Runnable(){
 			public void run() {
 				g.restore(state);
@@ -93,7 +93,7 @@ public class AndrActivity extends Activity {
 	}
 
 	private AndrCanvas andrCanvas() {
-		return ((AndrFactory) BFactory.instance()).game().canvas();
+		return ((AndrPlatform) BPlatform.instance()).game().canvas();
 	}
 
 }

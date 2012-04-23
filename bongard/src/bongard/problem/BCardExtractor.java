@@ -6,7 +6,7 @@ import java.util.Random;
 import ollitos.geom.BRectangle;
 import ollitos.geom.IBRectangle;
 import ollitos.gui.basic.IBRaster;
-import ollitos.platform.BFactory;
+import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 import ollitos.util.BException;
 
@@ -75,7 +75,7 @@ public abstract class BCardExtractor{
 	 * @return
 	 */
 	public static IBRaster extract(IBRectangle r, IBRaster i){
-		return BFactory.instance().rasterUtil().extract(r, i);
+		return BPlatform.instance().rasterUtil().extract(r, i);
 	}
 
 

@@ -6,7 +6,7 @@ import java.awt.Button;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import ollitos.platform.BFactory;
+import ollitos.platform.BPlatform;
 
 
 
@@ -21,7 +21,7 @@ public class AppletGame extends Applet {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println( "Starting game frame..." );
-				BFactory.instance().game().restore(null);
+				BPlatform.instance().game().restore(null);
 			}
 		});
 		add( button, BorderLayout.CENTER );

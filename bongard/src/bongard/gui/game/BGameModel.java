@@ -3,7 +3,7 @@ package bongard.gui.game;
 import ollitos.animation.BRunnableAnimation;
 import ollitos.gui.container.BFlippableContainer;
 import ollitos.gui.container.IBFlippableModel;
-import ollitos.platform.BFactory;
+import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 import bongard.problem.BCardExtractor;
 import bongard.problem.BProblem;
@@ -75,7 +75,7 @@ public class BGameModel implements IBFlippableModel{
 				width = INITIAL_WIDTH;
 			}
 			final int goTo = width;
-			BFactory.instance().game().animator().addAnimation( new BRunnableAnimation(1000, new Runnable(){
+			BPlatform.instance().game().animator().addAnimation( new BRunnableAnimation(1000, new Runnable(){
 				@Override
 				public void run() {
 					goToLevel(_demo,goTo,true);
@@ -109,7 +109,7 @@ public class BGameModel implements IBFlippableModel{
 	private static void goToProblems(boolean demo, BResourceLocator[] problems) {
 		BGameModel m = new BGameModel(demo,problems );
 		BFlippableContainer d = new BFlippableContainer( m );
-		BFactory.instance().game().canvas().setDrawable( d );
+		BPlatform.instance().game().canvas().setDrawable( d );
 	}
 
 	private boolean allAnswered(){

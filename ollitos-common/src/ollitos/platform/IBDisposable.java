@@ -5,7 +5,7 @@ public interface IBDisposable {
 	
 	public static class Util{
 		public static void disposeLater( final IBDisposable d ){
-			BFactory.instance().game().animator().post( new Runnable(){
+			BPlatform.instance().game().animator().post( new Runnable(){
 				@Override
 				public void run() {
 					d.dispose();
@@ -13,7 +13,7 @@ public interface IBDisposable {
 			});
 		}
 		public static void setUpLater( final IBDisposable d ){
-			BFactory.instance().game().animator().post( new Runnable(){
+			BPlatform.instance().game().animator().post( new Runnable(){
 				@Override
 				public void run() {
 					d.setUp();
