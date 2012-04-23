@@ -38,9 +38,17 @@ public class AWTHTMLDrawable extends BHTMLDrawable{
 			textArea.setText(html());
 		}
 		
-		if( url() != null ){
+		URL u = null;
+		
+		if( url() != null && url().url() != null ){
+			u = url().url();
+		}
+		if( u == null ){
+			u = BFactory.instance().platformURL( url() );
+		}
+		
+		if( u != null ){
 			try {
-				URL u = BFactory.instance().url(url());
 				textArea.setPage( u );
 			} 
 			catch (IOException ex) {

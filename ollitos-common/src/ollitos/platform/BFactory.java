@@ -81,22 +81,23 @@ public abstract class BFactory {
 	public abstract IBLogger logger();
 	public abstract BHTMLDrawable html();
 	
-	public abstract URL url(BResourceLocator l);
-	
 	public BSprite sprite( BResourceLocator l ){
 		return sprite( raster( l, true ) );
 	}
 	
+	public abstract URL platformURL(BResourceLocator r);
+	
 	public InputStream open(BResourceLocator r){
-		URL f = url(r);
+		URL f = r.url();
 		if( f == null ){
 			return null;
 		}
+		logger().log(this, "open:" + f );
 		try{
 			return f.openStream();
 		}
 		catch( IOException e ){
-			throw new BException( "Unable to open:" + r, e );
+			throw new BException( "Unable to open:" + f + "(" + r + ")", e );
 		}
 	}
 

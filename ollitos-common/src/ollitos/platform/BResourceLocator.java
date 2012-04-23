@@ -10,17 +10,29 @@ import java.net.URL;
 @SuppressWarnings("serial")
 public class BResourceLocator implements Serializable{
 	private String _s;
+	private URL _u;
 
 	public BResourceLocator(String s) {
 		_s = s;
 	}
 	
+	public BResourceLocator(URL u){
+		_u = u;
+	}
+	
 	@Override
 	public String toString() {
-		return string();
+		if( string() != null ){
+			return string();
+		}
+		return "" + url();
 	}
 	
 	public String string(){
 		return _s;
+	}
+	
+	public URL url(){
+		return _u;
 	}
 }

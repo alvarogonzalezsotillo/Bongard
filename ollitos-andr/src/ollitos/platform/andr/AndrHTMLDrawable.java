@@ -1,5 +1,7 @@
 package ollitos.platform.andr;
 
+import java.net.URL;
+
 import ollitos.geom.IBRectangle;
 import ollitos.geom.IBTransform;
 import ollitos.gui.basic.BHTMLDrawable;
@@ -20,31 +22,41 @@ public class AndrHTMLDrawable extends BHTMLDrawable{
 	
 	private WebView view(){
 		if( _view == null ){
-			_view = new WebView(AndrFactory.context());
-			_view.setWebViewClient( new WebViewClient(){
-				@Override
-				public void onPageFinished(WebView view, String url) {
-					view.capturePicture();
-				}
-			});
-			
-			_view.setPictureListener(new PictureListener(){
-				@Override
-				public void onNewPicture(WebView view, Picture picture) {
-					_ready = true;
-					BFactory.instance().game().canvas().refresh();
-				}
-			});
-			IBRectangle s = originalSize();
-			int b = (int) (s.y() + s.h());
-			int r = (int) (s.x() + s.w());
-			int t = (int) s.y();
-			int l = (int) s.x();
-			_view.layout(l, t, r, b);
-			_view.loadData( html(), "text/html", "UTF-8" );
+			initView();
 		}
 		
 		return _view;
+	}
+
+	private void initView() {
+		_view = new WebView(AndrFactory.context());
+		_view.setWebViewClient( new WebViewClient(){
+			@Override
+			public void onPageFinished(WebView view, String url) {
+				view.capturePicture();
+			}
+		});
+		
+		_view.setPictureListener(new PictureListener(){
+			@Override
+			public void onNewPicture(WebView view, Picture picture) {
+				_ready = true;
+				BFactory.instance().game().canvas().refresh();
+			}
+		});
+		IBRectangle s = originalSize();
+		int b = (int) (s.y() + s.h());
+		int r = (int) (s.x() + s.w());
+		int t = (int) s.y();
+		int l = (int) s.x();
+		_view.layout(l, t, r, b);
+		if( html() != null ){
+			_view.loadData( html(), "text/html", "UTF-8" );
+		}
+		else if( url() != null ){
+			String u = BFactory.instance().platformURL(url()).toExternalForm();
+			_view.loadUrl(u);
+		}
 	}
 	
 	@Override

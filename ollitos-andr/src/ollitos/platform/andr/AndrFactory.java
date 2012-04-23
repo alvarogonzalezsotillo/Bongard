@@ -2,6 +2,7 @@ package ollitos.platform.andr;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import ollitos.geom.IBRectangle;
@@ -87,23 +88,33 @@ public class AndrFactory extends BFactory{
 	}
 
 	@Override
-	public InputStream open(BResourceLocator r) {
-		try{
-			URL f = r.url();
-			if( f != null ){
-				return f.openStream();
-			}
-			String s = r.toString();
-			if( s.startsWith("/") ){
-				s = s.substring(1);
-			}
-			return context().getAssets().open(s);
+	public URL platformURL(BResourceLocator r) {
+		String assetPrefix = "file:///android_asset";
+		try {
+			return new URL( assetPrefix + r.string() );
 		}
-		catch( IOException e ){
-			throw new BException("Unable to open:" + r, e );
-		}
+		catch (MalformedURLException e) {
+			throw new BException( "bad resource:" + r, e );
+		} 
 	}
 
+	@Override
+	public InputStream open(BResourceLocator l) {
+		InputStream ret = null;
+		if( l.string() != null ){
+			try {
+				String s = l.string().substring(1);
+				ret = AndrFactory.context().getAssets().open(s);
+				return ret;
+			}
+			catch (IOException e) {
+				throw new BException("Unable to open:" + l.string(), e);
+			}
+		}
+		return super.open(l);
+	}
+
+	
 	@Override
 	public IBColor color(String c) {
 		return new AndrColor( Color.parseColor("#" + c ) );
@@ -126,9 +137,8 @@ public class AndrFactory extends BFactory{
 	}
 
 	@Override
-	public BHTMLDrawable html(String string) {
+	public BHTMLDrawable html() {
 		BHTMLDrawable ret = new AndrHTMLDrawable();
-		ret.setHtml(string);
 		return ret;
 	}
 
@@ -139,4 +149,6 @@ public class AndrFactory extends BFactory{
 		}
 		return _rasterUtil;
 	}
+
+
 }

@@ -98,20 +98,27 @@ public class AWTFactory extends BFactory {
 		}
 	}
 
-	public URL url(BResourceLocator r){
-		URL f = getClass().getResource(r.toString());
+	@Override
+	public URL platformURL(BResourceLocator r) {
+		URL f = getClass().getResource(r.string());
 		if( f == null ){
-			f = getClass().getResource("/assets" + r.toString());
-		}
-		if( f == null ){
-			try {
-				f = new URL(r.toString());
-			}
-			catch (MalformedURLException ex) {
-				logger().log( this, r );
-			}
+			f = getClass().getResource("/assets" + r.string());
 		}
 		return f;
+	}
+
+	
+	@Override
+	public InputStream open(BResourceLocator r){
+		URL f = platformURL(r);
+		if( f != null ){
+			try {
+				return f.openStream();
+			} catch (IOException e) {
+				throw new BException("Unable to open:" + r.string(), e);
+			}
+		}
+		return super.open(r);
 	}
 	
 
@@ -133,4 +140,5 @@ public class AWTFactory extends BFactory {
 		AWTHTMLDrawable ret = new AWTHTMLDrawable();
 		return ret;
 	}
+
 }
