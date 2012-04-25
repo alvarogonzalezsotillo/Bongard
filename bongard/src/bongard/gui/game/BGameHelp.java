@@ -8,12 +8,12 @@ import ollitos.geom.BRectangle;
 import ollitos.geom.IBRectangle;
 import ollitos.geom.IBTransform;
 import ollitos.gui.basic.BHTMLDrawable;
-import ollitos.gui.basic.BState;
-import ollitos.gui.basic.IBCanvas;
 import ollitos.gui.container.BDrawableContainer;
 import ollitos.gui.container.IBDrawableContainer;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
+import ollitos.platform.BState;
+import ollitos.platform.IBCanvas;
 
 
 public class BGameHelp extends BDrawableContainer{

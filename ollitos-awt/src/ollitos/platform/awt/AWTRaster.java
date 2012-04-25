@@ -4,7 +4,7 @@ import java.awt.Image;
 
 import ollitos.geom.BRectangle;
 import ollitos.geom.IBRectangle;
-import ollitos.gui.basic.IBRaster;
+import ollitos.platform.IBRaster;
 
 
 public class AWTRaster implements IBRaster{

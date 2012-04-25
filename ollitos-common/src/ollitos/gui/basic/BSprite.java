@@ -3,14 +3,15 @@ package ollitos.gui.basic;
 import ollitos.geom.BRectangle;
 import ollitos.geom.IBRectangle;
 import ollitos.geom.IBTransform;
+import ollitos.platform.IBCanvas;
+import ollitos.platform.IBRaster;
 import ollitos.util.BException;
 
 
 public abstract class BSprite extends BRectangularDrawable{
 
 	private IBRaster _raster;
-	private double _alpha = 1;
-	private boolean _antialias = false;
+
 	
 	private static IBRectangle computeOriginalPosition(IBRaster ra){
 		return new BRectangle( -ra.w()/2, -ra.h()/2, ra.w(), ra.h() );
@@ -32,21 +33,21 @@ public abstract class BSprite extends BRectangularDrawable{
 	}
 	
 
-	public void setAlfa(double _alfa) {
-		this._alpha = _alfa;
+	public void setAlfa(float alfa) {
+		canvasContext().alpha = alfa;
 	}
 
 
-	public double alpha() {
-		return _alpha;
+	public float alpha() {
+		return canvasContext().alpha;
 	}
 	
 	public boolean antialias(){
-		return _antialias;
+		return canvasContext().antialias;
 	}
 	
 	public void setAntialias( boolean a ){
-		_antialias = a;
+		canvasContext().antialias = a;
 	}
 	
 	@Override

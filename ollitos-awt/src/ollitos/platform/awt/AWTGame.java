@@ -9,9 +9,9 @@ import java.util.prefs.Preferences;
 
 import javax.swing.SwingUtilities;
 
-import ollitos.gui.basic.BGame;
-import ollitos.gui.basic.BState;
+import ollitos.platform.BGame;
 import ollitos.platform.BPlatform;
+import ollitos.platform.BState;
 import bongard.gui.game.BStartField;
 
 
@@ -19,12 +19,12 @@ public class AWTGame extends BGame{
 
 	private Container _c;
 	
-	private AWTCanvas _canvas;
+	private AWTScreen _canvas;
 
 	@Override
-	public AWTCanvas canvas(){
+	public AWTScreen screen(){
 		if (_canvas == null) {
-			_canvas = new AWTCanvas();
+			_canvas = new AWTScreen();
 		}
 
 		return _canvas;
@@ -51,7 +51,7 @@ public class AWTGame extends BGame{
 				}
 			}
 		});
-		Component canvas = canvas().canvasImpl();
+		Component canvas = screen().canvasImpl();
 		f.add(canvas);
 		
 		f.setSize( 320, 480 );
@@ -108,7 +108,7 @@ public class AWTGame extends BGame{
 		super.restore(state);
 		Container c = container();
 		c.setVisible(true);
-		canvas().canvasImpl().requestFocusInWindow();
+		screen().canvasImpl().requestFocusInWindow();
 	}
 
 	private Container container() {

@@ -5,6 +5,7 @@ import ollitos.geom.IBPoint;
 import ollitos.geom.IBTransform;
 import ollitos.geom.IBTransformHolder;
 import ollitos.geom.IBTransformable;
+import ollitos.platform.IBCanvas;
 
 public interface IBDrawable extends IBTransformable, IBTransformAnimable, IBTransformHolder{
 	public void setTransform(IBTransform t);

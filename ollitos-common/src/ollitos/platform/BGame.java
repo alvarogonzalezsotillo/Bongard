@@ -1,8 +1,7 @@
-	package ollitos.gui.basic;
+	package ollitos.platform;
 
 import ollitos.geom.IBRectangle;
 import ollitos.gui.container.IBDrawableContainer;
-import ollitos.platform.BPlatform;
 
 
 public abstract class BGame implements IBGame{
@@ -27,13 +26,13 @@ public abstract class BGame implements IBGame{
 		if( d == null ){
 			d = defaultDrawable();
 		}
-		canvas().setDrawable(d);
+		screen().setDrawable(d);
 	}
 
 
 	@Override
 	public BState state() {
-		BState ret = canvas().drawable().save();
+		BState ret = screen().drawable().save();
 		BPlatform.instance().logger().log(this, "State:" + ret );
 		return ret;
 	}

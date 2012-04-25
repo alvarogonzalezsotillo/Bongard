@@ -1,4 +1,4 @@
-package ollitos.gui.basic;
+package ollitos.platform;
 
 public interface IBColor {
 }

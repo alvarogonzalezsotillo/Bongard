@@ -2,6 +2,8 @@ package ollitos.platform.awt;
 
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.URL;
 
@@ -10,8 +12,8 @@ import javax.swing.JEditorPane;
 import ollitos.geom.IBRectangle;
 import ollitos.geom.IBTransform;
 import ollitos.gui.basic.BHTMLDrawable;
-import ollitos.gui.basic.IBCanvas;
 import ollitos.platform.BPlatform;
+import ollitos.platform.IBCanvas;
 import ollitos.util.BException;
 
 
@@ -34,6 +36,12 @@ public class AWTHTMLDrawable extends BHTMLDrawable{
 
 	private JEditorPane init() {
 		JEditorPane textArea = new JEditorPane();
+		textArea.addPropertyChangeListener("page", new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				BPlatform.instance().game().screen().refresh();
+			}
+		});
 		if( html() != null ){
 			textArea.setText(html());
 		}
@@ -66,7 +74,7 @@ public class AWTHTMLDrawable extends BHTMLDrawable{
 	protected void draw_internal(IBCanvas c, IBTransform t) {
 		AWTCanvas canvas = (AWTCanvas) c;
 		
-		Graphics2D g2d = canvas.getGraphics();
+		Graphics2D g2d = (Graphics2D) canvas.graphics().create();
 		g2d.transform((AffineTransform) t);
 
 		textArea().paint(g2d);

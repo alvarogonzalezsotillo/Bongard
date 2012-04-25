@@ -3,9 +3,9 @@ package ollitos.util;
 import ollitos.geom.IBPoint;
 import ollitos.geom.IBTransform;
 import ollitos.gui.basic.BLabel;
-import ollitos.gui.basic.IBCanvas;
 import ollitos.gui.event.BEventAdapter;
 import ollitos.platform.BPlatform;
+import ollitos.platform.IBCanvas;
 
 public class BPointerSupport extends BEventAdapter{
 	

@@ -5,13 +5,13 @@ import java.io.Serializable;
 import ollitos.geom.IBRectangle;
 import ollitos.geom.IBTransform;
 import ollitos.gui.basic.BSprite;
-import ollitos.gui.basic.IBCanvas;
 import ollitos.gui.basic.IBRectangularDrawable;
 import ollitos.gui.container.BDrawableContainer;
 import ollitos.gui.container.BFlippableContainer;
 import ollitos.gui.container.IBFlippableDrawable;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
+import ollitos.platform.IBCanvas;
 import bongard.problem.BProblem;
 
 @SuppressWarnings("serial")

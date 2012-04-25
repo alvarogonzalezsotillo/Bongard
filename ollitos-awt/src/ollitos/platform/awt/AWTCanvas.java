@@ -1,197 +1,80 @@
 package ollitos.platform.awt;
 
-import java.awt.Canvas;
+import java.awt.AlphaComposite;
+import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Point;
+import java.awt.Paint;
 import java.awt.RenderingHints;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
+import java.awt.Shape;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 
-import ollitos.geom.BRectangle;
 import ollitos.geom.IBRectangle;
-import ollitos.gui.basic.BCanvas;
-import ollitos.gui.event.IBEvent;
-import ollitos.platform.BPlatform;
+import ollitos.platform.IBCanvas;
+import ollitos.platform.IBRaster;
 
-
-
-public class AWTCanvas extends BCanvas{
+public class AWTCanvas implements IBCanvas{
 	
-	private class KeyListenerImpl extends KeyAdapter{
-		@Override
-		public void keyPressed(KeyEvent e) {
-			int c = e.getKeyCode();
-			BPlatform.instance().logger().log( this, "KeyTyped:" + c );
-			if( c == KeyEvent.VK_ESCAPE || c == KeyEvent.VK_BACK_SPACE ){
-				listeners().handle( new IBEvent(IBEvent.Type.back) );
-			}
-		}
+	private Graphics2D _graphics;
+
+	public AWTCanvas( Graphics2D g ){
+		_graphics = g;
 	}
 	
-	private class MouseListenerImpl extends MouseAdapter {
-		
-		
-		@Override
-		public void mouseClicked(MouseEvent e) {
-			listeners().handle( event( IBEvent.Type.pointerClick, e ) );
-		}
-		
-		@Override
-		public void mouseDragged(MouseEvent e) {
-			listeners().handle( event( IBEvent.Type.pointerDragged, e ) );
-		}
-		
-		@Override
-		public void mouseWheelMoved(MouseWheelEvent e) {
-			if( e.getWheelRotation() < 0 ){
-				listeners().handle( event( IBEvent.Type.zoomIn, e ) );
-			}
-			else{
-				listeners().handle( event( IBEvent.Type.zoomOut, e ) );
-			}
-		}
-		
-		@Override
-		public void mousePressed(MouseEvent e) {
-			listeners().handle( event( IBEvent.Type.pointerDown, e ) );
-		}
-		
-		@Override
-		public void mouseReleased(MouseEvent e) {
-			listeners().handle( event( IBEvent.Type.pointerUp, e ) );
-		}
-	}
-	
-	private AWTPoint pointInOriginalCoords(MouseEvent e){
-		if( e == null ){
-			return null;
-		}
-		
-		Point p = e.getPoint();
-		AWTPoint point = new AWTPoint(0, 0);
-		inverseTransform().transform(p, point);
-		return point;
-	}
-	
-
-	private IBEvent event( IBEvent.Type t, MouseEvent e ){
-		return new IBEvent( t, pointInOriginalCoords(e), originalSize() );
+	public Graphics2D graphics(){
+		return _graphics;
 	}
 
-	
-	@SuppressWarnings("serial")
-	private class CanvasImpl extends Canvas{
-		{
-			addComponentListener( new ComponentAdapter() {
-				@Override
-				public void componentResized(ComponentEvent e) {
-					listeners().handle( event( IBEvent.Type.containerResized, null ) );
-					AWTCanvas c = AWTCanvas.this;
-					c.adjustTransformToSize();
-				}
-			});
-			
-			MouseListenerImpl l = new MouseListenerImpl();
-			addMouseListener( l ); 
-			addMouseMotionListener(l);
-			addMouseWheelListener(l);
-			addKeyListener( new KeyListenerImpl() );
+	private static Graphics2D cloneAndSet( Graphics2D g, CanvasContextProvider cp ){
+		Graphics2D ret =(Graphics2D) g.create();
+		CanvasContext c = cp.canvasContext();
+		
+		ret.transform((AffineTransform) c.transform());
+		ret.setColor((Color) c.color());
+		ret.setComposite( AlphaComposite.getInstance( AlphaComposite.SRC_OVER, c.alpha() ) );
+		
+		if( c.antialias() ){
+			ret.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+			ret.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			ret.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+		}
+		else{
+			ret.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_DEFAULT);
+			ret.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+			ret.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
 		}
 		
-		public void paint(Graphics g) {
-			BPlatform f = BPlatform.instance();
-			eraseBackground();
-			if( drawable() != null ){
-				drawable().draw(AWTCanvas.this, transform());
-			}
-			Image i = getOffscreenImage();
-			g.drawImage(i,0,0,null);
-			AWTAnimator a = (AWTAnimator)f.game().animator();
-			g.drawString("Millis:" + a.lastStep(), 0, getHeight());
-		}
-		public void update(Graphics g){
-			paint(g);
-		}
-	};
-
-	private CanvasImpl _impl;
-	private Image _image;
-	
-	/**
-	 * 
-	 * @param obj
-	 */
-	public AWTCanvas() {
-		_impl = new CanvasImpl();
-	}
-	
-	public Component canvasImpl(){
-		return _impl;
-	}
-	
-	public Graphics2D getGraphics(){
-		Image i = getOffscreenImage();
-		Graphics2D g2d = (Graphics2D) i.getGraphics();
-		
-		IBRectangle os = drawable().originalSize();
-		double pts[] = { os.x(), os.y(), os.x()+os.w(), os.y()+os.h() };
-		((AWTTransform)transform()).transform(pts, 0, pts, 0, 2);
-		
-		g2d.setClip((int)pts[0], (int)pts[1], (int)(pts[2]-pts[0]), (int)(pts[3]-pts[1]));
-		
-		return g2d;
+		return ret;
 	}
 	
 	@Override
-	public void refresh() {
-		canvasImpl().repaint();
-	}
-	
-
-	/**
-	 * 
-	 */
-	public void eraseBackground(){
-		Image i = getOffscreenImage();
-		Graphics graphics = i.getGraphics();
-		graphics.setColor( (Color) backgroundColor() );
-		graphics.fillRect(0, 0, i.getWidth(null), i.getHeight(null));
-		graphics.dispose();
-	}
-	
-
-
-	/**
-	 * 
-	 */
-	public Image getOffscreenImage() {
-		Component c = canvasImpl();
-		Dimension d = c.getSize();
-		if (_image == null || _image.getWidth(null) != d.width
-				|| _image.getHeight(null) != d.height) {
-			_image = c.createImage(d.width, d.height);
-		}
-		return _image;
+	public void drawString(CanvasContextProvider c, String str, float x, float y) {
+		Graphics2D g = cloneAndSet(_graphics, c);
+		g.drawString(str, x, y);
+		g.dispose();
 	}
 
 	@Override
-	public IBRectangle originalSize() {
-		Component c = canvasImpl();
-		return new BRectangle( 0, 0, c.getWidth(), c.getHeight() );
+	public void drawRaster(CanvasContextProvider c, IBRaster r, float x, float y) {
+		Graphics2D g = cloneAndSet(_graphics, c);
+		g.drawImage(((AWTRaster)r).image(), (int)x, (int)y, null);
+		g.dispose();
 	}
 
-	public AWTTransform inverseTransform(){
-		return (AWTTransform) transform().inverse();
+	@Override
+	public void drawBox(CanvasContextProvider c, IBRectangle r, boolean filled) {
+		Graphics2D g = cloneAndSet(_graphics, c);
+		g.setStroke( new BasicStroke(2) );
+
+		Shape s = new Rectangle2D.Double( r.x(), r.y(), r.w(), r.h() );
+		if( filled ){
+			g.setPaint((Paint)g.getColor());
+			g.fill(s);
+		}
+		g.draw(s);
+		
+		g.dispose();
 	}
 
 }

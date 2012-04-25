@@ -1,7 +1,6 @@
-package ollitos.gui.basic;
+package ollitos.platform;
 
 import ollitos.geom.IBRectangle;
-import ollitos.platform.IBDisposable;
 
 public interface IBRaster extends IBDisposable{
 	int w();

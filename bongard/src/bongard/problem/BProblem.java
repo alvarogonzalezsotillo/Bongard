@@ -5,10 +5,10 @@ import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Random;
 
-import ollitos.gui.basic.IBRaster;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 import ollitos.platform.IBDisposable;
+import ollitos.platform.IBRaster;
 import ollitos.util.BException;
 
 

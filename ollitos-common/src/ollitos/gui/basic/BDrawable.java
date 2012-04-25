@@ -4,14 +4,22 @@ import ollitos.animation.IBTransformAnimable;
 import ollitos.geom.IBPoint;
 import ollitos.geom.IBTransform;
 import ollitos.platform.BPlatform;
+import ollitos.platform.IBCanvas;
+import ollitos.platform.IBCanvas.CanvasContext;
 
 
 
-public abstract class BDrawable implements IBDrawable, IBTransformAnimable{
+public abstract class BDrawable implements IBDrawable, IBTransformAnimable, IBCanvas.CanvasContextProvider{
 
 	protected IBTransform _t = BPlatform.instance().identityTransform();
 	protected IBTransform _tt;
 	private boolean _visible = true;
+	private IBCanvas.DefaultCanvasContext _canvasContext = IBCanvas.DefaultCanvasContext.create();
+	
+	@Override
+	public IBCanvas.DefaultCanvasContext canvasContext() {
+		return _canvasContext;
+	}
 	
 	public boolean visible(){
 		return _visible;
@@ -117,6 +125,7 @@ public abstract class BDrawable implements IBDrawable, IBTransformAnimable{
 			t = temp;
 		}
 		
+		_canvasContext.transform = t;
 		draw_internal(c,t);
 	}
 

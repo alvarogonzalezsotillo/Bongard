@@ -109,7 +109,7 @@ public class BGameModel implements IBFlippableModel{
 	private static void goToProblems(boolean demo, BResourceLocator[] problems) {
 		BGameModel m = new BGameModel(demo,problems );
 		BFlippableContainer d = new BFlippableContainer( m );
-		BPlatform.instance().game().canvas().setDrawable( d );
+		BPlatform.instance().game().screen().setDrawable( d );
 	}
 
 	private boolean allAnswered(){

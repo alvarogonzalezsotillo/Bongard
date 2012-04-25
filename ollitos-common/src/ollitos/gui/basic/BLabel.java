@@ -2,6 +2,8 @@ package ollitos.gui.basic;
 
 import ollitos.geom.IBPoint;
 import ollitos.geom.IBTransform;
+import ollitos.platform.BPlatform;
+import ollitos.platform.IBColor;
 
 public abstract class BLabel extends BDrawable{
 	
@@ -9,6 +11,15 @@ public abstract class BLabel extends BDrawable{
 
 	public BLabel(String text){
 		setText(text);
+		setColor(BPlatform.COLOR_WHITE);
+	}
+	
+	public IBColor color(){
+		return canvasContext().color;
+	}
+	
+	public void setColor(IBColor c){
+		canvasContext().color = c;
 	}
 
 	@Override

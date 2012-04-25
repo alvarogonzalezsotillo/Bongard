@@ -12,9 +12,9 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 
 import ollitos.geom.IBRectangle;
-import ollitos.gui.basic.IBRaster;
-import ollitos.gui.basic.IBRasterUtil;
 import ollitos.platform.BResourceLocator;
+import ollitos.platform.IBRaster;
+import ollitos.platform.IBRasterUtil;
 
 
 

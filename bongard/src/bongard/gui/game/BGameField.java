@@ -21,14 +21,14 @@ import ollitos.geom.IBTransform;
 import ollitos.gui.basic.BBox;
 import ollitos.gui.basic.BLabel;
 import ollitos.gui.basic.BSprite;
-import ollitos.gui.basic.BState;
-import ollitos.gui.basic.IBCanvas;
 import ollitos.gui.container.BDrawableContainer;
 import ollitos.gui.container.BFlippableContainer;
 import ollitos.gui.container.IBDrawableContainer;
 import ollitos.gui.container.IBFlippableDrawable;
 import ollitos.gui.event.BEventAdapter;
 import ollitos.platform.BPlatform;
+import ollitos.platform.BState;
+import ollitos.platform.IBCanvas;
 import bongard.problem.BProblem;
 
 @SuppressWarnings("serial")

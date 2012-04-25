@@ -1,7 +1,7 @@
 package ollitos.gui.event;
 
-import ollitos.gui.basic.IBGame;
 import ollitos.platform.BPlatform;
+import ollitos.platform.IBGame;
 
 public class BRestartListener extends BEventAdapter{
 
@@ -17,7 +17,7 @@ public class BRestartListener extends BEventAdapter{
 			return;
 		}
 		_instance = new BRestartListener();
-		BPlatform.instance().game().canvas().addListener(_instance);
+		BPlatform.instance().game().screen().addListener(_instance);
 		_installed = true;
 	}
 	
@@ -25,8 +25,8 @@ public class BRestartListener extends BEventAdapter{
 	public boolean back() {
 		IBGame game = BPlatform.instance().game();
 		game.animator().abortAnimations();
-		if( game.canvas().drawable() != game.defaultDrawable() ){
-			game.canvas().setDrawable( game.defaultDrawable() );
+		if( game.screen().drawable() != game.defaultDrawable() ){
+			game.screen().setDrawable( game.defaultDrawable() );
 		}
 		return true;
 	}

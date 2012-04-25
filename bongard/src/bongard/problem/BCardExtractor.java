@@ -5,9 +5,9 @@ import java.util.Random;
 
 import ollitos.geom.BRectangle;
 import ollitos.geom.IBRectangle;
-import ollitos.gui.basic.IBRaster;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
+import ollitos.platform.IBRaster;
 import ollitos.util.BException;
 
 

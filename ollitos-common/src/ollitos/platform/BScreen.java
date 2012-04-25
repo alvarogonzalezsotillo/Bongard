@@ -1,4 +1,4 @@
-package ollitos.gui.basic;
+package ollitos.platform;
 
 import ollitos.animation.BConcatenateAnimation;
 import ollitos.animation.BRunnableAnimation;
@@ -11,10 +11,9 @@ import ollitos.gui.container.IBDrawableContainer;
 import ollitos.gui.event.BListenerList;
 import ollitos.gui.event.IBEvent;
 import ollitos.gui.event.IBEventListener;
-import ollitos.platform.BPlatform;
 import ollitos.util.BTransformUtil;
 
-public abstract class BCanvas implements IBScreen {
+public abstract class BScreen implements IBScreen {
 
 	private static final int ENTER_LEAVE_MILLIS = 500;
 	private IBTransform _t = BPlatform.instance().identityTransform();

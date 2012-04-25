@@ -1,18 +1,10 @@
 package ollitos.platform.awt;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Paint;
-import java.awt.Shape;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
-
 import ollitos.geom.IBRectangle;
 import ollitos.geom.IBTransform;
 import ollitos.gui.basic.BBox;
-import ollitos.gui.basic.IBCanvas;
-import ollitos.gui.basic.IBColor;
+import ollitos.platform.IBCanvas;
+import ollitos.platform.IBColor;
 
 
 
@@ -24,7 +16,9 @@ public class AWTBox extends BBox{
 
 	@Override
 	protected void draw_internal(IBCanvas c, IBTransform t) {
-		AWTCanvas canvas = (AWTCanvas) c;
+		c.drawBox(this, originalSize(), filled() );
+		/*
+		AWTScreen canvas = (AWTScreen) c;
 		
 		Graphics2D g2d = canvas.getGraphics();
 		g2d.transform((AffineTransform) t);
@@ -42,7 +36,7 @@ public class AWTBox extends BBox{
 		g2d.draw(s);
 		
 		g2d.dispose();
-
+		*/
 	}
 
 }

@@ -2,7 +2,7 @@ package ollitos.platform.awt;
 
 import java.awt.Color;
 
-import ollitos.gui.basic.IBColor;
+import ollitos.platform.IBColor;
 
 
 

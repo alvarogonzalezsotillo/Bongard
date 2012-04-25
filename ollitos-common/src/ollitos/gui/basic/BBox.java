@@ -1,12 +1,12 @@
 package ollitos.gui.basic;
 
 import ollitos.geom.IBRectangle;
+import ollitos.platform.IBColor;
 
 public abstract class BBox extends BRectangularDrawable{
 
 	
 	private boolean _filled = true;
-	private IBColor _color;
 
 	public BBox( IBRectangle r, IBColor color ){
 		super(r);
@@ -14,11 +14,11 @@ public abstract class BBox extends BRectangularDrawable{
 	}
 
 	protected void setColor(IBColor color) {
-		_color = color;
+		canvasContext().color = color;
 	}
 	
 	public IBColor color(){
-		return _color;
+		return canvasContext().color;
 	}
 	
 	public boolean filled(){
@@ -28,7 +28,4 @@ public abstract class BBox extends BRectangularDrawable{
 	public void setFilled(boolean f){
 		_filled = f;
 	}
-	
-	
-	
 }

@@ -11,13 +11,13 @@ import ollitos.animation.BWaitAnimation;
 import ollitos.animation.IBAnimation;
 import ollitos.geom.IBRectangle;
 import ollitos.geom.IBTransform;
-import ollitos.gui.basic.IBCanvas;
 import ollitos.gui.container.BDrawableContainer;
 import ollitos.gui.container.BFlippableContainer;
 import ollitos.gui.event.BLogListener;
 import ollitos.gui.event.BLogListener.ReplayAnimation;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
+import ollitos.platform.IBCanvas;
 
 
 
@@ -50,7 +50,7 @@ public class BExamplesField extends BDrawableContainer{
 		IBAnimation backToStartAnimation = new BRunnableAnimation(2000, new Runnable(){
 			@Override
 			public void run() {
-				BPlatform.instance().game().canvas().setDrawable( new BStartField() );
+				BPlatform.instance().game().screen().setDrawable( new BStartField() );
 			}
 		});
 		IBAnimation a = new BConcatenateAnimation(new BWaitAnimation(1000), _replayAnimation,backToStartAnimation);

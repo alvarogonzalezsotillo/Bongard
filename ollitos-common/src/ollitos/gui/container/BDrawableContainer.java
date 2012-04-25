@@ -1,10 +1,10 @@
 package ollitos.gui.container;
 
 import ollitos.gui.basic.BRectangularDrawable;
-import ollitos.gui.basic.BState;
 import ollitos.gui.event.BListenerList;
 import ollitos.gui.event.IBEvent;
 import ollitos.gui.event.IBEventListener;
+import ollitos.platform.BState;
 import ollitos.util.BException;
 
 public abstract class BDrawableContainer extends BRectangularDrawable implements IBDrawableContainer{

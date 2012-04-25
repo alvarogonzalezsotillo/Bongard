@@ -16,10 +16,10 @@ import ollitos.geom.IBRectangle;
 import ollitos.geom.IBTransform;
 import ollitos.gui.basic.BSprite;
 import ollitos.gui.basic.IBDrawable;
-import ollitos.gui.basic.IBRaster;
 import ollitos.gui.event.IBEvent.Type;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
+import ollitos.platform.IBRaster;
 import ollitos.util.BException;
 
 

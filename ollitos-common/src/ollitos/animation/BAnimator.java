@@ -99,7 +99,7 @@ public abstract class BAnimator {
 	}
 	
 	protected void refresh() {
-		BPlatform.instance().game().canvas().refresh();
+		BPlatform.instance().game().screen().refresh();
 	}
 	
 	public boolean needsUpdate(){

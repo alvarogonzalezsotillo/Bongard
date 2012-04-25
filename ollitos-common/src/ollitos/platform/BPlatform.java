@@ -11,10 +11,6 @@ import ollitos.gui.basic.BBox;
 import ollitos.gui.basic.BHTMLDrawable;
 import ollitos.gui.basic.BLabel;
 import ollitos.gui.basic.BSprite;
-import ollitos.gui.basic.IBColor;
-import ollitos.gui.basic.IBGame;
-import ollitos.gui.basic.IBRaster;
-import ollitos.gui.basic.IBRasterUtil;
 import ollitos.util.BException;
 
 

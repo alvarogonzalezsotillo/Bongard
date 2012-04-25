@@ -6,15 +6,15 @@ import ollitos.geom.IBPoint;
 import ollitos.geom.IBRectangle;
 import ollitos.geom.IBTransform;
 import ollitos.gui.basic.BSprite;
-import ollitos.gui.basic.BState;
-import ollitos.gui.basic.IBCanvas;
-import ollitos.gui.basic.IBRaster;
 import ollitos.gui.container.BDrawableContainer;
 import ollitos.gui.container.BFlippableContainer;
 import ollitos.gui.event.BEventAdapter;
 import ollitos.gui.event.BRestartListener;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
+import ollitos.platform.BState;
+import ollitos.platform.IBCanvas;
+import ollitos.platform.IBRaster;
 
 public class BStartField extends BDrawableContainer{
 
@@ -124,7 +124,7 @@ public class BStartField extends BDrawableContainer{
 		IBAnimation a = new BRunnableAnimation(10, new Runnable(){
 			@Override
 			public void run() {
-				BPlatform.instance().game().canvas().setDrawable( new BExamplesField() );
+				BPlatform.instance().game().screen().setDrawable( new BExamplesField() );
 			}
 		});
 		BPlatform.instance().game().animator().addAnimation(a);
@@ -136,7 +136,7 @@ public class BStartField extends BDrawableContainer{
 			public void run() {
 				BBongardGameModel m = new BBongardGameModel();
 				BFlippableContainer d = new BFlippableContainer( m );
-				BPlatform.instance().game().canvas().setDrawable( d );
+				BPlatform.instance().game().screen().setDrawable( d );
 			}
 		});
 		BPlatform.instance().game().animator().addAnimation(a);
@@ -146,7 +146,7 @@ public class BStartField extends BDrawableContainer{
 		IBAnimation a = new BRunnableAnimation(10, new Runnable(){
 			@Override
 			public void run() {
-				BPlatform.instance().game().canvas().setDrawable( new BGameHelp() );
+				BPlatform.instance().game().screen().setDrawable( new BGameHelp() );
 			}
 		});
 		BPlatform.instance().game().animator().addAnimation(a);
