@@ -2,7 +2,7 @@ package ollitos.platform.andr;
 
 import ollitos.geom.IBTransform;
 import ollitos.gui.basic.BLabel;
-import ollitos.gui.basic.IBCanvas;
+import ollitos.platform.IBCanvas;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
@@ -21,7 +21,7 @@ public class AndrLabel extends BLabel {
 
 	@Override
 	protected void draw_internal(IBCanvas c, IBTransform t) {
-		AndrCanvas canvas = (AndrCanvas) c;
+		AndrScreen canvas = (AndrScreen) c;
 		Canvas ac = canvas.androidCanvas();
 		Matrix m = ac.getMatrix();
 		ac.setMatrix((Matrix) t);

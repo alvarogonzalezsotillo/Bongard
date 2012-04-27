@@ -1,12 +1,10 @@
 package ollitos.platform.andr;
 
-import java.net.URL;
-
 import ollitos.geom.IBRectangle;
 import ollitos.geom.IBTransform;
 import ollitos.gui.basic.BHTMLDrawable;
-import ollitos.gui.basic.IBCanvas;
 import ollitos.platform.BPlatform;
+import ollitos.platform.IBCanvas;
 import android.graphics.Canvas;
 import android.graphics.Picture;
 import android.view.View;
@@ -41,7 +39,7 @@ public class AndrHTMLDrawable extends BHTMLDrawable{
 			@Override
 			public void onNewPicture(WebView view, Picture picture) {
 				_ready = true;
-				BPlatform.instance().game().canvas().refresh();
+				BPlatform.instance().game().screen().refresh();
 			}
 		});
 		IBRectangle s = originalSize();
@@ -83,7 +81,7 @@ public class AndrHTMLDrawable extends BHTMLDrawable{
 	protected void draw_internal(IBCanvas c, IBTransform t) {
 		View v = view();
 		BPlatform.instance().logger().log( this, "ready:" + ready( ) );
-		AndrCanvas canvas = (AndrCanvas) c;
+		AndrScreen canvas = (AndrScreen) c;
 		Canvas ac = canvas.androidCanvas();
 		ac.save();
 		ac.setMatrix((AndrTransform)t);

@@ -1,18 +1,18 @@
 package ollitos.platform.andr;
 
-import ollitos.gui.basic.BGame;
+import ollitos.platform.BGame;
 
 public class AndrGame extends BGame{
 
-	private AndrCanvas _canvas;
+	private AndrScreen _canvas;
 	private AndrAnimator _animator;
 
 
 
 	@Override
-	public AndrCanvas canvas() {
+	public AndrScreen screen() {
 		if( _canvas == null ){
-			_canvas = new AndrCanvas();
+			_canvas = new AndrScreen();
 		}
 		return _canvas;
 	}

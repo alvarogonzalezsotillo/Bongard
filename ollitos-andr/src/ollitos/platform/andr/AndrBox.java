@@ -3,8 +3,8 @@ package ollitos.platform.andr;
 import ollitos.geom.IBRectangle;
 import ollitos.geom.IBTransform;
 import ollitos.gui.basic.BBox;
-import ollitos.gui.basic.IBCanvas;
-import ollitos.gui.basic.IBColor;
+import ollitos.platform.IBCanvas;
+import ollitos.platform.IBColor;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
@@ -32,7 +32,7 @@ public class AndrBox extends BBox{
 	
 	@Override
 	protected void draw_internal(IBCanvas c, IBTransform tr) {
-		AndrCanvas canvas = (AndrCanvas) c;
+		AndrScreen canvas = (AndrScreen) c;
 		Canvas ac = canvas.androidCanvas();
 
 		IBRectangle rect = originalSize();

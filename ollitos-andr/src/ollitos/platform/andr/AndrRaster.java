@@ -1,6 +1,6 @@
 package ollitos.platform.andr;
 
-import ollitos.gui.basic.IBRaster;
+import ollitos.platform.IBRaster;
 import android.graphics.Bitmap;
 
 public class AndrRaster implements IBRaster {

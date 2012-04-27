@@ -1,6 +1,6 @@
 package ollitos.platform.andr;
 
-import ollitos.gui.basic.IBColor;
+import ollitos.platform.IBColor;
 
 public class AndrColor implements IBColor {
 

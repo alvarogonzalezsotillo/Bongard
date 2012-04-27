@@ -1,8 +1,8 @@
 package ollitos.platform.andr;
 
 import ollitos.geom.IBRectangle;
-import ollitos.gui.basic.IBRaster;
-import ollitos.gui.basic.IBRasterUtil;
+import ollitos.platform.IBRaster;
+import ollitos.platform.IBRasterUtil;
 import android.graphics.Bitmap;
 
 public class AndrRasterUtil implements IBRasterUtil{

@@ -2,8 +2,8 @@ package ollitos.platform.andr;
 
 import ollitos.geom.IBTransform;
 import ollitos.gui.basic.BSprite;
-import ollitos.gui.basic.IBCanvas;
-import ollitos.gui.basic.IBRaster;
+import ollitos.platform.IBCanvas;
+import ollitos.platform.IBRaster;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
@@ -31,7 +31,7 @@ public class AndrSprite extends BSprite {
 
 	@Override
 	protected void draw_internal(IBCanvas c, IBTransform t) {
-		AndrCanvas canvas = (AndrCanvas) c;
+		AndrScreen canvas = (AndrScreen) c;
 		Canvas ac = canvas.androidCanvas();
 		Bitmap bitmap = ((AndrRaster)raster()).bitmap();
 

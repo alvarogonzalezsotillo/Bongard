@@ -3,12 +3,13 @@ package ollitos.platform.andr;
 import ollitos.geom.BRectangle;
 import ollitos.geom.IBPoint;
 import ollitos.geom.IBRectangle;
-import ollitos.gui.basic.BCanvas;
 import ollitos.gui.basic.BSprite;
-import ollitos.gui.basic.IBRaster;
 import ollitos.gui.event.IBEvent;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
+import ollitos.platform.BScreen;
+import ollitos.platform.IBCanvas;
+import ollitos.platform.IBRaster;
 import ollitos.util.BTransformUtil;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -19,7 +20,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 
-public class AndrCanvas extends BCanvas {
+public class AndrScreen extends BScreen implements IBCanvas{
 
 	
 	private class AndrView extends View {
@@ -107,7 +108,7 @@ public class AndrCanvas extends BCanvas {
 			try {
 				super.onDraw(_currentAndroidCanvas);
 				if (drawable() != null) {
-					drawable().draw(AndrCanvas.this, transform());
+					drawable().draw(canvas(), transform());
 				}
 				//drawTest();
 			}
@@ -135,7 +136,7 @@ public class AndrCanvas extends BCanvas {
 			IBRaster r = BPlatform.instance().raster(l, false);
 			BSprite s = BPlatform.instance().sprite(r);
 
-			s.draw(AndrCanvas.this, null);
+			s.draw(canvas(), null);
 		}
 
 		private Canvas _currentAndroidCanvas;
@@ -193,5 +194,28 @@ public class AndrCanvas extends BCanvas {
 
 	public Canvas androidCanvas() {
 		return _view.currentAndroidCanvas();
+	}
+
+	@Override
+	public IBCanvas canvas() {
+		return this;
+	}
+
+	@Override
+	public void drawString(CanvasContextProvider c, String str, float x, float y) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void drawRaster(CanvasContextProvider c, IBRaster r, float x, float y) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void drawBox(CanvasContextProvider c, IBRectangle r, boolean filled) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -1,12 +1,11 @@
 package ollitos.platform.andr;
 
-import ollitos.gui.basic.BState;
-import ollitos.gui.basic.IBGame;
 import ollitos.platform.BPlatform;
+import ollitos.platform.BState;
+import ollitos.platform.IBGame;
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -87,13 +86,13 @@ public class AndrActivity extends Activity {
 	
 	
 	private View createView() {
-		AndrCanvas canvas = andrCanvas();
+		AndrScreen canvas = andrCanvas();
 		View ret = canvas.resetView();
 		return ret;
 	}
 
-	private AndrCanvas andrCanvas() {
-		return ((AndrPlatform) BPlatform.instance()).game().canvas();
+	private AndrScreen andrCanvas() {
+		return ((AndrPlatform) BPlatform.instance()).game().screen();
 	}
 
 }
