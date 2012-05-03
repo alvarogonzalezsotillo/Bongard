@@ -97,5 +97,18 @@ public abstract class BPlatform {
 		}
 	}
 
+	protected BCanvasContext createCanvasContext(){
+		return new BCanvasContext();
+	}
+
+	public final IBCanvas.CanvasContext canvasContext(){
+		BCanvasContext ret = createCanvasContext();
+		ret.setAlpha(1);
+		ret.setColor( COLOR_BLACK );
+		ret.setTransform( identityTransform() );
+		ret.setAntialias( false );
+		return ret;
+	}
+
 
 }

@@ -3,7 +3,6 @@ package bongard.gui.game;
 import java.io.Serializable;
 
 import ollitos.geom.IBRectangle;
-import ollitos.geom.IBTransform;
 import ollitos.gui.basic.BSprite;
 import ollitos.gui.basic.IBRectangularDrawable;
 import ollitos.gui.container.BDrawableContainer;
@@ -59,8 +58,8 @@ public class BBongardTestField extends BDrawableContainer implements IBFlippable
 	}
 
 	@Override
-	protected void draw_internal(IBCanvas c, IBTransform t) {
-		_sprite.draw(c, t);
+	protected void draw_internal(IBCanvas c) {
+		_sprite.draw(c, canvasContext().transform());
 	}
 
 	@Override

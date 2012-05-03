@@ -3,6 +3,7 @@ package ollitos.gui.basic;
 import ollitos.animation.IBTransformAnimable;
 import ollitos.geom.IBPoint;
 import ollitos.geom.IBTransform;
+import ollitos.platform.BCanvasContext;
 import ollitos.platform.BPlatform;
 import ollitos.platform.IBCanvas;
 import ollitos.platform.IBCanvas.CanvasContext;
@@ -14,11 +15,11 @@ public abstract class BDrawable implements IBDrawable, IBTransformAnimable, IBCa
 	protected IBTransform _t = BPlatform.instance().identityTransform();
 	protected IBTransform _tt;
 	private boolean _visible = true;
-	private IBCanvas.DefaultCanvasContext _canvasContext = IBCanvas.DefaultCanvasContext.create();
+	private BCanvasContext _canvasContext = (BCanvasContext) BPlatform.instance().canvasContext();
 	
 	@Override
-	public IBCanvas.DefaultCanvasContext canvasContext() {
-		return _canvasContext;
+	public BCanvasContext canvasContext() {
+		return (BCanvasContext) _canvasContext;
 	}
 	
 	public boolean visible(){
@@ -125,8 +126,8 @@ public abstract class BDrawable implements IBDrawable, IBTransformAnimable, IBCa
 			t = temp;
 		}
 		
-		_canvasContext.transform = t;
-		draw_internal(c,t);
+		_canvasContext.setTransform(t);
+		draw_internal(c);
 	}
 
 
@@ -146,8 +147,7 @@ public abstract class BDrawable implements IBDrawable, IBTransformAnimable, IBCa
 	/**
 	 * Draw ignoring the internal transform, only the given transform 
 	 * @param c
-	 * @param t
 	 */
-	protected abstract void draw_internal(IBCanvas c, IBTransform t);
+	protected abstract void draw_internal(IBCanvas c);
 	
 }

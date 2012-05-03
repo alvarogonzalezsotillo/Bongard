@@ -1,7 +1,6 @@
 package ollitos.platform.andr;
 
 import ollitos.geom.IBRectangle;
-import ollitos.geom.IBTransform;
 import ollitos.gui.basic.BHTMLDrawable;
 import ollitos.platform.BPlatform;
 import ollitos.platform.IBCanvas;
@@ -78,13 +77,12 @@ public class AndrHTMLDrawable extends BHTMLDrawable{
 	}
 
 	@Override
-	protected void draw_internal(IBCanvas c, IBTransform t) {
+	protected void draw_internal(IBCanvas c) {
 		View v = view();
 		BPlatform.instance().logger().log( this, "ready:" + ready( ) );
-		AndrScreen canvas = (AndrScreen) c;
-		Canvas ac = canvas.androidCanvas();
+		Canvas ac = ((AndrCanvas)c).androidCanvas();
 		ac.save();
-		ac.setMatrix((AndrTransform)t);
+		ac.setMatrix((AndrTransform)canvasContext().transform());
 		v.draw(ac);
 		ac.restore();
 	}

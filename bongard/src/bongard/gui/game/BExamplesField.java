@@ -10,7 +10,6 @@ import ollitos.animation.BRunnableAnimation;
 import ollitos.animation.BWaitAnimation;
 import ollitos.animation.IBAnimation;
 import ollitos.geom.IBRectangle;
-import ollitos.geom.IBTransform;
 import ollitos.gui.container.BDrawableContainer;
 import ollitos.gui.container.BFlippableContainer;
 import ollitos.gui.event.BLogListener;
@@ -33,10 +32,10 @@ public class BExamplesField extends BDrawableContainer{
 	}
 	
 	@Override
-	protected void draw_internal(IBCanvas c, IBTransform t) {
-		_fc.draw(c,t);
+	protected void draw_internal(IBCanvas c) {
+		_fc.draw(c,canvasContext().transform());
 		if( _replayAnimation != null && _replayAnimation.cursor() != null ){
-			_replayAnimation.cursor().draw(c, t);
+			_replayAnimation.cursor().draw(c, canvasContext().transform());
 		}
 	}
 	

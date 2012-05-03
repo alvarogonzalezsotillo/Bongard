@@ -9,11 +9,13 @@ import ollitos.geom.IBRectangle;
 import ollitos.gui.basic.BHTMLDrawable;
 import ollitos.gui.basic.BLabel;
 import ollitos.gui.basic.BSprite;
+import ollitos.platform.BCanvasContext;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 import ollitos.platform.IBColor;
 import ollitos.platform.IBRaster;
 import ollitos.platform.IBRasterUtil;
+import ollitos.platform.IBCanvas.CanvasContext;
 import ollitos.util.BException;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -68,6 +70,12 @@ public class AndrPlatform extends BPlatform{
 	public IBRaster raster(BResourceLocator test, boolean transparent) {
 		InputStream is = open(test);
 		Bitmap b = BitmapFactory.decodeStream(is);
+		try {
+			is.close();
+		}
+		catch (IOException e) {
+			throw new BException( "cant close:" + test, e);
+		}
 		if( b == null ){
 			throw new BException("Cant open image:" + test, null);
 		}
@@ -149,6 +157,10 @@ public class AndrPlatform extends BPlatform{
 		}
 		return _rasterUtil;
 	}
-
+	
+	@Override
+	protected BCanvasContext createCanvasContext() {
+		return new AndrCanvasContext();
+	}
 
 }

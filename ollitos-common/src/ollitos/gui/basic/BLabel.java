@@ -15,11 +15,11 @@ public abstract class BLabel extends BDrawable{
 	}
 	
 	public IBColor color(){
-		return canvasContext().color;
+		return canvasContext().color();
 	}
 	
 	public void setColor(IBColor c){
-		canvasContext().color = c;
+		canvasContext().setColor(c);
 	}
 
 	@Override

@@ -17,7 +17,6 @@ import ollitos.animation.IBTransformAnimable;
 import ollitos.geom.BRectangle;
 import ollitos.geom.IBPoint;
 import ollitos.geom.IBRectangle;
-import ollitos.geom.IBTransform;
 import ollitos.gui.basic.BBox;
 import ollitos.gui.basic.BLabel;
 import ollitos.gui.basic.BSprite;
@@ -354,18 +353,18 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	 * 
 	 */
 	@Override
-	protected void draw_internal(IBCanvas canvas, IBTransform aditionalTransform){
+	protected void draw_internal(IBCanvas canvas){
 		
 		if( _allSprites == null ){
 			return;
 		}
 		
 		for( BSprite s: _allSprites ){
-			s.draw( canvas, aditionalTransform );
+			s.draw( canvas, canvasContext().transform() );
 		}
 		
 		if( SHOW_POINTER ){
-			_pointer.draw(canvas, aditionalTransform);
+			_pointer.draw(canvas, canvasContext().transform() );
 		}
 	}
 	

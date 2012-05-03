@@ -103,7 +103,8 @@ public class BStartField extends BDrawableContainer{
 	};
 	
 	@Override
-	protected void draw_internal(IBCanvas c, IBTransform t) {
+	protected void draw_internal(IBCanvas c) {
+		IBTransform t = canvasContext().transform();
 		_startGameSprite.draw(c,t);
 		_helpGameSprite.draw(c,t);
 		_startOriginalSprite.draw(c,t);

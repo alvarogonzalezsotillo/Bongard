@@ -10,7 +10,6 @@ import java.net.URL;
 import javax.swing.JEditorPane;
 
 import ollitos.geom.IBRectangle;
-import ollitos.geom.IBTransform;
 import ollitos.gui.basic.BHTMLDrawable;
 import ollitos.platform.BPlatform;
 import ollitos.platform.IBCanvas;
@@ -71,11 +70,11 @@ public class AWTHTMLDrawable extends BHTMLDrawable{
 	}
 	
 	@Override
-	protected void draw_internal(IBCanvas c, IBTransform t) {
+	protected void draw_internal(IBCanvas c) {
 		AWTCanvas canvas = (AWTCanvas) c;
 		
 		Graphics2D g2d = (Graphics2D) canvas.graphics().create();
-		g2d.transform((AffineTransform) t);
+		g2d.transform((AffineTransform) canvasContext().transform());
 
 		textArea().paint(g2d);
 		

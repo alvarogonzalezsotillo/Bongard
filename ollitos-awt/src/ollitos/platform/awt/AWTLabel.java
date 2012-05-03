@@ -1,6 +1,5 @@
 package ollitos.platform.awt;
 
-import ollitos.geom.IBTransform;
 import ollitos.gui.basic.BLabel;
 import ollitos.platform.IBCanvas;
 
@@ -13,7 +12,7 @@ public class AWTLabel extends BLabel {
 	}
 
 	@Override
-	protected void draw_internal(IBCanvas c, IBTransform t) {
+	protected void draw_internal(IBCanvas c) {
 		c.drawString(this, text(), 0, 0);
 	}
 }

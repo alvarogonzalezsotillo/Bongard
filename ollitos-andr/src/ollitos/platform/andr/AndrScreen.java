@@ -20,7 +20,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 
-public class AndrScreen extends BScreen implements IBCanvas{
+public class AndrScreen extends BScreen{
 
 	
 	private class AndrView extends View {
@@ -164,6 +164,7 @@ public class AndrScreen extends BScreen implements IBCanvas{
 	}
 	
 	private AndrView _view;
+	private AndrCanvas _andrCanvas;
 
 	public AndrView view() {
 		if (_view == null) {
@@ -198,24 +199,7 @@ public class AndrScreen extends BScreen implements IBCanvas{
 
 	@Override
 	public IBCanvas canvas() {
-		return this;
-	}
-
-	@Override
-	public void drawString(CanvasContextProvider c, String str, float x, float y) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void drawRaster(CanvasContextProvider c, IBRaster r, float x, float y) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void drawBox(CanvasContextProvider c, IBRectangle r, boolean filled) {
-		// TODO Auto-generated method stub
-		
+		_andrCanvas = new AndrCanvas( androidCanvas() );
+		return _andrCanvas;
 	}
 }

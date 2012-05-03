@@ -354,7 +354,8 @@ public class BFlippableContainer extends BDrawableContainer {
 	}
 
 	@Override
-	protected void draw_internal(IBCanvas c, IBTransform t) {
+	protected void draw_internal(IBCanvas c) {
+		IBTransform t = canvasContext().transform();
 		draw_background(c,t);
 
 		if (left() != null)

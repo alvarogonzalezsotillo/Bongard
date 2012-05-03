@@ -83,7 +83,9 @@ public class AWTPlatform extends BPlatform {
 	public AWTRaster raster(BResourceLocator test, boolean transparent ) {
 		Color bgColor = Color.white;
 		try {
-			BufferedImage image = ImageIO.read( open(test) );
+			InputStream is = open(test);
+			BufferedImage image = ImageIO.read( is );
+			is.close();
 			if( transparent ){
 				return new AWTRaster(image);
 			}

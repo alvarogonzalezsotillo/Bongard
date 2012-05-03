@@ -34,20 +34,20 @@ public abstract class BSprite extends BRectangularDrawable{
 	
 
 	public void setAlfa(float alfa) {
-		canvasContext().alpha = alfa;
+		canvasContext().setAlpha( alfa );
 	}
 
 
 	public float alpha() {
-		return canvasContext().alpha;
+		return canvasContext().alpha();
 	}
 	
 	public boolean antialias(){
-		return canvasContext().antialias;
+		return canvasContext().antialias();
 	}
 	
 	public void setAntialias( boolean a ){
-		canvasContext().antialias = a;
+		canvasContext().setAntialias(a);
 	}
 	
 	@Override

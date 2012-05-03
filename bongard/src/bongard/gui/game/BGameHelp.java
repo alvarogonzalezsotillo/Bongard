@@ -43,7 +43,8 @@ public class BGameHelp extends BDrawableContainer{
 	}
 	
 	@Override
-	protected void draw_internal(IBCanvas c, IBTransform t) {
+	protected void draw_internal(IBCanvas c) {
+		IBTransform t = canvasContext().transform();
 		html().draw(c, t);
 	}
 

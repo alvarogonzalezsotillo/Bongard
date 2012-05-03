@@ -14,11 +14,11 @@ public abstract class BBox extends BRectangularDrawable{
 	}
 
 	protected void setColor(IBColor color) {
-		canvasContext().color = color;
+		canvasContext().setColor( color );
 	}
 	
 	public IBColor color(){
-		return canvasContext().color;
+		return canvasContext().color();
 	}
 	
 	public boolean filled(){
