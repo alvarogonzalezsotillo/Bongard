@@ -23,7 +23,7 @@
 	</target>
 
 	<target name="clean">
-		<delete dir="${bin}" />
+		<delete dir="${bin.classes}" />
 		<delete file="${jar.file}" />
 	</target>
 
@@ -36,19 +36,14 @@
 		</copy>
 	</target>
 
-	<target name="copy-assets-to-jar">
-		<copy todir="${bin.classes}">
-			<fileset dir="${src-common}">
+	<target name="jar" depends="compile">
+		<jar destfile="${jar.file}" compress="true">
+			<fileset dir="${bin.classes}" casesensitive="yes"/>
+			<fileset dir="${src-bongard}">
 				<include name="**/*.png" />
 				<include name="**/*.events" />
 				<include name="**/*.html" />
 			</fileset>
-		</copy>
-	</target>
-
-	<target name="jar" depends="compile,copy-assets-to-jar">
-		<jar destfile="${jar.file}">
-			<fileset dir="${bin.classes}" casesensitive="yes"/>
 			<manifest>
 				<attribute name="Main-Class" value="ollitos.platform.awt.AWTGame" />
 			</manifest>
