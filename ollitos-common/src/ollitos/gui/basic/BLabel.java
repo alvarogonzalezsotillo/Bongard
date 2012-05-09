@@ -3,9 +3,10 @@ package ollitos.gui.basic;
 import ollitos.geom.IBPoint;
 import ollitos.geom.IBTransform;
 import ollitos.platform.BPlatform;
+import ollitos.platform.IBCanvas;
 import ollitos.platform.IBColor;
 
-public abstract class BLabel extends BDrawable{
+public class BLabel extends BDrawable{
 	
 	private String _text;
 
@@ -34,4 +35,10 @@ public abstract class BLabel extends BDrawable{
 	public void setText(String text) {
 		_text = text;
 	}
+
+	@Override
+	protected void draw_internal(IBCanvas c) {
+		c.drawString(this, text(), 0, 0);
+	}
+
 }

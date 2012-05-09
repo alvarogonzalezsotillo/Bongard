@@ -52,21 +52,6 @@ public class AndrPlatform extends BPlatform{
 	}
 
 	@Override
-	public BSprite sprite(IBRaster raster) {
-		return new AndrSprite(raster);
-	}
-
-	@Override
-	public BLabel label(String text) {
-	  return new AndrLabel(text);
-	}
-
-	@Override
-	public AndrBox box(IBRectangle r, IBColor color) {
-		return new AndrBox(r,color);
-	}
-
-	@Override
 	public IBRaster raster(BResourceLocator test, boolean transparent) {
 		InputStream is = open(test);
 		Bitmap b = BitmapFactory.decodeStream(is);

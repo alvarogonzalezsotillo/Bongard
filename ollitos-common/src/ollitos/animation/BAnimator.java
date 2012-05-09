@@ -112,4 +112,14 @@ public abstract class BAnimator {
 	}
 	
 	public abstract void post( Runnable r );
+	
+	public void post( final int millis, final Runnable r ){
+		post( new Runnable(){
+			@Override
+			public void run() {
+				IBAnimation a = new BRunnableAnimation(millis, r);
+				addAnimation( a );
+			}
+		});
+	}
 }

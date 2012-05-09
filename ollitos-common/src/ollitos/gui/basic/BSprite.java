@@ -8,8 +8,9 @@ import ollitos.platform.IBRaster;
 import ollitos.util.BException;
 
 
-public abstract class BSprite extends BRectangularDrawable{
+public class BSprite extends BRectangularDrawable{
 
+	private IBRasterProvider _rasterProvider;
 	private IBRaster _raster;
 
 	
@@ -21,12 +22,12 @@ public abstract class BSprite extends BRectangularDrawable{
 	 * 
 	 * @param raster
 	 */
-	public BSprite(IBRaster raster){
-		super( computeOriginalPosition(raster) );
-		_raster = raster;
+	public BSprite(IBRasterProvider rasterProvider){
+		_rasterProvider = rasterProvider;
+		_raster = _rasterProvider.raster();
+		setOriginalSize( computeOriginalPosition(_raster) );
 		setAlfa(1);
 	}
-	
 	
 	public IBRaster raster(){
 		return _raster;
@@ -51,12 +52,16 @@ public abstract class BSprite extends BRectangularDrawable{
 	}
 	
 	@Override
-	public void draw(IBCanvas c, IBTransform aditionalTransform) {
+	protected void draw_internal(IBCanvas c) {
 		if( raster().disposed() ){
 			new BException("Raster is disposed", null).printStackTrace();
 			return;
 		}
+
+		IBRaster raster = raster();
+		int x = -raster.w()/2;
+		int y = -raster.h()/2;
 		
-		super.draw(c, aditionalTransform);
+		c.drawRaster(this, raster, x, y);
 	}
 }

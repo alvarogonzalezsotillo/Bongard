@@ -1,9 +1,11 @@
 package ollitos.platform.awt;
 
+import java.awt.Graphics2D;
 import java.awt.Image;
 
 import ollitos.geom.BRectangle;
 import ollitos.geom.IBRectangle;
+import ollitos.platform.IBCanvas;
 import ollitos.platform.IBRaster;
 
 
@@ -48,5 +50,25 @@ public class AWTRaster implements IBRaster{
 	public int h() {
 		return _image.getHeight(null);
 	}
+	
+	@Override
+	public AWTCanvas canvas() {
+		if( disposed() ){
+			return null;
+		}
+		return new AWTCanvas( (Graphics2D) _image.getGraphics() );
+	}
 
+	@Override
+	public IBRaster raster() {
+		return this;
+	}
+
+	@Override
+	public IBRaster raster(int w, int h) {
+		if( w == w() && h == h() ){
+			return this;
+		}
+		return null;
+	}
 }

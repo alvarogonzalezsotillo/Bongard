@@ -7,18 +7,21 @@ import java.io.InputStreamReader;
 import ollitos.geom.BRectangle;
 import ollitos.geom.IBRectangle;
 import ollitos.geom.IBTransform;
-import ollitos.gui.basic.BHTMLDrawable;
+import ollitos.gui.basic.BSprite;
+import ollitos.gui.basic.IBDrawable;
 import ollitos.gui.container.BDrawableContainer;
 import ollitos.gui.container.IBDrawableContainer;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 import ollitos.platform.BState;
 import ollitos.platform.IBCanvas;
+import ollitos.platform.IBRaster;
+import ollitos.util.BException;
 
 
 public class BGameHelp extends BDrawableContainer{
 
-	private BHTMLDrawable _html;
+	private IBDrawable _html;
 	
 	public static String read( InputStream i ) throws IOException{
 		InputStreamReader r = new InputStreamReader(i);
@@ -32,12 +35,22 @@ public class BGameHelp extends BDrawableContainer{
 		return ret.toString();
 	}
 	
-	public BHTMLDrawable html(){
+	public IBDrawable html(){
 		if (_html == null) {
 			BResourceLocator l = new BResourceLocator("/images/examples/help.html" );
-			_html = BPlatform.instance().html();
-			_html.load(l);
-			_html.setOriginalSize( originalSize() );
+//			_html = BPlatform.instance().html();
+//			_html.load(l);
+//			_html.setOriginalSize(originalSize());
+			IBRaster r;
+			IBRectangle s = originalSize();
+			try {
+				r = BPlatform.instance().rasterUtil().html(s, l);
+			} catch (IOException ex) {
+				throw new BException( "Cant load:" + l, ex );
+			}
+			BSprite ret = new BSprite(r);
+			ret.translate( s.w()/2, s.h()/2 );
+			_html = ret;
 		}
 		return _html;
 	}

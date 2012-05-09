@@ -1,5 +1,6 @@
 package bongard.gui.game;
 
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
@@ -17,6 +18,7 @@ import ollitos.gui.event.BLogListener.ReplayAnimation;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 import ollitos.platform.IBCanvas;
+import ollitos.util.BException;
 
 
 
@@ -44,7 +46,13 @@ public class BExamplesField extends BDrawableContainer{
 		_fc = new BFlippableContainer( new BGameModel(true,problems,EXAMPLES_SEED) );
 		
 		BResourceLocator rl = new BResourceLocator("/images/examples/examples.events");
-		Reader r = new InputStreamReader( BPlatform.instance().open(rl) );
+		Reader r;
+		try {
+			r = new InputStreamReader( BPlatform.instance().open(rl) );
+		}
+		catch (IOException ex) {
+			throw new BException("Cant open:" + rl, ex );
+		}
 		_replayAnimation = new BLogListener.ReplayAnimation(r, _fc.listener() );
 		IBAnimation backToStartAnimation = new BRunnableAnimation(2000, new Runnable(){
 			@Override

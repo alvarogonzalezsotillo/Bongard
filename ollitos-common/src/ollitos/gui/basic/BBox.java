@@ -1,9 +1,10 @@
 package ollitos.gui.basic;
 
 import ollitos.geom.IBRectangle;
+import ollitos.platform.IBCanvas;
 import ollitos.platform.IBColor;
 
-public abstract class BBox extends BRectangularDrawable{
+public class BBox extends BRectangularDrawable{
 
 	
 	private boolean _filled = true;
@@ -28,4 +29,10 @@ public abstract class BBox extends BRectangularDrawable{
 	public void setFilled(boolean f){
 		_filled = f;
 	}
+	
+	@Override
+	protected void draw_internal(IBCanvas c) {
+		c.drawBox(this, originalSize(), filled() );
+	}
+
 }

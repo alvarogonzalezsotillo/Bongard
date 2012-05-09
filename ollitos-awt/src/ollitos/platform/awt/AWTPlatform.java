@@ -63,42 +63,6 @@ public class AWTPlatform extends BPlatform {
 	}
 
 
-	@Override
-	public AWTSprite sprite(IBRaster raster) {
-		return new AWTSprite(raster);
-	}
-
-
-	@Override
-	public AWTLabel label(String text) {
-		return new AWTLabel(text);
-	}
-
-	@Override
-	public AWTBox box(IBRectangle r, IBColor color) {
-		return new AWTBox(r, color);
-	}
-
-	@Override
-	public AWTRaster raster(BResourceLocator test, boolean transparent ) {
-		Color bgColor = Color.white;
-		try {
-			InputStream is = open(test);
-			BufferedImage image = ImageIO.read( is );
-			is.close();
-			if( transparent ){
-				return new AWTRaster(image);
-			}
-			BufferedImage ret = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
-			Graphics g = ret.getGraphics();
-			g.drawImage(image, 0, 0, bgColor, null );
-			g.dispose();
-			
-			return new AWTRaster(ret);
-		} catch (IOException ex) {
-			throw new BException( "Unable to read:" + test, ex );
-		}
-	}
 
 	@Override
 	public URL platformURL(BResourceLocator r) {
@@ -111,14 +75,10 @@ public class AWTPlatform extends BPlatform {
 
 	
 	@Override
-	public InputStream open(BResourceLocator r){
+	public InputStream open(BResourceLocator r) throws IOException{
 		URL f = platformURL(r);
 		if( f != null ){
-			try {
-				return f.openStream();
-			} catch (IOException e) {
-				throw new BException("Unable to open:" + r.string(), e);
-			}
+			return f.openStream();
 		}
 		return super.open(r);
 	}

@@ -69,13 +69,32 @@ public abstract class BPlatform {
 	public abstract IBTransform identityTransform();
 	public abstract IBPoint point(double x, double y);
 	public abstract IBGame game();
-	public abstract BSprite sprite( IBRaster raster );
-	public abstract BLabel label( String text );
-	public abstract BBox box( IBRectangle r, IBColor color );
-	public abstract IBRaster raster(BResourceLocator test, boolean transparent);
 	public abstract IBColor color(String c);
 	public abstract IBLogger logger();
-	public abstract BHTMLDrawable html();
+	
+	public BLabel label( String text ){
+		return new BLabel(text);
+	}
+	
+	public BSprite sprite( IBRaster raster ){
+		return new BSprite(raster);
+	}
+	
+	public BBox box( IBRectangle r, IBColor color ){
+		return new BBox( r, color );
+	}
+
+	public IBRaster raster(BResourceLocator test, boolean transparent ){
+		try{
+			InputStream is = open(test);
+			IBRaster raster = rasterUtil().raster(is, transparent);
+			is.close();
+			return raster;
+		}
+		catch( IOException e ){
+			throw new BException("Cannot read:" + test, e );
+		}
+	}
 	
 	public BSprite sprite( BResourceLocator l ){
 		return sprite( raster( l, true ) );
@@ -83,18 +102,13 @@ public abstract class BPlatform {
 	
 	public abstract URL platformURL(BResourceLocator r);
 	
-	public InputStream open(BResourceLocator r){
+	public InputStream open(BResourceLocator r) throws IOException{
 		URL f = r.url();
 		if( f == null ){
 			return null;
 		}
 		logger().log(this, "open:" + f );
-		try{
-			return f.openStream();
-		}
-		catch( IOException e ){
-			throw new BException( "Unable to open:" + f + "(" + r + ")", e );
-		}
+		return f.openStream();
 	}
 
 	protected BCanvasContext createCanvasContext(){
@@ -109,6 +123,9 @@ public abstract class BPlatform {
 		ret.setAntialias( false );
 		return ret;
 	}
+
+
+	public abstract BHTMLDrawable html();
 
 
 }
