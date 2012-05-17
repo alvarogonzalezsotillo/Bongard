@@ -1,7 +1,9 @@
 package ollitos.platform.andr;
 
+import ollitos.platform.IBCanvas;
 import ollitos.platform.IBRaster;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 
 public class AndrRaster implements IBRaster {
 
@@ -41,6 +43,25 @@ public class AndrRaster implements IBRaster {
 	@Override
 	public int h() {
 		return bitmap().getHeight();
+	}
+
+	@Override
+	public IBRaster raster() {
+		return this;
+	}
+
+	@Override
+	public IBRaster raster(int w, int h) {
+		if( w == w() && h == h() ){
+			return this;
+		}
+		return null;
+	}
+
+	@Override
+	public IBCanvas canvas() {
+		Canvas c = new Canvas(bitmap());
+		return new AndrCanvas(c);
 	} 	
 
 }
