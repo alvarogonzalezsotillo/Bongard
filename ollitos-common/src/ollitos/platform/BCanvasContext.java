@@ -45,4 +45,9 @@ public class BCanvasContext implements CanvasContext{
 	public boolean antialias() {
 		return antialias;
 	}
+
+	@Override
+	public CanvasContext canvasContext() {
+		return this;
+	}
 }

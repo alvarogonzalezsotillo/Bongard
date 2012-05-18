@@ -8,7 +8,7 @@ public interface IBCanvas{
 		CanvasContext canvasContext();
 	}
 	
-	public interface CanvasContext{
+	public interface CanvasContext extends CanvasContextProvider{
 		public float alpha();
 		public IBColor color();
 		public IBTransform transform();
