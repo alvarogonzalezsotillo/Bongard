@@ -43,7 +43,7 @@ public class BGameHelp extends BDrawableContainer{
 //			_html.load(l);
 //			_html.setOriginalSize(originalSize());
 			IBRaster r;
-			IBRectangle htmlRectangle = new BRectangle(0, 0, 240, 480);
+			IBRectangle htmlRectangle = new BRectangle(0, 0, 400, 400);
 			IBRectangle s = originalSize();
 			BPlatform platform = BPlatform.instance();
 			try {
@@ -53,10 +53,14 @@ public class BGameHelp extends BDrawableContainer{
 			}
 			BSprite ret = new BSprite(r);
 			ret.setAntialias(true);
+
+			platform.logger().log( this, "Original " + s + ": " + ret.originalSize() );
 			IBTransform t = ret.transform();
 			BTransformUtil.setTo(t, htmlRectangle, s, true, true);
+			IBRectangle or = BTransformUtil.transform(t, ret.originalSize() ); 
+			platform.logger().log( this, "adaptado a " + s + ": " + or );
 			IBTransform translation = platform.identityTransform();
-			translation.translate( s.w()/2, s.h()/2 );
+			BTransformUtil.setTo(translation, or, s, true, true);
 			t.preConcatenate( translation );
 			_html = ret;
 		}

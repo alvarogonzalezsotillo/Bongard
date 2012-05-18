@@ -2,8 +2,10 @@ package ollitos.platform.andr;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 
 import ollitos.geom.IBRectangle;
+import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 import ollitos.platform.IBRaster;
 import ollitos.platform.IBRasterUtil;
@@ -13,6 +15,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Picture;
+import android.webkit.WebView;
+import android.webkit.WebView.PictureListener;
+import android.webkit.WebViewClient;
 
 public class AndrRasterUtil implements IBRasterUtil{
 
@@ -53,15 +59,45 @@ public class AndrRasterUtil implements IBRasterUtil{
 	}
 
 	@Override
-	public IBRaster raster(IBRectangle r) {
+	public AndrRaster raster(IBRectangle r) {
 		Bitmap b = Bitmap.createBitmap((int)r.w(), (int)r.h(), defaultBitmapConfig() );
 		return new AndrRaster(b);
 	}
 
 	@Override
-	public IBRaster html(IBRectangle r, BResourceLocator rl) throws IOException {
-		// TODO Auto-generated method stub
-		return null;
+	public AndrRaster html(IBRectangle s, BResourceLocator rl) throws IOException {
+		final AndrRaster ret = raster(s);
+		WebView view = new WebView(AndrPlatform.context());
+		view.setWebViewClient( new WebViewClient(){
+			@Override
+			public void onPageFinished(WebView view, String url) {
+				view.capturePicture();
+			}
+		});
+		
+		view.setPictureListener(new PictureListener(){
+			@Override
+			public void onNewPicture(WebView view, Picture picture) {
+				picture.draw( new Canvas( ret.bitmap() ) );
+				BPlatform.instance().game().screen().refresh();
+			}
+		});
+		int b = (int) (s.y() + s.h());
+		int r = (int) (s.x() + s.w());
+		int t = (int) s.y();
+		int l = (int) s.x();
+		view.layout(l, t, r, b);
+		URL u = null;
+		if( rl.url() != null ){
+			u = rl.url();
+		}
+		if( u == null ){
+			u = BPlatform.instance().platformURL( rl );
+		}
+		String str = u.toExternalForm();
+		view.loadUrl(str);
+		
+		return ret;
 	}
 
 }

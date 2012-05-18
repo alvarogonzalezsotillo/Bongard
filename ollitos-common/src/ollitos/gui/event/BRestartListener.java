@@ -27,8 +27,11 @@ public class BRestartListener extends BEventAdapter{
 		game.animator().abortAnimations();
 		if( game.screen().drawable() != game.defaultDrawable() ){
 			game.screen().setDrawable( game.defaultDrawable() );
+			return true;
 		}
-		return true;
+		else{
+			return false;
+		}
 	}
 
 }
