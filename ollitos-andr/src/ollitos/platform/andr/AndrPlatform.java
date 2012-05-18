@@ -51,34 +51,6 @@ public class AndrPlatform extends BPlatform{
 		return _game;
 	}
 
-	@Override
-	public IBRaster raster(BResourceLocator test, boolean transparent) {
-		InputStream is = open(test);
-		Bitmap b = BitmapFactory.decodeStream(is);
-		try {
-			is.close();
-		}
-		catch (IOException e) {
-			throw new BException( "cant close:" + test, e);
-		}
-		if( b == null ){
-			throw new BException("Cant open image:" + test, null);
-		}
-		if( transparent ){
-			return new AndrRaster(b);
-		}
-		Bitmap.Config config = b.getConfig();
-		if( config == null ){
-			config = Bitmap.Config.ARGB_8888;
-		}
-		Bitmap ret = b.copy(config, true);
-		Canvas c = new Canvas(ret);
-		Paint p = new Paint();
-		p.setColor( Color.WHITE );
-		c.drawRect(0, 0, ret.getWidth(), ret.getHeight(), p);
-		c.drawBitmap(b, 0, 0, p);
-		return new AndrRaster(ret);
-	}
 
 	@Override
 	public URL platformURL(BResourceLocator r) {
@@ -92,7 +64,7 @@ public class AndrPlatform extends BPlatform{
 	}
 
 	@Override
-	public InputStream open(BResourceLocator l) {
+	public InputStream open(BResourceLocator l) throws IOException{
 		InputStream ret = null;
 		if( l.string() != null ){
 			try {
