@@ -78,12 +78,15 @@ public class AndrRasterUtil implements IBRasterUtil{
 		view.setPictureListener(new PictureListener(){
 			@Override
 			public void onNewPicture(WebView view, Picture picture) {
-				picture.draw( new Canvas( ret.bitmap() ) );
+				Canvas canvas = new Canvas( ret.bitmap() );
+				picture.draw( canvas );
+				canvas.drawLine(0, 0, ret.bitmap().getWidth(), ret.bitmap().getHeight(), new Paint() );
+				view.draw(canvas);
 				BPlatform.instance().game().screen().refresh();
 			}
 		});
 		int b = (int) (s.y() + s.h());
-		int r = (int) (s.x() + s.w());
+		int r = (int) (s.x() + s.w()*0.75);
 		int t = (int) s.y();
 		int l = (int) s.x();
 		view.layout(l, t, r, b);
