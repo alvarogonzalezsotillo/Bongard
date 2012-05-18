@@ -26,6 +26,39 @@ import ollitos.util.BException;
 
 public class AWTRasterUtil implements IBRasterUtil{
 
+	private static final class PageLoadedListener implements PropertyChangeListener {
+		
+		private final class RefreshRunnable implements Runnable {
+			private int _times = 4;
+			@Override
+			public void run(){
+				Graphics2D g = _r.canvas().graphics();
+				_ep.paint(g);
+				BPlatform.instance().game().screen().refresh();
+				_times--;
+				if( _times > 0 ){
+					BPlatform.instance().game().animator().post( TIME_TO_LOAD_PAGE, this );
+				}
+			}
+		}
+
+		private final JEditorPane _ep;
+		private final AWTRaster _r;
+
+		private PageLoadedListener(JEditorPane ep, AWTRaster r) {
+			_ep = ep;
+			_r = r;
+		}
+
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			Graphics2D g = _r.canvas().graphics();
+			_ep.paint(g);
+			_ep.removePropertyChangeListener(this);
+			BPlatform.instance().game().animator().post( TIME_TO_LOAD_PAGE, new RefreshRunnable());
+		}
+	}
+
 	private static final int TIME_TO_LOAD_PAGE = 1000;
 
 	/**
@@ -68,6 +101,7 @@ public class AWTRasterUtil implements IBRasterUtil{
 	@Override
 	public IBRaster html(IBRectangle s, BResourceLocator rl) throws IOException {
 		final JEditorPane ep = new JEditorPane();
+		ep.setBackground((AWTColor)BPlatform.COLOR_DARKGRAY);
 		ep.setSize( (int)s.w(), (int)s.h());
 		URL u = null;
 		
@@ -85,21 +119,7 @@ public class AWTRasterUtil implements IBRasterUtil{
 		Graphics2D g = r.canvas().graphics();
 		ep.paint(g);
 		
-		ep.addPropertyChangeListener("page", new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				Graphics2D g = r.canvas().graphics();
-				ep.paint(g);
-				BPlatform.instance().game().animator().post( TIME_TO_LOAD_PAGE, new Runnable(){
-					@Override
-					public void run(){
-						Graphics2D g = r.canvas().graphics();
-						ep.paint(g);
-						BPlatform.instance().game().screen().refresh();
-					}
-				});
-			}
-		});
+		ep.addPropertyChangeListener("page", new PageLoadedListener(ep, r));
 
 		return r;
 	}

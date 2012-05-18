@@ -17,6 +17,7 @@ import ollitos.platform.BState;
 import ollitos.platform.IBCanvas;
 import ollitos.platform.IBRaster;
 import ollitos.util.BException;
+import ollitos.util.BTransformUtil;
 
 
 public class BGameHelp extends BDrawableContainer{
@@ -42,14 +43,21 @@ public class BGameHelp extends BDrawableContainer{
 //			_html.load(l);
 //			_html.setOriginalSize(originalSize());
 			IBRaster r;
+			IBRectangle htmlRectangle = new BRectangle(0, 0, 240, 480);
 			IBRectangle s = originalSize();
+			BPlatform platform = BPlatform.instance();
 			try {
-				r = BPlatform.instance().rasterUtil().html(s, l);
+				r = platform.rasterUtil().html(htmlRectangle, l);
 			} catch (IOException ex) {
 				throw new BException( "Cant load:" + l, ex );
 			}
 			BSprite ret = new BSprite(r);
-			ret.translate( s.w()/2, s.h()/2 );
+			ret.setAntialias(true);
+			IBTransform t = ret.transform();
+			BTransformUtil.setTo(t, htmlRectangle, s, true, true);
+			IBTransform translation = platform.identityTransform();
+			translation.translate( s.w()/2, s.h()/2 );
+			t.preConcatenate( translation );
 			_html = ret;
 		}
 		return _html;
