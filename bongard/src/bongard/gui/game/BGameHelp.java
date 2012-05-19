@@ -43,8 +43,8 @@ public class BGameHelp extends BDrawableContainer{
 //			_html.load(l);
 //			_html.setOriginalSize(originalSize());
 			IBRaster r;
-			IBRectangle htmlRectangle = new BRectangle(0, 0, 320, 480);
 			IBRectangle s = originalSize();
+			IBRectangle htmlRectangle = new BRectangle(0, 0, 240, 240*s.h()/s.w());
 			BPlatform platform = BPlatform.instance();
 			try {
 				r = platform.rasterUtil().html(htmlRectangle, l);

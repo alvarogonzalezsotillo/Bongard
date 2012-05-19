@@ -67,7 +67,7 @@ public class AndrRasterUtil implements IBRasterUtil{
 	@Override
 	public AndrRaster html(IBRectangle s, BResourceLocator rl) throws IOException {
 		final AndrRaster ret = raster(s);
-		WebView view = new WebView(AndrPlatform.context());
+		final WebView view = new WebView(AndrPlatform.context());
 		view.setWebViewClient( new WebViewClient(){
 			@Override
 			public void onPageFinished(WebView view, String url) {
@@ -75,18 +75,36 @@ public class AndrRasterUtil implements IBRasterUtil{
 			}
 		});
 		
-		view.setPictureListener(new PictureListener(){
-			@Override
-			public void onNewPicture(WebView view, Picture picture) {
+		final Runnable runable = new Runnable(){
+			private int _times = 4;
+			private long DELAY = 1000;
+			public void run() {
 				Canvas canvas = new Canvas( ret.bitmap() );
-				picture.draw( canvas );
 				canvas.drawLine(0, 0, ret.bitmap().getWidth(), ret.bitmap().getHeight(), new Paint() );
 				view.draw(canvas);
 				BPlatform.instance().game().screen().refresh();
+				_times--;
+				if( _times > 0 ){
+					BPlatform.instance().game().animator().post(this);
+				}
+			};
+		};
+		
+		view.setPictureListener(new PictureListener(){
+			@Override
+			public void onNewPicture(WebView view, Picture picture) {
+				BPlatform.instance().game().animator().post(runable);
+//				Canvas canvas = new Canvas( ret.bitmap() );
+//				picture.draw( canvas );
+//				canvas.drawLine(0, 0, ret.bitmap().getWidth(), ret.bitmap().getHeight(), new Paint() );
+//				view.draw(canvas);
+//				BPlatform.instance().game().screen().refresh();
 			}
 		});
+		
+		
 		int b = (int) (s.y() + s.h());
-		int r = (int) (s.x() + s.w()*0.75);
+		int r = (int) (s.x() + s.w());
 		int t = (int) s.y();
 		int l = (int) s.x();
 		view.layout(l, t, r, b);
