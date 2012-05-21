@@ -77,7 +77,7 @@ public class AndrRasterUtil implements IBRasterUtil{
 		
 		final Runnable runable = new Runnable(){
 			private int _times = 4;
-			private long DELAY = 1000;
+			private int DELAY = 1000;
 			public void run() {
 				Canvas canvas = new Canvas( ret.bitmap() );
 				canvas.drawLine(0, 0, ret.bitmap().getWidth(), ret.bitmap().getHeight(), new Paint() );
@@ -85,7 +85,7 @@ public class AndrRasterUtil implements IBRasterUtil{
 				BPlatform.instance().game().screen().refresh();
 				_times--;
 				if( _times > 0 ){
-					BPlatform.instance().game().animator().post(this);
+					BPlatform.instance().game().animator().post(DELAY,this);
 				}
 			};
 		};
@@ -117,6 +117,9 @@ public class AndrRasterUtil implements IBRasterUtil{
 		}
 		String str = u.toExternalForm();
 		view.loadUrl(str);
+		
+		BPlatform.instance().game().animator().addAnimation( new BProgressAnimation(ret) );
+
 		
 		return ret;
 	}

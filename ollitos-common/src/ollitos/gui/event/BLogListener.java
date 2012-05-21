@@ -176,7 +176,8 @@ public class BLogListener implements IBEventListener{
 		
 		Scanner scanner = new Scanner(s);
 		scanner.useLocale(Locale.US);
-		scanner.useDelimiter(" |,|\\t");
+		//scanner.useDelimiter(" ,|\\t");
+		scanner.useDelimiter(" ,");
 		
 		String next = scanner.next();
 		long millis = Long.parseLong(next);

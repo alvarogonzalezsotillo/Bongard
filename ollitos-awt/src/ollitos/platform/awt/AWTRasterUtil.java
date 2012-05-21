@@ -27,26 +27,6 @@ import ollitos.platform.IBRasterUtil;
 
 public class AWTRasterUtil implements IBRasterUtil{
 
-	private static class BProgressAnimation extends BFixedDurationAnimation{
-
-		
-		private IBRaster _r;
-		private BBox _b;
-
-		public BProgressAnimation(IBRaster r) {
-			super(10*1000);
-			_r = r;
-			_b = new BBox( new BRectangle( 10, 10, 0, 10 ), BPlatform.instance().color("ffff00") );
-		}
-
-		@Override
-		public void stepAnimation(long millis) {
-			stepMillis(millis);
-			_b.setOriginalSize( new BRectangle(10, 10, currentMillis()*(_r.w()-10*2)/totalMillis(), 10) );
-			_r.canvas().drawBox(_b, _b.originalSize(), true );
-		}
-		
-	}
 	
 	
 	private static final class PageLoadedListener implements PropertyChangeListener {
