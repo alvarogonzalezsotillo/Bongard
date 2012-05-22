@@ -1,12 +1,11 @@
 package ollitos.platform.andr;
 
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Matrix;
-import android.graphics.Paint;
 import ollitos.geom.IBRectangle;
 import ollitos.platform.IBCanvas;
 import ollitos.platform.IBRaster;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
 
 public class AndrCanvas implements IBCanvas{
 	
@@ -14,6 +13,9 @@ public class AndrCanvas implements IBCanvas{
 	private Matrix _oldMatrix;
 	
 	public AndrCanvas(Canvas androidCanvas){
+		if( androidCanvas == null ){
+			throw new IllegalArgumentException();
+		}
 		_androidCanvas = androidCanvas;
 	}
 
@@ -85,5 +87,4 @@ public class AndrCanvas implements IBCanvas{
 		
 		restore();
 	}
-
 }

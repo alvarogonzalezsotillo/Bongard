@@ -16,9 +16,12 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Picture;
+import android.view.View.MeasureSpec;
+import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebView.PictureListener;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 
 public class AndrRasterUtil implements IBRasterUtil{
 
@@ -67,8 +70,8 @@ public class AndrRasterUtil implements IBRasterUtil{
 	@Override
 	public AndrRaster html(IBRectangle s, BResourceLocator rl) throws IOException {
 		final AndrRaster ret = raster(s);
-		final WebView view = new WebView(AndrPlatform.context());
-		view.setWebViewClient( new WebViewClient(){
+		final WebView webview = new WebView(AndrPlatform.context());
+		webview.setWebViewClient( new WebViewClient(){
 			@Override
 			public void onPageFinished(WebView view, String url) {
 				view.capturePicture();
@@ -81,33 +84,43 @@ public class AndrRasterUtil implements IBRasterUtil{
 			public void run() {
 				Canvas canvas = new Canvas( ret.bitmap() );
 				canvas.drawLine(0, 0, ret.bitmap().getWidth(), ret.bitmap().getHeight(), new Paint() );
-				view.draw(canvas);
+				webview.draw(canvas);
 				BPlatform.instance().game().screen().refresh();
 				_times--;
 				if( _times > 0 ){
 					BPlatform.instance().game().animator().post(DELAY,this);
 				}
+				else{
+					ViewGroup viewGroup = (ViewGroup)webview.getParent();
+					if( viewGroup != null ){
+						viewGroup.removeView(webview);
+					}
+				}
 			};
 		};
 		
-		view.setPictureListener(new PictureListener(){
+		webview.setPictureListener(new PictureListener(){
 			@Override
 			public void onNewPicture(WebView view, Picture picture) {
 				BPlatform.instance().game().animator().post(runable);
-//				Canvas canvas = new Canvas( ret.bitmap() );
-//				picture.draw( canvas );
-//				canvas.drawLine(0, 0, ret.bitmap().getWidth(), ret.bitmap().getHeight(), new Paint() );
-//				view.draw(canvas);
-//				BPlatform.instance().game().screen().refresh();
 			}
 		});
 		
 		
-		int b = (int) (s.y() + s.h());
-		int r = (int) (s.x() + s.w());
-		int t = (int) s.y();
-		int l = (int) s.x();
-		view.layout(l, t, r, b);
+		int b = (int) s.h();
+		int r = (int) s.w();
+		int t = 0;
+		int l = 0;
+		AndrScreen screen = (AndrScreen)AndrPlatform.instance().game().screen();
+		FrameLayout v = screen.layout();
+		v.addView(webview, new FrameLayout.LayoutParams(r, b) );
+		screen.bringViewToFront();
+		
+//		view.setLayoutParams( new ViewGroup.LayoutParams(r, b));
+//		view.measure(MeasureSpec.makeMeasureSpec(r, MeasureSpec.EXACTLY), 
+//                 	 MeasureSpec.makeMeasureSpec(b, MeasureSpec.EXACTLY));
+//		view.layout(l, t, r, b);
+		
 		URL u = null;
 		if( rl.url() != null ){
 			u = rl.url();
@@ -116,10 +129,9 @@ public class AndrRasterUtil implements IBRasterUtil{
 			u = BPlatform.instance().platformURL( rl );
 		}
 		String str = u.toExternalForm();
-		view.loadUrl(str);
+		webview.loadUrl(str);
 		
 		BPlatform.instance().game().animator().addAnimation( new BProgressAnimation(ret) );
-
 		
 		return ret;
 	}

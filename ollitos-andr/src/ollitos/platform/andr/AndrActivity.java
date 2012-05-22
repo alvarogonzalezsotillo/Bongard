@@ -87,7 +87,7 @@ public class AndrActivity extends Activity {
 	
 	private View createView() {
 		AndrScreen canvas = andrCanvas();
-		View ret = canvas.resetView();
+		View ret = canvas.resetLayout();
 		return ret;
 	}
 

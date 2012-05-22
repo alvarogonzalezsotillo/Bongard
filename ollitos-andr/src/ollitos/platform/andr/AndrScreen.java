@@ -19,6 +19,7 @@ import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.FrameLayout;
 
 public class AndrScreen extends BScreen{
 
@@ -164,18 +165,31 @@ public class AndrScreen extends BScreen{
 	}
 	
 	private AndrView _view;
-	private AndrCanvas _andrCanvas;
+	private FrameLayout _layout;
+	
+	public FrameLayout layout(){
+		if( _layout == null ){
+			_layout = new FrameLayout(context());
+			_layout.addView(view());
+		}
+		return _layout;
+	}
+	
+	public void bringViewToFront(){
+		layout().bringChildToFront(view());
+	}
 
-	public AndrView view() {
+	private AndrView view() {
 		if (_view == null) {
 			_view = new AndrView(context());
 		}
 		return _view;
 	}
 
-	public AndrView resetView() {
+	public FrameLayout resetLayout() {
+		_layout = null;
 		_view = null;
-		return view();
+		return layout();
 	}
 
 	public Context context() {
@@ -199,7 +213,6 @@ public class AndrScreen extends BScreen{
 
 	@Override
 	public IBCanvas canvas() {
-		_andrCanvas = new AndrCanvas( androidCanvas() );
-		return _andrCanvas;
+		return new AndrCanvas( androidCanvas() );
 	}
 }
