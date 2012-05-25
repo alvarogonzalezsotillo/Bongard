@@ -51,7 +51,7 @@ public class AWTHTMLDrawable extends BHTMLDrawable{
 			u = url().url();
 		}
 		if( u == null ){
-			u = BPlatform.instance().platformURL( url() );
+			u = platform().platformURL( url() );
 		}
 		
 		if( u != null ){

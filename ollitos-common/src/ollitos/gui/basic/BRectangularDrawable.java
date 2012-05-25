@@ -5,6 +5,7 @@ import ollitos.geom.IBPoint;
 import ollitos.geom.IBRectangle;
 import ollitos.geom.IBTransform;
 import ollitos.platform.BPlatform;
+import ollitos.util.BTransformUtil;
 
 public abstract class BRectangularDrawable extends BDrawable implements IBRectangularDrawable{
 	
@@ -22,6 +23,10 @@ public abstract class BRectangularDrawable extends BDrawable implements IBRectan
 		_originalSize = r;
 	}
 
+	public void setSizeTo( IBRectangle r, boolean keepAspectRatio, boolean fitInside){
+		BTransformUtil.setTo(transform(), originalSize(), r, keepAspectRatio, fitInside);
+	}
+	
 	@Override
 	public final boolean inside(IBPoint p, IBTransform aditionalTransform) {
 		IBTransform t = transform();

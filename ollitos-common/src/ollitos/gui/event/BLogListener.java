@@ -7,6 +7,7 @@ import java.io.Reader;
 import java.util.Formatter;
 import java.util.Locale;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 import ollitos.animation.IBAnimable;
 import ollitos.animation.IBAnimation;
@@ -174,28 +175,24 @@ public class BLogListener implements IBEventListener{
 			return null;
 		}
 		
-		Scanner scanner = new Scanner(s);
-		scanner.useLocale(Locale.US);
-		//scanner.useDelimiter(" ,|\\t");
-		scanner.useDelimiter(" ,");
+		StringTokenizer st = new StringTokenizer(s," ,");
 		
-		String next = scanner.next();
+		String next = st.nextToken();
 		long millis = Long.parseLong(next);
 		
-		String sType = scanner.next();
+		String sType = st.nextToken();
 		IBEvent.Type t = IBEvent.Type.valueOf(sType);
 		
-		double x = Float.parseFloat(scanner.next());
-		double y = Float.parseFloat(scanner.next());
+		double x = Float.parseFloat(st.nextToken());
+		double y = Float.parseFloat(st.nextToken());
 		IBPoint p = BPlatform.instance().point(x, y);
 		
-		x = Float.parseFloat(scanner.next());
-		y = Float.parseFloat(scanner.next());
-		double w = Float.parseFloat(scanner.next());
-		double h = Float.parseFloat(scanner.next());
+		x = Float.parseFloat(st.nextToken());
+		y = Float.parseFloat(st.nextToken());
+		double w = Float.parseFloat(st.nextToken());
+		double h = Float.parseFloat(st.nextToken());
 		IBRectangle r = new BRectangle(x, y, w, h);
 
-		scanner.close();
 		return new ParsedEvent( millis, new IBEvent(t, p, r) );
 	}
 	

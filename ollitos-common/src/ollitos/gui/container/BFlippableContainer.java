@@ -124,26 +124,26 @@ public class BFlippableContainer extends BDrawableContainer {
 				IBRectangle r = _boxes[i];
 				r = BRectangle.grow(r, BOX_SPACING);
 				if( BRectangle.inside(r, pInMyCoordinates) ){
-					f().game().animator().addAnimation( new GoToIndexAnimation(_currentScroll+i) );
+					platform().game().animator().addAnimation( new GoToIndexAnimation(_currentScroll+i) );
 					return true;
 				}
 			}
 			
 			IBRectangle box = _boxes[0];
-			IBPoint p = f().point(box.x(), box.y() );
+			IBPoint p = platform().point(box.x(), box.y() );
 			if( IBPoint.Util.distance(p, pInMyCoordinates) < BOX_SPACING*3 ){
 				int index = currentIndex()-MAX_DRAWABLES_WIDTH;
 				index = Math.max(index, 0);
-				f().game().animator().addAnimation( new GoToIndexAnimation(index) );
+				platform().game().animator().addAnimation( new GoToIndexAnimation(index) );
 				return true;
 			}
 			
 			box = _boxes[_boxes.length-1];
-			p = f().point(box.x(), box.y() + box.w() );
+			p = platform().point(box.x(), box.y() + box.w() );
 			if( IBPoint.Util.distance(p, pInMyCoordinates) < BOX_SPACING*3 ){
 				int index = currentIndex()+MAX_DRAWABLES_WIDTH;
 				index = Math.min(index, _model.width()-1);
-				f().game().animator().addAnimation( new GoToIndexAnimation(index) );
+				platform().game().animator().addAnimation( new GoToIndexAnimation(index) );
 				return true;
 			}
 			
@@ -176,7 +176,7 @@ public class BFlippableContainer extends BDrawableContainer {
 			}
 			
 			_dragAnimation = new BWaitForAnimation( new DragAnimation(dx, 5), oldDragAnimation );
-			f().game().animator().addAnimation(_dragAnimation);
+			platform().game().animator().addAnimation(_dragAnimation);
 			return true;
 		}
 
@@ -185,7 +185,7 @@ public class BFlippableContainer extends BDrawableContainer {
 
 			if( _initialPoint != null ){
 				_releaseAnimation = new BWaitForAnimation( new ReleaseAnimation(100), _dragAnimation );
-				f().game().animator().addAnimation(_releaseAnimation);
+				platform().game().animator().addAnimation(_releaseAnimation);
 			}
 
 			_initialPoint = null;
@@ -196,10 +196,6 @@ public class BFlippableContainer extends BDrawableContainer {
 			return true;
 		}
 	};
-
-	private BPlatform f() {
-		return BPlatform.instance();
-	}
 
 	public int computeNewIndexFromDrawableOffset(){
 		double offset = drawableOffset();
@@ -255,8 +251,8 @@ public class BFlippableContainer extends BDrawableContainer {
 		_model = model;
 		BResourceLocator background = _model.background();
 		if( background != null ){
-			IBRaster r = f().raster( background, true );
-			_backgroundSprite = f().sprite(r);
+			IBRaster r = platform().raster( background, true );
+			_backgroundSprite = platform().sprite(r);
 			_backgroundSprite.setAlfa(.3f);
 		}
 		else{
@@ -271,7 +267,7 @@ public class BFlippableContainer extends BDrawableContainer {
 	private void setDrawableOffset(double dx) {
 		_dx = dx;
 		double w = originalSize().w();
-		IBTransform i = f().identityTransform();
+		IBTransform i = platform().identityTransform();
 		if (current() != null) {
 			current().setTransform(i);
 			current().translate(dx, 0);
@@ -309,7 +305,7 @@ public class BFlippableContainer extends BDrawableContainer {
 
 		adjustTransformToSize();
 		setDrawableOffset(0);
-		f().game().screen().refresh();
+		platform().game().screen().refresh();
 	}
 
 	private void disposeAndSetup(int oldIndex, int currentIndex) {
@@ -327,7 +323,7 @@ public class BFlippableContainer extends BDrawableContainer {
 		int oldEnd = oldIndex + cache;
 		oldEnd = Math.min(oldEnd, _model.width()-1);
 		
-		IBLogger l = BPlatform.instance().logger();
+		IBLogger l = platform().logger();
 		// SETUP CURRENT
 		for( int i = ini ; i <= end ; i++ ){
 			IBDisposable.Util.setUpLater(_model.drawable(i));
@@ -398,7 +394,7 @@ public class BFlippableContainer extends BDrawableContainer {
 
 	private BBox defaultIcon(){
 		if( _box == null ){
-			_box = f().box( new BRectangle(0, 0, ICON_SIZE, ICON_SIZE), BPlatform.COLOR_WHITE );
+			_box = platform().box( new BRectangle(0, 0, ICON_SIZE, ICON_SIZE), BPlatform.COLOR_WHITE );
 			_box.setFilled(false);
 		}
 		return _box;
@@ -453,7 +449,7 @@ public class BFlippableContainer extends BDrawableContainer {
 
 		IBRectangle[] boxes = computeBoxes(widthofboxes, x0, boxY, indexes.length);
 		
-		BPlatform factory = f();
+		BPlatform factory = platform();
 		
 		// DRAW OVERFLOW LABELS
 		if( start > 0 ){

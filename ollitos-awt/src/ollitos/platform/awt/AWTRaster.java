@@ -63,12 +63,4 @@ public class AWTRaster implements IBRaster{
 	public IBRaster raster() {
 		return this;
 	}
-
-	@Override
-	public IBRaster raster(int w, int h) {
-		if( w == w() && h == h() ){
-			return this;
-		}
-		return null;
-	}
 }

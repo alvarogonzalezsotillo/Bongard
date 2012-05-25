@@ -48,7 +48,7 @@ public class BExamplesField extends BDrawableContainer{
 		BResourceLocator rl = new BResourceLocator("/images/examples/examples.events");
 		Reader r;
 		try {
-			r = new InputStreamReader( BPlatform.instance().open(rl) );
+			r = new InputStreamReader( platform().open(rl) );
 		}
 		catch (IOException ex) {
 			throw new BException("Cant open:" + rl, ex );
@@ -61,6 +61,6 @@ public class BExamplesField extends BDrawableContainer{
 			}
 		});
 		IBAnimation a = new BConcatenateAnimation(new BWaitAnimation(1000), _replayAnimation,backToStartAnimation);
-		BPlatform.instance().game().animator().addAnimation( a );
+		platform().game().animator().addAnimation( a );
 	}
 }

@@ -1,12 +1,11 @@
 package bongard.gui.game;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 
 import ollitos.geom.BRectangle;
 import ollitos.geom.IBRectangle;
 import ollitos.geom.IBTransform;
+import ollitos.gui.basic.BButton;
 import ollitos.gui.basic.BSprite;
 import ollitos.gui.basic.IBDrawable;
 import ollitos.gui.container.BDrawableContainer;
@@ -17,48 +16,30 @@ import ollitos.platform.BState;
 import ollitos.platform.IBCanvas;
 import ollitos.platform.IBRaster;
 import ollitos.util.BException;
-import ollitos.util.BTransformUtil;
 
 
 public class BGameHelp extends BDrawableContainer{
 
 	private IBDrawable _html;
 	
-	public static String read( InputStream i ) throws IOException{
-		InputStreamReader r = new InputStreamReader(i);
-		StringBuffer ret = new StringBuffer();
-		int c = r.read();
-		while( c != -1 ){
-			ret.append((char)c);
-			c = r.read();
-		}
-		r.close();
-		return ret.toString();
-	}
-	
 	public IBDrawable html(){
 		if (_html == null) {
 			BResourceLocator l = new BResourceLocator("/images/examples/help.html" );
-//			_html = BPlatform.instance().html();
-//			_html.load(l);
-//			_html.setOriginalSize(originalSize());
 			IBRaster r;
 			IBRectangle s = originalSize();
 			IBRectangle htmlRectangle = new BRectangle(0, 0, 240, 240*s.h()/s.w());
-			BPlatform platform = BPlatform.instance();
 			try {
-				r = platform.rasterUtil().html(htmlRectangle, l);
+				r = platform().rasterUtil().html(htmlRectangle, l);
 			} catch (IOException ex) {
 				throw new BException( "Cant load:" + l, ex );
 			}
 			BSprite ret = new BSprite(r);
 			ret.setAntialias(true);
 
-			platform.logger().log( this, "Original " + s + ": " + ret.originalSize() );
-			IBTransform t = ret.transform();
-			BTransformUtil.setTo(t, ret.originalSize(), s, true, true);
-			platform.logger().log( this, "final " + s + ": " + BTransformUtil.transform(t, ret.originalSize() ) );
-			_html = ret;
+			BButton button = new BButton(ret);
+			button.setSizeTo(s, false, true);
+			button.install(this);
+			_html = button;
 		}
 		return _html;
 	}
@@ -75,7 +56,6 @@ public class BGameHelp extends BDrawableContainer{
 	public IBRectangle originalSize() {
 		return _rectangle;
 	}
-	
 	
 	@SuppressWarnings("serial")
 	private static class MyState extends BState{

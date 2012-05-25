@@ -58,7 +58,7 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	transient private BSprite _questionSprite;
 	transient private BSprite[] _allSprites;
 	transient private IBRectangle _size;
-	transient private BLabel _pointer = BPlatform.instance().label("O");
+	transient private BLabel _pointer = platform().label("O");
 
 
 	transient private IBAnimation _pickUpAnimation;
@@ -78,7 +78,7 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 		
 		IBPoint orig = spritePosition(-1,1);
 		IBPoint dest = spritePosition(isOfSet1?0:1, 2);
-		dest = BPlatform.instance().point((dest.x()*2+orig.x())/3, dest.y()+20);
+		dest = platform().point((dest.x()*2+orig.x())/3, dest.y()+20);
 		
 		IBAnimation animation = createPickUpAnimation();
 		animation = new BConcatenateAnimation( animation,createDragAnimation(dest,900) );
@@ -86,7 +86,7 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 		animation = new BConcatenateAnimation( animation,createDropAnimation(dest) );
 		animation = new BConcatenateAnimation( animation,createOutSetAnimation(isOfSet1?_set1Sprites:_set2Sprites, null) );
 		
-		BAnimator a = BPlatform.instance().game().animator();
+		BAnimator a = platform().game().animator();
 		a.finishAnimations();
 		a.addAnimation(animation);
 	}
@@ -377,7 +377,7 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	}
 	
 	private BAnimator animator(){
-		return BPlatform.instance().game().animator();
+		return platform().game().animator();
 	}
 
 	@Override

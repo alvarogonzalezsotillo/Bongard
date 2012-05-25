@@ -12,10 +12,10 @@ import ollitos.platform.IBCanvas.CanvasContext;
 
 public abstract class BDrawable implements IBDrawable, IBTransformAnimable, IBCanvas.CanvasContextProvider{
 
-	protected IBTransform _t = BPlatform.instance().identityTransform();
+	protected IBTransform _t = platform().identityTransform();
 	protected IBTransform _tt;
 	private boolean _visible = true;
-	private BCanvasContext _canvasContext = (BCanvasContext) BPlatform.instance().canvasContext();
+	private BCanvasContext _canvasContext = (BCanvasContext) platform().canvasContext();
 	
 	@Override
 	public BCanvasContext canvasContext() {
@@ -103,7 +103,7 @@ public abstract class BDrawable implements IBDrawable, IBTransformAnimable, IBCa
 		
 		IBTransform tt = temporaryTransform();
 		if( tt != null ){
-			IBTransform temp = BPlatform.instance().identityTransform();
+			IBTransform temp = platform().identityTransform();
 			temp.concatenate(t);
 			temp.concatenate(tt);
 			t = temp;
@@ -120,7 +120,7 @@ public abstract class BDrawable implements IBDrawable, IBTransformAnimable, IBCa
 		IBTransform t = transformWithTemporary();
 		
 		if( aditionalTransform != null ){
-			IBTransform temp = BPlatform.instance().identityTransform();
+			IBTransform temp = platform().identityTransform();
 			temp.concatenate(aditionalTransform);
 			temp.concatenate(t);
 			t = temp;
@@ -133,17 +133,21 @@ public abstract class BDrawable implements IBDrawable, IBTransformAnimable, IBCa
 
 	@Override
 	public IBPoint position(){
-		IBPoint ret = BPlatform.instance().point(0, 0);
+		IBPoint ret = platform().point(0, 0);
 		ret = transform().transform(ret);
 		return ret;
 	}
 
 	public IBPoint temporaryPosition(){
-		IBPoint ret = BPlatform.instance().point(0, 0);
+		IBPoint ret = platform().point(0, 0);
 		ret = transformWithTemporary().transform(ret);
 		return ret;
 	}
 
+	public BPlatform platform(){
+		return BPlatform.instance();
+	}
+	
 	/**
 	 * Draw ignoring the internal transform, only the given transform 
 	 * @param c
