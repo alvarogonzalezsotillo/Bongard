@@ -4,17 +4,14 @@ import java.io.IOException;
 
 import ollitos.geom.BRectangle;
 import ollitos.geom.IBRectangle;
-import ollitos.geom.IBTransform;
 import ollitos.gui.basic.BButton;
 import ollitos.gui.basic.BSprite;
 import ollitos.gui.container.BFlippableContainer;
-import ollitos.gui.container.BFlippableDrawableWrapper;
 import ollitos.gui.container.IBDrawableContainer;
 import ollitos.gui.container.IBFlippableDrawable;
 import ollitos.gui.container.IBFlippableModel;
 import ollitos.platform.BResourceLocator;
 import ollitos.platform.BState;
-import ollitos.platform.IBCanvas;
 import ollitos.platform.IBRaster;
 import ollitos.util.BException;
 
@@ -49,7 +46,7 @@ public class BGameHelp extends BFlippableContainer{
 					BButton button = new BButton(ret);
 					button.setSizeTo(s, false, true);
 					button.install(BGameHelp.this);
-					_html = new BFlippableDrawableWrapper( button );
+					_html = ( button );
 				}
 				return _html;
 			}

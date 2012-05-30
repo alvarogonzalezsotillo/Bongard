@@ -273,16 +273,16 @@ public class BFlippableContainer extends BDrawableContainer {
 		double w = originalSize().w();
 		IBTransform i = platform().identityTransform();
 		if (current() != null) {
-			current().setTransform(i);
-			current().transform().translate(dx, 0);
+			current().drawable().setTransform(i);
+			current().drawable().transform().translate(dx, 0);
 		}
 		if (right() != null) {
-			right().setTransform(i);
-			right().transform().translate(dx + w + MARGIN, 0);
+			right().drawable().setTransform(i);
+			right().drawable().transform().translate(dx + w + MARGIN, 0);
 		}
 		if (left() != null) {
-			left().setTransform(i);
-			left().transform().translate(dx - w - MARGIN, 0);
+			left().drawable().setTransform(i);
+			left().drawable().transform().translate(dx - w - MARGIN, 0);
 		}
 
 	}
@@ -292,14 +292,14 @@ public class BFlippableContainer extends BDrawableContainer {
 		int oldIndex = _currentIndex;
 		
 		if (current() != null) {
-			removeListener(current().listener());
+			removeListener(current().drawable().listener());
 			current().setFlippableContainer(null);
 		}
 
 		_currentIndex = x;
 
 		if (current() != null) {
-			addListener(current().listener());
+			addListener(current().drawable().listener());
 			current().setFlippableContainer(this);
 		}
 		
@@ -359,11 +359,11 @@ public class BFlippableContainer extends BDrawableContainer {
 		draw_background(c,t);
 
 		if (left() != null)
-			left().draw(c, t);
+			left().drawable().draw(c, t);
 		if (right() != null)
-			right().draw(c, t);
+			right().drawable().draw(c, t);
 		if (current() != null)
-			current().draw(c, t);
+			current().drawable().draw(c, t);
 
 		draw_boxes( c, t );
 	}
@@ -551,7 +551,7 @@ public class BFlippableContainer extends BDrawableContainer {
 		if (current() == null) {
 			return;
 		}
-		IBRectangle origin = current().originalSize();
+		IBRectangle origin = current().drawable().originalSize();
 		IBRectangle destination = originalSize();
 		if( origin == null ){
 			throw new BException("originalSize of current is null:" + current(),null );
@@ -565,7 +565,7 @@ public class BFlippableContainer extends BDrawableContainer {
 	@Override
 	public IBRectangle originalSize() {
 		if (current() != null) {
-			return current().originalSize();
+			return current().drawable().originalSize();
 		}
 		return new BRectangle(0, 0, 240, 320);
 	}

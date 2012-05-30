@@ -1,8 +1,8 @@
 package ollitos.gui.event;
 
-import ollitos.geom.IBTransformHolder;
+import ollitos.geom.Holder;
 
 
-public interface IBEventListener extends IBTransformHolder{
+public interface IBEventListener extends Holder{
 	boolean handle(IBEvent e);
 }

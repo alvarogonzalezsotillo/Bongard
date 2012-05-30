@@ -1,5 +1,5 @@
 package ollitos.geom;
 
-public interface IBTransformHolder {
+public interface Holder {
 	IBTransform transform();
 }
