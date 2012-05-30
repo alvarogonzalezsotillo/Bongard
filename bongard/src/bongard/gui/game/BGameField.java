@@ -356,7 +356,7 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	protected void draw_internal(IBCanvas canvas){
 		
 		if( _allSprites == null ){
-			return;
+			return;                
 		}
 		
 		for( BSprite s: _allSprites ){

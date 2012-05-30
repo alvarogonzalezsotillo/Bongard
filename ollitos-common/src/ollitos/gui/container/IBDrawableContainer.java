@@ -8,8 +8,6 @@ import ollitos.platform.BState;
 
 public interface IBDrawableContainer extends IBDrawable, IBEventSource, IBEventConsumer{
 
-	IBRectangle originalSize(); // TODO: maybe move to IBDrawable
-	
 	public BState save();
 
 }

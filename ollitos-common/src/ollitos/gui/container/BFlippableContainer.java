@@ -237,7 +237,11 @@ public class BFlippableContainer extends BDrawableContainer {
 	private static final int MAX_DRAWABLES_WIDTH = 10;
 	
 
+	public BFlippableContainer() {
+		this( null, 0);
+	}
 
+	
 	public BFlippableContainer(IBFlippableModel model) {
 		this( model, 0);
 	}
@@ -249,7 +253,7 @@ public class BFlippableContainer extends BDrawableContainer {
 
 	private void setModel(IBFlippableModel model) {
 		_model = model;
-		BResourceLocator background = _model.background();
+		BResourceLocator background = _model != null ? _model.background() : null;
 		if( background != null ){
 			IBRaster r = platform().raster( background, true );
 			_backgroundSprite = platform().sprite(r);
@@ -270,15 +274,15 @@ public class BFlippableContainer extends BDrawableContainer {
 		IBTransform i = platform().identityTransform();
 		if (current() != null) {
 			current().setTransform(i);
-			current().translate(dx, 0);
+			current().transform().translate(dx, 0);
 		}
 		if (right() != null) {
 			right().setTransform(i);
-			right().translate(dx + w + MARGIN, 0);
+			right().transform().translate(dx + w + MARGIN, 0);
 		}
 		if (left() != null) {
 			left().setTransform(i);
-			left().translate(dx - w - MARGIN, 0);
+			left().transform().translate(dx - w - MARGIN, 0);
 		}
 
 	}

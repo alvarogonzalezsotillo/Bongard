@@ -1,6 +1,7 @@
 package ollitos.gui.basic;
 
 import ollitos.geom.IBPoint;
+import ollitos.geom.IBRectangle;
 import ollitos.geom.IBTransform;
 import ollitos.platform.BPlatform;
 import ollitos.platform.IBCanvas;
@@ -39,6 +40,11 @@ public class BLabel extends BDrawable{
 	@Override
 	protected void draw_internal(IBCanvas c) {
 		c.drawString(this, text(), 0, 0);
+	}
+
+	@Override
+	public IBRectangle originalSize() {
+		throw new IllegalStateException();
 	}
 
 }

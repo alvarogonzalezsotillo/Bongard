@@ -51,43 +51,6 @@ public abstract class BDrawable implements IBDrawable, IBTransformAnimable, IBCa
 		_t = t.copy();
 	}
 
-	/**
-	 * 
-	 */
-	@Override
-	public void scale(double x, double y){
-		_t.scale(x, y);
-	}
-	
-	/**
-	 * 
-	 */
-	@Override
-	public void rotate(double a){
-		_t.rotate(a);
-	}
-	
-	/**
-	 * 
-	 */
-	@Override
-	public void translate(double x, double y){
-		_t.translate(x, y);
-	}
-	
-	/**
-	 * 
-	 */
-	@Override
-	public void concatenate( IBTransform t ){
-		_t.concatenate(t);
-	}
-	
-	@Override
-	public void preConcatenate( IBTransform t ){
-		_t.preConcatenate(t);
-	}
-	
 
 	@Override
 	public void applyTemporaryTransform(){
