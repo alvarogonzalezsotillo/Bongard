@@ -3,6 +3,7 @@ package ollitos.gui.container;
 import ollitos.gui.basic.BRectangularDrawable;
 import ollitos.gui.event.BListenerList;
 import ollitos.gui.event.IBEvent;
+import ollitos.gui.event.IBEventConsumer;
 import ollitos.gui.event.IBEventListener;
 import ollitos.platform.BState;
 import ollitos.util.BException;
@@ -10,7 +11,20 @@ import ollitos.util.BException;
 public abstract class BDrawableContainer extends BRectangularDrawable implements IBDrawableContainer{
 
 	private BListenerList _listeners = new BListenerList(this);
+
+	@Override
+	public void addEventConsumer(IBEventConsumer c) {
+		if( c != null ){
+			addListener( c.listener() );
+		}
+	}
 	
+	@Override
+	public void removeEventConsumer(IBEventConsumer c) {
+		if( c != null ){
+			removeListener( c.listener() );
+		}
+	}
 	
 	public void addListener(IBEventListener l) {
 		if( l != null ){

@@ -3,9 +3,13 @@ package bongard.gui.game;
 import java.io.IOException;
 
 import ollitos.geom.BRectangle;
+import ollitos.geom.IBPoint;
 import ollitos.geom.IBRectangle;
+import ollitos.geom.IBTransform;
 import ollitos.gui.basic.BButton;
 import ollitos.gui.basic.BSprite;
+import ollitos.gui.basic.IBDrawable;
+import ollitos.gui.basic.IBRectangularDrawable;
 import ollitos.gui.container.BFlippableContainer;
 import ollitos.gui.container.IBDrawableContainer;
 import ollitos.gui.container.IBFlippableDrawable;
@@ -22,6 +26,7 @@ public class BGameHelp extends BFlippableContainer{
 	
 	public BGameHelp(){
 		super();
+		setModel(createModel(),0);
 	}
 	
 	private IBFlippableModel createModel() {
@@ -43,10 +48,43 @@ public class BGameHelp extends BFlippableContainer{
 					BSprite ret = new BSprite(r);
 					ret.setAntialias(true);
 
-					BButton button = new BButton(ret);
+					final BButton button = new BButton(ret);
 					button.setSizeTo(s, false, true);
 					button.install(BGameHelp.this);
-					_html = ( button );
+					_html = new IBFlippableDrawable() {
+						
+						@Override
+						public void setUp() {
+						}
+						
+						@Override
+						public boolean disposed() {
+							return false;
+						}
+						
+						@Override
+						public void dispose() {
+						}
+						
+						@Override
+						public IBDrawable drawable() {
+							return button;
+						}
+						
+						@Override
+						public void setFlippableContainer(BFlippableContainer c) {
+						}
+						
+						@Override
+						public IBRectangularDrawable icon() {
+							return null;
+						}
+						
+						@Override
+						public BFlippableContainer flippableContainer() {
+							return null;
+						}
+					};
 				}
 				return _html;
 			}

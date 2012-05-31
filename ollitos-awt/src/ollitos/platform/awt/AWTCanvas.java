@@ -26,7 +26,7 @@ public class AWTCanvas implements IBCanvas{
 		return _graphics;
 	}
 
-	private static Graphics2D cloneAndSet( Graphics2D g, CanvasContextProvider cp ){
+	private static Graphics2D cloneAndSet( Graphics2D g, CanvasContextHolder cp ){
 		Graphics2D ret =(Graphics2D) g.create();
 		CanvasContext c = cp.canvasContext();
 		
@@ -49,21 +49,21 @@ public class AWTCanvas implements IBCanvas{
 	}
 	
 	@Override
-	public void drawString(CanvasContextProvider c, String str, float x, float y) {
+	public void drawString(CanvasContextHolder c, String str, float x, float y) {
 		Graphics2D g = cloneAndSet(_graphics, c);
 		g.drawString(str, x, y);
 		g.dispose();
 	}
 
 	@Override
-	public void drawRaster(CanvasContextProvider c, IBRaster r, float x, float y) {
+	public void drawRaster(CanvasContextHolder c, IBRaster r, float x, float y) {
 		Graphics2D g = cloneAndSet(_graphics, c);
 		g.drawImage(((AWTRaster)r).image(), (int)x, (int)y, null);
 		g.dispose();
 	}
 
 	@Override
-	public void drawBox(CanvasContextProvider c, IBRectangle r, boolean filled) {
+	public void drawBox(CanvasContextHolder c, IBRectangle r, boolean filled) {
 		Graphics2D g = cloneAndSet(_graphics, c);
 		g.setStroke( new BasicStroke(2) );
 

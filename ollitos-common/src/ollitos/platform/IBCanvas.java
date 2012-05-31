@@ -4,18 +4,18 @@ import ollitos.geom.IBRectangle;
 import ollitos.geom.IBTransform;
 
 public interface IBCanvas{
-	public interface CanvasContextProvider{
+	public interface CanvasContextHolder{
 		CanvasContext canvasContext();
 	}
 	
-	public interface CanvasContext extends CanvasContextProvider{
+	public interface CanvasContext extends CanvasContextHolder{
 		public float alpha();
 		public IBColor color();
 		public IBTransform transform();
 		public boolean antialias();
 	}
 	
-	void drawString(CanvasContextProvider c, String str, float x, float y );
-	void drawRaster(CanvasContextProvider c, IBRaster r, float x, float y );
-	void drawBox( CanvasContextProvider c,  IBRectangle r, boolean filled );
+	void drawString(CanvasContextHolder c, String str, float x, float y );
+	void drawRaster(CanvasContextHolder c, IBRaster r, float x, float y );
+	void drawBox( CanvasContextHolder c,  IBRectangle r, boolean filled );
 }

@@ -3,13 +3,13 @@ package ollitos.gui.event;
 import ollitos.geom.IBPoint;
 import ollitos.geom.IBRectangle;
 import ollitos.geom.IBTransform;
-import ollitos.gui.basic.IBDrawable.Holder;
+import ollitos.geom.IBTransformHolder;
 
 public class BEventAdapter implements IBEventListener{
 	
-	protected Holder _transformHolder;
+	protected IBTransformHolder _transformHolder;
 
-	public BEventAdapter(Holder s){
+	public BEventAdapter(IBTransformHolder s){
 		_transformHolder = s;
 	}
 	

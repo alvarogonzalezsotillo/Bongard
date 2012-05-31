@@ -10,10 +10,12 @@ import ollitos.geom.IBTransform;
 import ollitos.gui.basic.BBox;
 import ollitos.gui.basic.BLabel;
 import ollitos.gui.basic.BSprite;
+import ollitos.gui.basic.IBDrawable;
 import ollitos.gui.basic.IBRectangularDrawable;
 import ollitos.gui.event.BEventAdapter;
 import ollitos.gui.event.BLogListener;
 import ollitos.gui.event.IBEvent;
+import ollitos.gui.event.IBEventConsumer;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 import ollitos.platform.BState;
@@ -247,11 +249,10 @@ public class BFlippableContainer extends BDrawableContainer {
 	}
 
 	public BFlippableContainer(IBFlippableModel model,int x) {
-		setModel(model);
-		setCurrent(x);
+		setModel(model,x);
 	}
 
-	private void setModel(IBFlippableModel model) {
+	public void setModel(IBFlippableModel model, int x) {
 		_model = model;
 		BResourceLocator background = _model != null ? _model.background() : null;
 		if( background != null ){
@@ -262,6 +263,7 @@ public class BFlippableContainer extends BDrawableContainer {
 		else{
 			_backgroundSprite = null;
 		}
+		setCurrent(x);
 	}
 
 	private double drawableOffset(){
@@ -269,6 +271,10 @@ public class BFlippableContainer extends BDrawableContainer {
 	}
 	
 	private void setDrawableOffset(double dx) {
+		if( _model == null ){
+			return;
+		}
+		
 		_dx = dx;
 		double w = originalSize().w();
 		IBTransform i = platform().identityTransform();
@@ -292,14 +298,16 @@ public class BFlippableContainer extends BDrawableContainer {
 		int oldIndex = _currentIndex;
 		
 		if (current() != null) {
-			removeListener(current().drawable().listener());
+			IBDrawable drawable = current().drawable();
+			removeEventConsumer(IBEventConsumer.Util.consumer(drawable));
 			current().setFlippableContainer(null);
 		}
 
 		_currentIndex = x;
 
 		if (current() != null) {
-			addListener(current().drawable().listener());
+			IBDrawable drawable = current().drawable();
+			addEventConsumer(IBEventConsumer.Util.consumer(drawable));
 			current().setFlippableContainer(this);
 		}
 		
@@ -313,6 +321,10 @@ public class BFlippableContainer extends BDrawableContainer {
 	}
 
 	private void disposeAndSetup(int oldIndex, int currentIndex) {
+		if( _model == null ){
+			return;
+		}
+		
 		// MAINTAIN A CACHE OF SETUP DRAWABLES, 
 		// DISPOSE THE REST
 		int cache = MAX_DRAWABLES_WIDTH;
@@ -405,6 +417,9 @@ public class BFlippableContainer extends BDrawableContainer {
 	}
 	
 	protected int[] indexOfBoxes(){
+		if( _model == null ){
+			return new int[0];
+		}
 		int n = _model.width();
 		n = Math.min(n, MAX_DRAWABLES_WIDTH);
 
@@ -515,6 +530,9 @@ public class BFlippableContainer extends BDrawableContainer {
 	}
 
 	private IBFlippableDrawable drawable(int pos) {
+		if( _model == null ){
+			return null;
+		}
 		if (pos >= 0 && pos < _model.width()) {
 			return _model.drawable(pos);
 		}
