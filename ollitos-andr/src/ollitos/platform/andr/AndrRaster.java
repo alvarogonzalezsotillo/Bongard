@@ -51,14 +51,6 @@ public class AndrRaster implements IBRaster {
 	}
 
 	@Override
-	public IBRaster raster(int w, int h) {
-		if( w == w() && h == h() ){
-			return this;
-		}
-		return null;
-	}
-
-	@Override
 	public IBCanvas canvas() {
 		Canvas c = new Canvas(bitmap());
 		return new AndrCanvas(c);
