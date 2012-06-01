@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import ollitos.geom.BRectangle;
 import ollitos.geom.IBRectangle;
-import ollitos.gui.basic.BButton;
 import ollitos.gui.basic.BSprite;
 import ollitos.gui.basic.IBDrawable;
 import ollitos.gui.basic.IBRectangularDrawable;
@@ -29,7 +28,6 @@ public class BGameHelp extends BFlippableContainer{
 	
 	private static IBFlippableModel createModel() {
 		return new Model();
-		//return new BBongardGameModel();
 	}
 	
 	private static class Model implements IBFlippableModel{
@@ -49,7 +47,7 @@ public class BGameHelp extends BFlippableContainer{
 		public static IBDrawable internal(){
 			BResourceLocator l = new BResourceLocator("/examples/help.html" );
 			IBRaster r;
-			IBRectangle htmlRectangle = new BRectangle(0, 0, 240, 480);
+			IBRectangle htmlRectangle = new BRectangle(0, 0, 240, 320);
 			try {
 				r = BPlatform.instance().rasterUtil().html(htmlRectangle, l);
 			}
@@ -58,12 +56,7 @@ public class BGameHelp extends BFlippableContainer{
 			}
 			BSprite sprite = new BSprite(r);
 			sprite.setAntialias(true);
-//			return sprite;
-
-			final BButton button = new BButton(sprite);
-			button.setSizeTo(htmlRectangle, true, true);
-			BButton ret = button;
-			return ret;
+			return sprite;
 		}
 		
 		@Override

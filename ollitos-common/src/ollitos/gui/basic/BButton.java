@@ -10,6 +10,7 @@ import ollitos.gui.event.BEventAdapter;
 import ollitos.gui.event.IBEventConsumer;
 import ollitos.gui.event.IBEventListener;
 import ollitos.gui.event.IBEventSource;
+import ollitos.platform.BCanvasContextDelegate;
 import ollitos.platform.BPlatform;
 import ollitos.platform.IBCanvas;
 import ollitos.platform.IBLogger;
