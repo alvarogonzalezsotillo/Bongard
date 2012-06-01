@@ -78,6 +78,7 @@ public class BButton extends BRectangularDrawable implements IBEventConsumer{
 
 	private void setDrawable(IBRectangularDrawable drawable) {
 		_drawable = drawable;
+		setOriginalSize(BRectangle.centerAtOrigin(_drawable.originalSize()));
 		BTransformUtil.setTo(_drawable.transform(), _drawable.originalSize(), originalSize(), false, true);
 	}
 

@@ -46,7 +46,6 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 
 	private BGameModel _model;
 	
-	transient private BFlippableContainer _container;
 
 	transient private BBox _icon;
 
@@ -232,7 +231,7 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	}
 
 	public BGameField(BProblem test,BGameModel model){
-
+		super( BGameField.computeOriginalSize());
 		setProblem(test);
 		setModel(model);
 		init();
@@ -378,16 +377,6 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	
 	private BAnimator animator(){
 		return platform().game().animator();
-	}
-
-	@Override
-	public BFlippableContainer flippableContainer() {
-		return _container;
-	}
-
-	@Override
-	public void setFlippableContainer(BFlippableContainer c) {
-		_container = c;
 	}
 	
 	public boolean correctAnswer(){

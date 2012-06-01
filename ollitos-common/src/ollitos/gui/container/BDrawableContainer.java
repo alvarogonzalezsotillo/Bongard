@@ -1,5 +1,6 @@
 package ollitos.gui.container;
 
+import ollitos.geom.IBRectangle;
 import ollitos.gui.basic.BRectangularDrawable;
 import ollitos.gui.event.BListenerList;
 import ollitos.gui.event.IBEvent;
@@ -17,6 +18,10 @@ public abstract class BDrawableContainer extends BRectangularDrawable implements
 		if( c != null ){
 			addListener( c.listener() );
 		}
+	}
+	
+	public BDrawableContainer(IBRectangle r){
+		super(r);
 	}
 	
 	@Override

@@ -59,6 +59,7 @@ public class BStartField extends BDrawableContainer{
 	}
 	
 	public BStartField() {
+		super(BGameField.computeOriginalSize());
 		_startGameSprite = createButton(0,0,"/images/start/startGame.png");
 		_helpGameSprite = createButton(0,1,"/images/start/helpGame.png");
 		_startOriginalSprite = createButton(1,0,"/images/start/startOriginal.png");
@@ -120,7 +121,7 @@ public class BStartField extends BDrawableContainer{
 			@Override
 			public void run() {
 				BBongardGameModel m = new BBongardGameModel();
-				BFlippableContainer d = new BFlippableContainer( m );
+				BFlippableContainer d = new BFlippableContainer( BGameField.computeOriginalSize(), m );
 				platform().game().screen().setDrawable( d );
 			}
 		});

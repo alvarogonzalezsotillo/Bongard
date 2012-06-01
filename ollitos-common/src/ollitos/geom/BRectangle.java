@@ -1,8 +1,10 @@
 package ollitos.geom;
 
+import java.io.Serializable;
 
 
-public class BRectangle implements IBRectangle{
+
+public class BRectangle implements IBRectangle, Serializable{
 	private double _x;
 	private double _y;
 	private double _w;
@@ -36,6 +38,10 @@ public class BRectangle implements IBRectangle{
 		double h = r.h()+d*2;
 		IBRectangle ret = new BRectangle(x, y, w, h);
 		return ret;
+	}
+	
+	public static IBRectangle centerAtOrigin(IBRectangle r){
+		return new BRectangle(-r.w()/2, -r.h()/2, r.w(), r.h() );
 	}
 
 	public static IBRectangle resize( IBRectangle r, double d ){

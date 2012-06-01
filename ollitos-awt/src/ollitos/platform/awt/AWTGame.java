@@ -105,9 +105,9 @@ public class AWTGame extends BGame{
 	 */
 	@Override
 	public void restore(BState state) {
-		super.restore(state);
 		Container c = container();
 		c.setVisible(true);
+		super.restore(state);
 		screen().canvasImpl().requestFocusInWindow();
 	}
 

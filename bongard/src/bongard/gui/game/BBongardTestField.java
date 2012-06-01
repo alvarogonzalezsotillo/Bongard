@@ -2,6 +2,7 @@ package bongard.gui.game;
 
 import java.io.Serializable;
 
+import ollitos.geom.BRectangle;
 import ollitos.geom.IBRectangle;
 import ollitos.gui.basic.BSprite;
 import ollitos.gui.basic.IBRectangularDrawable;
@@ -20,10 +21,10 @@ public class BBongardTestField extends BDrawableContainer implements IBFlippable
 	private BResourceLocator _locator;
 	transient private BProblem _problem;
 	transient private BSprite _sprite;
-	transient private BFlippableContainer _container;
 	
 	
 	public BBongardTestField(BResourceLocator l){
+		super( BGameField.computeOriginalSize() );
 		setLocator(l);
 	}
 
@@ -60,17 +61,6 @@ public class BBongardTestField extends BDrawableContainer implements IBFlippable
 	@Override
 	protected void draw_internal(IBCanvas c) {
 		_sprite.draw(c, canvasContext().transform());
-	}
-
-	@Override
-	public BFlippableContainer flippableContainer() {
-		return _container;
-	}
-
-
-	@Override
-	public void setFlippableContainer(BFlippableContainer c) {
-		_container = c;
 	}
 
 	@Override

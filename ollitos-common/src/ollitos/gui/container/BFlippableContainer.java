@@ -239,16 +239,17 @@ public class BFlippableContainer extends BDrawableContainer {
 	private static final int MAX_DRAWABLES_WIDTH = 10;
 	
 
-	public BFlippableContainer() {
-		this( null, 0);
+	public BFlippableContainer(IBRectangle r) {
+		this( r, null, 0);
 	}
 
 	
-	public BFlippableContainer(IBFlippableModel model) {
-		this( model, 0);
+	public BFlippableContainer(IBRectangle r, IBFlippableModel model) {
+		this( r, model, 0);
 	}
 
-	public BFlippableContainer(IBFlippableModel model,int x) {
+	public BFlippableContainer(IBRectangle r, IBFlippableModel model,int x) {
+		super( r );
 		setModel(model,x);
 	}
 
@@ -277,17 +278,14 @@ public class BFlippableContainer extends BDrawableContainer {
 		
 		_dx = dx;
 		double w = originalSize().w();
-		IBTransform i = platform().identityTransform();
+		adjustTransformToSize();
 		if (current() != null) {
-			current().drawable().setTransform(i);
 			current().drawable().transform().translate(dx, 0);
 		}
 		if (right() != null) {
-			right().drawable().setTransform(i);
 			right().drawable().transform().translate(dx + w + MARGIN, 0);
 		}
 		if (left() != null) {
-			left().drawable().setTransform(i);
 			left().drawable().transform().translate(dx - w - MARGIN, 0);
 		}
 
@@ -300,7 +298,6 @@ public class BFlippableContainer extends BDrawableContainer {
 		if (current() != null) {
 			IBDrawable drawable = current().drawable();
 			removeEventConsumer(IBEventConsumer.Util.consumer(drawable));
-			current().setFlippableContainer(null);
 		}
 
 		_currentIndex = x;
@@ -308,14 +305,11 @@ public class BFlippableContainer extends BDrawableContainer {
 		if (current() != null) {
 			IBDrawable drawable = current().drawable();
 			addEventConsumer(IBEventConsumer.Util.consumer(drawable));
-			current().setFlippableContainer(this);
 		}
 		
 		disposeAndSetup(oldIndex, _currentIndex );
-
 		
 
-		adjustTransformToSize();
 		setDrawableOffset(0);
 		platform().game().screen().refresh();
 	}
@@ -370,12 +364,15 @@ public class BFlippableContainer extends BDrawableContainer {
 		IBTransform t = canvasContext().transform();
 		draw_background(c,t);
 
-		if (left() != null)
-			left().drawable().draw(c, t);
-		if (right() != null)
-			right().drawable().draw(c, t);
-		if (current() != null)
-			current().drawable().draw(c, t);
+		IBFlippableDrawable left = left();
+		if (left != null)
+			left.drawable().draw(c, t);
+		IBFlippableDrawable right = right();
+		if (right != null)
+			right.drawable().draw(c, t);
+		IBFlippableDrawable current = current();
+		if (current != null)
+			current.drawable().draw(c, t);
 
 		draw_boxes( c, t );
 	}
@@ -565,41 +562,50 @@ public class BFlippableContainer extends BDrawableContainer {
 		return _flipAdapter.handle(e);
 	}
 
-	public void adjustTransformToSize() {
-		if (current() == null) {
+	private void adjustTransformToSize() {
+		adjustToMySize(left());
+		adjustToMySize(current());
+		adjustToMySize(right());
+	}
+	
+	private void adjustToMySize(IBFlippableDrawable fd){
+		if( fd == null ){
 			return;
 		}
-		IBRectangle origin = current().drawable().originalSize();
+		adjustToMySize(fd.drawable());
+	}
+	
+	private void adjustToMySize(IBDrawable drawable){
+		if( drawable == null ){
+			return;
+		}
+		
+		IBRectangle origin = drawable.originalSize();
 		IBRectangle destination = originalSize();
 		if( origin == null ){
 			throw new BException("originalSize of current is null:" + current(),null );
 		}
 		if( destination == null ){
-			throw new BException("originalSize is null:" + this,null );
+			throw new BException("destination is null:" + this,null );
 		}
-		BTransformUtil.setTo(transform(),origin, destination, true, true);
+		BTransformUtil.setTo(drawable.transform(),origin, destination, true, true);
 	}
 
-	@Override
-	public IBRectangle originalSize() {
-		if (current() != null) {
-			return current().drawable().originalSize();
-		}
-		return new BRectangle(0, 0, 240, 320);
-	}
 
 	@SuppressWarnings("serial")
 	private static class MyState extends BState{
 		private IBFlippableModel _myModel;
 		private int _index;
+		private IBRectangle _r;
 		public MyState(BFlippableContainer fc) {
 			_myModel = fc._model;
+			_r = fc.originalSize();
 			_index = fc.currentIndex();
 		}
 
 		@Override
 		public IBDrawableContainer createDrawable() {
-			BFlippableContainer ret = new BFlippableContainer(_myModel);
+			BFlippableContainer ret = new BFlippableContainer(_r,_myModel);
 			ret.setCurrent( _index );
 			return ret;
 		}

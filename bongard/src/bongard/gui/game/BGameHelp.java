@@ -3,9 +3,7 @@ package bongard.gui.game;
 import java.io.IOException;
 
 import ollitos.geom.BRectangle;
-import ollitos.geom.IBPoint;
 import ollitos.geom.IBRectangle;
-import ollitos.geom.IBTransform;
 import ollitos.gui.basic.BButton;
 import ollitos.gui.basic.BSprite;
 import ollitos.gui.basic.IBDrawable;
@@ -14,108 +12,114 @@ import ollitos.gui.container.BFlippableContainer;
 import ollitos.gui.container.IBDrawableContainer;
 import ollitos.gui.container.IBFlippableDrawable;
 import ollitos.gui.container.IBFlippableModel;
+import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 import ollitos.platform.BState;
+import ollitos.platform.IBCanvas;
 import ollitos.platform.IBRaster;
 import ollitos.util.BException;
 
 
+
 public class BGameHelp extends BFlippableContainer{
 
-	
-	
 	public BGameHelp(){
-		super();
-		setModel(createModel(),0);
+		super(BGameField.computeOriginalSize(),createModel());
 	}
 	
-	private IBFlippableModel createModel() {
-		return new IBFlippableModel() {
+	private static IBFlippableModel createModel() {
+		return new Model();
+		//return new BBongardGameModel();
+	}
+	
+	private static class Model implements IBFlippableModel{
 			
-			private IBFlippableDrawable _html;
-			
-			public IBFlippableDrawable html(){
-				if (_html == null) {
-					BResourceLocator l = new BResourceLocator("/examples/help.html" );
-					IBRaster r;
-					IBRectangle s = originalSize();
-					IBRectangle htmlRectangle = new BRectangle(0, 0, 240, 240*s.h()/s.w());
-					try {
-						r = platform().rasterUtil().html(htmlRectangle, l);
-					} catch (IOException ex) {
-						throw new BException( "Cant load:" + l, ex );
-					}
-					BSprite ret = new BSprite(r);
-					ret.setAntialias(true);
+		private IBFlippableDrawable _fd[];
+		
+		public Model(){
+			_fd = new IBFlippableDrawable[width()];
+		}
 
-					final BButton button = new BButton(ret);
-					button.setSizeTo(s, false, true);
-					button.install(BGameHelp.this);
-					_html = new IBFlippableDrawable() {
-						
-						@Override
-						public void setUp() {
-						}
-						
-						@Override
-						public boolean disposed() {
-							return false;
-						}
-						
-						@Override
-						public void dispose() {
-						}
-						
-						@Override
-						public IBDrawable drawable() {
-							return button;
-						}
-						
-						@Override
-						public void setFlippableContainer(BFlippableContainer c) {
-						}
-						
-						@Override
-						public IBRectangularDrawable icon() {
-							return null;
-						}
-						
-						@Override
-						public BFlippableContainer flippableContainer() {
-							return null;
-						}
-					};
+		@Override
+		public int width(){
+			return 10;
+		}
+		
+		
+		public static IBDrawable internal(){
+			BResourceLocator l = new BResourceLocator("/examples/help.html" );
+			IBRaster r;
+			IBRectangle htmlRectangle = new BRectangle(0, 0, 240, 480);
+			try {
+				r = BPlatform.instance().rasterUtil().html(htmlRectangle, l);
+			}
+			catch (IOException ex) {
+				throw new BException( "Cant load:" + l, ex );
+			}
+			BSprite sprite = new BSprite(r);
+			sprite.setAntialias(true);
+//			return sprite;
+
+			final BButton button = new BButton(sprite);
+			button.setSizeTo(htmlRectangle, true, true);
+			BButton ret = button;
+			return ret;
+		}
+		
+		@Override
+		public IBFlippableDrawable drawable(int x) {
+			if( _fd[x] != null ){
+				return _fd[x];
+			}
+			
+			_fd[x] = new IBFlippableDrawable() {
+				
+				private IBDrawable _d;
+
+				@Override
+				public void setUp() {
 				}
-				return _html;
-			}
+				
+				@Override
+				public boolean disposed() {
+					return false;
+				}
+				
+				@Override
+				public void dispose() {
+				}
+				
+				@Override
+				public IBDrawable drawable() {
+					if( _d == null ){
+						_d = internal();
+					}
+					return _d;
+				}
+				
+				@Override
+				public IBRectangularDrawable icon() {
+					return null;
+				}
+			};
 			
-			@Override
-			public int width() {
-				return 3;
-			}
+			return _fd[x];
+		}
+		
+		@Override
+		public void dispose(int x) {
+		}
+		
+		@Override
+		public BResourceLocator background() {
+			return null;
+		}
+	};
 			
-			@Override
-			public IBFlippableDrawable drawable(int x) {
-				return html();
-			}
-			
-			@Override
-			public void dispose(int x) {
-			}
-			
-			@Override
-			public BResourceLocator background() {
-				return null;
-			}
-		};
-	}
-
-
-	private IBRectangle _rectangle = new BRectangle(0, 0, 200, 320 );
-	
 	@Override
-	public IBRectangle originalSize() {
-		return _rectangle;
+	protected void draw_internal(IBCanvas c) {
+		super.draw_internal(c);
+		c.drawBox(this, originalSize(), false);
 	}
 	
 	@SuppressWarnings("serial")
