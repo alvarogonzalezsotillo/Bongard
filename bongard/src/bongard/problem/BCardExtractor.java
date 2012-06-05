@@ -113,7 +113,7 @@ public abstract class BCardExtractor{
 		int count = 3;
 		BResourceLocator[] ret = new BResourceLocator[count];
 		for( int i = 0 ; i < count ; i++ ){
-			ret[i] = new BResourceLocator(String.format("/images/examples/p%03d.png", i+1 ));
+			ret[i] = new BResourceLocator(String.format("/examples/p%03d.png", i+1 ));
 		}
 		return ret;
 	}
