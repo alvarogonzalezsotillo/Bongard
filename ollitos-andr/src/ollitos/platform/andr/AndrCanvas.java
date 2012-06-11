@@ -40,7 +40,7 @@ public class AndrCanvas implements IBCanvas{
 	}
 	
 	@Override
-	public void drawString(CanvasContextProvider c, String str, float x, float y) {
+	public void drawString(CanvasContextHolder c, String str, float x, float y) {
 		AndrCanvasContext canvasContext = (AndrCanvasContext)c.canvasContext();
 		Canvas ac = save(canvasContext);
 		
@@ -50,7 +50,7 @@ public class AndrCanvas implements IBCanvas{
 	}
 
 	@Override
-	public void drawRaster(CanvasContextProvider c, IBRaster r, float x, float y) {
+	public void drawRaster(CanvasContextHolder c, IBRaster r, float x, float y) {
 		AndrCanvasContext canvasContext = (AndrCanvasContext)c.canvasContext();
 		Canvas ac = save(canvasContext);
 		
@@ -63,7 +63,7 @@ public class AndrCanvas implements IBCanvas{
 	}
 
 	@Override
-	public void drawBox(CanvasContextProvider c, IBRectangle rect, boolean filled) {
+	public void drawBox(CanvasContextHolder c, IBRectangle rect, boolean filled) {
 		AndrCanvasContext canvasContext = (AndrCanvasContext)c.canvasContext();
 		Canvas ac = save(canvasContext);
 
