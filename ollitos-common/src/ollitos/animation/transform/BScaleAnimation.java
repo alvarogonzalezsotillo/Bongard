@@ -1,4 +1,4 @@
-package ollitos.animation;
+package ollitos.animation.transform;
 
 import ollitos.geom.IBTransform;
 import ollitos.platform.BPlatform;

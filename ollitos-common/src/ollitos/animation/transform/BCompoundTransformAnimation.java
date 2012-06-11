@@ -1,5 +1,7 @@
-package ollitos.animation;
+package ollitos.animation.transform;
 
+import ollitos.animation.IBAnimable;
+import ollitos.animation.IBAnimation;
 import ollitos.geom.IBTransform;
 import ollitos.platform.BPlatform;
 

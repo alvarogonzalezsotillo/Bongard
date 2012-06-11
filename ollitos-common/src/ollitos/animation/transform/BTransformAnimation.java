@@ -1,5 +1,7 @@
-package ollitos.animation;
+package ollitos.animation.transform;
 
+import ollitos.animation.BFixedDurationAnimation;
+import ollitos.animation.IBAnimable;
 import ollitos.geom.IBTransform;
 
 public abstract class BTransformAnimation extends BFixedDurationAnimation{

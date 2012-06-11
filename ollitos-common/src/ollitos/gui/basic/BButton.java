@@ -1,8 +1,8 @@
 package ollitos.gui.basic;
 
-import ollitos.animation.BScaleAnimation;
 import ollitos.animation.BWaitForAnimation;
 import ollitos.animation.IBAnimation;
+import ollitos.animation.transform.BScaleAnimation;
 import ollitos.geom.BRectangle;
 import ollitos.geom.IBPoint;
 import ollitos.geom.IBTransform;

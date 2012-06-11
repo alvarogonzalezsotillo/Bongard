@@ -67,7 +67,7 @@ public class BTransformUtil {
 		t.translate( -oCenter.x(), -oCenter.y() );
 		trans.preConcatenate(t);
 		
-		// CAMBIO TAMAÑO
+		// CAMBIO TAMANO
 		t = BPlatform.instance().identityTransform();
 		t.scale(sx, sy);
 		trans.preConcatenate(t);

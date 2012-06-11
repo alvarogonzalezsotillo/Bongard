@@ -16,10 +16,12 @@ import ollitos.gui.event.BEventAdapter;
 import ollitos.gui.event.BLogListener;
 import ollitos.gui.event.IBEvent;
 import ollitos.gui.event.IBEventConsumer;
+import ollitos.platform.BCanvasContextDelegate;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 import ollitos.platform.BState;
 import ollitos.platform.IBCanvas;
+import ollitos.platform.IBCanvas.CanvasContext;
 import ollitos.platform.IBDisposable;
 import ollitos.platform.IBLogger;
 import ollitos.platform.IBRaster;
@@ -225,7 +227,7 @@ public class BFlippableContainer extends BDrawableContainer {
 	private double _dx;
 
 
-	private BSprite _backgroundSprite;
+	private IBRaster _backgroundSprite;
 
 	private BBox _box;
 
@@ -258,8 +260,7 @@ public class BFlippableContainer extends BDrawableContainer {
 		BResourceLocator background = _model != null ? _model.background() : null;
 		if( background != null ){
 			IBRaster r = platform().raster( background, true );
-			_backgroundSprite = platform().sprite(r);
-			_backgroundSprite.setAlfa(.3f);
+			_backgroundSprite = r;
 		}
 		else{
 			_backgroundSprite = null;
@@ -279,14 +280,22 @@ public class BFlippableContainer extends BDrawableContainer {
 		_dx = dx;
 		double w = originalSize().w();
 		adjustTransformToSize();
+		
+		IBTransform t = platform().identityTransform();
 		if (current() != null) {
-			current().drawable().transform().translate(dx, 0);
+			t.toIdentity();
+			t.translate(dx,0);
+			current().drawable().transform().preConcatenate(t);
 		}
 		if (right() != null) {
-			right().drawable().transform().translate(dx + w + MARGIN, 0);
+			t.toIdentity();
+			t.translate(dx + w + MARGIN, 0);
+			right().drawable().transform().preConcatenate(t);
 		}
 		if (left() != null) {
-			left().drawable().transform().translate(dx - w - MARGIN, 0);
+			t.toIdentity();
+			t.translate(dx - w - MARGIN, 0);
+			left().drawable().transform().preConcatenate(t);
 		}
 
 	}
@@ -382,11 +391,13 @@ public class BFlippableContainer extends BDrawableContainer {
 			return;
 		}
 		
-		double scale = (originalSize().h())/_backgroundSprite.originalSize().h();
-		double dx = _backgroundSprite.originalSize().w()/2;
+		int h = _backgroundSprite.h();
+		double scale = (originalSize().h())/h;
+		int w = _backgroundSprite.w();
+		double dx = w/2;
 		
 		double offsetAtFirstIndex = 0;
-		double offsetAtLastIndex = -_backgroundSprite.originalSize().w() + originalSize().w()/scale;
+		double offsetAtLastIndex = -w + originalSize().w()/scale;
 		double offsetPerIndex = (offsetAtFirstIndex + offsetAtLastIndex)/(_model.width()-1);
 		if( offsetPerIndex < -originalSize().w()/scale ){
 			offsetPerIndex = -originalSize().w()/scale;
@@ -398,11 +409,14 @@ public class BFlippableContainer extends BDrawableContainer {
 		
 		dx *= scale;
 		double dy = originalSize().h()/2;
-		IBTransform bst = _backgroundSprite.transform();
-		bst.toIdentity();
+		IBTransform bst = platform().identityTransform();
 		bst.translate(dx, dy);
 		bst.scale(scale, scale);
-		_backgroundSprite.draw(c, t);
+		bst.preConcatenate(t);
+		BCanvasContextDelegate context = new BCanvasContextDelegate(canvasContext());
+		context.setAlpha(0.3f);
+		context.setTransform(bst);
+		c.drawRaster(context, _backgroundSprite, -w/2, -h/2);
 	}
 
 	private BBox defaultIcon(){

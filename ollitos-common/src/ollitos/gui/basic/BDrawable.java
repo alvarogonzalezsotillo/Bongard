@@ -1,6 +1,6 @@
 package ollitos.gui.basic;
 
-import ollitos.animation.IBTransformAnimable;
+import ollitos.animation.transform.IBTransformAnimable;
 import ollitos.geom.IBPoint;
 import ollitos.geom.IBTransform;
 import ollitos.platform.BCanvasContext;

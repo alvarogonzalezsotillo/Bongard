@@ -2,8 +2,8 @@ package ollitos.platform;
 
 import ollitos.animation.BConcatenateAnimation;
 import ollitos.animation.BRunnableAnimation;
-import ollitos.animation.BTranslateAnimation;
 import ollitos.animation.IBAnimation;
+import ollitos.animation.transform.BTranslateAnimation;
 import ollitos.geom.IBPoint;
 import ollitos.geom.IBRectangle;
 import ollitos.geom.IBTransform;
