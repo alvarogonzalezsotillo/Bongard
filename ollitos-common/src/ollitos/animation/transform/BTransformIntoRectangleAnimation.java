@@ -1,8 +1,10 @@
 package ollitos.animation.transform;
 
+import ollitos.geom.IBPoint;
 import ollitos.geom.IBRectangle;
 import ollitos.geom.IBTransform;
 import ollitos.gui.basic.IBRectangularDrawable;
+import ollitos.util.BTransformUtil;
 
 public class BTransformIntoRectangleAnimation extends BTransformAnimation{
 
@@ -18,8 +20,10 @@ public class BTransformIntoRectangleAnimation extends BTransformAnimation{
 		double f = currentMillis()/totalMillis();
 
 		IBRectangularDrawable rd = (IBRectangularDrawable) a;
+		IBRectangle os = BTransformUtil.transform(rd.transform(), rd.originalSize() );
 		
-		double x = rd.
+		IBPoint tl_v = IBPoint.Util.vector( IBRectangle.Util.topLeft(os), IBRectangle.Util.topLeft(_dst) );
+		
 	}
 
 }
