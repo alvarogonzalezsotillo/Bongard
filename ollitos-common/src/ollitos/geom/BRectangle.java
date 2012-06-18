@@ -9,6 +9,11 @@ public class BRectangle implements IBRectangle, Serializable{
 	private double _y;
 	private double _w;
 	private double _h;
+	
+	public BRectangle(){
+		this(0,0,0,0);
+	}
+	
 	public BRectangle( double x, double y, double width, double height){
 		_x = x;
 		_y = y;

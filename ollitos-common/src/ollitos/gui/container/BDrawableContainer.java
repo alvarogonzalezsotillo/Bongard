@@ -11,13 +11,16 @@ import ollitos.util.BException;
 
 public abstract class BDrawableContainer extends BRectangularDrawable implements IBDrawableContainer{
 
-	private BListenerList _listeners = new BListenerList(this);
+	private transient BListenerList _listeners = new BListenerList(this);
 
 	@Override
 	public void addEventConsumer(IBEventConsumer c) {
 		if( c != null ){
 			addListener( c.listener() );
 		}
+	}
+	
+	public BDrawableContainer(){
 	}
 	
 	public BDrawableContainer(IBRectangle r){

@@ -9,6 +9,10 @@ public class BEventAdapter implements IBEventListener{
 	
 	protected IBTransformHolder _transformHolder;
 
+	public BEventAdapter(){
+		this(null);
+	}
+	
 	public BEventAdapter(IBTransformHolder s){
 		_transformHolder = s;
 	}

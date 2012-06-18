@@ -15,11 +15,16 @@ public abstract class BDrawable implements IBDrawable.DrawableHolder, IBDrawable
 	protected IBTransform _t = platform().identityTransform();
 	protected IBTransform _tt;
 	private boolean _visible = true;
-	private BCanvasContext _canvasContext = (BCanvasContext) platform().canvasContext();
+	private transient BCanvasContext _canvasContext; 
 	
 	@Override
 	public BCanvasContext canvasContext() {
-		return (BCanvasContext) _canvasContext;
+		if (_canvasContext == null) {
+		_canvasContext = (BCanvasContext) platform().canvasContext();
+			
+		}
+
+		return _canvasContext;
 	}
 	
 	public boolean visible(){
@@ -89,7 +94,7 @@ public abstract class BDrawable implements IBDrawable.DrawableHolder, IBDrawable
 			t = temp;
 		}
 		
-		_canvasContext.setTransform(t);
+		canvasContext().setTransform(t);
 		draw_internal(c);
 	}
 

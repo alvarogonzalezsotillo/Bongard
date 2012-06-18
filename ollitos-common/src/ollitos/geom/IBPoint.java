@@ -26,6 +26,11 @@ public interface IBPoint extends Serializable{
 			IBPoint ret = BPlatform.instance().point( p.x()*scale, p.y()*scale );
 			return ret;
 		}
+		
+		public static IBPoint add(IBPoint p1, IBPoint p2){
+			IBPoint ret = BPlatform.instance().point( p1.x()+p2.x(), p1.y()+p2.y());
+			return ret;
+		}
 	}
 	
 	public double x();

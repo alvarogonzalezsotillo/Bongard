@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import ollitos.geom.IBPoint;
 import ollitos.geom.IBTransform;
+import ollitos.platform.BPlatform;
 import ollitos.util.BException;
 
 
@@ -25,7 +26,8 @@ public class BListenerList implements IBEventListener{
 	
 	public void addListener(IBEventListener listener){
 		if( listener == null ){
-			throw new BException("listener is null", null);
+			BPlatform.instance().logger().log( this, "listener is null" );
+			return;
 		}
 		_list.add(listener);
 		_listAsArray = null;
