@@ -1,9 +1,10 @@
 package ollitos.platform.andr;
 
+import ollitos.platform.BCanvasContext;
+import ollitos.platform.IBCanvas;
+import ollitos.platform.IBColor;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
-import ollitos.platform.BCanvasContext;
-import ollitos.platform.IBColor;
 
 public class AndrCanvasContext extends BCanvasContext{
 	private Paint _paint;
@@ -14,20 +15,24 @@ public class AndrCanvasContext extends BCanvasContext{
 		updatePaint(); 
 	}
 
-	private void updatePaint() {
-		Paint paint = paint();
-		AndrColor color = (AndrColor)color();
+	public static void updatePaint( Paint paint, IBCanvas.CanvasContext cc ){
+		AndrColor color = (AndrColor)cc.color();
 		if( color != null ){
 			paint.setColor( color.color() );
 		}
 		int flags = Paint.SUBPIXEL_TEXT_FLAG;
-		if( antialias() ){
+		if( cc.antialias() ){
 			flags |= Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG;
 		}
 		paint.setFlags(flags);
-		paint().setAlpha((int) (alpha()*255));
-		paint().setTextAlign(Align.LEFT);
-
+		paint.setAlpha((int) (cc.alpha()*255));
+		paint.setTextAlign(Align.LEFT);
+	}
+	
+	private void updatePaint() {
+		Paint paint = paint();
+		
+		updatePaint( paint, this );
 	}
 	
 	@Override

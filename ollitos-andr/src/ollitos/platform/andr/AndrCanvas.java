@@ -6,11 +6,13 @@ import ollitos.platform.IBRaster;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 
 public class AndrCanvas implements IBCanvas{
 	
 	private Canvas _androidCanvas;
 	private Matrix _oldMatrix;
+	private Paint _paint = new Paint();
 	
 	public AndrCanvas(Canvas androidCanvas){
 		if( androidCanvas == null ){
@@ -41,30 +43,39 @@ public class AndrCanvas implements IBCanvas{
 	
 	@Override
 	public void drawString(CanvasContextHolder c, String str, float x, float y) {
-		AndrCanvasContext canvasContext = (AndrCanvasContext)c.canvasContext();
+		CanvasContext canvasContext = c.canvasContext();
 		Canvas ac = save(canvasContext);
 		
-		ac.drawText(str, x, y, canvasContext.paint());
+		ac.drawText(str, x, y, paint(canvasContext));
 		
 		restore();
 	}
 
 	@Override
 	public void drawRaster(CanvasContextHolder c, IBRaster r, float x, float y) {
-		AndrCanvasContext canvasContext = (AndrCanvasContext)c.canvasContext();
+		CanvasContext canvasContext = c.canvasContext();
 		Canvas ac = save(canvasContext);
 		
 		Bitmap bitmap = ((AndrRaster)r).bitmap();
 
-		ac.drawBitmap(bitmap, x, y, canvasContext.paint() );
+		ac.drawBitmap(bitmap, x, y, paint(canvasContext) );
 
 		
 		restore();
 	}
 
+	private Paint paint(CanvasContext canvasContext) {
+		if( canvasContext instanceof AndrCanvasContext ){
+			return ((AndrCanvasContext)canvasContext).paint();
+		}
+		
+		AndrCanvasContext.updatePaint(_paint, canvasContext);
+		return _paint;
+	}
+
 	@Override
 	public void drawBox(CanvasContextHolder c, IBRectangle rect, boolean filled) {
-		AndrCanvasContext canvasContext = (AndrCanvasContext)c.canvasContext();
+		CanvasContext canvasContext = c.canvasContext();
 		Canvas ac = save(canvasContext);
 
 		float l = (float) rect.x();
@@ -73,7 +84,7 @@ public class AndrCanvas implements IBCanvas{
 		float b = (float) (t + rect.h());
 		
 		if( filled ){
-			ac.drawRect(l, t, r, b, canvasContext.paint());
+			ac.drawRect(l, t, r, b, paint(canvasContext));
 		}
 		else{
 			float pts[] = {
@@ -82,7 +93,7 @@ public class AndrCanvas implements IBCanvas{
 					r, b, l, b,
 					l, b, l, t
 			};
-			ac.drawLines(pts, canvasContext.paint());
+			ac.drawLines(pts, paint(canvasContext));
 		}
 		
 		restore();
