@@ -3,7 +3,9 @@ package ollitos.platform;
 import ollitos.animation.BConcatenateAnimation;
 import ollitos.animation.BRunnableAnimation;
 import ollitos.animation.IBAnimation;
+import ollitos.animation.transform.BTransformIntoRectangleAnimation;
 import ollitos.animation.transform.BTranslateAnimation;
+import ollitos.geom.BRectangle;
 import ollitos.geom.IBPoint;
 import ollitos.geom.IBRectangle;
 import ollitos.geom.IBTransform;
@@ -65,29 +67,41 @@ public abstract class BScreen implements IBScreen {
 				}
 			};
 
-			IBPoint dst = f.point(0, _d.originalSize().h());
-			a = new BTranslateAnimation(dst, ENTER_LEAVE_MILLIS, _d);
+			IBPoint center = BRectangle.center( BTransformUtil.transform(_d.transform(), _d.originalSize() ) );
+			IBRectangle dst = BRectangle.centerAt( new BRectangle(0,0,1,1), center);
+			a = new BTransformIntoRectangleAnimation( dst, ENTER_LEAVE_MILLIS, _d );
 			a = new BConcatenateAnimation(a, new BRunnableAnimation(10, rSet));
 		}
 		if (d != null) {
-			Runnable rSet = new Runnable() {
-				public void run() {
-					_d = d;
-					adjustTransformToSize();
-				}
-			};
-
-			Runnable rListener = new Runnable() {
+			final Runnable rListener = new Runnable() {
 				public void run() {
 					addListener(_d.listener());
 				}
 			};
-			IBPoint src = f.point(0, -d.originalSize().h());
-			IBPoint dst = f.point(0, 0);
-			d.transform().translate(src.x(), src.y());
-			a = new BConcatenateAnimation(a, new BRunnableAnimation(10, rSet));
-			a = new BConcatenateAnimation(a, new BTranslateAnimation(dst, ENTER_LEAVE_MILLIS, d));
-			a = new BConcatenateAnimation(a, new BRunnableAnimation(10,	rListener));
+			
+			Runnable rSet = new Runnable() {
+				public void run() {
+					_d = d;
+					_d.transform().toIdentity();
+					adjustTransformToSize();
+					
+					
+					IBRectangle dst = BTransformUtil.transform(_d.transform(), _d.originalSize() );
+					IBPoint center = BRectangle.center( dst );
+					IBRectangle src = BRectangle.centerAt( new BRectangle(0,0,1,1), center);
+					
+					
+					BTransformUtil.setTo(_d.transform(), dst, src, false, false );
+					
+					
+					IBAnimation a = new BTransformIntoRectangleAnimation( dst, ENTER_LEAVE_MILLIS, _d );
+					
+					a = new BConcatenateAnimation(a, new BRunnableAnimation(10,	rListener));
+					BPlatform.instance().game().animator().addAnimation(a);
+				}
+			};
+
+			a = new BConcatenateAnimation(a, new BRunnableAnimation(50, rSet));
 		}
 		f.game().animator().addAnimation(a);
 	}

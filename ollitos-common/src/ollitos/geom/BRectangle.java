@@ -2,6 +2,8 @@ package ollitos.geom;
 
 import java.io.Serializable;
 
+import ollitos.platform.BPlatform;
+
 
 
 public class BRectangle implements IBRectangle, Serializable{
@@ -47,6 +49,14 @@ public class BRectangle implements IBRectangle, Serializable{
 	
 	public static IBRectangle centerAtOrigin(IBRectangle r){
 		return new BRectangle(-r.w()/2, -r.h()/2, r.w(), r.h() );
+	}
+	
+	public static IBPoint center(IBRectangle r){
+		return BPlatform.instance().point( r.x()+r.w()/2, r.y()+r.h()/2);
+	}
+	
+	public static IBRectangle centerAt(IBRectangle r, IBPoint center){
+		return new BRectangle( center.x()-r.w()/2, center.y()-r.h()/2, r.w(), r.h() );
 	}
 
 	public static IBRectangle resize( IBRectangle r, double d ){

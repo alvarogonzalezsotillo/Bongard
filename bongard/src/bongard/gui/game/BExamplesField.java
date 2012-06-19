@@ -29,11 +29,6 @@ public class BExamplesField extends BDrawableContainer{
 	private ReplayAnimation _replayAnimation;
 	
 	@Override
-	public IBRectangle originalSize() {
-		return _fc.originalSize();
-	}
-	
-	@Override
 	protected void draw_internal(IBCanvas c) {
 		_fc.draw(c,canvasContext().transform());
 		if( _replayAnimation != null && _replayAnimation.cursor() != null ){
