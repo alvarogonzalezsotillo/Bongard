@@ -17,7 +17,7 @@ import ollitos.util.BTransformUtil;
 
 public abstract class BScreen implements IBScreen {
 
-	private static final int ENTER_LEAVE_MILLIS = 500;
+	private static final int ENTER_LEAVE_MILLIS = 200;
 	private IBTransform _t = BPlatform.instance().identityTransform();
 	private IBDrawableContainer _d;
 	private BListenerList _listeners = new BListenerList(this){

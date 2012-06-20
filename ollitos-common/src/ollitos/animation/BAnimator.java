@@ -53,7 +53,7 @@ public abstract class BAnimator {
 	
 
 	public void addAnimation(IBAnimation a){
-		BPlatform.instance().logger().log( this, a );
+		BPlatform.instance().logger().log( this, a.getClass().getName() );
 		if( a == null ){
 			return;
 		}

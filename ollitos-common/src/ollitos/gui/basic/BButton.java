@@ -18,7 +18,7 @@ import ollitos.util.BTransformUtil;
 
 public class BButton extends BRectangularDrawable implements IBEventConsumer{
 
-	private static final int CLICK_DELAY = 100;
+	private static final int CLICK_DELAY = 50;
 	private static final double CLICK_SCALE = 0.9;
 	private ClickedListener _clickedListener;
 	private IBRectangularDrawable _drawable;
