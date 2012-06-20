@@ -61,5 +61,13 @@ public class BTransformIntoRectangleAnimation extends BTransformAnimation{
 		
 		return r;
 	}
+	
+	public static BTransformIntoRectangleAnimation zoom( int millis, IBRectangularDrawable r, IBPoint newCenter, double scale ){
+		IBRectangle src = BTransformUtil.transform( r.transform(), r.originalSize() );
+		IBRectangle dst = BRectangle.scale(src, scale);
+	
+		
+		return new BTransformIntoRectangleAnimation(dst, millis, r);
+	}
 
 }

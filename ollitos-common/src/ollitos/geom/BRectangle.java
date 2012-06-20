@@ -72,4 +72,13 @@ public class BRectangle implements IBRectangle, Serializable{
 	public String toString() {
 		return "(" + x() + "," + y() + "," + w() + "," + h() + ")";
 	}
+
+	public static IBRectangle scale(IBRectangle r, double f) {
+		double w = r.w()*f;
+		double h = r.h()*f;
+		double x = (r.x()+r.w()/2)-w/2;
+		double y = (r.y()+r.h()/2)-h/2;
+		
+		return new BRectangle( x, y, w, h );
+	}
 }

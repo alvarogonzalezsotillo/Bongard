@@ -4,7 +4,6 @@ import ollitos.animation.BConcatenateAnimation;
 import ollitos.animation.BRunnableAnimation;
 import ollitos.animation.IBAnimation;
 import ollitos.animation.transform.BTransformIntoRectangleAnimation;
-import ollitos.animation.transform.BTranslateAnimation;
 import ollitos.geom.BRectangle;
 import ollitos.geom.IBPoint;
 import ollitos.geom.IBRectangle;
@@ -18,6 +17,8 @@ import ollitos.util.BTransformUtil;
 public abstract class BScreen implements IBScreen {
 
 	private static final int ENTER_LEAVE_MILLIS = 200;
+	private static final double ENTER_LEAVE_ZOOM = 1./10;
+	
 	private IBTransform _t = BPlatform.instance().identityTransform();
 	private IBDrawableContainer _d;
 	private BListenerList _listeners = new BListenerList(this){
@@ -67,9 +68,7 @@ public abstract class BScreen implements IBScreen {
 				}
 			};
 
-			IBPoint center = BRectangle.center( BTransformUtil.transform(_d.transform(), _d.originalSize() ) );
-			IBRectangle dst = BRectangle.centerAt( new BRectangle(0,0,1,1), center);
-			a = new BTransformIntoRectangleAnimation( dst, ENTER_LEAVE_MILLIS, _d );
+			a = leaveAnimation(_d);
 			a = new BConcatenateAnimation(a, new BRunnableAnimation(10, rSet));
 		}
 		if (d != null) {
@@ -85,16 +84,7 @@ public abstract class BScreen implements IBScreen {
 					_d.transform().toIdentity();
 					adjustTransformToSize();
 					
-					
-					IBRectangle dst = BTransformUtil.transform(_d.transform(), _d.originalSize() );
-					IBPoint center = BRectangle.center( dst );
-					IBRectangle src = BRectangle.centerAt( new BRectangle(0,0,1,1), center);
-					
-					
-					BTransformUtil.setTo(_d.transform(), dst, src, false, false );
-					
-					
-					IBAnimation a = new BTransformIntoRectangleAnimation( dst, ENTER_LEAVE_MILLIS, _d );
+					IBAnimation a = enterAnimation(_d);
 					
 					a = new BConcatenateAnimation(a, new BRunnableAnimation(10,	rListener));
 					BPlatform.instance().game().animator().addAnimation(a);
@@ -104,6 +94,21 @@ public abstract class BScreen implements IBScreen {
 			a = new BConcatenateAnimation(a, new BRunnableAnimation(50, rSet));
 		}
 		f.game().animator().addAnimation(a);
+	}
+	
+	private static IBAnimation enterAnimation(IBDrawableContainer d){
+		IBRectangle dst = BTransformUtil.transform(d.transform(), d.originalSize() );
+		IBRectangle src = BRectangle.scale(dst, 1./ENTER_LEAVE_ZOOM);
+		BTransformUtil.setTo(d.transform(), dst, src, false, false );
+		IBPoint center = BRectangle.center( BTransformUtil.transform(d.transform(), d.originalSize() ) );
+		IBAnimation a = BTransformIntoRectangleAnimation.zoom(ENTER_LEAVE_MILLIS, d, center, ENTER_LEAVE_ZOOM );
+		return a;
+	}
+	
+	private static IBAnimation leaveAnimation(IBDrawableContainer d){
+		IBPoint center = BRectangle.center( BTransformUtil.transform(d.transform(), d.originalSize() ) );
+		IBAnimation a = BTransformIntoRectangleAnimation.zoom( ENTER_LEAVE_MILLIS, d, center, ENTER_LEAVE_ZOOM );
+		return a;
 	}
 
 	@Override
