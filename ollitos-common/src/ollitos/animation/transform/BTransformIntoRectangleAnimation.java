@@ -85,7 +85,7 @@ public class BTransformIntoRectangleAnimation extends BFixedDurationAnimation{
 		dst = new BRectangle(x,y,dst.w(),dst.h());
 		
 		
-		return new BTransformIntoRectangleAnimation(r.originalSize(), dst, millis, r);
+		return new BTransformIntoRectangleAnimation(src, dst, millis, r);
 	}
 
 }

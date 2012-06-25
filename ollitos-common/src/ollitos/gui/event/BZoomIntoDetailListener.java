@@ -10,10 +10,12 @@ import ollitos.gui.basic.IBDrawable;
 import ollitos.platform.BPlatform;
 import ollitos.platform.IBGame;
 import ollitos.platform.IBLogger;
+import ollitos.util.BTransformUtil;
 
 public class BZoomIntoDetailListener  extends BEventAdapter{
 
-	public static final int ZOOM_DELAY = 1000;
+	public static final int ZOOM_DELAY = 400;
+	public static final double ZOOM_FACTOR = 3;
 	
 	private static BZoomIntoDetailListener _instance;
 	private IBAnimation _zoomInAnimation;
@@ -38,7 +40,7 @@ public class BZoomIntoDetailListener  extends BEventAdapter{
 		disposeAnimations();
 		IBGame game = BPlatform.instance().game();
 		IBDrawable d = game.screen().drawable();
-		_zoomInAnimation = BTransformIntoRectangleAnimation.zoom(ZOOM_DELAY, (BRectangularDrawable)d, pInMyCoordinates, pInMyCoordinates, 2 );
+		_zoomInAnimation = BTransformIntoRectangleAnimation.zoom(ZOOM_DELAY, (BRectangularDrawable)d, pInMyCoordinates, pInMyCoordinates, ZOOM_FACTOR );
 		_zoomInAnimation = new BConcatenateAnimation( _zoomOutAnimation, _zoomInAnimation );
 		game.animator().addAnimation(_zoomInAnimation);
 		_in = true;
@@ -88,7 +90,8 @@ public class BZoomIntoDetailListener  extends BEventAdapter{
 		IBGame game = BPlatform.instance().game();
 		IBDrawable d = game.screen().drawable();
 		IBRectangle dst = game.screen().originalSize();
-		_zoomOutAnimation = new BTransformIntoRectangleAnimation(d.originalSize(), dst, ZOOM_DELAY, d);
+		IBRectangle src = BTransformUtil.transform( d.transform(), d.originalSize() );
+		_zoomOutAnimation = new BTransformIntoRectangleAnimation(src, dst, ZOOM_DELAY, d);
 		_zoomOutAnimation = new BConcatenateAnimation( _zoomInAnimation, _zoomOutAnimation );
 		game.animator().addAnimation(_zoomOutAnimation);
 		
