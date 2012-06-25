@@ -8,10 +8,10 @@ import ollitos.gui.basic.BButton;
 import ollitos.gui.basic.BSprite;
 import ollitos.gui.basic.IBDrawable;
 import ollitos.gui.basic.IBRectangularDrawable;
-import ollitos.gui.container.BFlippableContainer;
+import ollitos.gui.container.BSlidableContainer;
 import ollitos.gui.container.IBDrawableContainer;
-import ollitos.gui.container.IBFlippableDrawable;
-import ollitos.gui.container.IBFlippableModel;
+import ollitos.gui.container.IBSlidablePage;
+import ollitos.gui.container.IBSlidableModel;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 import ollitos.platform.BState;
@@ -21,22 +21,22 @@ import ollitos.util.BException;
 
 
 
-public class BGameHelp extends BFlippableContainer{
+public class BGameHelp extends BSlidableContainer{
 
 	public BGameHelp(){
 		super(BGameField.computeOriginalSize(),createModel());
 	}
 	
-	private static IBFlippableModel createModel() {
+	private static IBSlidableModel createModel() {
 		return new Model();
 	}
 	
-	private static class Model implements IBFlippableModel{
+	private static class Model implements IBSlidableModel{
 			
-		private IBFlippableDrawable _fd[];
+		private IBSlidablePage _fd[];
 		
 		public Model(){
-			_fd = new IBFlippableDrawable[width()];
+			_fd = new IBSlidablePage[width()];
 		}
 
 		@Override
@@ -61,12 +61,12 @@ public class BGameHelp extends BFlippableContainer{
 		}
 		
 		@Override
-		public IBFlippableDrawable drawable(int x) {
+		public IBSlidablePage page(int x) {
 			if( _fd[x] != null ){
 				return _fd[x];
 			}
 			
-			_fd[x] = new IBFlippableDrawable() {
+			_fd[x] = new IBSlidablePage() {
 				
 				private IBDrawable _d;
 

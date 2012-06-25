@@ -1,13 +1,13 @@
 package ollitos.gui.basic;
 
-import ollitos.animation.transform.IBTransformAnimable;
+import ollitos.animation.transform.IBTemporaryTransformAnimable;
 import ollitos.geom.IBPoint;
 import ollitos.geom.IBRectangle;
 import ollitos.geom.IBTransform;
 import ollitos.geom.IBTransformHolder;
 import ollitos.platform.IBCanvas;
 
-public interface IBDrawable extends IBTransformAnimable, IBTransformHolder{
+public interface IBDrawable extends IBTemporaryTransformAnimable, IBTransformHolder{
 	
 	public interface DrawableHolder {
 		IBDrawable drawable();

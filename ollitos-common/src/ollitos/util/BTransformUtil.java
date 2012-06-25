@@ -1,5 +1,6 @@
 package ollitos.util;
 
+import descinst.com.mja.descgui.textControl;
 import ollitos.geom.BRectangle;
 import ollitos.geom.IBPoint;
 import ollitos.geom.IBRectangle;
@@ -42,6 +43,13 @@ public class BTransformUtil {
 		return new BRectangle(minx, miny, maxx-minx, maxy-miny);
 	}
 
+	public static enum Fit{
+		fit,
+		inside,
+		outside
+	};
+	
+	
 	public static void setTo(IBTransform trans, IBRectangle origin, IBRectangle destination, boolean keepAspectRatio, boolean fitInside){
 		double sx = destination.w() / origin.w();
 		double sy = destination.h() / origin.h();
@@ -58,7 +66,6 @@ public class BTransformUtil {
 		
 		IBPoint oCenter = BPlatform.instance().point( origin.x() + origin.w()/2, origin.y() + origin.h()/2 );
 		IBPoint dCenter = BPlatform.instance().point( destination.x() + destination.w()/2, destination.y() + destination.h()/2 );
-
 		
 		trans.toIdentity();
 
@@ -76,4 +83,18 @@ public class BTransformUtil {
 		trans.translate(dCenter.x()/sx, dCenter.y()/sy );
 	}
 
+	public static void testSetTo(){
+		IBRectangle src = new BRectangle( 10, 10, 400, 500 );
+		IBRectangle dst = new BRectangle( 100, 10, 400, 300 );
+		
+		IBTransform t = BPlatform.instance().identityTransform();
+		setTo(t, src, dst, false, false);
+		
+		IBRectangle r = transform(t, src);
+		System.out.println( r.x()-dst.x() );
+		System.out.println( r.y()-dst.y() );
+		System.out.println( r.w()-dst.w() );
+		System.out.println( r.h()-dst.h() );
+	}
+	
 }

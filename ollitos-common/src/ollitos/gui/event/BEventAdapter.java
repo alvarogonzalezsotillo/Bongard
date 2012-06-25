@@ -18,7 +18,7 @@ public class BEventAdapter implements IBEventListener{
 	}
 	
 	@Override
-	public final boolean handle(IBEvent e) {
+	public boolean handle(IBEvent e) {
 		switch( e.type() ){
 		case containerResized:
 			return containerResized(e.rectangle());

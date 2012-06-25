@@ -19,6 +19,7 @@ import java.awt.event.MouseWheelEvent;
 
 import ollitos.geom.BRectangle;
 import ollitos.geom.IBRectangle;
+import ollitos.geom.IBTransform;
 import ollitos.gui.event.IBEvent;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BScreen;
@@ -44,8 +45,15 @@ public class AWTScreen extends BScreen{
 		
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			listeners().handle( event( IBEvent.Type.pointerClick, e ) );
+			int count = e.getClickCount();
+			if( count == 1 ){
+				listeners().handle( event( IBEvent.Type.pointerClick, e ) );
+			}
+			if( count == 2 ){
+				listeners().handle( event( IBEvent.Type.zoomIn, e ) );
+			}
 		}
+		
 		
 		@Override
 		public void mouseDragged(MouseEvent e) {
@@ -144,11 +152,11 @@ public class AWTScreen extends BScreen{
 		Image i = getOffscreenImage();
 		Graphics2D g2d = (Graphics2D) i.getGraphics();
 		
-		IBRectangle os = drawable().originalSize();
-		double pts[] = { os.x(), os.y(), os.x()+os.w(), os.y()+os.h() };
-		((AWTTransform)transform()).transform(pts, 0, pts, 0, 2);
-		
-		g2d.setClip((int)pts[0], (int)pts[1], (int)(pts[2]-pts[0]), (int)(pts[3]-pts[1]));
+//		IBRectangle os = drawable().originalSize();
+//		double pts[] = { os.x(), os.y(), os.x()+os.w(), os.y()+os.h() };
+//		((AWTTransform)transform()).transform(pts, 0, pts, 0, 2);
+//		
+//		g2d.setClip((int)pts[0], (int)pts[1], (int)(pts[2]-pts[0]), (int)(pts[3]-pts[1]));
 		
 		return g2d;
 	}
@@ -196,6 +204,7 @@ public class AWTScreen extends BScreen{
 	}
 
 
+	
 	@Override
 	public IBCanvas canvas() {
 		return new AWTCanvas(getGraphics());

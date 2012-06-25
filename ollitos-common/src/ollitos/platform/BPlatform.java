@@ -48,16 +48,15 @@ public abstract class BPlatform {
 		}
 		
 		if( c == null ){
-			return null;
+			throw new BException( "Can't find implementation", null );
 		}
 		
 		try{
 			return (BPlatform) c.newInstance();
 		}
 		catch( Throwable e ){
-			//e.printStackTrace();
+			throw new BException( "Unexpected error", e );
 		}
-		return null;
 	}
 
 	

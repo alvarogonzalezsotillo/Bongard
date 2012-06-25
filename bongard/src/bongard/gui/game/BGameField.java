@@ -13,7 +13,7 @@ import ollitos.animation.transform.BCompoundTransformAnimation;
 import ollitos.animation.transform.BRotateAnimation;
 import ollitos.animation.transform.BScaleAnimation;
 import ollitos.animation.transform.BTranslateAnimation;
-import ollitos.animation.transform.IBTransformAnimable;
+import ollitos.animation.transform.IBTemporaryTransformAnimable;
 import ollitos.geom.BRectangle;
 import ollitos.geom.IBPoint;
 import ollitos.geom.IBRectangle;
@@ -21,9 +21,9 @@ import ollitos.gui.basic.BBox;
 import ollitos.gui.basic.BLabel;
 import ollitos.gui.basic.BSprite;
 import ollitos.gui.container.BDrawableContainer;
-import ollitos.gui.container.BFlippableContainer;
+import ollitos.gui.container.BSlidableContainer;
 import ollitos.gui.container.IBDrawableContainer;
-import ollitos.gui.container.IBFlippableDrawable;
+import ollitos.gui.container.IBSlidablePage;
 import ollitos.gui.event.BEventAdapter;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BState;
@@ -31,7 +31,7 @@ import ollitos.platform.IBCanvas;
 import bongard.problem.BProblem;
 
 @SuppressWarnings("serial")
-public class BGameField extends BDrawableContainer implements IBFlippableDrawable, Serializable{
+public class BGameField extends BDrawableContainer implements IBSlidablePage, Serializable{
 	
 	private static final int FOCUS_DELAY = 100;
 	private static final double FOCUS_ZOOM = 1.3;
@@ -240,7 +240,7 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 
 	private void init() {
 		listener().addListener( adapter() );
-		IBRectangle r = new BRectangle(0, 0, BFlippableContainer.ICON_SIZE, BFlippableContainer.ICON_SIZE);
+		IBRectangle r = new BRectangle(0, 0, BSlidableContainer.ICON_SIZE, BSlidableContainer.ICON_SIZE);
 		_icon = BPlatform.instance().box(r, BPlatform.COLOR_WHITE);
 		_icon.setFilled(false);
 		_correctIcon = BPlatform.instance().box(r, BPlatform.COLOR_WHITE);
@@ -295,6 +295,11 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 		}
 		
 		alignSprites(400, questionPosition);
+		
+		for( BSprite s: _allSprites ){
+			addDrawable(s);
+		}
+
 	}
 	
 	private static IBPoint spritePosition( int column, int row ){
@@ -329,18 +334,18 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 
 		
 		for (int i = 0; i < _set1Sprites.length; i++) {
-			IBTransformAnimable a = _set1Sprites[i];
+			IBTemporaryTransformAnimable a = _set1Sprites[i];
 			animator.addAnimation( new BTranslateAnimation( spritePosition(0,i), millis, a ) );
 		}
 
 		for (int i = 0; i < _set2Sprites.length; i++) {
-			IBTransformAnimable a = _set2Sprites[i];
+			IBTemporaryTransformAnimable a = _set2Sprites[i];
 			animator.addAnimation( new BTranslateAnimation( spritePosition(1,i), millis, a ) );
 		}
 
 		animator.addAnimation(
 			new BCompoundTransformAnimation(
-				new IBTransformAnimable[]{_questionSprite },
+				new IBTemporaryTransformAnimable[]{_questionSprite },
 				new BTranslateAnimation( questionPosition , millis ),
 				new BRotateAnimation(2*Math.PI/millis, millis)
 			)
@@ -353,15 +358,7 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	 */
 	@Override
 	protected void draw_internal(IBCanvas canvas){
-		
-		if( _allSprites == null ){
-			return;                
-		}
-		
-		for( BSprite s: _allSprites ){
-			s.draw( canvas, canvasContext().transform() );
-		}
-		
+		super.draw_internal(canvas );
 		if( SHOW_POINTER ){
 			_pointer.draw(canvas, canvasContext().transform() );
 		}
@@ -419,7 +416,7 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	private BWaitForAnimation createDropAnimation(IBPoint dest) {
 		return new BWaitForAnimation( 
 				new BCompoundTransformAnimation(
-						new IBTransformAnimable[]{ _questionSprite }, 
+						new IBTemporaryTransformAnimable[]{ _questionSprite }, 
 						new BScaleAnimation(1/FOCUS_ZOOM, 1/FOCUS_ZOOM, FOCUS_DELAY),
 						new BTranslateAnimation( dest, FOCUS_DELAY)
 				),
@@ -481,10 +478,15 @@ public class BGameField extends BDrawableContainer implements IBFlippableDrawabl
 	@Override
 	public void dispose() {
 		_problem.dispose();
+		removeDrawables();
 	}
 	
+
 	@Override
 	public void setUp(){
+		if( !disposed() ){
+			return;
+		}
 		_problem.setUp();
 		IBPoint position = spritePosition(-1, -1);
 		if( _questionSprite != null ){

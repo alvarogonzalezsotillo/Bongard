@@ -1,39 +1,49 @@
 package ollitos.animation.transform;
 
+import ollitos.animation.BFixedDurationAnimation;
+import ollitos.animation.IBAnimable;
 import ollitos.geom.BRectangle;
 import ollitos.geom.IBPoint;
 import ollitos.geom.IBRectangle;
 import ollitos.geom.IBTransform;
+import ollitos.gui.basic.BDrawable;
+import ollitos.gui.basic.BRectangularDrawable;
+import ollitos.gui.basic.IBDrawable;
 import ollitos.gui.basic.IBRectangularDrawable;
 import ollitos.platform.BPlatform;
-import ollitos.platform.IBLogger;
 import ollitos.util.BTransformUtil;
 
-public class BTransformIntoRectangleAnimation extends BTransformAnimation{
+public class BTransformIntoRectangleAnimation extends BFixedDurationAnimation{
 
 	private IBRectangle _dst;
+	private IBRectangle _src;
 
-	public BTransformIntoRectangleAnimation(IBRectangle dst, int totalMillis,  IBTransformAnimable ... a) {
+	public BTransformIntoRectangleAnimation(IBRectangle src, IBRectangle dst, int totalMillis, IBDrawable ... a) {
 		super(totalMillis, a);
 		
+		_src = src;
 		_dst = dst;
 	}
 
+	
 	@Override
-	public IBTransform getTransform(IBTransformAnimable a) {
-		
-		
+	public void stepAnimation(long millis) {
+		// TODO Auto-generated method stub
+		stepMillis(millis);
 		double f = 1.0*currentMillis()/totalMillis();
 
-		IBRectangularDrawable rd = (IBRectangularDrawable) a;
-		IBRectangle os = BTransformUtil.transform(rd.transform(), rd.originalSize() );
+		for( IBAnimable a : animables() ){
 		
-		IBRectangle r = scale( os, f );
-		
-		
-		IBTransform ret = BPlatform.instance().identityTransform();
-		BTransformUtil.setTo(ret, os, r, false, false);
-		return ret;
+			IBDrawable rd = (BDrawable) a;
+			IBRectangle os = rd.originalSize();
+			
+			IBRectangle r = scale( _src, f );
+			
+			IBTransform ret = rd.transform();
+			BTransformUtil.setTo(ret, os, r, true, true);
+			
+			//BPlatform.instance().logger().log( this, "_dst:" + _dst + " -- f:" + f + " -- " + r );
+		}
 	}
 	
 	private IBRectangle scale( IBRectangle os, double scale ){
@@ -62,12 +72,20 @@ public class BTransformIntoRectangleAnimation extends BTransformAnimation{
 		return r;
 	}
 	
-	public static BTransformIntoRectangleAnimation zoom( int millis, IBRectangularDrawable r, IBPoint newCenter, double scale ){
+	public static BTransformIntoRectangleAnimation zoom( int millis, IBRectangularDrawable r, IBPoint beforeSamePoint, IBPoint afterSamePoint, double scale ){
 		IBRectangle src = BTransformUtil.transform( r.transform(), r.originalSize() );
 		IBRectangle dst = BRectangle.scale(src, scale);
-	
+
+		double fx = (beforeSamePoint.x() - src.x())/src.w();
+		double fy = (beforeSamePoint.y() - src.y())/src.h();
 		
-		return new BTransformIntoRectangleAnimation(dst, millis, r);
+		double x = afterSamePoint.x()-dst.w()*fx;
+		double y = afterSamePoint.y()-dst.h()*fy;
+		
+		dst = new BRectangle(x,y,dst.w(),dst.h());
+		
+		
+		return new BTransformIntoRectangleAnimation(r.originalSize(), dst, millis, r);
 	}
 
 }

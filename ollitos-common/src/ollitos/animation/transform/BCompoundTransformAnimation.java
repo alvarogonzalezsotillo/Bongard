@@ -7,18 +7,18 @@ import ollitos.platform.BPlatform;
 
 public class BCompoundTransformAnimation implements IBAnimation {
 
-	private BTransformAnimation[] _animations;
+	private BTemporaryTransformAnimation[] _animations;
 
-	public BCompoundTransformAnimation( BTransformAnimation ...animations ){
-		this( new IBTransformAnimable[0], animations);
+	public BCompoundTransformAnimation( BTemporaryTransformAnimation ...animations ){
+		this( new IBTemporaryTransformAnimable[0], animations);
 	}
 	
-	public BCompoundTransformAnimation( IBTransformAnimable[] a, BTransformAnimation ... animations ){
+	public BCompoundTransformAnimation( IBTemporaryTransformAnimable[] a, BTemporaryTransformAnimation ... animations ){
 		_animations = animations;
 		setAnimables(a);
 	}
 
-	public BCompoundTransformAnimation( BTransformAnimation[] animations, IBTransformAnimable... a){
+	public BCompoundTransformAnimation( BTemporaryTransformAnimation[] animations, IBTemporaryTransformAnimable... a){
 		this( a, animations );
 	}
 
@@ -34,7 +34,7 @@ public class BCompoundTransformAnimation implements IBAnimation {
 
 	@Override
 	public boolean endReached() {
-		for (BTransformAnimation a : _animations) {
+		for (BTemporaryTransformAnimation a : _animations) {
 			if( !a.endReached() ){
 				return false;
 			}
@@ -45,13 +45,13 @@ public class BCompoundTransformAnimation implements IBAnimation {
 	@Override
 	public void stepAnimation(long millis) {
 		IBTransform t = BPlatform.instance().identityTransform();
-		for (BTransformAnimation a : _animations) {
+		for (BTemporaryTransformAnimation a : _animations) {
 			if( a.endReached() ){
 				continue;
 			}
 			a.stepMillis(millis);
 			for( IBAnimable an: animables() ){
-				IBTransformAnimable ta = (IBTransformAnimable) an;
+				IBTemporaryTransformAnimable ta = (IBTemporaryTransformAnimable) an;
 				IBTransform st = a.getTransform(ta);
 				t.concatenate(st);
 				ta.setTemporaryTransform(t);
@@ -60,7 +60,7 @@ public class BCompoundTransformAnimation implements IBAnimation {
 		
 		if( endReached() ){
 			for( IBAnimable an: animables() ){
-				IBTransformAnimable ta = (IBTransformAnimable) an;
+				IBTemporaryTransformAnimable ta = (IBTemporaryTransformAnimable) an;
 				ta.applyTemporaryTransform();
 			}			
 		}
@@ -68,7 +68,7 @@ public class BCompoundTransformAnimation implements IBAnimation {
 	
 	@Override
 	public final void setAnimables(IBAnimable...a){
-		for( BTransformAnimation an: _animations ){
+		for( BTemporaryTransformAnimation an: _animations ){
 			an.setAnimables(a);
 		}
 	}

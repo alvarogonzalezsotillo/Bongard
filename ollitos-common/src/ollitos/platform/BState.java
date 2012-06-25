@@ -14,6 +14,9 @@ import ollitos.util.BException;
 public abstract class BState implements Serializable{
 	public abstract IBDrawableContainer createDrawable();
 
+	public interface Stateful{
+		BState save();
+	}
 	
 	public byte[] bytes(){
 		return bytes(this);

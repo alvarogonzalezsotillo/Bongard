@@ -8,19 +8,20 @@ import ollitos.geom.BRectangle;
 import ollitos.geom.IBPoint;
 import ollitos.geom.IBRectangle;
 import ollitos.geom.IBTransform;
-import ollitos.gui.container.IBDrawableContainer;
+import ollitos.gui.basic.BRectangularDrawable;
+import ollitos.gui.basic.IBDrawable;
 import ollitos.gui.event.BListenerList;
 import ollitos.gui.event.IBEvent;
+import ollitos.gui.event.IBEventConsumer;
 import ollitos.gui.event.IBEventListener;
 import ollitos.util.BTransformUtil;
 
 public abstract class BScreen implements IBScreen {
 
 	private static final int ENTER_LEAVE_MILLIS = 200;
-	private static final double ENTER_LEAVE_ZOOM = 1./10;
+	private static final double ENTER_LEAVE_ZOOM = 100;
 	
-	private IBTransform _t = BPlatform.instance().identityTransform();
-	private IBDrawableContainer _d;
+	private IBDrawable _d;
 	private BListenerList _listeners = new BListenerList(this){
 		public boolean handle(IBEvent e) {
 			BPlatform.instance().logger().log(e);
@@ -28,16 +29,9 @@ public abstract class BScreen implements IBScreen {
 		};
 	};
 
-	public IBTransform transform() {
-		return _t;
-	}
-
-	public void setTransform(IBTransform t) {
-		_t = t;
-	}
 
 	@Override
-	public void setDrawable(IBDrawableContainer d) {
+	public void setDrawable(IBDrawable d) {
 		if (false) {
 			setDrawable_simple(d);
 		} else {
@@ -45,23 +39,25 @@ public abstract class BScreen implements IBScreen {
 		}
 	}
 
-	private void setDrawable_simple(IBDrawableContainer d) {
-		if (_d != null) {
-			removeListener(_d.listener());
+	private void setDrawable_simple(IBDrawable d) {
+		if (_d != null && _d instanceof IBEventConsumer) {
+			removeListener(((IBEventConsumer)_d).listener());
 		}
 		_d = d;
-		if (_d != null) {
-			addListener(_d.listener());
+		if (_d != null && _d instanceof IBEventConsumer ) {
+			addListener(((IBEventConsumer)_d).listener());
 		}
 		adjustTransformToSize();
 		refresh();
 	}
 
-	public void setDrawable_animation(final IBDrawableContainer d) {
+	public void setDrawable_animation(final IBDrawable d) {
 		BPlatform f = BPlatform.instance();
 		IBAnimation a = null;
 		if (_d != null) {
-			removeListener(_d.listener());
+			if( _d instanceof IBEventConsumer ){
+				removeListener(((IBEventConsumer)_d).listener());
+			}
 			Runnable rSet = new Runnable() {
 				public void run() {
 					_d = null;
@@ -74,14 +70,15 @@ public abstract class BScreen implements IBScreen {
 		if (d != null) {
 			final Runnable rListener = new Runnable() {
 				public void run() {
-					addListener(_d.listener());
+					if( _d instanceof IBEventConsumer ){
+						addListener(((IBEventConsumer)_d).listener());
+					}
 				}
 			};
 			
 			Runnable rSet = new Runnable() {
 				public void run() {
 					_d = d;
-					_d.transform().toIdentity();
 					adjustTransformToSize();
 					
 					IBAnimation a = enterAnimation(_d);
@@ -96,23 +93,45 @@ public abstract class BScreen implements IBScreen {
 		f.game().animator().addAnimation(a);
 	}
 	
-	private static IBAnimation enterAnimation(IBDrawableContainer d){
-		IBRectangle dst = BTransformUtil.transform(d.transform(), d.originalSize() );
+	private IBAnimation enterAnimation(IBDrawable d){
+		IBRectangle current = d.originalSize();
+		IBRectangle dst = originalSize();
 		IBRectangle src = BRectangle.scale(dst, 1./ENTER_LEAVE_ZOOM);
-		BTransformUtil.setTo(d.transform(), dst, src, false, false );
+		BTransformUtil.setTo(d.transform(), current, src, true, true );
+		IBLogger l = BPlatform.instance().logger();
+		l.log( this, "current:" + current );
+		l.log( this, "dst:" + dst );
+		l.log( this, "src:" + src );
+		l.log( this, "d current bbox:" + BTransformUtil.transform(d.transform(), d.originalSize()));
+		
+
 		IBPoint center = BRectangle.center( BTransformUtil.transform(d.transform(), d.originalSize() ) );
-		IBAnimation a = BTransformIntoRectangleAnimation.zoom(ENTER_LEAVE_MILLIS, d, center, ENTER_LEAVE_ZOOM );
+		IBAnimation a = new BTransformIntoRectangleAnimation(src, dst, ENTER_LEAVE_MILLIS, d);
+
+		
 		return a;
 	}
 	
-	private static IBAnimation leaveAnimation(IBDrawableContainer d){
+	private IBAnimation leaveAnimation(IBDrawable d){
+		IBRectangle current = d.originalSize();
+		IBRectangle src = originalSize();
+		IBRectangle dst = BRectangle.scale(src, 1./ENTER_LEAVE_ZOOM);
+		IBLogger l = BPlatform.instance().logger();
+		l.log( this, "current:" + current );
+		l.log( this, "dst:" + dst );
+		l.log( this, "src:" + src );
+		l.log( this, "d current bbox:" + BTransformUtil.transform(d.transform(), d.originalSize()));
+		
+
 		IBPoint center = BRectangle.center( BTransformUtil.transform(d.transform(), d.originalSize() ) );
-		IBAnimation a = BTransformIntoRectangleAnimation.zoom( ENTER_LEAVE_MILLIS, d, center, ENTER_LEAVE_ZOOM );
+		IBAnimation a = new BTransformIntoRectangleAnimation(src, dst, ENTER_LEAVE_MILLIS, d);
+
+		
 		return a;
 	}
 
 	@Override
-	public IBDrawableContainer drawable() {
+	public IBDrawable drawable() {
 		return _d;
 	}
 
@@ -141,9 +160,9 @@ public abstract class BScreen implements IBScreen {
 		IBRectangle origin = drawable().originalSize();
 		IBRectangle destination = originalSize();
 
-		IBTransform t = transform();
+		IBTransform t = drawable().transform();
 		BTransformUtil.setTo(t, origin, destination, true, true);
-		setTransform(t);
+		refresh();
 
 		if( false){
 			{
@@ -175,6 +194,17 @@ public abstract class BScreen implements IBScreen {
 	@Override
 	public boolean preHandleEvent(IBEvent e) {
 		return false;
+	}
+	
+	private IBTransform _identity;
+
+	@Override
+	public IBTransform transform(){
+		if (_identity == null) {
+			_identity = BPlatform.instance().identityTransform();
+			
+		}
+		return _identity;
 	}
 
 }

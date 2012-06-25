@@ -4,28 +4,26 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
-import bongard.problem.BCardExtractor;
-
 import ollitos.animation.BConcatenateAnimation;
 import ollitos.animation.BRunnableAnimation;
 import ollitos.animation.BWaitAnimation;
 import ollitos.animation.IBAnimation;
-import ollitos.geom.IBRectangle;
-import ollitos.gui.container.BDrawableContainer;
-import ollitos.gui.container.BFlippableContainer;
+import ollitos.gui.basic.BRectangularDrawable;
+import ollitos.gui.container.BSlidableContainer;
 import ollitos.gui.event.BLogListener;
 import ollitos.gui.event.BLogListener.ReplayAnimation;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 import ollitos.platform.IBCanvas;
 import ollitos.util.BException;
+import bongard.problem.BCardExtractor;
 
 
 
-public class BExamplesField extends BDrawableContainer{
+public class BExamplesField extends BRectangularDrawable{
 
 	private static final long EXAMPLES_SEED = 2;
-	private BFlippableContainer _fc;
+	private BSlidableContainer _fc;
 	private ReplayAnimation _replayAnimation;
 	
 	@Override
@@ -39,7 +37,7 @@ public class BExamplesField extends BDrawableContainer{
 	public BExamplesField() {
 		super( BGameField.computeOriginalSize() );
 		BResourceLocator[] problems = BCardExtractor.exampleProblems();
-		_fc = new BFlippableContainer( originalSize(), new BGameModel(true,problems,EXAMPLES_SEED) );
+		_fc = new BSlidableContainer( originalSize(), new BGameModel(true,problems,EXAMPLES_SEED) );
 		
 		BResourceLocator rl = new BResourceLocator("/examples/examples.events");
 		Reader r;
