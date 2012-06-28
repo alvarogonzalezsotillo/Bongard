@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import ollitos.platform.BPlatform;
+import ollitos.platform.IBGame;
+import bongard.gui.game.BStartField;
 
 
 
@@ -21,7 +23,9 @@ public class AppletGame extends Applet {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println( "Starting game frame..." );
-				BPlatform.instance().game().restore(null);
+				IBGame game = BPlatform.instance().game();
+				game.setDefaultDrawable( new BStartField() );
+				game.restore(null);
 			}
 		});
 		add( button, BorderLayout.CENTER );
