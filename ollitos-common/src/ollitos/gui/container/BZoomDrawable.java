@@ -8,13 +8,15 @@ import ollitos.geom.IBTransformHolder;
 import ollitos.gui.basic.IBDrawable;
 import ollitos.gui.event.BEventAdapter;
 import ollitos.gui.event.BListenerList;
-import ollitos.gui.event.BZoomIntoDetailListener;
+import ollitos.gui.event.IBEvent;
 import ollitos.gui.event.IBEventListener;
 import ollitos.platform.BPlatform;
 import ollitos.platform.IBCanvas;
 
 public class BZoomDrawable extends BDrawableContainer{
-
+	public static final double ZOOM_FACTOR = 3;
+	public static final int ZOOM_DELAY = 300;
+	
 	private transient IBTransform _zoomTransform;
 	private transient IBEventListener _zoomListener;
 	
@@ -90,10 +92,50 @@ public class BZoomDrawable extends BDrawableContainer{
 	}
 	
 	private class ZoomListener extends BEventAdapter{
+		private boolean _in;
+		private boolean _out;
+		private IBAnimation _inAnimation;
+		private IBAnimation _outAnimation;
+
+
 		@Override
 		public boolean zoomIn(IBPoint pInMyCoordinates){
-			IBAnimation a = new ZoomInAnimation(pInMyCoordinates);
-			platform().game().animator().addAnimation(a);
+			doZoomIn(pInMyCoordinates);
+			return true;
+		}
+
+
+
+		private void doZoomIn(IBPoint p) {
+			_in = true;
+			_out = false;
+			_inAnimation = new ZoomInAnimation(p);
+			_outAnimation = new ZoomOutAnimation(p);
+			platform().game().animator().addAnimation(_inAnimation);
+		}
+		
+		private void doZoomOut(){
+			_out = true;
+			_in = false;
+			platform().game().animator().addAnimation(_outAnimation);
+		}
+		
+		private boolean zoomed(){
+			if( _in ){
+				return true;
+			}
+			if( _out && !_outAnimation.endReached() ){
+				return true;
+			}
+			return false;
+		}
+		
+		@Override
+		public boolean handle(IBEvent e) {
+			if( !zoomed() ){
+				return super.handle(e);
+			}
+			doZoomOut();
 			return true;
 		}
 	};
@@ -102,14 +144,14 @@ public class BZoomDrawable extends BDrawableContainer{
 
 		private IBPoint _center;
 		public ZoomInAnimation(IBPoint center) {
-			super(BZoomIntoDetailListener.ZOOM_DELAY);
+			super(ZOOM_DELAY);
 			_center = center;
 		}
 
 		@Override
 		public void stepAnimation(long millis) {
 			stepMillis(millis);
-			double f = 1 + (BZoomIntoDetailListener.ZOOM_FACTOR-1)*currentMillis()/totalMillis();
+			double f = 1 + (ZOOM_FACTOR-1)*currentMillis()/totalMillis();
 
 			IBTransform t = platform().identityTransform();
 			t.translate(_center.x(), _center.y() );
@@ -120,14 +162,17 @@ public class BZoomDrawable extends BDrawableContainer{
 	}
 	
 	private class ZoomOutAnimation extends BFixedDurationAnimation{
-		public ZoomOutAnimation(int totalMillis) {
-			super(totalMillis);
+		
+		private IBPoint _center;
+		public ZoomOutAnimation(IBPoint center) {
+			super(ZOOM_DELAY);
+			_center = center;
 		}
 
 		@Override
 		public void stepAnimation(long millis) {
 			stepMillis(millis);
-			double f = 1 + (BZoomIntoDetailListener.ZOOM_FACTOR-1)*currentMillis()/totalMillis();
+			double f = ZOOM_FACTOR - (ZOOM_FACTOR-1)*currentMillis()/totalMillis();
 
 			IBTransform t = platform().identityTransform();
 			t.translate(_center.x(), _center.y() );

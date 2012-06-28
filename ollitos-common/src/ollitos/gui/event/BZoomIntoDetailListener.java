@@ -7,15 +7,17 @@ import ollitos.geom.IBPoint;
 import ollitos.geom.IBRectangle;
 import ollitos.gui.basic.BRectangularDrawable;
 import ollitos.gui.basic.IBDrawable;
+import ollitos.gui.container.BZoomDrawable;
 import ollitos.platform.BPlatform;
 import ollitos.platform.IBGame;
 import ollitos.platform.IBLogger;
 import ollitos.util.BTransformUtil;
 
+@Deprecated
 public class BZoomIntoDetailListener  extends BEventAdapter{
 
-	public static final int ZOOM_DELAY = 400;
-	public static final double ZOOM_FACTOR = 2;
+	public static final int ZOOM_DELAY = BZoomDrawable.ZOOM_DELAY;
+	public static final double ZOOM_FACTOR = BZoomDrawable.ZOOM_FACTOR;
 	
 	private static BZoomIntoDetailListener _instance;
 	private IBAnimation _zoomInAnimation;
