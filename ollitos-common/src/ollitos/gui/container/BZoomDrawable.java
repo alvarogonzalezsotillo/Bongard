@@ -12,6 +12,7 @@ import ollitos.gui.event.IBEvent;
 import ollitos.gui.event.IBEventListener;
 import ollitos.platform.BPlatform;
 import ollitos.platform.IBCanvas;
+import ollitos.platform.IBLogger;
 
 public class BZoomDrawable extends BDrawableContainer{
 	public static final double ZOOM_FACTOR = 3;
@@ -92,12 +93,47 @@ public class BZoomDrawable extends BDrawableContainer{
 	}
 	
 	private class ZoomListener extends BEventAdapter{
+		private static final long DOUBLE_CLICK_THRESHOLD = 400;
+		private static final double MAX_DOUBLE_CLICK_DISTANCE = 20;
 		private boolean _in;
 		private boolean _out;
 		private IBAnimation _inAnimation;
 		private IBAnimation _outAnimation;
+		private IBPoint _lastPoint;
+		private long _lastPointTime;
 
 
+		@Override
+		public boolean pointerClick(IBPoint pInMyCoordinates) {
+			IBLogger l = platform().logger();
+			
+			IBPoint lastPoint = _lastPoint;
+			long currentMillis = platform().game().animator().currentMillis();
+			long millis = currentMillis - _lastPointTime;
+			
+			_lastPoint = pInMyCoordinates;
+			_lastPointTime = currentMillis;
+			
+			if( lastPoint == null ){
+				return false;
+			}
+			
+			l.log( this, "millis:" + millis );
+			if( millis > DOUBLE_CLICK_THRESHOLD ){
+				return false;
+			}
+			
+			double distance = IBPoint.Util.distance(pInMyCoordinates, lastPoint);
+			l.log( this, "distance:" + distance );
+			if( distance > MAX_DOUBLE_CLICK_DISTANCE ){
+				return false;
+			}
+			_lastPointTime = 0;
+			_lastPoint = null;
+			
+			return zoomIn(pInMyCoordinates);
+		}
+		
 		@Override
 		public boolean zoomIn(IBPoint pInMyCoordinates){
 			doZoomIn(pInMyCoordinates);

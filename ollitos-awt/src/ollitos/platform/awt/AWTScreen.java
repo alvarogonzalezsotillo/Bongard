@@ -46,11 +46,16 @@ public class AWTScreen extends BScreen{
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			int count = e.getClickCount();
-			if( count == 1 ){
-				listeners().handle( event( IBEvent.Type.pointerClick, e ) );
+			if( false ){
+				if( count == 1 ){
+					listeners().handle( event( IBEvent.Type.pointerClick, e ) );
+				}
+				if( count == 2 ){
+					listeners().handle( event( IBEvent.Type.zoomIn, e ) );
+				}
 			}
-			if( count == 2 ){
-				listeners().handle( event( IBEvent.Type.zoomIn, e ) );
+			else{
+				listeners().handle( event(IBEvent.Type.pointerClick, e) );
 			}
 		}
 		
