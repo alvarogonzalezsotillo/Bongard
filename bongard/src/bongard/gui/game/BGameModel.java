@@ -80,7 +80,8 @@ public class BGameModel implements IBSlidableModel{
 			BPlatform.instance().game().animator().addAnimation( new BRunnableAnimation(1000, new Runnable(){
 				@Override
 				public void run() {
-					goToLevel(_demo,goTo,true);
+					IBDrawable d = goToLevel(_demo,goTo,true);
+					BPlatform.instance().game().screen().setDrawable(d);
 				}
 			}));
 		}
