@@ -53,7 +53,6 @@ public class BStartField extends BDrawableContainer{
 		ret.setClickedListener(_clickedListener );
 		IBRectangle r = spritePosition(row,column, ss.w() );
 		ret.setSizeTo(r, false, true);
-		ret.install(this);
 		return ret;
 	}
 	
@@ -70,7 +69,6 @@ public class BStartField extends BDrawableContainer{
 		addDrawable(_helpOriginalSprite);
 		
 		BRestartListener.install();
-		BZoomIntoDetailListener.install();
 	}
 
 

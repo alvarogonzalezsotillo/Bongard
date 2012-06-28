@@ -16,7 +16,7 @@ import ollitos.util.BException;
 
 public abstract class BDrawableContainer extends BRectangularDrawable implements IBDrawableContainer, BState.Stateful{
 
-	private transient BListenerList _listeners = new BListenerList(this);
+	private transient BListenerList _listeners;
 	private transient List<IBDrawable> _drawables = new ArrayList<IBDrawable>();
 
 	@Override
@@ -40,6 +40,10 @@ public abstract class BDrawableContainer extends BRectangularDrawable implements
 		if( !_drawables.contains(d) ){
 			_drawables.add(d);
 		}
+		
+		if( d instanceof IBEventConsumer ){
+			addEventConsumer((IBEventConsumer) d);
+		}
 	}
 	
 	public void removeDrawable(IBDrawable d){
@@ -47,10 +51,17 @@ public abstract class BDrawableContainer extends BRectangularDrawable implements
 			return;
 		}
 		_drawables.remove(d);
+		
+		if( d instanceof IBEventConsumer ){
+			removeEventConsumer((IBEventConsumer) d);
+		}
+		
 	}
 	
 	public void removeDrawables() {
-		_drawables.clear();
+		for( IBDrawable d : drawables() ){
+			removeDrawable(d);
+		}
 	}
 
 	
@@ -63,7 +74,7 @@ public abstract class BDrawableContainer extends BRectangularDrawable implements
 	
 	public void addListener(IBEventListener l) {
 		if( l != null ){
-			_listeners.addListener(l);
+			listener().addListener(l);
 		}
 	}
 
@@ -86,15 +97,22 @@ public abstract class BDrawableContainer extends BRectangularDrawable implements
 	@Override
 	public void removeListener(IBEventListener l) {
 		if( l != null ){
-			_listeners.removeListener(l);
+			listener().removeListener(l);
 		}
 	}
 	
 	@Override
 	public BListenerList listener() {
+		if( _listeners == null ){
+			_listeners = createListener();
+		}
 		return _listeners;
 	}
 	
+	protected BListenerList createListener() {
+		return new BListenerList(this);
+	}
+
 	@Override
 	public BState save() {
 		throw new BException("save must be implemented or not called:"+ getClass().getName(), null);
@@ -105,5 +123,9 @@ public abstract class BDrawableContainer extends BRectangularDrawable implements
 		for( IBDrawable d: _drawables ){
 			d.draw(c, canvasContext().transform());
 		}
+	}
+	
+	public IBDrawable[] drawables(){
+		return _drawables.toArray(new IBDrawable[0] );
 	}
 }

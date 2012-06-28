@@ -5,6 +5,7 @@ import java.io.Serializable;
 import ollitos.geom.BRectangle;
 import ollitos.geom.IBRectangle;
 import ollitos.gui.basic.BSprite;
+import ollitos.gui.basic.IBDrawable;
 import ollitos.gui.basic.IBRectangularDrawable;
 import ollitos.gui.container.BDrawableContainer;
 import ollitos.gui.container.BSlidableContainer;
@@ -82,6 +83,12 @@ public class BBongardTestField extends BDrawableContainer implements IBSlidableP
 	@Override
 	public boolean disposed() {
 		return _problem == null || _problem.disposed();
+	}
+
+
+	@Override
+	public IBDrawable drawable() {
+		return this;
 	}
 
 }

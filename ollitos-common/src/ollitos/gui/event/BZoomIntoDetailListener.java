@@ -15,7 +15,7 @@ import ollitos.util.BTransformUtil;
 public class BZoomIntoDetailListener  extends BEventAdapter{
 
 	public static final int ZOOM_DELAY = 400;
-	public static final double ZOOM_FACTOR = 3;
+	public static final double ZOOM_FACTOR = 2;
 	
 	private static BZoomIntoDetailListener _instance;
 	private IBAnimation _zoomInAnimation;

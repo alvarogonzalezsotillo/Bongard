@@ -90,14 +90,6 @@ public class BButton extends BRectangularDrawable implements IBEventConsumer{
 		}
 	}
 	
-	public void install( IBEventSource s ){
-		s.addListener( listener() );
-	}
-
-	public void uninstall( IBEventSource s ){
-		s.removeListener( listener() );
-	}
-
 	@Override
 	public IBEventListener listener() {
 		return _adapter;

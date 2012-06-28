@@ -3,6 +3,7 @@ package bongard.gui.game;
 import ollitos.animation.BRunnableAnimation;
 import ollitos.gui.basic.IBDrawable;
 import ollitos.gui.container.BSlidableContainer;
+import ollitos.gui.container.BZoomDrawable;
 import ollitos.gui.container.IBSlidableModel;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;

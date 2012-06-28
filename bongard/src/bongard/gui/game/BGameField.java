@@ -18,13 +18,18 @@ import ollitos.geom.BRectangle;
 import ollitos.geom.IBPoint;
 import ollitos.geom.IBRectangle;
 import ollitos.gui.basic.BBox;
+import ollitos.gui.basic.BDrawable;
 import ollitos.gui.basic.BLabel;
 import ollitos.gui.basic.BSprite;
+import ollitos.gui.basic.IBDrawable;
 import ollitos.gui.container.BDrawableContainer;
 import ollitos.gui.container.BSlidableContainer;
+import ollitos.gui.container.BZoomDrawable;
 import ollitos.gui.container.IBDrawableContainer;
 import ollitos.gui.container.IBSlidablePage;
 import ollitos.gui.event.BEventAdapter;
+import ollitos.gui.event.BListenerList;
+import ollitos.gui.event.IBEvent;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BState;
 import ollitos.platform.IBCanvas;
@@ -57,7 +62,7 @@ public class BGameField extends BDrawableContainer implements IBSlidablePage, Se
 	transient private BSprite _questionSprite;
 	transient private BSprite[] _allSprites;
 	transient private IBRectangle _size;
-	transient private BLabel _pointer = platform().label("O");
+	transient private BLabel _pointer;
 
 
 	transient private IBAnimation _pickUpAnimation;
@@ -110,7 +115,9 @@ public class BGameField extends BDrawableContainer implements IBSlidablePage, Se
 		
 		@Override
 		public boolean pointerDown(IBPoint p) {
-			if( _questionSprite.inside(p, null) ){
+			boolean inside = _questionSprite.inside(p, null);
+			platform().logger().log( this, "pointerDown: inside:" + inside );
+			if( inside ){
 				_pickUpAnimation = createPickUpAnimation();
 				animator().addAnimation( _pickUpAnimation );
 				_dragQuestion = true;
@@ -360,10 +367,17 @@ public class BGameField extends BDrawableContainer implements IBSlidablePage, Se
 	protected void draw_internal(IBCanvas canvas){
 		super.draw_internal(canvas );
 		if( SHOW_POINTER ){
-			_pointer.draw(canvas, canvasContext().transform() );
+			pointer().draw(canvas, canvasContext().transform() );
 		}
 	}
 	
+	private BDrawable pointer() {
+		if (_pointer == null) {
+			_pointer = platform().label("O");
+		}
+		return _pointer;
+	}
+
 	@Override
 	public IBRectangle originalSize() {
 		if (_size == null) {
@@ -493,10 +507,23 @@ public class BGameField extends BDrawableContainer implements IBSlidablePage, Se
 			position = _questionSprite.position();
 		}
 		setProblem(_problem, position);
+		init();
 	}
 
 	@Override
 	public boolean disposed() {
 		return _problem.disposed();
+	}
+
+	
+	private transient IBDrawable _drawable;
+	
+	@Override
+	public IBDrawable drawable() {
+		if (_drawable == null) {
+			_drawable = new BZoomDrawable(this);
+			
+		}
+		return _drawable;
 	}
 }

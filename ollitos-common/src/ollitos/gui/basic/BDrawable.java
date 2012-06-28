@@ -10,7 +10,7 @@ import ollitos.platform.IBCanvas.CanvasContext;
 
 
 
-public abstract class BDrawable implements IBDrawable.DrawableHolder, IBDrawable, IBTemporaryTransformAnimable, IBCanvas.CanvasContextHolder{
+public abstract class BDrawable implements IBDrawable, IBTemporaryTransformAnimable, IBCanvas.CanvasContextHolder{
 
 	protected IBTransform _t = platform().identityTransform();
 	protected IBTransform _tt;
@@ -116,10 +116,6 @@ public abstract class BDrawable implements IBDrawable.DrawableHolder, IBDrawable
 		return BPlatform.instance();
 	}
 	
-	@Override
-	public IBDrawable drawable() {
-		return this;
-	}
 	
 	/**
 	 * Draw ignoring the internal transform, only the given transform 

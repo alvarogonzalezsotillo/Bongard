@@ -37,12 +37,19 @@ public class BListenerList implements IBEventListener{
 			BPlatform.instance().logger().log( this, "listener is null" );
 			return;
 		}
-		_list.add(listener);
-		_listAsArray = null;
+		if( !_list.contains(listener) ){
+			_list.add(listener);
+			_listAsArray = null;
+		}
 	}
 	
 	public void removeListener(IBEventListener listener){
 		_list.remove(listener);
+		_listAsArray = null;
+	}
+	
+	public void removeListeners(){
+		_list.clear();
 		_listAsArray = null;
 	}
 	
