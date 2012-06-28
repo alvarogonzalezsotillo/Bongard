@@ -132,8 +132,7 @@ public class AndrScreen extends BScreen{
 			_currentAndroidCanvas.drawLine(0, 0, getMeasuredWidth(),getMeasuredHeight(), paint);
 			_currentAndroidCanvas.drawCircle(getMeasuredWidth(), getMeasuredHeight(), 20, paint);
 
-			BResourceLocator l = new BResourceLocator(
-					"/images/backgrounds/arrecibo.png");
+			BResourceLocator l = new BResourceLocator("/images/backgrounds/arrecibo.png");
 			IBRaster r = BPlatform.instance().raster(l, false);
 			BSprite s = BPlatform.instance().sprite(r);
 

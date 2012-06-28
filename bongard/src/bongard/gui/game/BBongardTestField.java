@@ -9,6 +9,7 @@ import ollitos.gui.basic.IBDrawable;
 import ollitos.gui.basic.IBRectangularDrawable;
 import ollitos.gui.container.BDrawableContainer;
 import ollitos.gui.container.BSlidableContainer;
+import ollitos.gui.container.BZoomDrawable;
 import ollitos.gui.container.IBSlidablePage;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
@@ -22,6 +23,7 @@ public class BBongardTestField extends BDrawableContainer implements IBSlidableP
 	private BResourceLocator _locator;
 	transient private BProblem _problem;
 	transient private BSprite _sprite;
+	transient private IBDrawable _drawable;
 	
 	
 	public BBongardTestField(BResourceLocator l){
@@ -88,7 +90,11 @@ public class BBongardTestField extends BDrawableContainer implements IBSlidableP
 
 	@Override
 	public IBDrawable drawable() {
-		return this;
+		if (_drawable == null) {
+			_drawable = new BZoomDrawable(this);
+		}
+
+		return _drawable;
 	}
 
 }

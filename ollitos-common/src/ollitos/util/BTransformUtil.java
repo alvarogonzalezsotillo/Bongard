@@ -1,6 +1,5 @@
 package ollitos.util;
 
-import descinst.com.mja.descgui.textControl;
 import ollitos.geom.BRectangle;
 import ollitos.geom.IBPoint;
 import ollitos.geom.IBRectangle;
