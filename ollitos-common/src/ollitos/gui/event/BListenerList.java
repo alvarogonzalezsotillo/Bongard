@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 import ollitos.geom.IBPoint;
 import ollitos.geom.IBTransform;
+import ollitos.geom.IBTransformHolder;
+import ollitos.platform.BPlatform;
 import ollitos.util.BException;
 
 
@@ -18,21 +20,36 @@ public class BListenerList implements IBEventListener{
 	IBEventListener[] _listAsArray;
 
 	private IBEventSource _eventSource;
+
+	private IBTransformHolder _th;
 	
 	public BListenerList(IBEventSource eventSource){
-		_eventSource = eventSource;
+		this( eventSource, (IBTransformHolder)eventSource );
 	}
-	
+
+	public BListenerList(IBEventSource eventSource, IBTransformHolder th){
+		_eventSource = eventSource;
+		_th = th;
+	}
+
 	public void addListener(IBEventListener listener){
 		if( listener == null ){
-			throw new BException("listener is null", null);
+			BPlatform.instance().logger().log( this, "listener is null" );
+			return;
 		}
-		_list.add(listener);
-		_listAsArray = null;
+		if( !_list.contains(listener) ){
+			_list.add(listener);
+			_listAsArray = null;
+		}
 	}
 	
 	public void removeListener(IBEventListener listener){
 		_list.remove(listener);
+		_listAsArray = null;
+	}
+	
+	public void removeListeners(){
+		_list.clear();
 		_listAsArray = null;
 	}
 	
@@ -59,7 +76,7 @@ public class BListenerList implements IBEventListener{
 
 	@Override
 	public IBTransform transform() {
-		return _eventSource.transform();
+		return _th.transform();
 	}
 
 	@Override

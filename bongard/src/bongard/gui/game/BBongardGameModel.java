@@ -6,14 +6,14 @@ import java.io.ObjectOutputStream;
 
 import bongard.problem.BCardExtractor;
 
-import ollitos.gui.container.IBFlippableDrawable;
-import ollitos.gui.container.IBFlippableModel;
+import ollitos.gui.container.IBSlidablePage;
+import ollitos.gui.container.IBSlidableModel;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 
 
 @SuppressWarnings("serial")
-public class BBongardGameModel implements IBFlippableModel{
+public class BBongardGameModel implements IBSlidableModel{
 
 	private BResourceLocator[] _resources;
 	private BBongardTestField[] _drawables;
@@ -41,7 +41,7 @@ public class BBongardGameModel implements IBFlippableModel{
 	}
 
 	@Override
-	public IBFlippableDrawable drawable(int x) {
+	public IBSlidablePage page(int x) {
 		BBongardTestField ret = drawables()[x];
 		if( ret == null ){
 			ret = new BBongardTestField(resources()[x]);

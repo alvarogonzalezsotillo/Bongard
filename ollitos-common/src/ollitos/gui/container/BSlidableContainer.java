@@ -16,17 +16,19 @@ import ollitos.gui.event.BEventAdapter;
 import ollitos.gui.event.BLogListener;
 import ollitos.gui.event.IBEvent;
 import ollitos.gui.event.IBEventConsumer;
+import ollitos.platform.BCanvasContextDelegate;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 import ollitos.platform.BState;
 import ollitos.platform.IBCanvas;
+import ollitos.platform.IBCanvas.CanvasContext;
 import ollitos.platform.IBDisposable;
 import ollitos.platform.IBLogger;
 import ollitos.platform.IBRaster;
 import ollitos.util.BException;
 import ollitos.util.BTransformUtil;
 
-public class BFlippableContainer extends BDrawableContainer {
+public class BSlidableContainer extends BDrawableContainer {
 	private static final double MARGIN = 50;
 	
 	public static final boolean LOG_EVENTS = false;
@@ -43,7 +45,7 @@ public class BFlippableContainer extends BDrawableContainer {
 		private double _ox = Double.NaN;
 
 		public DragAnimation(double fx, int totalMillis) {
-			super(totalMillis, BFlippableContainer.this);
+			super(totalMillis, BSlidableContainer.this);
 			setFinalDrawableOffset(fx);
 		}
 
@@ -220,12 +222,12 @@ public class BFlippableContainer extends BDrawableContainer {
 		
 	}
 	
-	private IBFlippableModel _model;
+	private IBSlidableModel _model;
 
 	private double _dx;
 
 
-	private BSprite _backgroundSprite;
+	private IBRaster _backgroundSprite;
 
 	private BBox _box;
 
@@ -239,27 +241,26 @@ public class BFlippableContainer extends BDrawableContainer {
 	private static final int MAX_DRAWABLES_WIDTH = 10;
 	
 
-	public BFlippableContainer(IBRectangle r) {
+	public BSlidableContainer(IBRectangle r) {
 		this( r, null, 0);
 	}
 
 	
-	public BFlippableContainer(IBRectangle r, IBFlippableModel model) {
+	public BSlidableContainer(IBRectangle r, IBSlidableModel model) {
 		this( r, model, 0);
 	}
 
-	public BFlippableContainer(IBRectangle r, IBFlippableModel model,int x) {
+	public BSlidableContainer(IBRectangle r, IBSlidableModel model,int x) {
 		super( r );
 		setModel(model,x);
 	}
 
-	public void setModel(IBFlippableModel model, int x) {
+	public void setModel(IBSlidableModel model, int x) {
 		_model = model;
 		BResourceLocator background = _model != null ? _model.background() : null;
 		if( background != null ){
 			IBRaster r = platform().raster( background, true );
-			_backgroundSprite = platform().sprite(r);
-			_backgroundSprite.setAlfa(.3f);
+			_backgroundSprite = r;
 		}
 		else{
 			_backgroundSprite = null;
@@ -279,14 +280,22 @@ public class BFlippableContainer extends BDrawableContainer {
 		_dx = dx;
 		double w = originalSize().w();
 		adjustTransformToSize();
+		
+		IBTransform t = platform().identityTransform();
 		if (current() != null) {
-			current().drawable().transform().translate(dx, 0);
+			t.toIdentity();
+			t.translate(dx,0);
+			current().drawable().transform().preConcatenate(t);
 		}
 		if (right() != null) {
-			right().drawable().transform().translate(dx + w + MARGIN, 0);
+			t.toIdentity();
+			t.translate(dx + w + MARGIN, 0);
+			right().drawable().transform().preConcatenate(t);
 		}
 		if (left() != null) {
-			left().drawable().transform().translate(dx - w - MARGIN, 0);
+			t.toIdentity();
+			t.translate(dx - w - MARGIN, 0);
+			left().drawable().transform().preConcatenate(t);
 		}
 
 	}
@@ -336,22 +345,22 @@ public class BFlippableContainer extends BDrawableContainer {
 		IBLogger l = platform().logger();
 		// SETUP CURRENT
 		for( int i = ini ; i <= end ; i++ ){
-			IBDisposable.Util.setUpLater(_model.drawable(i));
+			IBDisposable.Util.setUpLater(_model.page(i));
 			//_model.drawable(i).setUp();
 		}
 
 		// DISPOSE OLD
 		for( int i = oldIni ; i < ini ; i++ ){
-			_model.drawable(i).dispose();
+			_model.page(i).dispose();
 		}
 		for( int i = end+1 ; i <= oldEnd ; i++ ){
-			_model.drawable(i).dispose();
+			_model.page(i).dispose();
 		}
 		
 		if(false){
 			String s = "";
 			for( int i = 0 ; i < _model.width() ; i++ ){
-				boolean disposed = _model.drawable(i).disposed();
+				boolean disposed = _model.page(i).disposed();
 				s += disposed?".":"S";
 			}
 			l.log(this,s);
@@ -361,16 +370,17 @@ public class BFlippableContainer extends BDrawableContainer {
 
 	@Override
 	protected void draw_internal(IBCanvas c) {
+		super.draw_internal(c);
 		IBTransform t = canvasContext().transform();
 		draw_background(c,t);
 
-		IBFlippableDrawable left = left();
+		IBSlidablePage left = left();
 		if (left != null)
 			left.drawable().draw(c, t);
-		IBFlippableDrawable right = right();
+		IBSlidablePage right = right();
 		if (right != null)
 			right.drawable().draw(c, t);
-		IBFlippableDrawable current = current();
+		IBSlidablePage current = current();
 		if (current != null)
 			current.drawable().draw(c, t);
 
@@ -382,11 +392,13 @@ public class BFlippableContainer extends BDrawableContainer {
 			return;
 		}
 		
-		double scale = (originalSize().h())/_backgroundSprite.originalSize().h();
-		double dx = _backgroundSprite.originalSize().w()/2;
+		int h = _backgroundSprite.h();
+		double scale = (originalSize().h())/h;
+		int w = _backgroundSprite.w();
+		double dx = w/2;
 		
 		double offsetAtFirstIndex = 0;
-		double offsetAtLastIndex = -_backgroundSprite.originalSize().w() + originalSize().w()/scale;
+		double offsetAtLastIndex = -w + originalSize().w()/scale;
 		double offsetPerIndex = (offsetAtFirstIndex + offsetAtLastIndex)/(_model.width()-1);
 		if( offsetPerIndex < -originalSize().w()/scale ){
 			offsetPerIndex = -originalSize().w()/scale;
@@ -398,11 +410,14 @@ public class BFlippableContainer extends BDrawableContainer {
 		
 		dx *= scale;
 		double dy = originalSize().h()/2;
-		IBTransform bst = _backgroundSprite.transform();
-		bst.toIdentity();
+		IBTransform bst = platform().identityTransform();
 		bst.translate(dx, dy);
 		bst.scale(scale, scale);
-		_backgroundSprite.draw(c, t);
+		bst.preConcatenate(t);
+		BCanvasContextDelegate context = new BCanvasContextDelegate(canvasContext());
+		context.setAlpha(0.3f);
+		context.setTransform(bst);
+		c.drawRaster(context, _backgroundSprite, -w/2, -h/2);
 	}
 
 	private BBox defaultIcon(){
@@ -487,7 +502,7 @@ public class BFlippableContainer extends BDrawableContainer {
 			if( index == currentIndex() ){
 				r = BRectangle.grow(r, 3);
 			}
-			IBRectangularDrawable rd = _model.drawable(index).icon();
+			IBRectangularDrawable rd = _model.page(index).icon();
 			if( rd == null ){
 				rd = defaultIcon();
 			}
@@ -522,25 +537,25 @@ public class BFlippableContainer extends BDrawableContainer {
 		return _currentIndex;
 	}
 	
-	private IBFlippableDrawable current() {
+	private IBSlidablePage current() {
 		return drawable(currentIndex());
 	}
 
-	private IBFlippableDrawable drawable(int pos) {
+	private IBSlidablePage drawable(int pos) {
 		if( _model == null ){
 			return null;
 		}
 		if (pos >= 0 && pos < _model.width()) {
-			return _model.drawable(pos);
+			return _model.page(pos);
 		}
 		return null;
 	}
 
-	private IBFlippableDrawable left() {
+	private IBSlidablePage left() {
 		return drawable(currentIndex() - 1);
 	}
 
-	private IBFlippableDrawable right() {
+	private IBSlidablePage right() {
 		return drawable(currentIndex() + 1);
 	}
 
@@ -568,7 +583,7 @@ public class BFlippableContainer extends BDrawableContainer {
 		adjustToMySize(right());
 	}
 	
-	private void adjustToMySize(IBFlippableDrawable fd){
+	private void adjustToMySize(IBSlidablePage fd){
 		if( fd == null ){
 			return;
 		}
@@ -594,10 +609,10 @@ public class BFlippableContainer extends BDrawableContainer {
 
 	@SuppressWarnings("serial")
 	private static class MyState extends BState{
-		private IBFlippableModel _myModel;
+		private IBSlidableModel _myModel;
 		private int _index;
 		private IBRectangle _r;
-		public MyState(BFlippableContainer fc) {
+		public MyState(BSlidableContainer fc) {
 			_myModel = fc._model;
 			_r = fc.originalSize();
 			_index = fc.currentIndex();
@@ -605,7 +620,7 @@ public class BFlippableContainer extends BDrawableContainer {
 
 		@Override
 		public IBDrawableContainer createDrawable() {
-			BFlippableContainer ret = new BFlippableContainer(_r,_myModel);
+			BSlidableContainer ret = new BSlidableContainer(_r,_myModel);
 			ret.setCurrent( _index );
 			return ret;
 		}

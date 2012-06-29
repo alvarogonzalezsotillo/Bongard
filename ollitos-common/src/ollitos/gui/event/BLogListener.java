@@ -45,7 +45,7 @@ public class BLogListener implements IBEventListener{
 			_listener = listener;
 			_nextEvent = readNextEvent();
 			
-			BResourceLocator rl = new BResourceLocator( "/images/examples/cursor.png" );
+			BResourceLocator rl = new BResourceLocator( "/examples/cursor.png" );
 			IBRaster raster = BPlatform.instance().raster(rl, true);
 			_cursor = BPlatform.instance().sprite(raster);
 			_cursor.transform().scale(.5, .5);

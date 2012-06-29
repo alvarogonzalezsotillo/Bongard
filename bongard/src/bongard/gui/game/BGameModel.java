@@ -1,15 +1,17 @@
 package bongard.gui.game;
 
 import ollitos.animation.BRunnableAnimation;
-import ollitos.gui.container.BFlippableContainer;
-import ollitos.gui.container.IBFlippableModel;
+import ollitos.gui.basic.IBDrawable;
+import ollitos.gui.container.BSlidableContainer;
+import ollitos.gui.container.BZoomDrawable;
+import ollitos.gui.container.IBSlidableModel;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 import bongard.problem.BCardExtractor;
 import bongard.problem.BProblem;
 
 @SuppressWarnings("serial")
-public class BGameModel implements IBFlippableModel{
+public class BGameModel implements IBSlidableModel{
 	
 	public static final int MAX_WIDTH = 12;
 	private static final int INITIAL_WIDTH = 2;
@@ -48,7 +50,7 @@ public class BGameModel implements IBFlippableModel{
 	}
 	
 	@Override
-	public BGameField drawable(int x) {
+	public BGameField page(int x) {
 		return drawables()[x];
 	}
 
@@ -78,13 +80,14 @@ public class BGameModel implements IBFlippableModel{
 			BPlatform.instance().game().animator().addAnimation( new BRunnableAnimation(1000, new Runnable(){
 				@Override
 				public void run() {
-					goToLevel(_demo,goTo,true);
+					IBDrawable d = goToLevel(_demo,goTo,true);
+					BPlatform.instance().game().screen().setDrawable(d);
 				}
 			}));
 		}
 	}
 	
-	private static void goToLevel(boolean demo, int width, boolean limitDificulty) {
+	private static IBDrawable goToLevel(boolean demo, int width, boolean limitDificulty) {
 		
 		if( width > MAX_WIDTH ){
 			width = MAX_WIDTH;
@@ -103,18 +106,18 @@ public class BGameModel implements IBFlippableModel{
 		if( problems == null ){
 			problems = BCardExtractor.randomProblems(width);
 		}
-		goToProblems(demo,problems);
+		return goToProblems(demo,problems);
 	}
 
-	private static void goToProblems(boolean demo, BResourceLocator[] problems) {
+	private static IBDrawable goToProblems(boolean demo, BResourceLocator[] problems) {
 		BGameModel m = new BGameModel(demo,problems );
-		BFlippableContainer d = new BFlippableContainer( BGameField.computeOriginalSize(), m );
-		BPlatform.instance().game().screen().setDrawable( d );
+		BSlidableContainer d = new BSlidableContainer( BGameField.computeOriginalSize(), m );
+		return d;
 	}
 
 	private boolean allAnswered(){
 		for( int i = 0 ; i < width() ; i++ ){
-			BGameField d = drawable(i);
+			BGameField d = page(i);
 			if( !d.badAnswer() && !d.correctAnswer() ){
 				return false;
 			}
@@ -124,7 +127,7 @@ public class BGameModel implements IBFlippableModel{
 
 	private boolean allCorrectAnswered(){
 		for( int i = 0 ; i < width() ; i++ ){
-			BGameField d = drawable(i);
+			BGameField d = page(i);
 			if( !d.correctAnswer() ){
 				return false;
 			}
@@ -132,12 +135,12 @@ public class BGameModel implements IBFlippableModel{
 		return true;
 	}
 
-	public static void goToInitialLevel() {
-		goToLevel(false,INITIAL_WIDTH,true);
+	public static IBDrawable goToInitialLevel() {
+		return goToLevel(false,INITIAL_WIDTH,true);
 	}
 	
 	@Override
 	public void dispose(int x) {
-		drawable(x).dispose();
+		page(x).dispose();
 	}
 }

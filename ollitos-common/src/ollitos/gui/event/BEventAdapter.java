@@ -9,12 +9,16 @@ public class BEventAdapter implements IBEventListener{
 	
 	protected IBTransformHolder _transformHolder;
 
+	public BEventAdapter(){
+		this(null);
+	}
+	
 	public BEventAdapter(IBTransformHolder s){
 		_transformHolder = s;
 	}
 	
 	@Override
-	public final boolean handle(IBEvent e) {
+	public boolean handle(IBEvent e) {
 		switch( e.type() ){
 		case containerResized:
 			return containerResized(e.rectangle());

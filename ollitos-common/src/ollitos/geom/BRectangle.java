@@ -2,6 +2,8 @@ package ollitos.geom;
 
 import java.io.Serializable;
 
+import ollitos.platform.BPlatform;
+
 
 
 public class BRectangle implements IBRectangle, Serializable{
@@ -9,6 +11,11 @@ public class BRectangle implements IBRectangle, Serializable{
 	private double _y;
 	private double _w;
 	private double _h;
+	
+	public BRectangle(){
+		this(0,0,0,0);
+	}
+	
 	public BRectangle( double x, double y, double width, double height){
 		_x = x;
 		_y = y;
@@ -43,6 +50,14 @@ public class BRectangle implements IBRectangle, Serializable{
 	public static IBRectangle centerAtOrigin(IBRectangle r){
 		return new BRectangle(-r.w()/2, -r.h()/2, r.w(), r.h() );
 	}
+	
+	public static IBPoint center(IBRectangle r){
+		return BPlatform.instance().point( r.x()+r.w()/2, r.y()+r.h()/2);
+	}
+	
+	public static IBRectangle centerAt(IBRectangle r, IBPoint center){
+		return new BRectangle( center.x()-r.w()/2, center.y()-r.h()/2, r.w(), r.h() );
+	}
 
 	public static IBRectangle resize( IBRectangle r, double d ){
 		double w = r.w()*d;
@@ -56,5 +71,14 @@ public class BRectangle implements IBRectangle, Serializable{
 	@Override
 	public String toString() {
 		return "(" + x() + "," + y() + "," + w() + "," + h() + ")";
+	}
+
+	public static IBRectangle scale(IBRectangle r, double f) {
+		double w = r.w()*f;
+		double h = r.h()*f;
+		double x = (r.x()+r.w()/2)-w/2;
+		double y = (r.y()+r.h()/2)-h/2;
+		
+		return new BRectangle( x, y, w, h );
 	}
 }

@@ -17,6 +17,7 @@ import ollitos.util.BException;
 public abstract class BPlatform {
 	
 	public static final IBColor COLOR_WHITE = instance().color("ffffff");
+	public static final IBColor COLOR_YELLOW = instance().color("ffff00");
 	public static final IBColor COLOR_BLACK = instance().color("000000");
 	public static final IBColor COLOR_DARKGRAY = instance().color("888888");
 	public static final IBColor COLOR_GRAY = instance().color("999999");
@@ -48,16 +49,15 @@ public abstract class BPlatform {
 		}
 		
 		if( c == null ){
-			return null;
+			throw new BException( "Can't find implementation", null );
 		}
 		
 		try{
 			return (BPlatform) c.newInstance();
 		}
 		catch( Throwable e ){
-			//e.printStackTrace();
+			throw new BException( "Unexpected error", e );
 		}
-		return null;
 	}
 
 	

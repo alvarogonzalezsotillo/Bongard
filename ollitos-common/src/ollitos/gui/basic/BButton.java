@@ -1,8 +1,8 @@
 package ollitos.gui.basic;
 
-import ollitos.animation.BScaleAnimation;
 import ollitos.animation.BWaitForAnimation;
 import ollitos.animation.IBAnimation;
+import ollitos.animation.transform.BScaleAnimation;
 import ollitos.geom.BRectangle;
 import ollitos.geom.IBPoint;
 import ollitos.geom.IBTransform;
@@ -18,7 +18,7 @@ import ollitos.util.BTransformUtil;
 
 public class BButton extends BRectangularDrawable implements IBEventConsumer{
 
-	private static final int CLICK_DELAY = 100;
+	private static final int CLICK_DELAY = 50;
 	private static final double CLICK_SCALE = 0.9;
 	private ClickedListener _clickedListener;
 	private IBRectangularDrawable _drawable;
@@ -90,14 +90,6 @@ public class BButton extends BRectangularDrawable implements IBEventConsumer{
 		}
 	}
 	
-	public void install( IBEventSource s ){
-		s.addListener( listener() );
-	}
-
-	public void uninstall( IBEventSource s ){
-		s.removeListener( listener() );
-	}
-
 	@Override
 	public IBEventListener listener() {
 		return _adapter;

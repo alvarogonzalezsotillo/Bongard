@@ -10,7 +10,7 @@
 <script>
 var _jarUrl = "https://raw.github.com/alvarogonzalezsotillo/Bongard/master/release/bongard.jar";
 var _name = "alvaro-gonzalez-sotillo-applet";
-var _code = "bongard.platform.applet.AppletGame";
+var _code = "ollitos.platform.applet.AppletGame";
 var _codebase = ".";
 deployJava.runApplet({
   archive:_jarUrl, 

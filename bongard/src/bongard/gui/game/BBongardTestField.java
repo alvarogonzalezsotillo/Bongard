@@ -5,22 +5,25 @@ import java.io.Serializable;
 import ollitos.geom.BRectangle;
 import ollitos.geom.IBRectangle;
 import ollitos.gui.basic.BSprite;
+import ollitos.gui.basic.IBDrawable;
 import ollitos.gui.basic.IBRectangularDrawable;
 import ollitos.gui.container.BDrawableContainer;
-import ollitos.gui.container.BFlippableContainer;
-import ollitos.gui.container.IBFlippableDrawable;
+import ollitos.gui.container.BSlidableContainer;
+import ollitos.gui.container.BZoomDrawable;
+import ollitos.gui.container.IBSlidablePage;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 import ollitos.platform.IBCanvas;
 import bongard.problem.BProblem;
 
 @SuppressWarnings("serial")
-public class BBongardTestField extends BDrawableContainer implements IBFlippableDrawable, Serializable{
+public class BBongardTestField extends BDrawableContainer implements IBSlidablePage, Serializable{
 
 	private static final boolean FOLLOW_SPRITE_SIZE = false;
 	private BResourceLocator _locator;
 	transient private BProblem _problem;
 	transient private BSprite _sprite;
+	transient private IBDrawable _drawable;
 	
 	
 	public BBongardTestField(BResourceLocator l){
@@ -46,6 +49,7 @@ public class BBongardTestField extends BDrawableContainer implements IBFlippable
 		_sprite.setAntialias(true);
 		_sprite.transform().translate( originalSize().w()/2, originalSize().h()/2 );
 		_sprite.transform().rotate(Math.PI/2);
+		addDrawable(_sprite);
 	}
 
 	@Override
@@ -59,17 +63,15 @@ public class BBongardTestField extends BDrawableContainer implements IBFlippable
 	}
 
 	@Override
-	protected void draw_internal(IBCanvas c) {
-		_sprite.draw(c, canvasContext().transform());
-	}
-
-	@Override
 	public IBRectangularDrawable icon() {
 		return null;
 	}
 
 	@Override
 	public void setUp() {
+		if( !disposed() ){
+			return;
+		}
 		setUpProblem();
 	}
 
@@ -83,6 +85,16 @@ public class BBongardTestField extends BDrawableContainer implements IBFlippable
 	@Override
 	public boolean disposed() {
 		return _problem == null || _problem.disposed();
+	}
+
+
+	@Override
+	public IBDrawable drawable() {
+		if (_drawable == null) {
+			_drawable = new BZoomDrawable(this);
+		}
+
+		return _drawable;
 	}
 
 }

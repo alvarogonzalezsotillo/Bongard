@@ -2,6 +2,9 @@ package ollitos.animation;
 
 import java.util.Arrays;
 
+import ollitos.platform.BPlatform;
+import ollitos.util.BException;
+
 public class BWaitForAnimation implements IBAnimation{
 
 	private IBAnimation[] _waitFor;
@@ -10,6 +13,14 @@ public class BWaitForAnimation implements IBAnimation{
 	public BWaitForAnimation( IBAnimation animation, IBAnimation ... waitFor ){
 		_waitFor = waitFor;
 		_animation = animation;
+		for( IBAnimation a: _waitFor ){
+			if( a == this ){
+				throw new BException("waiting for myself", null );
+			}
+		}
+		if( _animation == this ){
+			throw new BException("waiting for myself", null );
+		}
 	}
 	
 	@Override
@@ -42,9 +53,20 @@ public class BWaitForAnimation implements IBAnimation{
 		return _animation.endReached();
 	}
 	
+	private static int __ = 0;
+	
 	@Override
 	public String toString() {
-		return "BWaitForAnimation(" + _animation + ", " + Arrays.asList(_waitFor) + ")";
+		try{
+			__++;
+			if( __ > 10 ){
+				new Exception().printStackTrace();
+			}
+			return "BWaitForAnimation(" + _animation + ", " + Arrays.asList(_waitFor) + ")";
+		}
+		finally{
+			__--;
+		}
 	}
 
 }

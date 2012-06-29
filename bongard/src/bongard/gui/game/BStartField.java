@@ -4,19 +4,18 @@ import ollitos.animation.BRunnableAnimation;
 import ollitos.animation.IBAnimation;
 import ollitos.geom.BRectangle;
 import ollitos.geom.IBRectangle;
-import ollitos.geom.IBTransform;
 import ollitos.gui.basic.BButton;
 import ollitos.gui.basic.BButton.ClickedListener;
 import ollitos.gui.basic.BSprite;
+import ollitos.gui.basic.IBDrawable;
 import ollitos.gui.container.BDrawableContainer;
-import ollitos.gui.container.BFlippableContainer;
+import ollitos.gui.container.BSlidableContainer;
 import ollitos.gui.event.BRestartListener;
+import ollitos.gui.event.BZoomIntoDetailListener;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 import ollitos.platform.BState;
-import ollitos.platform.IBCanvas;
 import ollitos.platform.IBRaster;
-import ollitos.util.BTransformUtil;
 
 public class BStartField extends BDrawableContainer{
 
@@ -54,7 +53,6 @@ public class BStartField extends BDrawableContainer{
 		ret.setClickedListener(_clickedListener );
 		IBRectangle r = spritePosition(row,column, ss.w() );
 		ret.setSizeTo(r, false, true);
-		ret.install(this);
 		return ret;
 	}
 	
@@ -64,6 +62,11 @@ public class BStartField extends BDrawableContainer{
 		_helpGameSprite = createButton(0,1,"/images/start/helpGame.png");
 		_startOriginalSprite = createButton(1,0,"/images/start/startOriginal.png");
 		_helpOriginalSprite = createButton(1,1,"/images/start/helpOriginal.png");
+		
+		addDrawable(_startGameSprite);
+		addDrawable(_helpGameSprite);
+		addDrawable(_startOriginalSprite);
+		addDrawable(_helpOriginalSprite);
 		
 		BRestartListener.install();
 	}
@@ -87,41 +90,34 @@ public class BStartField extends BDrawableContainer{
 		}
 	}
 	
-	@Override
-	protected void draw_internal(IBCanvas c) {
-		IBTransform t = canvasContext().transform();
-		_startGameSprite.draw(c,t);
-		_helpGameSprite.draw(c,t);
-		_startOriginalSprite.draw(c,t);
-		_helpOriginalSprite.draw(c,t);
-	}
-
 	protected void startGamePressed() {
+		final IBDrawable d = BGameModel.goToInitialLevel();
 		IBAnimation a = new BRunnableAnimation(10, new Runnable(){
 			@Override
 			public void run() {
-				BGameModel.goToInitialLevel();
+				platform().game().screen().setDrawable(d);
 			}
 		});
 		platform().game().animator().addAnimation(a);
 	}
 
 	protected void helpGamePressed() {
+		final BExamplesField d = new BExamplesField();
 		IBAnimation a = new BRunnableAnimation(10, new Runnable(){
 			@Override
 			public void run() {
-				platform().game().screen().setDrawable( new BExamplesField() );
+				platform().game().screen().setDrawable( d );
 			}
 		});
 		platform().game().animator().addAnimation(a);
 	}
 	
 	protected void startOriginalPressed() {
+		BBongardGameModel m = new BBongardGameModel();
+		final BSlidableContainer d = new BSlidableContainer( BGameField.computeOriginalSize(), m );
 		IBAnimation a = new BRunnableAnimation(10, new Runnable(){
 			@Override
 			public void run() {
-				BBongardGameModel m = new BBongardGameModel();
-				BFlippableContainer d = new BFlippableContainer( BGameField.computeOriginalSize(), m );
 				platform().game().screen().setDrawable( d );
 			}
 		});
@@ -129,10 +125,11 @@ public class BStartField extends BDrawableContainer{
 	}
 
 	protected void helpOriginalPressed() {
+		final BGameHelp d = new BGameHelp();
 		IBAnimation a = new BRunnableAnimation(10, new Runnable(){
 			@Override
 			public void run() {
-				platform().game().screen().setDrawable( new BGameHelp() );
+				platform().game().screen().setDrawable( d );
 			}
 		});
 		platform().game().animator().addAnimation(a);
