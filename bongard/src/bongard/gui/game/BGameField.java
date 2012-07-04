@@ -459,7 +459,7 @@ public class BGameField extends BDrawableContainer implements IBSlidablePage, Se
 		}
 
 		@Override
-		public IBDrawableContainer createDrawable() {
+		public IBDrawableContainer create() {
 			BGameField ret = new BGameField();
 			ret.restore(this);
 			return ret;

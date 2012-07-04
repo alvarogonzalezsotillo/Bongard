@@ -118,7 +118,7 @@ public class BGameHelp extends BSlidableContainer{
 	@SuppressWarnings("serial")
 	private static class MyState extends BState{
 		@Override
-		public IBDrawableContainer createDrawable() {
+		public IBDrawableContainer create() {
 			return new BGameHelp();
 		}
 	}
