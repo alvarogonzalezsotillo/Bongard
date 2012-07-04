@@ -6,6 +6,7 @@ import ollitos.geom.BRectangle;
 import ollitos.geom.IBRectangle;
 import ollitos.gui.basic.BButton;
 import ollitos.gui.basic.BButton.ClickedListener;
+import ollitos.gui.basic.BCheckBox;
 import ollitos.gui.basic.BSprite;
 import ollitos.gui.basic.IBDrawable;
 import ollitos.gui.container.BDrawableContainer;
@@ -45,13 +46,9 @@ public class BStartField extends BDrawableContainer{
 	}
 	
 	private BButton createButton(int row, int column, String resource ){
-		BPlatform f = platform();
-		IBRaster ss = f.raster( new BResourceLocator(resource), false );
-		BSprite s = new BSprite(ss);
-		s.setAntialias(true);
-		BButton ret = new BButton( s );
-		ret.setClickedListener(_clickedListener );
-		IBRectangle r = spritePosition(row,column, ss.w() );
+		BButton ret = BButton.create(resource);
+		ret.addClickedListener(_clickedListener );
+		IBRectangle r = spritePosition(row,column, ret.drawable().originalSize().w() );
 		ret.setSizeTo(r, false, true);
 		return ret;
 	}
@@ -67,6 +64,7 @@ public class BStartField extends BDrawableContainer{
 		addDrawable(_helpGameSprite);
 		addDrawable(_startOriginalSprite);
 		addDrawable(_helpOriginalSprite);
+		
 		
 		BRestartListener.install();
 	}

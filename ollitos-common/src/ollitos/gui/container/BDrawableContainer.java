@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ollitos.geom.IBRectangle;
+import ollitos.geom.IBTransform;
 import ollitos.gui.basic.BRectangularDrawable;
 import ollitos.gui.basic.IBDrawable;
 import ollitos.gui.event.BListenerList;
@@ -120,8 +121,13 @@ public abstract class BDrawableContainer extends BRectangularDrawable implements
 	
 	@Override
 	protected void draw_internal(IBCanvas c) {
+		IBTransform t = canvasContext().transform();
+		draw_children(c, t);
+	}
+
+	protected void draw_children(IBCanvas c, IBTransform t) {
 		for( IBDrawable d: _drawables ){
-			d.draw(c, canvasContext().transform());
+			d.draw(c, t);
 		}
 	}
 	

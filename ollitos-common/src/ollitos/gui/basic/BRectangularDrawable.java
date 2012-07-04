@@ -7,7 +7,7 @@ import ollitos.geom.IBTransform;
 import ollitos.platform.BPlatform;
 import ollitos.util.BTransformUtil;
 
-public abstract class BRectangularDrawable extends BDrawable implements IBRectangularDrawable{
+public abstract class BRectangularDrawable extends BDrawable{
 	
 	private IBRectangle _originalSize;
 

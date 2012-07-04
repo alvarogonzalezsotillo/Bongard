@@ -9,9 +9,7 @@ import ollitos.geom.IBRectangle;
 import ollitos.geom.IBTransform;
 import ollitos.gui.basic.BBox;
 import ollitos.gui.basic.BLabel;
-import ollitos.gui.basic.BSprite;
 import ollitos.gui.basic.IBDrawable;
-import ollitos.gui.basic.IBRectangularDrawable;
 import ollitos.gui.event.BEventAdapter;
 import ollitos.gui.event.BLogListener;
 import ollitos.gui.event.IBEvent;
@@ -21,7 +19,6 @@ import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 import ollitos.platform.BState;
 import ollitos.platform.IBCanvas;
-import ollitos.platform.IBCanvas.CanvasContext;
 import ollitos.platform.IBDisposable;
 import ollitos.platform.IBLogger;
 import ollitos.platform.IBRaster;
@@ -502,7 +499,7 @@ public class BSlidableContainer extends BDrawableContainer {
 			if( index == currentIndex() ){
 				r = BRectangle.grow(r, 3);
 			}
-			IBRectangularDrawable rd = _model.page(index).icon();
+			IBDrawable rd = _model.page(index).icon();
 			if( rd == null ){
 				rd = defaultIcon();
 			}

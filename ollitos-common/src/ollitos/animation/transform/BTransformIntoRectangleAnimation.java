@@ -7,10 +7,7 @@ import ollitos.geom.IBPoint;
 import ollitos.geom.IBRectangle;
 import ollitos.geom.IBTransform;
 import ollitos.gui.basic.BDrawable;
-import ollitos.gui.basic.BRectangularDrawable;
 import ollitos.gui.basic.IBDrawable;
-import ollitos.gui.basic.IBRectangularDrawable;
-import ollitos.platform.BPlatform;
 import ollitos.util.BTransformUtil;
 
 public class BTransformIntoRectangleAnimation extends BFixedDurationAnimation{
@@ -72,7 +69,7 @@ public class BTransformIntoRectangleAnimation extends BFixedDurationAnimation{
 		return r;
 	}
 	
-	public static BTransformIntoRectangleAnimation zoom( int millis, IBRectangularDrawable r, IBPoint beforeSamePoint, IBPoint afterSamePoint, double scale ){
+	public static BTransformIntoRectangleAnimation zoom( int millis, IBDrawable r, IBPoint beforeSamePoint, IBPoint afterSamePoint, double scale ){
 		IBRectangle src = BTransformUtil.transform( r.transform(), r.originalSize() );
 		IBRectangle dst = BRectangle.scale(src, scale);
 

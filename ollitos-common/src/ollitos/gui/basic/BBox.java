@@ -9,9 +9,14 @@ public class BBox extends BRectangularDrawable{
 	
 	private boolean _filled = true;
 
-	public BBox( IBRectangle r, IBColor color ){
+	public BBox( IBRectangle r, IBColor color, boolean filled ){
 		super(r);
 		setColor(color);
+		setFilled(filled);
+	}
+	
+	public BBox( IBRectangle r, IBColor color ){
+		this(r,color,true);
 	}
 
 	protected void setColor(IBColor color) {

@@ -7,11 +7,10 @@ import ollitos.geom.IBRectangle;
 import ollitos.gui.basic.BButton;
 import ollitos.gui.basic.BSprite;
 import ollitos.gui.basic.IBDrawable;
-import ollitos.gui.basic.IBRectangularDrawable;
 import ollitos.gui.container.BSlidableContainer;
 import ollitos.gui.container.IBDrawableContainer;
-import ollitos.gui.container.IBSlidablePage;
 import ollitos.gui.container.IBSlidableModel;
+import ollitos.gui.container.IBSlidablePage;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 import ollitos.platform.BState;
@@ -92,7 +91,7 @@ public class BGameHelp extends BSlidableContainer{
 				}
 				
 				@Override
-				public IBRectangularDrawable icon() {
+				public IBDrawable icon() {
 					return null;
 				}
 			};

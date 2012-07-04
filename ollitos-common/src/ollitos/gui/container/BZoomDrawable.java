@@ -2,6 +2,7 @@ package ollitos.gui.container;
 
 import ollitos.animation.BFixedDurationAnimation;
 import ollitos.animation.IBAnimation;
+import ollitos.geom.BRectangle;
 import ollitos.geom.IBPoint;
 import ollitos.geom.IBTransform;
 import ollitos.geom.IBTransformHolder;
@@ -13,6 +14,7 @@ import ollitos.gui.event.IBEventListener;
 import ollitos.platform.BPlatform;
 import ollitos.platform.IBCanvas;
 import ollitos.platform.IBLogger;
+import ollitos.util.BTransformUtil;
 
 public class BZoomDrawable extends BDrawableContainer{
 	public static final double ZOOM_FACTOR = 3;
@@ -30,7 +32,7 @@ public class BZoomDrawable extends BDrawableContainer{
 		if( drawables().length > 0 ){
 			throw new IllegalStateException( "At most one drawable allowed" );
 		}
-		setOriginalSize(d.originalSize());
+		setOriginalSize(BTransformUtil.transform(d.transform(),d.originalSize()));
 		addListener( zoomListener() );
 		super.addDrawable(d);
 	}
@@ -59,13 +61,9 @@ public class BZoomDrawable extends BDrawableContainer{
 	}
 	
 	@Override
-	protected void draw_internal(IBCanvas c) {
-		IBTransform t = drawTransform();
-		for( IBDrawable d: drawables() ){
-			d.draw(c, t);
-		}
-		canvasContext().setColor(BPlatform.COLOR_YELLOW);
-		c.drawString(this, "zoom", 100, 100);
+	protected void draw_children(IBCanvas c, IBTransform t) {
+		IBTransform dt = drawTransform();
+		super.draw_children(c, dt);
 	}
 	
 	
@@ -103,9 +101,24 @@ public class BZoomDrawable extends BDrawableContainer{
 		private long _lastPointTime;
 
 
+		public ZoomListener() {
+			super(BZoomDrawable.this);
+		}
+
 		@Override
 		public boolean pointerClick(IBPoint pInMyCoordinates) {
+			
+			boolean inside = BRectangle.inside( originalSize(), pInMyCoordinates );
+			
 			IBLogger l = platform().logger();
+			l.log( this, "size:" + originalSize() );
+			l.log( this, "pInMyCoordinates:" + pInMyCoordinates );
+			l.log( this, "inside:" + inside );
+			
+			if( !inside ){
+				return false;
+			}
+			
 			
 			IBPoint lastPoint = _lastPoint;
 			long currentMillis = platform().game().animator().currentMillis();

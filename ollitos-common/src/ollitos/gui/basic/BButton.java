@@ -1,5 +1,9 @@
 package ollitos.gui.basic;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import ollitos.animation.BWaitForAnimation;
 import ollitos.animation.IBAnimation;
 import ollitos.animation.transform.BScaleAnimation;
@@ -9,19 +13,19 @@ import ollitos.geom.IBTransform;
 import ollitos.gui.event.BEventAdapter;
 import ollitos.gui.event.IBEventConsumer;
 import ollitos.gui.event.IBEventListener;
-import ollitos.gui.event.IBEventSource;
-import ollitos.platform.BCanvasContextDelegate;
 import ollitos.platform.BPlatform;
+import ollitos.platform.BResourceLocator;
 import ollitos.platform.IBCanvas;
 import ollitos.platform.IBLogger;
+import ollitos.platform.IBRaster;
 import ollitos.util.BTransformUtil;
 
-public class BButton extends BRectangularDrawable implements IBEventConsumer{
+public class BButton extends BRectangularDrawable implements IBEventConsumer, IBDrawable.DrawableHolder{
 
 	private static final int CLICK_DELAY = 50;
 	private static final double CLICK_SCALE = 0.9;
-	private ClickedListener _clickedListener;
-	private IBRectangularDrawable _drawable;
+	private List<ClickedListener> _clickedListeners = new ArrayList<ClickedListener>();
+	private IBDrawable _drawable;
 	
 	public interface ClickedListener{
 		void clicked(BButton b);
@@ -71,22 +75,37 @@ public class BButton extends BRectangularDrawable implements IBEventConsumer{
 		}
 	};
 	
+	public static BButton create( String raster ){
+		BPlatform f = BPlatform.instance();
+		IBRaster ss = f.raster( new BResourceLocator(raster), false );
+		return create( ss );
+	}
 	
-	public BButton(IBRectangularDrawable drawable) {
+	public static BButton create( IBRaster raster ){
+		BSprite s = new BSprite(raster);
+		s.setAntialias(true);
+		BButton ret = new BButton( s );
+
+		return ret;
+	}
+	
+	
+	public BButton(IBDrawable drawable) {
 		super( new BRectangle(-1,-1,2,2) );
 		setDrawable(drawable);
 	}
 
-	private void setDrawable(IBRectangularDrawable drawable) {
+	protected void setDrawable(IBDrawable drawable) {
 		_drawable = drawable;
-		setOriginalSize(BRectangle.centerAtOrigin(_drawable.originalSize()));
-		BTransformUtil.setTo(_drawable.transform(), _drawable.originalSize(), originalSize(), false, true);
+		BTransformUtil.setTo(_drawable.transform(), _drawable.originalSize(), originalSize(), true, true);
 	}
 
 	protected void clicked(){
 		platform().logger().log( this, "clicked" );
-		if( _clickedListener != null ){
-			_clickedListener.clicked(this);
+		if( _clickedListeners != null ){
+			for (ClickedListener l : listeners() ) {
+				l.clicked(this);
+			}
 		}
 	}
 	
@@ -95,13 +114,28 @@ public class BButton extends BRectangularDrawable implements IBEventConsumer{
 		return _adapter;
 	}
 	
-	public void setClickedListener( ClickedListener l ){
-		_clickedListener = l;
+	public void addClickedListener( ClickedListener l ){
+		if( !_clickedListeners.contains(l) ){
+			_clickedListeners.add(l);
+		}
+	}
+	
+	public void removeClickedListener( ClickedListener l ){
+		_clickedListeners.remove(l);
+	}
+	
+	private ClickedListener[] listeners(){
+		return (ClickedListener[]) _clickedListeners.toArray(new ClickedListener[_clickedListeners.size()]);
 	}
 
 	@Override
 	protected void draw_internal(IBCanvas c) {
 		IBTransform t = canvasContext().transform();
-		_drawable.draw(c, t);
+		drawable().draw(c, t);
+	}
+
+	@Override
+	public IBDrawable drawable() {
+		return _drawable;
 	}
 }

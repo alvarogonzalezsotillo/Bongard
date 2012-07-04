@@ -15,7 +15,7 @@ import ollitos.platform.BResourceLocator;
 @SuppressWarnings("serial")
 public class BBongardGameModel implements IBSlidableModel{
 
-	private BResourceLocator[] _resources;
+	transient private BResourceLocator[] _resources;
 	private BBongardTestField[] _drawables;
 	
 	private BResourceLocator[] resources(){
@@ -63,9 +63,11 @@ public class BBongardGameModel implements IBSlidableModel{
 	}
 	
 	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+		stream.defaultReadObject();
 	}
 
 	private void writeObject(ObjectOutputStream stream)	throws IOException {
+		stream.defaultWriteObject();
 	}
 
 }
