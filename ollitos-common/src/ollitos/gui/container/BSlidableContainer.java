@@ -616,7 +616,7 @@ public class BSlidableContainer extends BDrawableContainer {
 		}
 
 		@Override
-		public IBDrawableContainer createDrawable() {
+		public IBDrawableContainer create() {
 			BSlidableContainer ret = new BSlidableContainer(_r,_myModel);
 			ret.setCurrent( _index );
 			return ret;

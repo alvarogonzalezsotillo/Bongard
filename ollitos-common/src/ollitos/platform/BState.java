@@ -12,7 +12,7 @@ import ollitos.util.BException;
 
 @SuppressWarnings("serial")
 public abstract class BState implements Serializable{
-	public abstract IBDrawableContainer createDrawable();
+	public abstract Stateful create();
 
 	public interface Stateful{
 		BState save();
@@ -50,6 +50,5 @@ public abstract class BState implements Serializable{
 			throw new BException( "Can't generate state", ex );
 		}
 	}
-	
 	
 }

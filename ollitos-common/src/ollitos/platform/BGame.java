@@ -22,7 +22,7 @@ public abstract class BGame implements IBGame{
 	public void restore(BState state) {
 		IBDrawableContainer d = null;
 		if( state != null ){
-			d = state.createDrawable();
+			d = (IBDrawableContainer) state.create();
 		}
 		if( d == null ){
 			d = defaultDrawable();
