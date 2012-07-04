@@ -72,7 +72,7 @@ public class BBongardTestField extends BDrawableContainer implements IBSlidableP
 	
 	private BCheckBox createCheckBox(){
 		BCheckBox c = new BCheckBox(_sprites);
-		c.setSizeTo( new BRectangle(10, 10, 30, 30), false, true);
+		c.setSizeTo( new BRectangle(5, 5, 45, 45), false, true);
 		c.addStateListener( new StateListener() {
 			@Override
 			public void stateChanged(BCheckBox b) {
@@ -97,6 +97,7 @@ public class BBongardTestField extends BDrawableContainer implements IBSlidableP
 		_sprite.setAntialias(true);
 		_sprite.transform().translate( originalSize().w()/2, originalSize().h()/2 );
 		_sprite.transform().rotate(Math.PI/2);
+		_sprite.transform().scale(.95,.95);		
 		BZoomDrawable z = new BZoomDrawable(_sprite);
 		addDrawable(z);
 		
