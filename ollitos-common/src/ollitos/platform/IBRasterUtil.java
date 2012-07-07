@@ -23,7 +23,7 @@ public interface IBRasterUtil {
 		public BProgressAnimation(IBRaster r) {
 			super(7*1000);
 			_r = r;
-			_b = new BBox( new BRectangle( 10, 10, 0, 5 ), BPlatform.instance().color("ffff00") );
+			_b = new BBox( new BRectangle( 10, 10, 0, 5 ), BPlatform.COLOR_YELLOW );
 		}
 
 		@Override

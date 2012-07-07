@@ -3,6 +3,7 @@ package ollitos.platform.awt;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.RenderingHints;
@@ -16,6 +17,8 @@ import ollitos.platform.IBRaster;
 
 public class AWTCanvas implements IBCanvas{
 	
+	public static Font FONT = Font.decode( "Arial-10");
+	
 	private Graphics2D _graphics;
 
 	public AWTCanvas( Graphics2D g ){
@@ -28,6 +31,7 @@ public class AWTCanvas implements IBCanvas{
 
 	private static Graphics2D cloneAndSet( Graphics2D g, CanvasContextHolder cp ){
 		Graphics2D ret =(Graphics2D) g.create();
+		ret.setFont(FONT);
 		CanvasContext c = cp.canvasContext();
 		
 		ret.transform((AffineTransform) c.transform());

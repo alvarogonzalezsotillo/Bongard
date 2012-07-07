@@ -25,7 +25,7 @@ public class AppletGame extends Applet {
 				System.out.println( "Starting game frame..." );
 				IBGame game = BPlatform.instance().game();
 				game.setDefaultDrawable( new BStartField() );
-				game.restore(null);
+				game.restore();
 			}
 		});
 		add( button, BorderLayout.CENTER );

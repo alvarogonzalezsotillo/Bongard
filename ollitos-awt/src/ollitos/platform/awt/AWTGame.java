@@ -11,7 +11,7 @@ import javax.swing.SwingUtilities;
 
 import ollitos.platform.BGame;
 import ollitos.platform.BPlatform;
-import ollitos.platform.BState;
+import ollitos.platform.state.BState;
 import bongard.gui.game.BStartField;
 
 
@@ -38,7 +38,7 @@ public class AWTGame extends BGame{
 			public void windowClosing(WindowEvent e) {
 				f.setVisible(false);
 				try{
-					save( state() );
+					saveState();
 				}
 				catch( Throwable se ){
 					se.printStackTrace();
@@ -69,7 +69,7 @@ public class AWTGame extends BGame{
 	private static BState load(){
 		Preferences ur = preferences();
 		byte[] ba = ur.getByteArray("state", null);
-		return BState.fromBytes(ba);
+		return (BState) BState.fromBytes(ba);
 	}
 
 
@@ -88,14 +88,7 @@ public class AWTGame extends BGame{
 			@Override
 			public void run() {
 				f().game().setDefaultDrawable( new BStartField() );
-				BState state = null;
-				try{
-					state = load();
-				}
-				catch( Throwable e ){
-					e.printStackTrace();
-				}
-				f().game().restore(state);
+				f().game().restore();
 			}
 		} );
 	}
@@ -104,10 +97,10 @@ public class AWTGame extends BGame{
 	 * 
 	 */
 	@Override
-	public void restore(BState state) {
+	public void restore() {
 		Container c = container();
 		c.setVisible(true);
-		super.restore(state);
+		super.restore();
 		screen().canvasImpl().requestFocusInWindow();
 	}
 

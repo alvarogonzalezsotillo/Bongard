@@ -17,11 +17,11 @@ import ollitos.gui.event.IBEventConsumer;
 import ollitos.platform.BCanvasContextDelegate;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
-import ollitos.platform.BState;
 import ollitos.platform.IBCanvas;
 import ollitos.platform.IBDisposable;
 import ollitos.platform.IBLogger;
 import ollitos.platform.IBRaster;
+import ollitos.platform.state.BState;
 import ollitos.util.BException;
 import ollitos.util.BTransformUtil;
 
@@ -143,7 +143,7 @@ public class BSlidableContainer extends BDrawableContainer {
 			p = platform().point(box.x(), box.y() + box.w() );
 			if( IBPoint.Util.distance(p, pInMyCoordinates) < BOX_SPACING*3 ){
 				int index = currentIndex()+MAX_DRAWABLES_WIDTH;
-				index = Math.min(index, _model.width()-1);
+				index = Math.min(index, model().width()-1);
 				platform().game().animator().addAnimation( new GoToIndexAnimation(index) );
 				return true;
 			}
@@ -213,7 +213,7 @@ public class BSlidableContainer extends BDrawableContainer {
 		}
 		
 		newIndex = Math.max(newIndex, 0);
-		newIndex = Math.min(newIndex, _model.width()-1 );
+		newIndex = Math.min(newIndex, model().width()-1 );
 		
 		return newIndex;
 		
@@ -270,7 +270,7 @@ public class BSlidableContainer extends BDrawableContainer {
 	}
 	
 	private void setDrawableOffset(double dx) {
-		if( _model == null ){
+		if( model() == null ){
 			return;
 		}
 		
@@ -297,7 +297,7 @@ public class BSlidableContainer extends BDrawableContainer {
 
 	}
 
-	private void setCurrent(int x) {
+	protected void setCurrent(int x) {
 
 		int oldIndex = _currentIndex;
 		
@@ -321,7 +321,7 @@ public class BSlidableContainer extends BDrawableContainer {
 	}
 
 	private void disposeAndSetup(int oldIndex, int currentIndex) {
-		if( _model == null ){
+		if( model() == null ){
 			return;
 		}
 		
@@ -332,32 +332,32 @@ public class BSlidableContainer extends BDrawableContainer {
 		int ini = currentIndex - cache;
 		ini = Math.max(ini, 0);
 		int end = currentIndex + cache;
-		end = Math.min(end, _model.width()-1);
+		end = Math.min(end, model().width()-1);
 		
 		int oldIni = oldIndex - cache;
 		oldIni = Math.max(oldIni, 0);
 		int oldEnd = oldIndex + cache;
-		oldEnd = Math.min(oldEnd, _model.width()-1);
+		oldEnd = Math.min(oldEnd, model().width()-1);
 		
 		IBLogger l = platform().logger();
 		// SETUP CURRENT
 		for( int i = ini ; i <= end ; i++ ){
-			IBDisposable.Util.setUpLater(_model.page(i));
+			IBDisposable.Util.setUpLater(model().page(i));
 			//_model.drawable(i).setUp();
 		}
 
 		// DISPOSE OLD
 		for( int i = oldIni ; i < ini ; i++ ){
-			_model.page(i).dispose();
+			model().page(i).dispose();
 		}
 		for( int i = end+1 ; i <= oldEnd ; i++ ){
-			_model.page(i).dispose();
+			model().page(i).dispose();
 		}
 		
 		if(false){
 			String s = "";
-			for( int i = 0 ; i < _model.width() ; i++ ){
-				boolean disposed = _model.page(i).disposed();
+			for( int i = 0 ; i < model().width() ; i++ ){
+				boolean disposed = model().page(i).disposed();
 				s += disposed?".":"S";
 			}
 			l.log(this,s);
@@ -396,7 +396,7 @@ public class BSlidableContainer extends BDrawableContainer {
 		
 		double offsetAtFirstIndex = 0;
 		double offsetAtLastIndex = -w + originalSize().w()/scale;
-		double offsetPerIndex = (offsetAtFirstIndex + offsetAtLastIndex)/(_model.width()-1);
+		double offsetPerIndex = (offsetAtFirstIndex + offsetAtLastIndex)/(model().width()-1);
 		if( offsetPerIndex < -originalSize().w()/scale ){
 			offsetPerIndex = -originalSize().w()/scale;
 		}
@@ -426,10 +426,10 @@ public class BSlidableContainer extends BDrawableContainer {
 	}
 	
 	protected int[] indexOfBoxes(){
-		if( _model == null ){
+		if( model() == null ){
 			return new int[0];
 		}
-		int n = _model.width();
+		int n = model().width();
 		n = Math.min(n, MAX_DRAWABLES_WIDTH);
 
 		_currentScroll = MAX_DRAWABLES_WIDTH*(_currentScroll/MAX_DRAWABLES_WIDTH);
@@ -448,7 +448,7 @@ public class BSlidableContainer extends BDrawableContainer {
 			end = start + MAX_DRAWABLES_WIDTH;
 		}
 		
-		end = Math.min(end,_model.width());
+		end = Math.min(end,model().width());
 		_currentScroll = start;
 		
 		int[] ret = new int[end-start];
@@ -486,8 +486,8 @@ public class BSlidableContainer extends BDrawableContainer {
 			startL.draw(c, t);
 		}
 
-		if( end < _model.width()-1 ){
-			BLabel startL = factory.label( "... " + (_model.width()-end-1)  );
+		if( end < model().width()-1 ){
+			BLabel startL = factory.label( "... " + (model().width()-end-1)  );
 			startL.transform().translate(os.w() - 2*BOX_SPACING, boxY + BOX_SPACING );
 			startL.draw(c, t);
 		}
@@ -499,7 +499,7 @@ public class BSlidableContainer extends BDrawableContainer {
 			if( index == currentIndex() ){
 				r = BRectangle.grow(r, 3);
 			}
-			IBDrawable rd = _model.page(index).icon();
+			IBDrawable rd = model().page(index).icon();
 			if( rd == null ){
 				rd = defaultIcon();
 			}
@@ -530,7 +530,7 @@ public class BSlidableContainer extends BDrawableContainer {
 		return _boxes;
 	}
 
-	private int currentIndex(){
+	protected int currentIndex(){
 		return _currentIndex;
 	}
 	
@@ -539,11 +539,11 @@ public class BSlidableContainer extends BDrawableContainer {
 	}
 
 	private IBSlidablePage drawable(int pos) {
-		if( _model == null ){
+		if( model() == null ){
 			return null;
 		}
-		if (pos >= 0 && pos < _model.width()) {
-			return _model.page(pos);
+		if (pos >= 0 && pos < model().width()) {
+			return model().page(pos);
 		}
 		return null;
 	}
@@ -610,23 +610,27 @@ public class BSlidableContainer extends BDrawableContainer {
 		private int _index;
 		private IBRectangle _r;
 		public MyState(BSlidableContainer fc) {
-			_myModel = fc._model;
+			_myModel = fc.model();
 			_r = fc.originalSize();
 			_index = fc.currentIndex();
 		}
 
 		@Override
-		public IBDrawableContainer create() {
+		public BSlidableContainer create() {
 			BSlidableContainer ret = new BSlidableContainer(_r,_myModel);
 			ret.setCurrent( _index );
 			return ret;
 		}
-		
 	};
 
 	
 	@Override
 	public BState save() {
 		return new MyState(this);
+	}
+
+
+	protected IBSlidableModel model() {
+		return _model;
 	}
 }

@@ -15,11 +15,12 @@ import ollitos.gui.event.BRestartListener;
 import ollitos.gui.event.BZoomIntoDetailListener;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
-import ollitos.platform.BState;
 import ollitos.platform.IBRaster;
+import ollitos.platform.state.BState;
 
 public class BStartField extends BDrawableContainer{
 
+	private static final int PRESS_DELAY = 100;
 	private BButton _helpGameSprite;
 	private BButton _startGameSprite;
 	private BButton _helpOriginalSprite;
@@ -89,8 +90,9 @@ public class BStartField extends BDrawableContainer{
 	}
 	
 	protected void startGamePressed() {
-		final IBDrawable d = BGameModel.goToInitialLevel();
-		IBAnimation a = new BRunnableAnimation(10, new Runnable(){
+		IBDrawable saved = platform().stateManager().restore(BSlidableGameField.class);
+		final IBDrawable d = saved == null ? BGameModel.goToInitialLevel() : saved;
+		IBAnimation a = new BRunnableAnimation(PRESS_DELAY, new Runnable(){
 			@Override
 			public void run() {
 				platform().game().screen().setDrawable(d);
@@ -101,7 +103,7 @@ public class BStartField extends BDrawableContainer{
 
 	protected void helpGamePressed() {
 		final BExamplesField d = new BExamplesField();
-		IBAnimation a = new BRunnableAnimation(10, new Runnable(){
+		IBAnimation a = new BRunnableAnimation(PRESS_DELAY, new Runnable(){
 			@Override
 			public void run() {
 				platform().game().screen().setDrawable( d );
@@ -111,9 +113,8 @@ public class BStartField extends BDrawableContainer{
 	}
 	
 	protected void startOriginalPressed() {
-		BBongardGameModel m = new BBongardGameModel();
-		final BSlidableContainer d = new BSlidableContainer( BGameField.computeOriginalSize(), m );
-		IBAnimation a = new BRunnableAnimation(10, new Runnable(){
+		final BSlidableBongardGame d = platform().stateManager().restore(BSlidableBongardGame.class);
+		IBAnimation a = new BRunnableAnimation(PRESS_DELAY, new Runnable(){
 			@Override
 			public void run() {
 				platform().game().screen().setDrawable( d );
@@ -124,7 +125,7 @@ public class BStartField extends BDrawableContainer{
 
 	protected void helpOriginalPressed() {
 		final BGameHelp d = new BGameHelp();
-		IBAnimation a = new BRunnableAnimation(10, new Runnable(){
+		IBAnimation a = new BRunnableAnimation(PRESS_DELAY, new Runnable(){
 			@Override
 			public void run() {
 				platform().game().screen().setDrawable( d );

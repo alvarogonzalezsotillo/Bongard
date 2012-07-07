@@ -31,8 +31,8 @@ import ollitos.gui.event.BEventAdapter;
 import ollitos.gui.event.BListenerList;
 import ollitos.gui.event.IBEvent;
 import ollitos.platform.BPlatform;
-import ollitos.platform.BState;
 import ollitos.platform.IBCanvas;
+import ollitos.platform.state.BState;
 import bongard.problem.BProblem;
 
 @SuppressWarnings("serial")
@@ -459,7 +459,7 @@ public class BGameField extends BDrawableContainer implements IBSlidablePage, Se
 		}
 
 		@Override
-		public IBDrawableContainer create() {
+		public BGameField create() {
 			BGameField ret = new BGameField();
 			ret.restore(this);
 			return ret;

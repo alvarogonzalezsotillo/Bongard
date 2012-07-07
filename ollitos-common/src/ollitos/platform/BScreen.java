@@ -32,11 +32,14 @@ public abstract class BScreen implements IBScreen {
 
 	@Override
 	public void setDrawable(IBDrawable d) {
+		BPlatform.instance().stateManager().save( drawable() );
 		if (false) {
 			setDrawable_simple(d);
-		} else {
+		} 
+		else {
 			setDrawable_animation(d);
 		}
+		BPlatform.instance().stateManager().save(d);
 	}
 
 	private void setDrawable_simple(IBDrawable d) {

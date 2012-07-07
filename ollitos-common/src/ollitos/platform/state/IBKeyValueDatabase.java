@@ -1,4 +1,6 @@
-package ollitos.platform;
+package ollitos.platform.state;
+
+import ollitos.platform.IBDisposable;
 
 
 public interface IBKeyValueDatabase extends IBDisposable{
@@ -23,7 +25,5 @@ public interface IBKeyValueDatabase extends IBDisposable{
 	}
 	
 	public String name();
-	public boolean put( Object table, BState.Stateful s, Object ... key );
-	public BState get( Object table, Object ... key );
-	public Object[] getKeys( Object table, Object ... subkey );
+	public IBKeyValueTable table(Object...name);
 }

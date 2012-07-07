@@ -11,8 +11,8 @@ import ollitos.gui.event.BListenerList;
 import ollitos.gui.event.IBEvent;
 import ollitos.gui.event.IBEventConsumer;
 import ollitos.gui.event.IBEventListener;
-import ollitos.platform.BState;
 import ollitos.platform.IBCanvas;
+import ollitos.platform.state.BState;
 import ollitos.util.BException;
 
 public abstract class BDrawableContainer extends BRectangularDrawable implements IBDrawableContainer, BState.Stateful{

@@ -106,12 +106,13 @@ public class BGameModel implements IBSlidableModel{
 		if( problems == null ){
 			problems = BCardExtractor.randomProblems(width);
 		}
+		
 		return goToProblems(demo,problems);
 	}
 
 	private static IBDrawable goToProblems(boolean demo, BResourceLocator[] problems) {
 		BGameModel m = new BGameModel(demo,problems );
-		BSlidableContainer d = new BSlidableContainer( BGameField.computeOriginalSize(), m );
+		BSlidableGameField d = new BSlidableGameField( BGameField.computeOriginalSize(), m );
 		return d;
 	}
 

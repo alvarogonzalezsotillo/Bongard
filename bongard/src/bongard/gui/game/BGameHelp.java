@@ -13,9 +13,9 @@ import ollitos.gui.container.IBSlidableModel;
 import ollitos.gui.container.IBSlidablePage;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
-import ollitos.platform.BState;
 import ollitos.platform.IBCanvas;
 import ollitos.platform.IBRaster;
+import ollitos.platform.state.BState;
 import ollitos.util.BException;
 
 
@@ -118,7 +118,7 @@ public class BGameHelp extends BSlidableContainer{
 	@SuppressWarnings("serial")
 	private static class MyState extends BState{
 		@Override
-		public IBDrawableContainer create() {
+		public BGameHelp create() {
 			return new BGameHelp();
 		}
 	}

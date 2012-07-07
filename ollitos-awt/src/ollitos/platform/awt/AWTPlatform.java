@@ -1,22 +1,14 @@
 package ollitos.platform.awt;
 
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 
-import javax.imageio.ImageIO;
-
-import ollitos.geom.IBRectangle;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
-import ollitos.platform.IBColor;
-import ollitos.platform.IBRaster;
-import ollitos.platform.IBRasterUtil;
-import ollitos.util.BException;
+import ollitos.platform.state.BStateManager;
+import ollitos.platform.state.IBKeyValueDatabase;
 
 
 
@@ -102,5 +94,11 @@ public class AWTPlatform extends BPlatform {
 		AWTHTMLDrawable ret = new AWTHTMLDrawable();
 		return ret;
 	}
+
+	@Override
+	public IBKeyValueDatabase database(String database) {
+		return new AWTKeyValueDatabase(database);
+	}
+
 
 }

@@ -11,6 +11,8 @@ import ollitos.gui.basic.BBox;
 import ollitos.gui.basic.BHTMLDrawable;
 import ollitos.gui.basic.BLabel;
 import ollitos.gui.basic.BSprite;
+import ollitos.platform.state.BStateManager;
+import ollitos.platform.state.IBKeyValueDatabase;
 import ollitos.util.BException;
 
 
@@ -30,7 +32,7 @@ public abstract class BPlatform {
 		}
 		return _instance;
 	}
-
+	
 
 	private static BPlatform createInstance() {
 		Class<?> c = null;
@@ -126,6 +128,19 @@ public abstract class BPlatform {
 
 
 	public abstract BHTMLDrawable html();
+
+	private BStateManager _stateManager;
+
+	public BStateManager stateManager() {
+		if (_stateManager == null) {
+			_stateManager = new BStateManager();
+		}
+
+		return _stateManager;
+	}
+
+	
+	public abstract IBKeyValueDatabase database(String database);
 
 
 }

@@ -3,6 +3,9 @@
 import ollitos.geom.IBRectangle;
 import ollitos.gui.basic.IBDrawable;
 import ollitos.gui.container.IBDrawableContainer;
+import ollitos.platform.state.BState;
+import ollitos.platform.state.BState.Stateful;
+import ollitos.util.BException;
 
 
 public abstract class BGame implements IBGame{
@@ -19,29 +22,29 @@ public abstract class BGame implements IBGame{
 	}
 
 	@Override
-	public void restore(BState state) {
-		IBDrawableContainer d = null;
-		if( state != null ){
-			d = (IBDrawableContainer) state.create();
+	public void restore() {
+		Stateful last = BPlatform.instance().stateManager().last();
+		IBDrawable d = null; 
+		if( last != null ){
+			if( !(last instanceof IBDrawable) ){
+				throw new BException( "State is not a drawable", null );
+			}
+			d = (IBDrawableContainer) last;
 		}
 		if( d == null ){
 			d = defaultDrawable();
+			if( d == null ){
+				throw new BException("default drawable not set", null);
+			}
 		}
 		screen().setDrawable(d);
 	}
 
 
 	@Override
-	public BState state() {
-		
+	public void saveState() {
 		IBDrawable d = screen().drawable();
-		if( !(d instanceof BState.Stateful) ){
-			return null;
-		}
-		
-		BState ret = ((BState.Stateful)d).save();
-		BPlatform.instance().logger().log(this, "State:" + ret );
-		return ret;
+		BPlatform.instance().stateManager().save(d);
 	}
 	
 	@Override

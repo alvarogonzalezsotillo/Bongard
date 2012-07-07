@@ -1,4 +1,4 @@
-package ollitos.platform;
+package ollitos.platform.state;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -7,11 +7,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-import ollitos.gui.container.IBDrawableContainer;
 import ollitos.util.BException;
 
 @SuppressWarnings("serial")
 public abstract class BState implements Serializable{
+	
 	public abstract Stateful create();
 
 	public interface Stateful{
@@ -22,7 +22,7 @@ public abstract class BState implements Serializable{
 		return bytes(this);
 	}
 	
-	public static BState fromBytes(byte[] ba ){
+	public static Serializable fromBytes(byte[] ba){
 		if( ba == null ){
 			return null;
 		}
@@ -30,14 +30,14 @@ public abstract class BState implements Serializable{
 			ByteArrayInputStream bis = new ByteArrayInputStream(ba);
 			ObjectInputStream ois = new ObjectInputStream(bis);
 			Object object = ois.readObject();
-			return (BState)object;
+			return (Serializable)object;
 		}
 		catch (Exception ex) {
 			throw new BException("Can't load state", ex );
 		}
 	}
 	
-	static public byte[] bytes(Object object){
+	public static byte[] bytes(Serializable object){
 		try {
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
 			ObjectOutputStream oos = new ObjectOutputStream(bos);
@@ -50,5 +50,4 @@ public abstract class BState implements Serializable{
 			throw new BException( "Can't generate state", ex );
 		}
 	}
-	
 }
