@@ -16,6 +16,7 @@ import ollitos.platform.IBColor;
 import ollitos.platform.IBRaster;
 import ollitos.platform.IBRasterUtil;
 import ollitos.platform.IBCanvas.CanvasContext;
+import ollitos.platform.state.IBKeyValueDatabase;
 import ollitos.util.BException;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -118,6 +119,11 @@ public class AndrPlatform extends BPlatform{
 	@Override
 	protected BCanvasContext createCanvasContext() {
 		return new AndrCanvasContext();
+	}
+
+	@Override
+	public IBKeyValueDatabase database(String database) {
+		return AndrKeyValueDatabase.open(database);
 	}
 
 }

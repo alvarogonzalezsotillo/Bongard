@@ -7,6 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
+import ollitos.platform.BPlatform;
 import ollitos.util.BException;
 
 @SuppressWarnings("serial")
@@ -33,8 +34,9 @@ public abstract class BState implements Serializable{
 			return (Serializable)object;
 		}
 		catch (Exception ex) {
-			throw new BException("Can't load state", ex );
+			BPlatform.instance().logger().log("-", "Can't load state:" + ex );
 		}
+		return null;
 	}
 	
 	public static byte[] bytes(Serializable object){

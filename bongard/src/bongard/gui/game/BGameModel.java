@@ -1,5 +1,7 @@
 package bongard.gui.game;
 
+import javax.naming.LimitExceededException;
+
 import ollitos.animation.BRunnableAnimation;
 import ollitos.gui.basic.IBDrawable;
 import ollitos.gui.container.BSlidableContainer;
@@ -87,8 +89,12 @@ public class BGameModel implements IBSlidableModel{
 		}
 	}
 	
-	private static IBDrawable goToLevel(boolean demo, int width, boolean limitDificulty) {
-		
+	
+	public static BGameModel initialLevel(){
+		return level(false,INITIAL_WIDTH,true);
+	}
+	
+	public static BGameModel level(boolean demo, int width, boolean limitDificulty){
 		if( width > MAX_WIDTH ){
 			width = MAX_WIDTH;
 		}
@@ -106,15 +112,22 @@ public class BGameModel implements IBSlidableModel{
 		if( problems == null ){
 			problems = BCardExtractor.randomProblems(width);
 		}
-		
-		return goToProblems(demo,problems);
+		BGameModel m = new BGameModel(demo,problems );
+		return m;
 	}
 
-	private static IBDrawable goToProblems(boolean demo, BResourceLocator[] problems) {
-		BGameModel m = new BGameModel(demo,problems );
+	private static IBDrawable goToLevel(boolean demo, int width, boolean limitDificulty) {
+		BGameModel m = level( demo, width, limitDificulty);
 		BSlidableGameField d = new BSlidableGameField( BGameField.computeOriginalSize(), m );
 		return d;
 	}
+	
+	public static IBDrawable goToInitialLevel() {
+		BGameModel m = initialLevel();
+		BSlidableGameField d = new BSlidableGameField( BGameField.computeOriginalSize(), m );
+		return d;
+	}
+	
 
 	private boolean allAnswered(){
 		for( int i = 0 ; i < width() ; i++ ){
@@ -136,9 +149,6 @@ public class BGameModel implements IBSlidableModel{
 		return true;
 	}
 
-	public static IBDrawable goToInitialLevel() {
-		return goToLevel(false,INITIAL_WIDTH,true);
-	}
 	
 	@Override
 	public void dispose(int x) {

@@ -1,8 +1,8 @@
 package ollitos.platform.andr;
 
 import ollitos.platform.BPlatform;
-import ollitos.platform.BState;
 import ollitos.platform.IBGame;
+import ollitos.platform.state.BState;
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -13,7 +13,6 @@ import android.view.WindowManager;
 import bongard.gui.game.BStartField;
 
 public class AndrActivity extends Activity {
-	private static final String STATE_KEY = "BState";
 
 	/** Called when the activity is first created. */
 	@Override
@@ -25,14 +24,7 @@ public class AndrActivity extends Activity {
 		AndrPlatform.initContext(this);
 		AndrPlatform.instance().game().setDefaultDrawable( new BStartField() );
 		setContentView(createView());
-		final BState state = state(savedInstanceState);
-		final IBGame g = BPlatform.instance().game();
-		g.animator().post( new Runnable(){
-			public void run() {
-				g.restore(state);
-			}
-		});
-		BPlatform.instance().logger().log(this,"onCreate");
+		restoreState();
 	}
 	
 	@Override
@@ -44,44 +36,45 @@ public class AndrActivity extends Activity {
 
 		return super.onKeyDown(keyCode, event);  
 	}
-	
-	private BState state(Bundle b){
-		BPlatform.instance().logger().log(this,"state:" + b);
-		if( b == null ){
-			return null;
-		}
-		try{
-			BState state = (BState) b.getSerializable(STATE_KEY);
-			BPlatform.instance().logger().log(this,"state:" + state);
-			return state;
-		}
-		catch( Exception e){
-			BPlatform.instance().logger().log(this,"Error readig state:" + e.toString() );
-			e.printStackTrace();
-		}
-		return null;
-	}
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
-		BPlatform.instance().logger().log(this,"onSaveInstanceState");
 		super.onSaveInstanceState(outState);
-		BState state = BPlatform.instance().game().state();
-		outState.putSerializable(STATE_KEY, state);
+		BPlatform.instance().logger().log(this,"onSaveInstanceState");
+		saveState();
+	}
+
+	private void saveState() {
+		BPlatform.instance().game().saveState();
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		saveState();
 	}
 
 	
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-		BPlatform.instance().logger().log(this,"onRestoreInstanceState");
 		super.onRestoreInstanceState(savedInstanceState);
-		final BState state = state(savedInstanceState);
+		BPlatform.instance().logger().log(this,"onRestoreInstanceState");
+		restoreState();
+	}
+
+	private void restoreState() {
 		final IBGame g = BPlatform.instance().game();
 		g.animator().post( new Runnable(){
 			public void run() {
-				g.restore(state);
+				g.restore();
 			}
 		});
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		restoreState();
 	}
 	
 	

@@ -6,6 +6,10 @@ import ollitos.platform.state.BState;
 
 public class BSlidableGameField extends BSlidableContainer{
 
+	public BSlidableGameField(){
+		super(BGameField.computeOriginalSize(), BGameModel.initialLevel());
+	}
+	
 	public BSlidableGameField(IBRectangle r, BGameModel m) {
 		super(r,m);
 	}
