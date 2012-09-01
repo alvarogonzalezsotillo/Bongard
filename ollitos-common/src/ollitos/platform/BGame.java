@@ -10,14 +10,14 @@ import ollitos.util.BException;
 
 public abstract class BGame implements IBGame{
 
-	private IBDrawableContainer _defaultDrawable;
+	private IBDrawable _defaultDrawable;
 
-	public IBDrawableContainer defaultDrawable(){
+	public IBDrawable defaultDrawable(){
 		return _defaultDrawable;
 	}
 	
 	@Override
-	public void setDefaultDrawable(IBDrawableContainer d) {
+	public void setDefaultDrawable(IBDrawable d) {
 		_defaultDrawable = d;
 	}
 

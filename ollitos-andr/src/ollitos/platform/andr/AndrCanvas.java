@@ -98,4 +98,15 @@ public class AndrCanvas implements IBCanvas{
 		
 		restore();
 	}
+
+	@Override
+	public void drawLine(CanvasContextHolder c, float x1, float y1, float x2, float y2) {
+		CanvasContext canvasContext = c.canvasContext();
+		Canvas ac = save(canvasContext);
+
+		ac.drawLine(x1, y1, x2, y2, paint(canvasContext) );
+		
+		restore();
+		
+	}
 }

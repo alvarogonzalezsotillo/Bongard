@@ -20,8 +20,7 @@ public abstract class BDrawable implements IBDrawable, IBTemporaryTransformAnima
 	@Override
 	public BCanvasContext canvasContext() {
 		if (_canvasContext == null) {
-		_canvasContext = (BCanvasContext) platform().canvasContext();
-			
+			_canvasContext = (BCanvasContext) platform().canvasContext();
 		}
 
 		return _canvasContext;

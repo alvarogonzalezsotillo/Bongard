@@ -14,11 +14,22 @@ public class IBEvent {
 		back,
 		zoomIn,
 		zoomOut, 
+		keyPressed,
+		keyReleased,
 	}
 
 	private IBRectangle _r;
 	private IBPoint _p;
 	private Type _t;
+	private int _key;
+	
+	public char keyChar(){
+		return (char) key();
+	}
+	
+	public int key(){
+		return _key;
+	}
 	
 	public Type type(){
 		return _t;
@@ -39,7 +50,6 @@ public class IBEvent {
 	public IBEvent( Type t ){
 		this( t, null, null );
 	}
-
 	
 	public IBEvent( Type t, IBPoint p ){
 		this( t, p, null );
@@ -53,6 +63,11 @@ public class IBEvent {
 		_t = t;
 		_p = p;
 		_r = r;
+	}
+	
+	public IBEvent(Type t, int key){
+		_t = t;
+		_key = key;
 	}
 	
 	@Override

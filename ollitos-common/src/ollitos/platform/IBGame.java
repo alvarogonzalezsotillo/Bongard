@@ -3,15 +3,15 @@ package ollitos.platform;
 
 import ollitos.animation.BAnimator;
 import ollitos.geom.IBRectangle;
+import ollitos.gui.basic.IBDrawable;
 import ollitos.gui.container.IBDrawableContainer;
-import ollitos.platform.state.BState;
 
 public interface IBGame{
-	void setDefaultDrawable(IBDrawableContainer d);
+	void setDefaultDrawable(IBDrawable d);
 	IBScreen screen();
 	BAnimator animator();
 	IBRectangle defaultScreenSize();
-	IBDrawableContainer defaultDrawable();
+	IBDrawable defaultDrawable();
 	void restore();
 	void saveState();
 }

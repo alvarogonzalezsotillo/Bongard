@@ -81,4 +81,14 @@ public class AWTCanvas implements IBCanvas{
 		g.dispose();
 	}
 
+	@Override
+	public void drawLine(CanvasContextHolder c, float x1, float y1, float x2, float y2) {
+		Graphics2D g = cloneAndSet(_graphics, c);
+		g.setStroke( new BasicStroke(2) );
+
+		g.drawLine((int)x1, (int)y1, (int)x2, (int)y2);
+		
+		g.dispose();
+	}
+
 }

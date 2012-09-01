@@ -108,6 +108,7 @@ public class AndrKeyValueDatabase extends SQLiteOpenHelper implements IBKeyValue
 			cv.put( VALUE_COLUMN, b);
 			db.insert(TABLE, null, cv);
 			db.endTransaction();
+			db.close();
 			return true;
 		}
 
@@ -129,7 +130,7 @@ public class AndrKeyValueDatabase extends SQLiteOpenHelper implements IBKeyValue
 			byte[] blob = c.getBlob(2);
 			c.close();
 			db.endTransaction();
-			
+			db.close();
 			return blob;
 		}
 		

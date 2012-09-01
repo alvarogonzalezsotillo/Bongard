@@ -74,7 +74,8 @@ public class AndrPlatform extends BPlatform{
 				return ret;
 			}
 			catch (IOException e) {
-				throw new BException("Unable to open:" + l.string(), e);
+				//throw new BException("Unable to open:" + l.string(), e);
+				return null;
 			}
 		}
 		return super.open(l);

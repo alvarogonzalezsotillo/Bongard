@@ -20,6 +20,8 @@ public class BEventAdapter implements IBEventListener{
 	@Override
 	public boolean handle(IBEvent e) {
 		switch( e.type() ){
+		case keyPressed:
+			return keyPressed(e);
 		case containerResized:
 			return containerResized(e.rectangle());
 		case pointerClick:
@@ -42,6 +44,7 @@ public class BEventAdapter implements IBEventListener{
 	}
 	
 
+	
 	@Override
 	public IBTransform transform() {
 		if( _transformHolder == null ){
@@ -58,5 +61,6 @@ public class BEventAdapter implements IBEventListener{
 	public boolean  zoomIn(IBPoint pInMyCoordinates){return false;}
 	public boolean  zoomOut(IBPoint pInMyCoordinates){return false;}
 	public boolean  back(){return false;}
-	
+	public boolean keyPressed(IBEvent e) {return false;}
+
 }

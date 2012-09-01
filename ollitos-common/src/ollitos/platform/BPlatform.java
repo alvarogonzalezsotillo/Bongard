@@ -89,6 +89,9 @@ public abstract class BPlatform {
 	public IBRaster raster(BResourceLocator test, boolean transparent ){
 		try{
 			InputStream is = open(test);
+			if( is == null ){
+				return null;
+			}
 			IBRaster raster = rasterUtil().raster(is, transparent);
 			is.close();
 			return raster;

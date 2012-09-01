@@ -2,13 +2,13 @@ package bongard.gui.game;
 
 import java.io.IOException;
 
+import ollitos.bot.view.isoview.BIsoView;
 import ollitos.geom.BRectangle;
 import ollitos.geom.IBRectangle;
 import ollitos.gui.basic.BButton;
 import ollitos.gui.basic.BSprite;
 import ollitos.gui.basic.IBDrawable;
 import ollitos.gui.container.BSlidableContainer;
-import ollitos.gui.container.IBDrawableContainer;
 import ollitos.gui.container.IBSlidableModel;
 import ollitos.gui.container.IBSlidablePage;
 import ollitos.platform.BPlatform;
@@ -40,7 +40,7 @@ public class BGameHelp extends BSlidableContainer{
 
 		@Override
 		public int width(){
-			return 10;
+			return 2;
 		}
 		
 		public static IBDrawable internal(){
@@ -65,36 +65,71 @@ public class BGameHelp extends BSlidableContainer{
 				return _fd[x];
 			}
 			
-			_fd[x] = new IBSlidablePage() {
-				
-				private IBDrawable _d;
+			if( x == 0 ){
+				_fd[x] = new IBSlidablePage() {
+					
+					private IBDrawable _drawable;
 
-				@Override
-				public void setUp() {
-				}
-				
-				@Override
-				public boolean disposed() {
-					return false;
-				}
-				
-				@Override
-				public void dispose() {
-				}
-				
-				@Override
-				public IBDrawable drawable() {
-					if( _d == null ){
-						_d = internal();
+					@Override
+					public void setUp() {
 					}
-					return _d;
-				}
-				
-				@Override
-				public IBDrawable icon() {
-					return null;
-				}
-			};
+					
+					@Override
+					public boolean disposed() {
+						return false;
+					}
+					
+					@Override
+					public void dispose() {
+					}
+					
+					@Override
+					public IBDrawable drawable() {
+						if( _drawable != null ){
+							return _drawable;
+						}
+						_drawable = new BIsoView();
+						return _drawable;
+					}
+					
+					@Override
+					public IBDrawable icon() {
+						return null;
+					}
+				};
+			}
+			else{
+				_fd[x] = new IBSlidablePage() {
+					
+					private IBDrawable _d;
+	
+					@Override
+					public void setUp() {
+					}
+					
+					@Override
+					public boolean disposed() {
+						return false;
+					}
+					
+					@Override
+					public void dispose() {
+					}
+					
+					@Override
+					public IBDrawable drawable() {
+						if( _d == null ){
+							_d = internal();
+						}
+						return _d;
+					}
+					
+					@Override
+					public IBDrawable icon() {
+						return null;
+					}
+				};
+			}
 			
 			return _fd[x];
 		}

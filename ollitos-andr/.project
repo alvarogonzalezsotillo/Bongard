@@ -3,6 +3,9 @@
 	<name>ollitos-andr</name>
 	<comment></comment>
 	<projects>
+		<project>bongard</project>
+		<project>ollitos-common</project>
+		<project>ollitosbot</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

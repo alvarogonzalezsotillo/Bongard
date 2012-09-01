@@ -15,7 +15,6 @@ public class AndrAnimator extends BAnimator{
 	};
 	
 	public AndrAnimator(){
-		super(1);
 		_handler = new Handler();
 		_handler.postDelayed(_runnable, millis() );
 	}

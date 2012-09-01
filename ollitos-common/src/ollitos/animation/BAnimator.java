@@ -19,7 +19,7 @@ public abstract class BAnimator {
 		this(1);
 	}
 	
-	protected BAnimator(int millis){
+	private BAnimator(int millis){
 		_millis = millis;
 		_lastMillis = currentMillis();
 	}

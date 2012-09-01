@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 
 import ollitos.platform.BPlatform;
 import ollitos.platform.IBGame;
+import ollitos.platform.state.BStateManager;
 import bongard.gui.game.BStartField;
 
 
