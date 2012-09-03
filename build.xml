@@ -4,6 +4,7 @@
 	<property name="src-common" value="ollitos-common/src" />
 	<property name="src-awt" value="ollitos-awt/src" />
 	<property name="src-andr" value="ollitos-andr/src" />
+	<property name="src-bot" value="ollitosbot/src" />
 	<property name="bin" value="bin" />
 	<property name="bin.classes" value="${bin}/classes" />
 	<property name="exec.dir" value="." />
@@ -19,6 +20,7 @@
 			<src path="${src-common}"/>
 			<src path="${src-awt}"/>
 			<src path="${src-bongard}"/>
+			<src path="${src-bot}"/>
 		</javac>
 	</target>
 
@@ -33,6 +35,14 @@
 				<include name="**/*.png" />
 				<include name="**/*.events" />
 			</fileset>
+			<fileset dir="${src-bot}/assets">
+				<include name="**/*.png" />
+				<include name="**/*.events" />
+			</fileset>
+			<fileset dir="${src-bongard}/assets">
+				<include name="**/*.png" />
+				<include name="**/*.events" />
+			</fileset>
 		</copy>
 	</target>
 
@@ -40,6 +50,11 @@
 		<jar destfile="${jar.file}" compress="true">
 			<fileset dir="${bin.classes}" casesensitive="yes"/>
 			<fileset dir="${src-bongard}">
+				<include name="**/*.png" />
+				<include name="**/*.events" />
+				<include name="**/*.html" />
+			</fileset>
+			<fileset dir="${src-bot}">
 				<include name="**/*.png" />
 				<include name="**/*.events" />
 				<include name="**/*.html" />
