@@ -38,6 +38,13 @@ public class AWTScreen extends BScreen{
 				listeners().handle( new IBEvent(IBEvent.Type.back) );
 			}
 		}
+		@Override
+		public void keyTyped(KeyEvent e) {
+			char c = e.getKeyChar();
+			c = Character.toLowerCase(c);
+			BPlatform.instance().logger().log( this, "KeyTyped:" + c );
+			listeners().handle( new IBEvent(IBEvent.Type.keyPressed,c));
+		}
 	}
 	
 	private class MouseListenerImpl extends MouseAdapter {

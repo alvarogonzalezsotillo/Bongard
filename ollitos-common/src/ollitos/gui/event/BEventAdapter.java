@@ -61,6 +61,6 @@ public class BEventAdapter implements IBEventListener{
 	public boolean  zoomIn(IBPoint pInMyCoordinates){return false;}
 	public boolean  zoomOut(IBPoint pInMyCoordinates){return false;}
 	public boolean  back(){return false;}
-	public boolean keyPressed(IBEvent e) {return false;}
+	public boolean  keyPressed(IBEvent e) {return false;}
 
 }

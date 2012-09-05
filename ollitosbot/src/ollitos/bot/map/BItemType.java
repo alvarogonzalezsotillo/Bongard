@@ -17,9 +17,12 @@ public enum BItemType{
 	centinel_clockwise,
 	centinel_counterclockwise,
 	box,
+	book,
 	dissapearing_box,
 	ball,
 	bubbles,
+	hero,
+	belt,
 	bot;
 	
 	private static void init(){
@@ -29,9 +32,12 @@ public enum BItemType{
 			{ centinel_counterclockwise, l(12,12,20), "cc" },
 			{ floor, BASIC_MAP_CELL, "fl" },
 			{ box, BASIC_MAP_CELL, "bx" },
+			{ book, BASIC_MAP_CELL, "bk" },
 			{ dissapearing_box, BASIC_MAP_CELL, "db" },
 			{ bubbles, BASIC_MAP_CELL, "bb" },
-			{ ball, l(12,12,20), "ba" }
+			{ ball, l(12,12,20), "ba" },
+			{ hero, l(12,12,20), "he" },
+			{ belt, BASIC_MAP_CELL, "be" },
 		};
 		
 		_southSizes = new HashMap<BItemType, IBLocation>();
@@ -86,11 +92,10 @@ public enum BItemType{
 		switch(this){
 			case centinel_clockwise:
 			case centinel_counterclockwise:
+			case hero:
 				return bot.name();
 			case dissapearing_box:
 				return box.name();
-			case ball:
-				return bubbles.name();
 			default:
 				return name();
 		}

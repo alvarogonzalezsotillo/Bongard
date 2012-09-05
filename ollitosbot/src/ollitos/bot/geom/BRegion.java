@@ -177,4 +177,9 @@ public class BRegion implements IBRegion{
 		}
 		return dst;
 	}
+
+	@Override
+	public IBLocation vertex(Vertex v) {
+		return v.vertex(this);
+	}
 }

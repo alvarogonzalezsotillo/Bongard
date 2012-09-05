@@ -1,7 +1,10 @@
 package ollitos.bot.physics.behaviour;
 
-import ollitos.bot.physics.displacement.IBDisplacement;
+import java.util.List;
 
-public interface IBMovementBehaviour extends IBPhysicalBehaviour{
-	IBDisplacement nextMovement();
+import ollitos.bot.physics.displacement.IBDisplacement;
+import ollitos.bot.physics.displacement.IBDisplacementCause;
+
+public interface IBMovementBehaviour extends IBPhysicalBehaviour, IBDisplacementCause{
+	void nextMovement(List<IBDisplacement> ret);
 }

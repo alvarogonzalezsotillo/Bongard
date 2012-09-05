@@ -292,29 +292,15 @@ public class BPhysics {
 
 	private void computeDisplacements(List<IBDisplacement> ret){
 		computeDisplacementsOfMovementBehaviours(ret);
-		computeDisplacementsOfConveyorBeltBehaviours(ret);
 	}
 	
-	private void computeDisplacementsOfConveyorBeltBehaviours(List<IBDisplacement> ret) {
-		for( IBPhysicalItem t: items() ){
-			IBConveyorBeltBehaviour b = t.behaviour(IBConveyorBeltBehaviour.class);
-			if( b == null ){
-				continue;
-			}
-			b.inducedDisplacements(ret);
-		}
-	}
-
 	private void computeDisplacementsOfMovementBehaviours(List<IBDisplacement> ret) {
 		ArrayList<IBMovementBehaviour> list = new ArrayList<IBMovementBehaviour>();
 		for( IBPhysicalItem t: items() ){
 			list.clear();
 			t.behaviours(IBMovementBehaviour.class, list);
 			for( IBMovementBehaviour b: list ){
-				IBDisplacement d = b.nextMovement();
-				if( d != null ){
-					ret.add(d);
-				}
+				b.nextMovement(ret);
 			}
 		}
 	}

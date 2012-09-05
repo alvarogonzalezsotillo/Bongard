@@ -6,6 +6,7 @@ import static ollitos.bot.geom.BDirection.north;
 import static ollitos.bot.geom.BDirection.south;
 import static ollitos.bot.geom.BDirection.up;
 import static ollitos.bot.geom.BDirection.west;
+import static ollitos.bot.geom.IBRegion.Vertex.gVertex;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -15,7 +16,6 @@ import javax.swing.SwingUtilities;
 import ollitos.bot.geom.BLocation;
 import ollitos.bot.geom.IBLocation;
 import ollitos.bot.geom.IBMovableRegion;
-import ollitos.bot.geom.IBRegion;
 import ollitos.bot.map.BItemType;
 import ollitos.bot.map.BRoomReader;
 import ollitos.bot.map.items.BRoom;
@@ -38,6 +38,7 @@ import ollitos.platform.IBRaster;
 
 public class BIsoView extends BDrawableContainer implements BPhysicsView{
 
+	private static final double COS30 = Math.cos(30*Math.PI/180);
 	private static final boolean ANTIALIAS = true;
 	private static final boolean POST_DRAW_BOXES = false;
 	private static final boolean IN_DRAW_BOXES = false;
@@ -94,13 +95,13 @@ public class BIsoView extends BDrawableContainer implements BPhysicsView{
 	private Comparator<IBMovableRegion> _viewComparator = new Comparator<IBMovableRegion>(){
 		private BLocation _c1 = BLocation.l(0,0,0);
 		private BLocation _c2 = BLocation.l(0,0,0);
-		public int compare2(IBMovableRegion r1, IBMovableRegion r2){
-			IBLocation c1 = IBRegion.Util.center(r1.region(),_c1);
-			IBLocation c2 = IBRegion.Util.center(r2.region(),_c2);
+		public int compare(IBMovableRegion r1, IBMovableRegion r2){
+			IBLocation c1 = r1.region().vertex(gVertex);
+			IBLocation c2 = r2.region().vertex(gVertex);
 			return zIndex(c2) - zIndex(c1);
 			
 		}
-		public int compare(IBMovableRegion r1, IBMovableRegion r2){
+		
 			/*
 			 * N  E    U     
 			 *  \/     |
@@ -115,29 +116,12 @@ public class BIsoView extends BDrawableContainer implements BPhysicsView{
 			 *        \ /
 			 *         f 
 			 */
-			
-			IBLocation v1g = r1.region().vertex(west, south, up);
-			IBLocation v2g = r2.region().vertex(west, south, up);
-
-			
-			IBLocation v1d = r1.region().vertex(west, north, down);
-			IBLocation v2d = r2.region().vertex(west, north, down);
-			if( zIndex(v2g) > zIndex(v1d) ) return 1;
-			if( zIndex(v1g) > zIndex(v2d) ) return -1;
-			
-			IBLocation v1e = r1.region().vertex(east,south,down);
-			IBLocation v2e = r2.region().vertex(east,south,down);
-			if( zIndex(v2g) > zIndex(v1e) ) return 1;
-			if( zIndex(v1g) > zIndex(v2e) ) return -1;
-
-			return zIndex(v2g)-zIndex(v1g);
-		}
 	};
 	private BPhysics _physics;
 	private IBRaster _doubleBuffer;
 
 	private int zIndex(IBLocation l){
-		return -l.du()+l.we()+l.sn();
+		return (int)(-l.du()+(l.we()+l.sn())*COS30);
 	}
 	
 	public static final IBLocation BASIC_VIEW_CELL = BLocation.l(32, 32, 24);
@@ -296,11 +280,7 @@ public class BIsoView extends BDrawableContainer implements BPhysicsView{
 	}
 	
 	private void drawBox(IBCanvas canvas, BCanvasContext cc, IBPhysicalItem i){
-		/*
-		 * N  E    U     
-		 *  \/     |
-		 *  /\     |
-		 * W  S    D
+		/* 
 		 * 
 		 *         a
 		 *        / \     

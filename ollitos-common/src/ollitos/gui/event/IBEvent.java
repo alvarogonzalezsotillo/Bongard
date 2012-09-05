@@ -48,21 +48,26 @@ public class IBEvent {
 	}
 
 	public IBEvent( Type t ){
-		this( t, null, null );
+		this( t, null, null, -1 );
 	}
 	
 	public IBEvent( Type t, IBPoint p ){
-		this( t, p, null );
+		this( t, p, null, -1);
 	}
 	
 	public IBEvent( Type t, IBRectangle r ){
-		this( t, null, r );
+		this( t, null, r, -1 );
 	}
 
-	public IBEvent(Type t, IBPoint p, IBRectangle r) {
+	public IBEvent(Type t, IBPoint p, IBRectangle r ) {
+		this( t, p, r, -1 );
+	}
+	
+	public IBEvent(Type t, IBPoint p, IBRectangle r, int key ) {
 		_t = t;
 		_p = p;
 		_r = r;
+		_key = key;
 	}
 	
 	public IBEvent(Type t, int key){

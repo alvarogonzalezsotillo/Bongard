@@ -1,5 +1,7 @@
 package ollitos.bot.physics.behaviour;
 
+import java.util.List;
+
 import ollitos.bot.geom.BDirection;
 import ollitos.bot.physics.IBCollision;
 import ollitos.bot.physics.IBPhysicalItem;
@@ -7,7 +9,7 @@ import ollitos.bot.physics.displacement.BDisplacement;
 import ollitos.bot.physics.displacement.IBDisplacement;
 import ollitos.bot.physics.displacement.IBDisplacementCause;
 
-public class BGravityBehaviour implements IBMovementBehaviour, IBDisplacementCause{
+public class BGravityBehaviour implements IBMovementBehaviour{
 
 	private IBPhysicalItem _item;
 
@@ -16,8 +18,8 @@ public class BGravityBehaviour implements IBMovementBehaviour, IBDisplacementCau
 	}
 	
 	@Override
-	public IBDisplacement nextMovement(){
-		return new GravityDisplacement();
+	public void nextMovement(List<IBDisplacement> ret){
+		ret.add( new GravityDisplacement() );
 	}
 	
 	private class GravityDisplacement extends BDisplacement{

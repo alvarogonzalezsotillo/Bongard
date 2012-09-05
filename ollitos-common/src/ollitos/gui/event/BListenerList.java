@@ -93,7 +93,7 @@ public class BListenerList implements IBEventListener{
 	private boolean dispatchEvent(IBEvent e) {
 		for( IBEventListener l: listAsArray() ){
 			IBPoint p = pointInChildCoordinates( l, e.point() );
-			IBEvent newEvent = new IBEvent( e.type(), p, e.rectangle() );
+			IBEvent newEvent = new IBEvent( e.type(), p, e.rectangle(), e.key() );
 			boolean result = l.handle(newEvent);
 			if( result ){
 				return true;

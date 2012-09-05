@@ -20,7 +20,7 @@ import ollitos.bot.physics.displacement.BSelfDisplacement;
 import ollitos.bot.physics.displacement.IBDisplacement;
 import ollitos.bot.physics.displacement.IBDisplacementCause;
 
-public class BCircularMovement implements IBMovementBehaviour, IBDisplacementCause, IBPhysicalListener{
+public class BCircularMovement implements IBMovementBehaviour, IBPhysicalListener{
 
 	private static BDirection[] _directionsCounterClockWise = { north, west, south, east };
 	private static BDirection[] _directionsClockWise = { north, east, south, west };
@@ -41,19 +41,19 @@ public class BCircularMovement implements IBMovementBehaviour, IBDisplacementCau
 	
 
 	@Override
-	public IBDisplacement nextMovement() {
+	public void nextMovement(List<IBDisplacement> ret) {
 		BDirection d = direction();
 		if( d == null ){
-			return null;
+			return;
 		}
 		IBPhysicalItem i = item();
 		BPhysics p = i.physics();
 		List<IBPhysicalContact> contacts = p.contacts(i, i.region(), BDirection.down, null, p.fixedItems() );
 		if( contacts == null || contacts.size() == 0 ){
-			return null;
+			return;
 		}
 		
-		return new BSelfDisplacement(i, d, this);
+		ret.add( new BSelfDisplacement(i, d, this) );
 	}
 	
 	private BDirection direction() {

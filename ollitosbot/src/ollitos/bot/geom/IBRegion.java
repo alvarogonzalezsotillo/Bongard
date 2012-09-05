@@ -1,7 +1,14 @@
 package ollitos.bot.geom;
 import static ollitos.bot.geom.BDirection.MAX_DIRECTIONS;
 import static ollitos.bot.geom.BDirection.MIN_DIRECTIONS;
+import static ollitos.bot.geom.BDirection.down;
+import static ollitos.bot.geom.BDirection.east;
+import static ollitos.bot.geom.BDirection.north;
+import static ollitos.bot.geom.BDirection.south;
+import static ollitos.bot.geom.BDirection.up;
+import static ollitos.bot.geom.BDirection.west;
 import ollitos.bot.ArrayUtil;
+import ollitos.bot.view.isoview.BIsoView.BFlatPoint;
 import ollitos.util.BException;
 
 
@@ -201,5 +208,39 @@ public interface IBRegion {
 	int faceCoordinate(BDirection d);
 	int[] faceCoordinates(int[] dst);
 	IBLocation vertex( BDirection we, BDirection sn, BDirection du );
+	IBLocation vertex( Vertex v );
 	IBLocation[] vertices(IBLocation[] dst);
+	
+	static enum Vertex{
+		/*
+		 *
+		 * N  E    U     
+		 *  \/     |
+		 *  /\     |
+		 * W  S    D
+		 * 
+		 *         a
+		 *        / \     
+		 *       b   c
+		 *       |\g/|
+		 *       d | e
+		 *        \ /
+		 *         f
+		 */
+		aVertex,bVertex,cVertex,dVertex,eVertex,fVertex,gVertex,hVertex;
+		
+		public IBLocation vertex( IBRegion r ){
+			switch(this){
+				case aVertex: return r.vertex(east, north, up);
+				case bVertex: return r.vertex(west,north,up);
+				case cVertex: return r.vertex(east,south,up);
+				case dVertex: return r.vertex(west,north,down);
+				case eVertex: return r.vertex(east, south, down);
+				case fVertex: return r.vertex(west,south,down);
+				case gVertex: return r.vertex(west,south,up);
+				case hVertex: return r.vertex(east, north, down);
+			}
+			throw new IllegalStateException();
+		}
+	}
 }
