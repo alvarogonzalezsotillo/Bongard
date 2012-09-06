@@ -17,6 +17,7 @@ import ollitos.bot.geom.BLocation;
 import ollitos.bot.geom.BRegion;
 import ollitos.bot.geom.IBLocation;
 import ollitos.bot.geom.IBRegion;
+import ollitos.bot.physics.behaviour.BConveyorBeltBehaviour;
 import ollitos.bot.physics.behaviour.BFixedThingBehaviour;
 import ollitos.bot.physics.behaviour.BGravityBehaviour;
 import ollitos.bot.physics.behaviour.BMovableThingBehaviour;
@@ -138,6 +139,12 @@ public class BPhysics {
 		if( displacement.item().behaviour( BFixedThingBehaviour.class) != null ){
 			return IBLocation.ORIGIN;
 		}
+		
+		ArrayList<IBCollision> collisions = computeCollisions(displacement, null, fixedItems() );
+		if( collisions.size() > 0 ){
+			return IBLocation.ORIGIN;
+		}
+		
 		return displacement.delta();
 	}
 	
@@ -147,21 +154,19 @@ public class BPhysics {
 		}
 		IBLocation delta = maximumPossibleMovement(displacement);
 
-		ArrayList<IBInducedDisplacement> inducedDisplacements = new ArrayList<IBInducedDisplacement>();
+		ArrayList<IBDisplacement> inducedDisplacements = new ArrayList<IBDisplacement>();
 		pushDisplacements( displacement, inducedDisplacements );
 		supportDisplacements( displacement, inducedDisplacements );
 		
-		for (IBInducedDisplacement dis : inducedDisplacements) {
-			if( dis instanceof IBPushDisplacement ){
-				IBLocation del = maximumPossibleMovement(dis);
-				if( IBLocation.Util.mod(del) < IBLocation.Util.mod(delta) ){
-					delta = del;
-				}
+		for (IBDisplacement dis : inducedDisplacements) {
+			IBLocation del = maximumPossibleMovement(dis);
+			if( IBLocation.Util.mod(del) < IBLocation.Util.mod(delta) ){
+				delta = del;
 			}
 		}
 		
 		for( int i = inducedDisplacements.size()-1 ; i >= 0 ; i-- ){
-			IBInducedDisplacement id = inducedDisplacements.get(i);
+			IBDisplacement id = inducedDisplacements.get(i);
 			id.setFinalDelta(delta);
 			id.apply();
 		}
@@ -171,13 +176,15 @@ public class BPhysics {
 		return true;
 	}
 
-	private void supportDisplacements(IBDisplacement displacement, ArrayList<IBInducedDisplacement> inducedDisplacements ){
-		// TODO Auto-generated method stub
+	private void supportDisplacements(IBDisplacement displacement, ArrayList<IBDisplacement> inducedDisplacements ){
+		IBLocation delta = displacement.delta();
+		BDirection d = IBLocation.Util.normalize(delta);
+		BConveyorBeltBehaviour.computeSupportDisplacements(displacement.item(), d, displacement, inducedDisplacements);
 	}
 	
-	private void pushDisplacements(IBDisplacement displacement, ArrayList<IBInducedDisplacement> inducedDisplacements ){
+	private void pushDisplacements(IBDisplacement displacement, ArrayList<IBDisplacement> inducedDisplacements ){
 		
-		ArrayList<IBCollision> collisions = computeCollisions( displacement, null );
+		ArrayList<IBCollision> collisions = computeCollisions( displacement, null, items() );
 		notifyCollisions( collisions );
 		
 		
@@ -185,6 +192,14 @@ public class BPhysics {
 		for( IBCollision c: collisions ){
 			IBPhysicalItem pushed = c.pushed();
 			IBPhysicalItem pusher = c.pusher();
+			
+			if( displacement instanceof BPushDisplacement ){
+				// TO PREVENT STACK OVERFLOW WITH OVERLAPPING ITEMS
+				if( ((BPushDisplacement)displacement).pusher() != displacement.item() ){
+					continue;
+				}
+			}
+			
 			IBDisplacementCause cause = displacement;
 			
 			IBPushDisplacement d = new BPushDisplacement(pushed, delta, pusher, cause);
@@ -193,14 +208,14 @@ public class BPhysics {
 		}
 	}
 
-	private ArrayList<IBCollision> computeCollisions(IBDisplacement displacement, ArrayList<IBCollision> ret) {
+	private ArrayList<IBCollision> computeCollisions(IBDisplacement displacement, ArrayList<IBCollision> ret, IBPhysicalItem ... items) {
 		if( ret == null ){
 			ret = new ArrayList<IBCollision>();
 		}
 		IBPhysicalItem item = displacement.item();
 		IBRegion region = IBRegion.Util.traslate(item.region(), displacement.delta(), null);
 		
-		for( IBPhysicalItem i: items() ){
+		for( IBPhysicalItem i: items ){
 			if( i == item ){
 				continue;
 			}
@@ -208,9 +223,6 @@ public class BPhysics {
 			if( intersection != null ){
 				BCollision c = new BCollision(intersection,item,i,displacement);
 				ret.add( c );
-				if( i instanceof BBall && !BGravityBehaviour.gravityCollision(c) ){
-					System.out.println("colision con ball");
-				}
 			}
 		}
 		return ret;

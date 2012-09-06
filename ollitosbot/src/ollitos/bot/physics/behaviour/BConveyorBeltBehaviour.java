@@ -19,16 +19,21 @@ public class BConveyorBeltBehaviour implements IBConveyorBeltBehaviour, IBDispla
 		_item = item;
 	}
 
-	List<IBPhysicalContact> _contacts = new ArrayList<IBPhysicalContact>();
 	@Override
 	public void nextMovement(List<IBDisplacement> ret) {
-		BPhysics p = _item.physics();
+		computeSupportDisplacements( _item, _item.direction(), this, ret );
+	}
+
+	private static List<IBPhysicalContact> _contacts = new ArrayList<IBPhysicalContact>();
+
+	public static void computeSupportDisplacements(IBPhysicalItem item, BDirection d, IBDisplacementCause cause, List<? super IBDisplacement> ret ){
+		BPhysics p = item.physics();
 		_contacts.clear();
-		p.contacts(_item, _item.region(), BDirection.up, _contacts, p.movableItems() );
+		p.contacts(item, item.region(), BDirection.up, _contacts, p.movableItems() );
 		for (IBPhysicalContact c : _contacts) {
 			for( IBPhysicalItem i : c.items() ){
-				if( i != _item ){
-					ret.add( new BSupportDisplacement(i, _item, _item.direction().vector(), this) );
+				if( i != item ){
+					ret.add( (IBDisplacement)(new BSupportDisplacement(i, item, d.vector(), cause)) );
 				}
 			}
 		}

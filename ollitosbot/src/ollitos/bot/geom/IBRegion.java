@@ -9,6 +9,7 @@ import static ollitos.bot.geom.BDirection.up;
 import static ollitos.bot.geom.BDirection.west;
 import ollitos.bot.ArrayUtil;
 import ollitos.bot.view.isoview.BIsoView.BFlatPoint;
+import ollitos.geom.IBRectangle;
 import ollitos.util.BException;
 
 
@@ -77,8 +78,21 @@ public interface IBRegion {
 		public static boolean contact( IBRegion r1, IBRegion r2, BDirection directionOfR1 ){
 			int f1 = r1.faceCoordinate(directionOfR1);
 			int f2 = r2.faceCoordinate(directionOfR1.opposite());
-			return f1 == f2;
+			if( f1 != f2 ){
+				return false;
+			}
+			BDirection[] d = directionOfR1.positiveOrtogonal();
+			if( intersects( r1.faceCoordinate(d[0].opposite()), r1.faceCoordinate(d[0]), 
+					        r2.faceCoordinate(d[0].opposite()), r2.faceCoordinate(d[0]), null ) == null ){
+				return false;
+			}
+			if( intersects( r1.faceCoordinate(d[1].opposite()), r1.faceCoordinate(d[1]), 
+			        r2.faceCoordinate(d[1].opposite()), r2.faceCoordinate(d[1]), null ) == null ){
+				return false;
+			}
+			return true;
 		}
+			
 
 		public static IBLocation size( IBRegion r ){
 			int we = r.maxBound().we() - r.minBound().we() - 1;

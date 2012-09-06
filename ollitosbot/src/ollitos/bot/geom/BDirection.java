@@ -1,5 +1,7 @@
 package ollitos.bot.geom;
 
+import java.util.ArrayList;
+
 import ollitos.util.BException;
 
 /**
@@ -18,6 +20,8 @@ public enum BDirection {
 	
 	public static BDirection[] MAX_DIRECTIONS = { up, north, east }; 
 	public static BDirection[] MIN_DIRECTIONS = { down, south, west };
+	
+	private BDirection[] _positiveOrtogonal;
 	
 	
 	public IBLocation vector(){
@@ -42,6 +46,24 @@ public enum BDirection {
 			case west:  return east;
 		}
 		throw new BException("Je ne comprend pas", null);
+	}
+	
+	private BDirection[] computePositiveOrtogonal(){
+		ArrayList<BDirection> ret = new ArrayList<BDirection>();
+		for( BDirection d: MAX_DIRECTIONS ){
+			ret.add( d );
+		}
+		ret.remove(this);
+		ret.remove(this.opposite());
+		return (BDirection[]) ret.toArray(new BDirection[ret.size()]);
+	}
+	
+	public BDirection[] positiveOrtogonal(){
+		if (_positiveOrtogonal == null) {
+			_positiveOrtogonal = computePositiveOrtogonal();
+		}
+
+		return _positiveOrtogonal;
 	}
 
 	public static BDirection fromChar(char d){

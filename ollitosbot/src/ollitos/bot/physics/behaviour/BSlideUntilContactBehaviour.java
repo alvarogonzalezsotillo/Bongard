@@ -51,7 +51,7 @@ public class BSlideUntilContactBehaviour implements IBMovementBehaviour, IBPhysi
 	}
 
 	private void startSliding(IBLocation vector) {
-		_vector = IBLocation.Util.normalize(vector, null);
+		_vector = IBLocation.Util.normalize(vector).vector();
 		_vector = IBLocation.Util.scale(_vector, 2, _vector);
 	}
 

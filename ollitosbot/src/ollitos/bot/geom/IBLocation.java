@@ -104,39 +104,28 @@ public interface IBLocation {
 			return Math.sqrt(dotProduct(l, l));
 		}
 		
-		public static IBLocation normalize(IBLocation l, IBLocation ret){
-			BLocation r = null;
-			
-			if( ret == null ){
-				r = BLocation.l(0,0,0);
-			}
-			else if( ret instanceof BLocation ){
-				r = (BLocation) ret;
-			}
-			else{
-				throw new BException("Not mutable:" + ret, null);
-			}
+		public static BDirection normalize(IBLocation l){
 			
 			if( l.du()>0 ){
-				return BLocation.l( BDirection.up.vector(), r );
+				return BDirection.up;
 			}
 			if( l.du()<0 ){
-				return BLocation.l( BDirection.down.vector(), r );
+				return BDirection.down;
 			}
 			if( l.sn()>0 ){
-				return BLocation.l( BDirection.north.vector(), r );
+				return BDirection.north;
 			}
 			if( l.sn()<0 ){
-				return BLocation.l( BDirection.south.vector(), r );
+				return BDirection.south;
 			}
 			if( l.we()>0 ){
-				return BLocation.l( BDirection.east.vector(), r );
+				return BDirection.east;
 			}
 			if( l.we()<0 ){
-				return BLocation.l( BDirection.west.vector(), r );
+				return BDirection.west;
 			}
 			
-			return BLocation.l( IBLocation.ORIGIN, r );
+			throw new IllegalStateException(l.toString());
 		}
 
 		public static void main(String[] args){
