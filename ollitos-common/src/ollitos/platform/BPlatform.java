@@ -11,6 +11,9 @@ import ollitos.gui.basic.BBox;
 import ollitos.gui.basic.BHTMLDrawable;
 import ollitos.gui.basic.BLabel;
 import ollitos.gui.basic.BSprite;
+import ollitos.platform.raster.BRasterProviderCache;
+import ollitos.platform.raster.IBRasterProvider;
+import ollitos.platform.raster.IBRasterUtil;
 import ollitos.platform.state.BStateManager;
 import ollitos.platform.state.IBKeyValueDatabase;
 import ollitos.util.BException;
@@ -78,7 +81,7 @@ public abstract class BPlatform {
 		return new BLabel(text);
 	}
 	
-	public BSprite sprite( IBRaster raster ){
+	public BSprite sprite( IBRasterProvider raster ){
 		return new BSprite(raster);
 	}
 	
@@ -86,23 +89,8 @@ public abstract class BPlatform {
 		return new BBox( r, color );
 	}
 
-	public IBRaster raster(BResourceLocator test, boolean transparent ){
-		try{
-			InputStream is = open(test);
-			if( is == null ){
-				return null;
-			}
-			IBRaster raster = rasterUtil().raster(is, transparent);
-			is.close();
-			return raster;
-		}
-		catch( IOException e ){
-			throw new BException("Cannot read:" + test, e );
-		}
-	}
-	
-	public BSprite sprite( BResourceLocator l ){
-		return sprite( raster( l, true ) );
+	public IBRasterProvider raster(BResourceLocator test){
+		return BRasterProviderCache.instance().get(test);
 	}
 	
 	public abstract URL platformURL(BResourceLocator r);

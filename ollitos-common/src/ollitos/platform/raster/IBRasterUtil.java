@@ -1,4 +1,4 @@
-package ollitos.platform;
+package ollitos.platform.raster;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,10 +7,13 @@ import ollitos.animation.BFixedDurationAnimation;
 import ollitos.geom.BRectangle;
 import ollitos.geom.IBRectangle;
 import ollitos.gui.basic.BBox;
+import ollitos.platform.BPlatform;
+import ollitos.platform.BResourceLocator;
+import ollitos.platform.IBRaster;
 
 public interface IBRasterUtil {
 	IBRaster extract(IBRectangle r, IBRaster i);
-	IBRaster raster(InputStream is, boolean transparent) throws IOException;
+	IBRaster raster(InputStream is) throws IOException;
 	IBRaster raster( IBRectangle r );
 	IBRaster html( IBRectangle r, BResourceLocator rl ) throws IOException;
 	

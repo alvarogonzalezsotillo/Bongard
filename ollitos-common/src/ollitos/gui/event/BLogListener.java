@@ -6,7 +6,6 @@ import java.io.PrintStream;
 import java.io.Reader;
 import java.util.Formatter;
 import java.util.Locale;
-import java.util.Scanner;
 import java.util.StringTokenizer;
 
 import ollitos.animation.IBAnimable;
@@ -20,7 +19,7 @@ import ollitos.gui.basic.IBDrawable;
 import ollitos.gui.event.IBEvent.Type;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
-import ollitos.platform.IBRaster;
+import ollitos.platform.raster.IBRasterProvider;
 import ollitos.util.BException;
 
 
@@ -46,7 +45,7 @@ public class BLogListener implements IBEventListener{
 			_nextEvent = readNextEvent();
 			
 			BResourceLocator rl = new BResourceLocator( "/examples/cursor.png" );
-			IBRaster raster = BPlatform.instance().raster(rl, true);
+			IBRasterProvider raster = BPlatform.instance().raster(rl);
 			_cursor = BPlatform.instance().sprite(raster);
 			_cursor.transform().scale(.5, .5);
 			_cursor.setVisible(false);

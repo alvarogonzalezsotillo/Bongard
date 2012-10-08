@@ -63,4 +63,9 @@ public class AWTRaster implements IBRaster{
 	public IBRaster raster() {
 		return this;
 	}
+
+	@Override
+	public String key() {
+		return null;
+	}
 }

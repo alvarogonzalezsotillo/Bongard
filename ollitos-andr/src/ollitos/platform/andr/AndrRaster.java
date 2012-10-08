@@ -32,7 +32,7 @@ public class AndrRaster implements IBRaster {
 	
 	@Override
 	public boolean disposed() {
-	  return _bitmap == null;
+	  return bitmap() == null;
   }
 
 	@Override
@@ -54,6 +54,11 @@ public class AndrRaster implements IBRaster {
 	public IBCanvas canvas() {
 		Canvas c = new Canvas(bitmap());
 		return new AndrCanvas(c);
+	}
+
+	@Override
+	public String key() {
+		return null;
 	} 	
 
 }

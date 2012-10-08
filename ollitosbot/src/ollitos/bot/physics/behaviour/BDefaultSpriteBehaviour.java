@@ -77,7 +77,7 @@ public class BDefaultSpriteBehaviour extends BSpriteBehaviour implements IBPhysi
 				int c = rasters.size();
 				String path = rootPath + "/" + d.name() + "-" + c + ".png";
 				BResourceLocator l = new BResourceLocator(path);
-				IBRaster raster = BPlatform.instance().raster(l, true);
+				IBRaster raster = BPlatform.instance().raster(l).raster();
 				if( raster == null ){
 					break;
 				}

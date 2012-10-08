@@ -3,6 +3,7 @@ package ollitos.platform.andr;
 import ollitos.geom.IBRectangle;
 import ollitos.platform.IBCanvas;
 import ollitos.platform.IBRaster;
+import ollitos.platform.raster.IBRasterProvider;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
@@ -52,11 +53,12 @@ public class AndrCanvas implements IBCanvas{
 	}
 
 	@Override
-	public void drawRaster(CanvasContextHolder c, IBRaster r, float x, float y) {
+	public void drawRaster(CanvasContextHolder c, IBRasterProvider r, float x, float y) {
 		CanvasContext canvasContext = c.canvasContext();
 		Canvas ac = save(canvasContext);
 		
-		Bitmap bitmap = ((AndrRaster)r).bitmap();
+		IBRaster raster = r.raster();
+		Bitmap bitmap = ((AndrRaster)raster).bitmap();
 
 		ac.drawBitmap(bitmap, x, y, paint(canvasContext) );
 

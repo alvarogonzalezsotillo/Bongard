@@ -1,7 +1,6 @@
 package ollitos.gui.basic;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import ollitos.animation.BWaitForAnimation;
@@ -18,6 +17,7 @@ import ollitos.platform.BResourceLocator;
 import ollitos.platform.IBCanvas;
 import ollitos.platform.IBLogger;
 import ollitos.platform.IBRaster;
+import ollitos.platform.raster.IBRasterProvider;
 import ollitos.util.BTransformUtil;
 
 public class BButton extends BRectangularDrawable implements IBEventConsumer, IBDrawable.DrawableHolder{
@@ -77,11 +77,11 @@ public class BButton extends BRectangularDrawable implements IBEventConsumer, IB
 	
 	public static BButton create( String raster ){
 		BPlatform f = BPlatform.instance();
-		IBRaster ss = f.raster( new BResourceLocator(raster), false );
+		IBRasterProvider ss = f.raster( new BResourceLocator(raster) );
 		return create( ss );
 	}
 	
-	public static BButton create( IBRaster raster ){
+	public static BButton create( IBRasterProvider raster ){
 		BSprite s = new BSprite(raster);
 		s.setAntialias(true);
 		BButton ret = new BButton( s );

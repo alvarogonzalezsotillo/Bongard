@@ -2,9 +2,9 @@ package ollitos.gui.basic;
 
 import ollitos.geom.BRectangle;
 import ollitos.geom.IBRectangle;
-import ollitos.geom.IBTransform;
 import ollitos.platform.IBCanvas;
 import ollitos.platform.IBRaster;
+import ollitos.platform.raster.IBRasterProvider;
 import ollitos.util.BException;
 
 

@@ -18,9 +18,9 @@ import ollitos.platform.BCanvasContextDelegate;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 import ollitos.platform.IBCanvas;
-import ollitos.platform.IBDisposable;
 import ollitos.platform.IBLogger;
 import ollitos.platform.IBRaster;
+import ollitos.platform.raster.IBRasterProvider;
 import ollitos.platform.state.BState;
 import ollitos.util.BException;
 import ollitos.util.BTransformUtil;
@@ -256,8 +256,8 @@ public class BSlidableContainer extends BDrawableContainer {
 		_model = model;
 		BResourceLocator background = _model != null ? _model.background() : null;
 		if( background != null ){
-			IBRaster r = platform().raster( background, true );
-			_backgroundSprite = r;
+			IBRasterProvider r = platform().raster( background );
+			_backgroundSprite = r.raster();
 		}
 		else{
 			_backgroundSprite = null;
@@ -342,8 +342,8 @@ public class BSlidableContainer extends BDrawableContainer {
 		IBLogger l = platform().logger();
 		// SETUP CURRENT
 		for( int i = ini ; i <= end ; i++ ){
-			IBDisposable.Util.setUpLater(model().page(i));
-			//_model.drawable(i).setUp();
+			//IBDisposable.Util.setUpLater(model().page(i));
+			model().page(i).setUp();
 		}
 
 		// DISPOSE OLD

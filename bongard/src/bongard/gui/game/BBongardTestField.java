@@ -15,7 +15,7 @@ import ollitos.gui.container.BZoomDrawable;
 import ollitos.gui.container.IBSlidablePage;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
-import ollitos.platform.IBRaster;
+import ollitos.platform.raster.IBRasterProvider;
 import bongard.problem.BProblem;
 
 @SuppressWarnings("serial")
@@ -25,17 +25,17 @@ public class BBongardTestField extends BDrawableContainer implements IBSlidableP
 		undefined, good, bad
 	};
 	
-	public static HashMap<State, IBRaster> _rasters;
+	public static HashMap<State, IBRasterProvider> _rasters;
 	public static BSprite[] _sprites;
 	public static HashMap<State, IBDrawable> _icons;
 	
 	static{
 		BPlatform p = BPlatform.instance();
 		
-		_rasters = new HashMap<State, IBRaster>();
-		_rasters.put( State.undefined, p.raster( new BResourceLocator("/images/checkbox/undefined.png"), false) );
-		_rasters.put( State.good, p.raster( new BResourceLocator("/images/checkbox/good.png"), false) );
-		_rasters.put( State.bad, p.raster( new BResourceLocator("/images/checkbox/bad.png"), false) );
+		_rasters = new HashMap<State, IBRasterProvider>();
+		_rasters.put( State.undefined, p.raster( new BResourceLocator("/images/checkbox/undefined.png")) );
+		_rasters.put( State.good, p.raster( new BResourceLocator("/images/checkbox/good.png")) );
+		_rasters.put( State.bad, p.raster( new BResourceLocator("/images/checkbox/bad.png")) );
 		
 		_sprites = new BSprite[State.values().length];
 		for( State s: State.values() ){

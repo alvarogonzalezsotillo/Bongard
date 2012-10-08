@@ -9,7 +9,7 @@ import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 import ollitos.platform.BScreen;
 import ollitos.platform.IBCanvas;
-import ollitos.platform.IBRaster;
+import ollitos.platform.raster.IBRasterProvider;
 import ollitos.util.BTransformUtil;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -133,7 +133,7 @@ public class AndrScreen extends BScreen{
 			_currentAndroidCanvas.drawCircle(getMeasuredWidth(), getMeasuredHeight(), 20, paint);
 
 			BResourceLocator l = new BResourceLocator("/images/backgrounds/arrecibo.png");
-			IBRaster r = BPlatform.instance().raster(l, false);
+			IBRasterProvider r = BPlatform.instance().raster(l);
 			BSprite s = BPlatform.instance().sprite(r);
 
 			s.draw(canvas(), null);

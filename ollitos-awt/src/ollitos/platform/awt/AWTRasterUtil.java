@@ -21,7 +21,7 @@ import ollitos.gui.basic.BBox;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 import ollitos.platform.IBRaster;
-import ollitos.platform.IBRasterUtil;
+import ollitos.platform.raster.IBRasterUtil;
 
 
 
@@ -87,11 +87,13 @@ public class AWTRasterUtil implements IBRasterUtil{
 	}
 	
 	@Override
-	public AWTRaster raster(InputStream is, boolean transparent ) throws IOException {
-		Color bgColor = Color.white;
+	public AWTRaster raster(InputStream is ) throws IOException {
 		BufferedImage image = ImageIO.read( is );
+		return new AWTRaster(image);
+		
+		/*
+		Color bgColor = Color.white;
 		if( transparent ){
-			return new AWTRaster(image);
 		}
 		BufferedImage ret = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
 		Graphics g = ret.getGraphics();
@@ -99,6 +101,7 @@ public class AWTRasterUtil implements IBRasterUtil{
 		g.dispose();
 		
 		return new AWTRaster(ret);
+		*/
 	}
 
 	@Override

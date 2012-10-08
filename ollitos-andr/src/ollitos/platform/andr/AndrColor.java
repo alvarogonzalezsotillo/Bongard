@@ -13,4 +13,9 @@ public class AndrColor implements IBColor {
 	public int color(){
 		return _color;
 	}
+	
+	@Override
+	public String toString() {
+		return ""+_color;
+	}
 }

@@ -12,6 +12,7 @@ import ollitos.gui.event.IBEvent;
 import ollitos.gui.event.IBEventConsumer;
 import ollitos.gui.event.IBEventListener;
 import ollitos.platform.IBCanvas;
+import ollitos.platform.IBDisposable;
 import ollitos.platform.state.BState;
 import ollitos.util.BException;
 
@@ -52,6 +53,12 @@ public abstract class BDrawableContainer extends BRectangularDrawable implements
 			return;
 		}
 		_drawables.remove(d);
+		if( d instanceof IBDisposable ){
+			IBDisposable disp = (IBDisposable) d;
+			if( !disp.disposed() ){
+				disp.dispose();
+			}
+		}
 		
 		if( d instanceof IBEventConsumer ){
 			removeEventConsumer((IBEventConsumer) d);

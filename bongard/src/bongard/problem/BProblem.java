@@ -209,7 +209,7 @@ public class BProblem implements Serializable, IBDisposable{
 	
 	public IBRaster testImage() {
 		if( _testImage == null ){
-			_testImage = BPlatform.instance().raster(_test,false);
+			_testImage = BPlatform.instance().raster(_test).raster();
 		}
 		return _testImage;
 	}

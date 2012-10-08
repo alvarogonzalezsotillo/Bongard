@@ -1,6 +1,7 @@
 package ollitos.platform;
 
-import ollitos.gui.basic.IBRasterProvider;
+import ollitos.platform.raster.IBRasterProvider;
+
 
 
 public interface IBRaster extends IBDisposable, IBRasterProvider{
