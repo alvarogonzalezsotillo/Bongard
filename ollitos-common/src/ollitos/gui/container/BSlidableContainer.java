@@ -1,5 +1,6 @@
 package ollitos.gui.container;
 
+import ollitos.animation.BAnimation;
 import ollitos.animation.BFixedDurationAnimation;
 import ollitos.animation.BWaitForAnimation;
 import ollitos.animation.IBAnimation;
@@ -14,18 +15,15 @@ import ollitos.gui.event.BEventAdapter;
 import ollitos.gui.event.BLogListener;
 import ollitos.gui.event.IBEvent;
 import ollitos.gui.event.IBEventConsumer;
-import ollitos.platform.BCanvasContextDelegate;
 import ollitos.platform.BPlatform;
-import ollitos.platform.BResourceLocator;
 import ollitos.platform.IBCanvas;
 import ollitos.platform.IBLogger;
-import ollitos.platform.IBRaster;
-import ollitos.platform.raster.IBRasterProvider;
 import ollitos.platform.state.BState;
 import ollitos.util.BException;
 import ollitos.util.BTransformUtil;
 
 public class BSlidableContainer extends BDrawableContainer {
+	
 	private static final double MARGIN = 50;
 	
 	public static final boolean LOG_EVENTS = false;
@@ -85,29 +83,57 @@ public class BSlidableContainer extends BDrawableContainer {
 		}
 	}
 	
-	private class GoToIndexAnimation extends BFixedDurationAnimation{
+	private class GoToIndexAnimation extends BAnimation{
 		
 		private int _endIndex;
 		private int _initIndex;
+		private DragAnimation _dragA;
+		private ReleaseAnimation _releaseA;
+		private boolean _endReached = false;
 		
 		public GoToIndexAnimation(int endIndex){
-			super(100*Math.abs(currentIndex()-endIndex));
 			_endIndex = endIndex;
 			_initIndex = currentIndex();
 		}
 
 		@Override
 		public void stepAnimation(long millis) {
-			stepMillis(millis);
-			int indexDelta = _endIndex - _initIndex;
-			int index = _initIndex + indexDelta*currentMillis()/totalMillis();
-			if( index != currentIndex() ){
-				setCurrent(index);
+			double w = originalSize().w();
+			int indexOffset = _endIndex - _initIndex;
+			double fx = -w;
+			if( indexOffset < 0 ){
+				fx = -fx;
 			}
-			double fx = indexDelta*originalSize().w();
-			fx = Math.IEEEremainder(fx*currentMillis()/totalMillis(), originalSize().w() );
-			setDrawableOffset(fx);
+			
+			if( _dragA == null && _releaseA == null ){
+				_dragA = new DragAnimation(fx, 100);
+			}
+			if( _dragA != null ){
+				_dragA.stepAnimation(millis);
+			}
+			
+			if( _dragA != null && _dragA.endReached() ){
+				_dragA = null;
+				_releaseA = new ReleaseAnimation(50);
+			}
+			
+			if( _releaseA != null ){
+				_releaseA.stepAnimation(millis);
+			}
+
+			if( _releaseA != null && _releaseA.endReached() ){
+				_releaseA = null;
+				if( currentIndex() == _endIndex ){
+					_endReached = true;
+				}
+			}
 		}
+
+		@Override
+		public boolean endReached() {
+			return _endReached;
+		}
+		
 		
 	}
 
@@ -224,7 +250,7 @@ public class BSlidableContainer extends BDrawableContainer {
 	private double _dx;
 
 
-	private IBRaster _backgroundSprite;
+	private IBDrawable _backgroundSprite;
 
 	private BBox _box;
 
@@ -254,10 +280,9 @@ public class BSlidableContainer extends BDrawableContainer {
 
 	public void setModel(IBSlidableModel model, int x) {
 		_model = model;
-		BResourceLocator background = _model != null ? _model.background() : null;
+		IBDrawable background = _model != null ? _model.background() : null;
 		if( background != null ){
-			IBRasterProvider r = platform().raster( background );
-			_backgroundSprite = r.raster();
+			_backgroundSprite = background;
 		}
 		else{
 			_backgroundSprite = null;
@@ -270,6 +295,7 @@ public class BSlidableContainer extends BDrawableContainer {
 	}
 	
 	private void setDrawableOffset(double dx) {
+		
 		if( model() == null ){
 			return;
 		}
@@ -369,7 +395,7 @@ public class BSlidableContainer extends BDrawableContainer {
 	protected void draw_internal(IBCanvas c) {
 		super.draw_internal(c);
 		IBTransform t = canvasContext().transform();
-		draw_background(c,t);
+		draw_background(c);
 
 		IBSlidablePage left = left();
 		if (left != null)
@@ -384,37 +410,45 @@ public class BSlidableContainer extends BDrawableContainer {
 		draw_boxes( c, t );
 	}
 	
-	private void draw_background(IBCanvas c, IBTransform t) {
+	private void draw_background(IBCanvas c) {
 		if( _backgroundSprite == null ){
 			return;
 		}
+
+		// FIT INSIDE
+		IBTransform t = _backgroundSprite.transform();
+		IBRectangle size = originalSize();
+		BTransformUtil.setTo(t, _backgroundSprite.originalSize(), size, true, false);
+
+		// ADJUST INITIAL POSITION
+		IBRectangle rect = BTransformUtil.transform(t, _backgroundSprite.originalSize());
+		IBTransform d = platform().identityTransform();
+		d.translate(-rect.x(), 0);
+		t.preConcatenate(d);
+
 		
-		int h = _backgroundSprite.h();
-		double scale = (originalSize().h())/h;
-		int w = _backgroundSprite.w();
-		double dx = w/2;
+		int h = (int) rect.h();
+		double scale = (size.h())/h;
+		int w = (int) rect.w();
 		
 		double offsetAtFirstIndex = 0;
-		double offsetAtLastIndex = -w + originalSize().w()/scale;
+		double offsetAtLastIndex = -w + size.w()/scale;
 		double offsetPerIndex = (offsetAtFirstIndex + offsetAtLastIndex)/(model().width()-1);
-		if( offsetPerIndex < -originalSize().w()/scale ){
-			offsetPerIndex = -originalSize().w()/scale;
+		if( offsetPerIndex < -size.w()/scale ){
+			offsetPerIndex = -size.w()/scale;
 		}
 		double offset = offsetPerIndex*currentIndex();
-		double offsetFromAnimation = -offsetPerIndex*drawableOffset()/(originalSize().w()+MARGIN);
+		double offsetFromAnimation = -offsetPerIndex*drawableOffset()/(size.w()+MARGIN);
 		offset += offsetFromAnimation;
-		dx += offset;
 		
-		dx *= scale;
-		double dy = originalSize().h()/2;
-		IBTransform bst = platform().identityTransform();
-		bst.translate(dx, dy);
-		bst.scale(scale, scale);
-		bst.preConcatenate(t);
-		BCanvasContextDelegate context = new BCanvasContextDelegate(canvasContext());
-		context.setAlpha(0.3f);
-		context.setTransform(bst);
-		c.drawRaster(context, _backgroundSprite, -w/2, -h/2);
+		
+		
+		
+		d = platform().identityTransform();
+		d.translate(offset,0);
+		t.preConcatenate(d);
+		_backgroundSprite.canvasContext().setAlpha(.3f);
+		_backgroundSprite.draw(c, canvasContext().transform() );
 	}
 
 	private BBox defaultIcon(){
@@ -432,23 +466,25 @@ public class BSlidableContainer extends BDrawableContainer {
 		int n = model().width();
 		n = Math.min(n, MAX_DRAWABLES_WIDTH);
 
-		_currentScroll = MAX_DRAWABLES_WIDTH*(_currentScroll/MAX_DRAWABLES_WIDTH);
+		_currentScroll = n*(_currentScroll/n);
 		
 		int start = _currentScroll;
 		
-		int end = start + MAX_DRAWABLES_WIDTH;
+		int end = start + n;
 		if( currentIndex() >= end ){
 			start = currentIndex();
-			end = start + MAX_DRAWABLES_WIDTH;
+			end = start + n;
 		}
 		
 		if( currentIndex() < start ){
-			start = currentIndex()-MAX_DRAWABLES_WIDTH+1;
+			start = currentIndex()-n+1;
 			start = Math.max(start, 0);
-			end = start + MAX_DRAWABLES_WIDTH;
+			end = start + n;
 		}
 		
-		end = Math.min(end,model().width());
+		end = Math.min(end, model().width());
+		
+		start = Math.min( start, end - n );
 		_currentScroll = start;
 		
 		int[] ret = new int[end-start];

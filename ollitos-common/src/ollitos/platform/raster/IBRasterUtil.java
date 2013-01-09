@@ -9,11 +9,12 @@ import ollitos.geom.IBRectangle;
 import ollitos.gui.basic.BBox;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
+import ollitos.platform.IBColor;
 import ollitos.platform.IBRaster;
 
 public interface IBRasterUtil {
-	IBRaster extract(IBRectangle r, IBRaster i);
-	IBRaster raster(InputStream is) throws IOException;
+	IBRaster extract(IBRectangle r, IBRaster i, IBColor color);
+	IBRaster raster( InputStream is ) throws IOException;
 	IBRaster raster( IBRectangle r );
 	IBRaster html( IBRectangle r, BResourceLocator rl ) throws IOException;
 	

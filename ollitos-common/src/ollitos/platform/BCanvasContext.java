@@ -8,18 +8,22 @@ public class BCanvasContext implements CanvasContext{
 	private IBColor color;
 	private IBTransform transform;
 	
+	@Override
 	public void setAlpha(float alpha) {
 		this.alpha = alpha;
 	}
 
+	@Override
 	public void setColor(IBColor color) {
 		this.color = color;
 	}
 
+	@Override
 	public void setTransform(IBTransform transform) {
 		this.transform = transform;
 	}
 
+	@Override
 	public void setAntialias(boolean antialias) {
 		this.antialias = antialias;
 	}
@@ -50,4 +54,5 @@ public class BCanvasContext implements CanvasContext{
 	public CanvasContext canvasContext() {
 		return this;
 	}
+
 }

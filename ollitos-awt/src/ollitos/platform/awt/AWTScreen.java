@@ -24,6 +24,7 @@ import ollitos.gui.event.IBEvent;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BScreen;
 import ollitos.platform.IBCanvas;
+import ollitos.platform.raster.BRasterProviderCache;
 
 
 
@@ -138,7 +139,11 @@ public class AWTScreen extends BScreen{
 			Image i = getOffscreenImage();
 			g.drawImage(i,0,0,null);
 			AWTAnimator a = (AWTAnimator)f.game().animator();
-			g.drawString("Millis:" + a.lastStep(), 0, getHeight());
+			String msg = "Millis:" + a.lastStep();
+			msg += "  rp:" + BRasterProviderCache.instance().setUpSize() + "/" + BRasterProviderCache.instance().size();
+			msg += "  mem:" + Runtime.getRuntime().freeMemory() + "/" + Runtime.getRuntime().maxMemory(); 
+			
+			g.drawString(msg, 0, getHeight());
 		}
 		public void update(Graphics g){
 			paint(g);

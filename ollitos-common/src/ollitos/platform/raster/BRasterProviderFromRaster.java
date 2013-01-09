@@ -2,11 +2,18 @@ package ollitos.platform.raster;
 
 import ollitos.platform.IBRaster;
 
-public abstract class BRasterProviderFromRaster extends BRasterProvider{
-	private IBRasterProvider _provider;
 
-	protected BRasterProviderFromRaster( IBRasterProvider provider ){
+abstract class BRasterProviderFromRaster extends BRasterProvider{
+	private IBRasterProvider _provider;
+	private boolean _disposeOriginal;
+
+	protected BRasterProviderFromRaster( IBRasterProvider provider, boolean disposeOriginal ){
 		_provider = provider;
+		_disposeOriginal = disposeOriginal;
+	}
+	
+	public boolean disposeOriginal(){
+		return _disposeOriginal;
 	}
 	
 	protected IBRasterProvider provider(){
@@ -14,13 +21,13 @@ public abstract class BRasterProviderFromRaster extends BRasterProvider{
 	}
 	
 	@Override
-	protected final IBRaster createRaster(){
-		IBRaster original = provider().raster();
-		if( original == null ){
+	protected final IBRaster createRaster() {
+		IBRaster raster = provider().raster();
+		if( raster == null ){
 			return null;
 		}
-		return createRaster(original);
+		return createRasterFrom(raster);
 	}
 
-	abstract protected IBRaster createRaster(IBRaster original);
+	protected abstract IBRaster createRasterFrom(IBRaster raster);
 }

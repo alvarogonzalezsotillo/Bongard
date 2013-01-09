@@ -60,4 +60,9 @@ public class BDisplacement implements IBDisplacement{
 	public void setFinalDelta(IBLocation finalDelta) {
 		_finalDelta = finalDelta;
 	}
+	
+	@Override
+	public String toString() {
+		return getClass().getSimpleName() + "-" + item() + "-" + delta();
+	}
 }

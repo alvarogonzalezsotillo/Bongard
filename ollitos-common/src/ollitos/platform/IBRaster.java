@@ -1,11 +1,10 @@
 package ollitos.platform;
 
-import ollitos.platform.raster.IBRasterProvider;
 
 
 
-public interface IBRaster extends IBDisposable, IBRasterProvider{
+public interface IBRaster extends IBDisposable{
+	IBCanvas canvas();
 	int w();
 	int h();
-	IBCanvas canvas();
 }

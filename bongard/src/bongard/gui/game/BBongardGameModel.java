@@ -4,12 +4,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import bongard.problem.BCardExtractor;
-
-import ollitos.gui.container.IBSlidablePage;
+import ollitos.gui.basic.IBDrawable;
 import ollitos.gui.container.IBSlidableModel;
-import ollitos.platform.BPlatform;
+import ollitos.gui.container.IBSlidablePage;
 import ollitos.platform.BResourceLocator;
+import bongard.problem.BCardExtractor;
 
 
 @SuppressWarnings("serial")
@@ -58,7 +57,7 @@ public class BBongardGameModel implements IBSlidableModel{
 	}
 
 	@Override
-	public BResourceLocator background() {
+	public IBDrawable background() {
 		return null;
 	}
 	

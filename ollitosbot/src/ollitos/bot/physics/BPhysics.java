@@ -8,6 +8,7 @@ import static ollitos.bot.geom.BDirection.up;
 import static ollitos.bot.geom.BDirection.west;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import ollitos.animation.IBAnimable;
@@ -19,19 +20,18 @@ import ollitos.bot.geom.IBLocation;
 import ollitos.bot.geom.IBRegion;
 import ollitos.bot.physics.behaviour.BConveyorBeltBehaviour;
 import ollitos.bot.physics.behaviour.BFixedThingBehaviour;
-import ollitos.bot.physics.behaviour.BGravityBehaviour;
 import ollitos.bot.physics.behaviour.BMovableThingBehaviour;
-import ollitos.bot.physics.behaviour.IBConveyorBeltBehaviour;
 import ollitos.bot.physics.behaviour.IBMovementBehaviour;
 import ollitos.bot.physics.displacement.BPushDisplacement;
 import ollitos.bot.physics.displacement.IBDisplacement;
 import ollitos.bot.physics.displacement.IBDisplacementCause;
-import ollitos.bot.physics.displacement.IBInducedDisplacement;
 import ollitos.bot.physics.displacement.IBPushDisplacement;
 import ollitos.bot.physics.items.BBall;
 import ollitos.bot.physics.items.BRoomWall;
 import ollitos.bot.view.BPhysicsView;
 import ollitos.platform.BPlatform;
+import ollitos.platform.IBLogger;
+import ollitos.util.BException;
 
 
 public class BPhysics {
@@ -122,62 +122,116 @@ public class BPhysics {
 	private ArrayList<IBDisplacement> _displacements = new ArrayList<IBDisplacement>();
 	
 	public void step(){
+		BPlatform.instance().logger().log( "********  STEP **********" );
+		checkCollisions();
 		_displacements.clear();
-		computeDisplacements(_displacements);
+		computeDisplacementsOfBehaviours(_displacements);
+		
+//		int size = _displacements.size();
+//		for( int i = 0 ; i < size ; i++ ){
+//			computeInducedDisplacements(_displacements.get(i),_displacements);
+//		}
 		
 		while( _displacements.size() > 0 ){
 			IBDisplacement displacement = _displacements.remove(0);
 			applyMovement(displacement);
+			checkCollisions();
 		}
 		
 		notifyStepFinished();
 	}
 
+	private void computeInducedDisplacements(IBDisplacement d, ArrayList<IBDisplacement> displacements){
+		System.out.println( "computeInducedDisplacements:" + d );
+		int oldSize = displacements.size();
+		pushDisplacements(d, displacements);
+		supportDisplacements( d, displacements );
+		int size = displacements.size();
+		for( int i = oldSize ; i < size ; i++ ){
+			computeInducedDisplacements(displacements.get(i), displacements );
+		}
+	}
+
 	private IBLocation maximumPossibleMovement(IBDisplacement displacement) {
 		// CHECK IF THE ITEM PUSHES A WALL OR A FIXED ITEM
-		// TODO Auto-generated method stub
 		if( displacement.item().behaviour( BFixedThingBehaviour.class) != null ){
 			return IBLocation.ORIGIN;
 		}
 		
-		ArrayList<IBCollision> collisions = computeCollisions(displacement, null, fixedItems() );
-		if( collisions.size() > 0 ){
+		IBLocation delta = displacement.delta();
+		delta = BLocation.l(delta);
+		if( IBLocation.Util.equals( delta, IBLocation.ORIGIN ) ){
 			return IBLocation.ORIGIN;
 		}
+
+		BDirection d = IBLocation.Util.normalize(delta);
 		
-		return displacement.delta();
+		int maxmod = (int) IBLocation.Util.mod(delta);
+		int mod = maxmod;
+		while( mod > 0 ){
+			boolean collision = computeCollisions(displacement.item(), delta, fixedItems() );
+			if( !collision ){
+				return delta;
+			}
+			mod -= 1;
+			IBLocation.Util.scale(d.vector(), mod, delta);
+		}
+		
+		
+		return IBLocation.ORIGIN;
 	}
 	
 	private boolean applyMovement(IBDisplacement displacement) {
+		IBLogger logger = BPlatform.instance().logger();
+		logger.log( "applyMovement:" + displacement );
+
 		if( displacement.discarded() ){
 			return false;
 		}
-		IBLocation delta = maximumPossibleMovement(displacement);
-
-		ArrayList<IBDisplacement> inducedDisplacements = new ArrayList<IBDisplacement>();
-		pushDisplacements( displacement, inducedDisplacements );
-		supportDisplacements( displacement, inducedDisplacements );
 		
-		for (IBDisplacement dis : inducedDisplacements) {
+		IBLocation delta = maximumPossibleMovement(displacement);
+		logger.log( "  delta:" + delta );
+		if( IBLocation.Util.equals( delta, IBLocation.ORIGIN ) ){
+			return false;
+		}
+
+		ArrayList<IBDisplacement> displacements = new ArrayList<IBDisplacement>();
+		pushDisplacements( displacement, displacements );
+		
+		for (IBDisplacement dis : displacements) {
+			logger.log( "    induced:" + dis );
 			IBLocation del = maximumPossibleMovement(dis);
+			logger.log( "      maximum of induced:" + del );
 			if( IBLocation.Util.mod(del) < IBLocation.Util.mod(delta) ){
 				delta = del;
 			}
 		}
+		logger.log( "    final delta:" + delta );
 		
-		for( int i = inducedDisplacements.size()-1 ; i >= 0 ; i-- ){
-			IBDisplacement id = inducedDisplacements.get(i);
+		supportDisplacements( displacement, displacements );
+		for( int i = displacements.size()-1 ; i >= 0 ; i-- ){
+			IBDisplacement id = displacements.get(i);
+			if( computeCollisions(id.item(), delta, items() ) ){
+				continue;
+			}
 			id.setFinalDelta(delta);
 			id.apply();
+			checkCollisions();
 		}
-		
-		displacement.setFinalDelta(delta);
-		displacement.apply();
+
+		if( !computeCollisions(displacement.item(), delta, items() ) ){
+			displacement.setFinalDelta(delta);
+			displacement.apply();
+		}
+		checkCollisions();
 		return true;
 	}
 
 	private void supportDisplacements(IBDisplacement displacement, ArrayList<IBDisplacement> inducedDisplacements ){
 		IBLocation delta = displacement.delta();
+		if( IBLocation.Util.equals( displacement.delta(), IBLocation.ORIGIN ) ){
+			return;
+		}
 		BDirection d = IBLocation.Util.normalize(delta);
 		BConveyorBeltBehaviour.computeSupportDisplacements(displacement.item(), d, displacement, inducedDisplacements);
 	}
@@ -193,18 +247,17 @@ public class BPhysics {
 			IBPhysicalItem pushed = c.pushed();
 			IBPhysicalItem pusher = c.pusher();
 			
-			if( displacement instanceof BPushDisplacement ){
-				// TO PREVENT STACK OVERFLOW WITH OVERLAPPING ITEMS
-				if( ((BPushDisplacement)displacement).pusher() != displacement.item() ){
-					continue;
-				}
-			}
+//			if( displacement instanceof BPushDisplacement ){
+//				// TO PREVENT STACK OVERFLOW WITH OVERLAPPING ITEMS
+//				if( ((BPushDisplacement)displacement).pusher() != displacement.item() ){
+//					continue;
+//				}
+//			}
 			
 			IBDisplacementCause cause = displacement;
 			
 			IBPushDisplacement d = new BPushDisplacement(pushed, delta, pusher, cause);
 			inducedDisplacements.add(d);
-			pushDisplacements(d, inducedDisplacements);
 		}
 	}
 
@@ -226,6 +279,44 @@ public class BPhysics {
 			}
 		}
 		return ret;
+	}
+	
+	private boolean computeCollisions(IBPhysicalItem item, IBLocation delta, IBPhysicalItem ... items) {
+		IBRegion region = IBRegion.Util.traslate(item.region(), delta, null);
+		
+		for( IBPhysicalItem i: items ){
+			if( i == item ){
+				continue;
+			}
+			boolean intersection = IBRegion.Util.intersects(region, i.region());
+			if( intersection ){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
+	private IBPhysicalItem[] itemsCollide(IBPhysicalItem ... items){
+		for( IBPhysicalItem item: items ){
+			IBRegion region = item.region();
+			for( IBPhysicalItem i: items ){
+				if( item == i ){
+					continue;
+				}
+				if( IBRegion.Util.intersects(i.region(), region ) ){
+					return new IBPhysicalItem[]{ item, i };
+				}
+			}
+		}
+		return null;
+	}
+	
+	private void checkCollisions(){
+		IBPhysicalItem[] items = itemsCollide(items());
+		if( items != null ){
+			throw new BException( "Some items collide:" + Arrays.asList(items), null );
+		}
 	}
 
 	private void notifyCollisions(ArrayList<IBCollision> collisions) {
@@ -302,7 +393,7 @@ public class BPhysics {
 		return ret;
 	}
 
-	private void computeDisplacements(List<IBDisplacement> ret){
+	private void computeDisplacementsOfBehaviours(List<IBDisplacement> ret){
 		computeDisplacementsOfMovementBehaviours(ret);
 	}
 	

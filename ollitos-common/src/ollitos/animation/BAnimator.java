@@ -14,6 +14,8 @@ public abstract class BAnimator {
 	private int _millis;
 	private long _lastMillis;
 	private long _step;
+
+	private Object _lock = new Object();
 	
 	protected BAnimator(){
 		this(1);
@@ -34,6 +36,8 @@ public abstract class BAnimator {
 			_step = m;
 		}
 		
+		//_step /= 10;
+		
 		boolean update = needsUpdate();
 		stepAnimations(_step);
 		
@@ -53,11 +57,12 @@ public abstract class BAnimator {
 	
 
 	public void addAnimation(IBAnimation a){
-		BPlatform.instance().logger().log( this, a.getClass().getName() );
 		if( a == null ){
 			return;
 		}
-		_animations.add(a);
+		synchronized (_lock ) {
+			_animations.add(a);
+		}
 	}
 	
 	public long currentMillis(){
@@ -76,10 +81,15 @@ public abstract class BAnimator {
 	 * @param millis
 	 */
 	public void stepAnimations(long millis){
-		IBAnimation[] an = _animations.toArray( new IBAnimation[0] );
+		IBAnimation[] an;
+		synchronized (_lock ) {
+			an = _animations.toArray( new IBAnimation[0] );
+		}
 		for (IBAnimation a : an) {
 			if( a.endReached() ){
-				_animations.remove(a);
+				synchronized (_lock ) {
+					_animations.remove(a);
+				}
 			}
 			else{
 				a.stepAnimation(millis);
@@ -88,7 +98,9 @@ public abstract class BAnimator {
 	}
 
 	public void abortAnimations(){
-		_animations.clear();
+		synchronized (_lock ) {
+			_animations.clear();
+		}
 	}
 
 	
@@ -103,7 +115,12 @@ public abstract class BAnimator {
 	}
 	
 	public boolean needsUpdate(){
-		for (IBAnimation a : _animations ) {
+		IBAnimation[] an;
+		synchronized (_lock ) {
+			an = _animations.toArray( new IBAnimation[0] );
+		}
+
+		for (IBAnimation a : an ) {
 			if( a.needsUpdate() ){
 				return true;
 			}

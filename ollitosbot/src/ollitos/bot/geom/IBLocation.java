@@ -4,6 +4,14 @@ import ollitos.util.BException;
 
 public interface IBLocation {
 	
+	public static final IBLocation SOUTH = new Fixed(0,-1,0);
+	public static final IBLocation NORTH = new Fixed(0,1,0);
+	public static final IBLocation EAST = new Fixed(1,0,0);
+	public static final IBLocation WEST = new Fixed(-1,0,0);
+	public static final IBLocation UP = new Fixed(0,0,1);
+	public static final IBLocation DOWN = new Fixed(0,0,-1);
+
+	
 	public class Fixed implements IBLocation{
 
 		private int _we;
@@ -31,6 +39,13 @@ public interface IBLocation {
 			return _du;
 		}
 		
+		@Override
+		public String toString(){
+			if( IBLocation.Util.equals(this, ORIGIN) ){
+				return "origin";
+			}
+			return Util.normalize(this).toString();
+		}
 	}
 	
 	/**
@@ -42,6 +57,11 @@ public interface IBLocation {
 	 */
 	
 	public class Util{
+		
+		public static boolean equals(IBLocation l1, IBLocation l2){
+			return l1.du() == l2.du() && l1.we() == l2.we() && l1.du() == l2.du();
+		}
+		
 		public static IBLocation add(IBLocation l1, IBLocation l2, IBLocation ret ){
 			int we = l1.we() + l2.we();
 			int sn = l1.sn() + l2.sn();

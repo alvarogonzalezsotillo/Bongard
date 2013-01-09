@@ -12,6 +12,7 @@ import ollitos.bot.physics.IBPhysicalListener;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 import ollitos.platform.IBRaster;
+import ollitos.platform.raster.BRasterProviderCache;
 import ollitos.util.BException;
 
 public class BDefaultSpriteBehaviour extends BSpriteBehaviour implements IBPhysicalListener{
@@ -77,7 +78,7 @@ public class BDefaultSpriteBehaviour extends BSpriteBehaviour implements IBPhysi
 				int c = rasters.size();
 				String path = rootPath + "/" + d.name() + "-" + c + ".png";
 				BResourceLocator l = new BResourceLocator(path);
-				IBRaster raster = BPlatform.instance().raster(l).raster();
+				IBRaster raster = BRasterProviderCache.instance().get(l,1,1).raster();
 				if( raster == null ){
 					break;
 				}

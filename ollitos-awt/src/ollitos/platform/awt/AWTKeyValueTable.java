@@ -34,14 +34,20 @@ public class AWTKeyValueTable implements IBKeyValueTable {
 	
 	@Override
 	public boolean putBytes(byte[] b, Object... key) {
-		String k = IBKeyValueDatabase.Util.concatenate(key);
-		if( b == null ){
-			preferences().remove(k);
+		try{
+			String k = IBKeyValueDatabase.Util.concatenate(key);
+			if( b == null ){
+				preferences().remove(k);
+			}
+			else{
+				preferences().putByteArray(k, b );
+			}
+			return true;
 		}
-		else{
-			preferences().putByteArray(k, b );
+		catch( Exception e ){
+			e.printStackTrace();
+			return false;
 		}
-		return true;
 	}
 
 	@Override

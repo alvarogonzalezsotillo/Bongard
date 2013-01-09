@@ -14,12 +14,10 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.swing.JEditorPane;
 
-import ollitos.animation.BFixedDurationAnimation;
-import ollitos.geom.BRectangle;
 import ollitos.geom.IBRectangle;
-import ollitos.gui.basic.BBox;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
+import ollitos.platform.IBColor;
 import ollitos.platform.IBRaster;
 import ollitos.platform.raster.IBRasterUtil;
 
@@ -71,10 +69,10 @@ public class AWTRasterUtil implements IBRasterUtil{
 	 * @return
 	 */
 	@Override
-	public IBRaster extract( IBRectangle r, IBRaster i ){
+	public IBRaster extract( IBRectangle r, IBRaster i, IBColor background ){
 		BufferedImage ret = new BufferedImage((int)r.w(), (int)r.h(), BufferedImage.TYPE_INT_RGB);
 		Graphics g = ret.getGraphics();
-		Color bgcolor = Color.white;
+		Color bgcolor = (AWTColor)background;
 
 		int x = (int) -r.x();
 		int y = (int) -r.y();
@@ -89,19 +87,15 @@ public class AWTRasterUtil implements IBRasterUtil{
 	@Override
 	public AWTRaster raster(InputStream is ) throws IOException {
 		BufferedImage image = ImageIO.read( is );
+
+//		try {
+//			Thread.sleep( (long) (Math.random()*20000) );
+//		}
+//		catch (InterruptedException ex) {
+//		}
+		
+
 		return new AWTRaster(image);
-		
-		/*
-		Color bgColor = Color.white;
-		if( transparent ){
-		}
-		BufferedImage ret = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
-		Graphics g = ret.getGraphics();
-		g.drawImage(image, 0, 0, bgColor, null );
-		g.dispose();
-		
-		return new AWTRaster(ret);
-		*/
 	}
 
 	@Override

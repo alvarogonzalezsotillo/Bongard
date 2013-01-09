@@ -254,7 +254,7 @@ public class BRoomReader {
 					".   .   . "
 				},
 				{
-					".   .   . ",
+					".   .   bx ",
 					".   .   . ",
 					".   .   . ",
 					".   .   . "
@@ -285,6 +285,44 @@ public class BRoomReader {
 				},
 			};
 
+		String[][] data4 = {
+			{
+				"be"
+			},
+			{
+				"."
+			},
+			{
+				"."
+			},
+			{
+				"."
+			},
+			{
+				"."
+			},
+			{
+				"."
+			},
+			{
+				"."
+			},
+			{
+				"bx"
+			},
+			{
+				"."
+			},
+			{
+				"bx"
+			},
+			{
+				"."
+			},
+			{
+				"bx"
+			},
+		};
 		String[][] data = data3;
 		
 		for (int i = 0; i < data.length; i++) {

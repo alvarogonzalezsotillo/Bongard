@@ -6,13 +6,34 @@ import java.io.InputStream;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 import ollitos.platform.IBRaster;
+import ollitos.util.BException;
 
-public class BRasterProviderFromResource extends BRasterProvider{
+class BRasterProviderFromResource extends BRasterProvider{
 	
 	private BResourceLocator _resource;
+	private int _w;
+	private int _h;
 
-	public BRasterProviderFromResource(BResourceLocator l){
+	public BRasterProviderFromResource(BResourceLocator l, int w, int h ){
 		_resource = l;
+		_w = w;
+		_h = h;
+	}
+	
+	@Override
+	public int w(){
+		if( !disposed() ){
+			return raster().w();
+		}
+		return _w;
+	}
+	
+	@Override
+	public int h(){
+		if( !disposed() ){
+			return raster().h();
+		}
+		return _h;
 	}
 
 	@Override
@@ -24,8 +45,8 @@ public class BRasterProviderFromResource extends BRasterProvider{
 		catch (IOException e){
 			BPlatform.instance().logger().log( e.toString() );
 			e.printStackTrace();
-			return null;
 		}
+		
 		return ret;
 	}
 

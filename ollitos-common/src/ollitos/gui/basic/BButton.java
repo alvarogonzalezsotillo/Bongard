@@ -8,6 +8,7 @@ import ollitos.animation.IBAnimation;
 import ollitos.animation.transform.BScaleAnimation;
 import ollitos.geom.BRectangle;
 import ollitos.geom.IBPoint;
+import ollitos.geom.IBRectangle;
 import ollitos.geom.IBTransform;
 import ollitos.gui.event.BEventAdapter;
 import ollitos.gui.event.IBEventConsumer;
@@ -16,7 +17,7 @@ import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 import ollitos.platform.IBCanvas;
 import ollitos.platform.IBLogger;
-import ollitos.platform.IBRaster;
+import ollitos.platform.raster.BRasterProviderCache;
 import ollitos.platform.raster.IBRasterProvider;
 import ollitos.util.BTransformUtil;
 
@@ -75,14 +76,15 @@ public class BButton extends BRectangularDrawable implements IBEventConsumer, IB
 		}
 	};
 	
-	public static BButton create( String raster ){
+	public static BButton create( String raster, IBRectangle r ){
 		BPlatform f = BPlatform.instance();
-		IBRasterProvider ss = f.raster( new BResourceLocator(raster) );
-		return create( ss );
+		IBRasterProvider ss = BRasterProviderCache.instance().get( new BResourceLocator(raster), (int)r.w(), (int)r.h() );
+		return create( ss, r );
 	}
 	
-	public static BButton create( IBRasterProvider raster ){
-		BSprite s = new BSprite(raster);
+	public static BButton create( IBRasterProvider raster, IBRectangle r ){
+		BSprite s = new BDelayedSprite(raster, r );
+		//BSprite s = new BSprite(raster);
 		s.setAntialias(true);
 		BButton ret = new BButton( s );
 

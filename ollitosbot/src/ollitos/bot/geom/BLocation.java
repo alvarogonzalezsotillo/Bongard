@@ -7,12 +7,6 @@ import ollitos.util.BException;
 public class BLocation implements IBLocation{
 	int  _we, _sn, _du;
 	
-	public static final BLocation SOUTH = l(0,-1,0);
-	public static final BLocation NORTH = l(0,1,0);
-	public static final BLocation EAST = l(1,0,0);
-	public static final BLocation WEST = l(-1,0,0);
-	public static final BLocation UP = l(0,0,1);
-	public static final BLocation DOWN = l(0,0,-1);
 
 	private BLocation(){
 		this(0,0,0);
@@ -79,7 +73,6 @@ public class BLocation implements IBLocation{
 		if( !(obj instanceof IBLocation) ){
 			return false;
 		}
-		IBLocation l = (IBLocation) obj;
-		return l.du() == du() && l.we() == we() && l.du() == du();
+		return IBLocation.Util.equals(this, (IBLocation) obj);
 	}
 }

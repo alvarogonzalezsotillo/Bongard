@@ -5,7 +5,6 @@ import ollitos.animation.IBAnimation;
 import ollitos.animation.transform.BTransformIntoRectangleAnimation;
 import ollitos.geom.IBPoint;
 import ollitos.geom.IBRectangle;
-import ollitos.gui.basic.BRectangularDrawable;
 import ollitos.gui.basic.IBDrawable;
 import ollitos.gui.container.BZoomDrawable;
 import ollitos.platform.BPlatform;
@@ -42,7 +41,7 @@ public class BZoomIntoDetailListener  extends BEventAdapter{
 		disposeAnimations();
 		IBGame game = BPlatform.instance().game();
 		IBDrawable d = game.screen().drawable();
-		_zoomInAnimation = BTransformIntoRectangleAnimation.zoom(ZOOM_DELAY, (BRectangularDrawable)d, pInMyCoordinates, pInMyCoordinates, ZOOM_FACTOR );
+		_zoomInAnimation = BTransformIntoRectangleAnimation.zoom(ZOOM_DELAY, d, pInMyCoordinates, pInMyCoordinates, ZOOM_FACTOR );
 		_zoomInAnimation = new BConcatenateAnimation( _zoomOutAnimation, _zoomInAnimation );
 		game.animator().addAnimation(_zoomInAnimation);
 		_in = true;

@@ -8,7 +8,6 @@ import ollitos.geom.BRectangle;
 import ollitos.geom.IBPoint;
 import ollitos.geom.IBRectangle;
 import ollitos.geom.IBTransform;
-import ollitos.gui.basic.BRectangularDrawable;
 import ollitos.gui.basic.IBDrawable;
 import ollitos.gui.event.BListenerList;
 import ollitos.gui.event.IBEvent;
@@ -32,14 +31,20 @@ public abstract class BScreen implements IBScreen {
 
 	@Override
 	public void setDrawable(IBDrawable d) {
-		BPlatform.instance().stateManager().save( drawable() );
+		BPlatform p = BPlatform.instance();
+		IBLogger l = p.logger();
+		l.log( this, "saving current state...");
+		p.stateManager().save( drawable() );
+		l.log( this, "saved current state");
 		if (false) {
 			setDrawable_simple(d);
 		} 
 		else {
 			setDrawable_animation(d);
 		}
-		BPlatform.instance().stateManager().save(d);
+		l.log( this, "saving new state...");
+		p.stateManager().save(d);
+		l.log( this, "saved new state");
 	}
 
 	private void setDrawable_simple(IBDrawable d) {
@@ -101,35 +106,16 @@ public abstract class BScreen implements IBScreen {
 		IBRectangle dst = originalSize();
 		IBRectangle src = BRectangle.scale(dst, 1./ENTER_LEAVE_ZOOM);
 		BTransformUtil.setTo(d.transform(), current, src, true, true );
-		IBLogger l = BPlatform.instance().logger();
-		l.log( this, "current:" + current );
-		l.log( this, "dst:" + dst );
-		l.log( this, "src:" + src );
-		l.log( this, "d current bbox:" + BTransformUtil.transform(d.transform(), d.originalSize()));
 		
-
-		IBPoint center = BRectangle.center( BTransformUtil.transform(d.transform(), d.originalSize() ) );
 		IBAnimation a = new BTransformIntoRectangleAnimation(src, dst, ENTER_LEAVE_MILLIS, d);
-
 		
 		return a;
 	}
 	
 	private IBAnimation leaveAnimation(IBDrawable d){
-		IBRectangle current = d.originalSize();
 		IBRectangle src = originalSize();
 		IBRectangle dst = BRectangle.scale(src, 1./ENTER_LEAVE_ZOOM);
-		IBLogger l = BPlatform.instance().logger();
-		l.log( this, "current:" + current );
-		l.log( this, "dst:" + dst );
-		l.log( this, "src:" + src );
-		l.log( this, "d current bbox:" + BTransformUtil.transform(d.transform(), d.originalSize()));
-		
-
-		IBPoint center = BRectangle.center( BTransformUtil.transform(d.transform(), d.originalSize() ) );
 		IBAnimation a = new BTransformIntoRectangleAnimation(src, dst, ENTER_LEAVE_MILLIS, d);
-
-		
 		return a;
 	}
 

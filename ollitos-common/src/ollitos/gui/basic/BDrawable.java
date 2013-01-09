@@ -10,7 +10,7 @@ import ollitos.platform.IBCanvas.CanvasContext;
 
 
 
-public abstract class BDrawable implements IBDrawable, IBTemporaryTransformAnimable, IBCanvas.CanvasContextHolder{
+public abstract class BDrawable implements IBDrawable{
 
 	protected IBTransform _t = platform().identityTransform();
 	protected IBTransform _tt;

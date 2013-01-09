@@ -1,7 +1,5 @@
 package bongard.gui.game;
 
-import java.io.IOException;
-
 import ollitos.bot.view.isoview.BIsoView;
 import ollitos.geom.BRectangle;
 import ollitos.geom.IBRectangle;
@@ -11,12 +9,11 @@ import ollitos.gui.basic.IBDrawable;
 import ollitos.gui.container.BSlidableContainer;
 import ollitos.gui.container.IBSlidableModel;
 import ollitos.gui.container.IBSlidablePage;
-import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 import ollitos.platform.IBCanvas;
-import ollitos.platform.IBRaster;
+import ollitos.platform.raster.BRasterProviderCache;
+import ollitos.platform.raster.IBRasterProvider;
 import ollitos.platform.state.BState;
-import ollitos.util.BException;
 
 
 
@@ -45,14 +42,8 @@ public class BGameHelp extends BSlidableContainer{
 		
 		public static IBDrawable internal(){
 			BResourceLocator l = new BResourceLocator("/examples/help.html" );
-			IBRaster r;
 			IBRectangle htmlRectangle = new BRectangle(0, 0, 240, 320);
-			try {
-				r = BPlatform.instance().rasterUtil().html(htmlRectangle, l);
-			}
-			catch (IOException ex) {
-				throw new BException( "Cant load:" + l, ex );
-			}
+			IBRasterProvider r = BRasterProviderCache.instance().getFromHTML(l, htmlRectangle);
 			BSprite sprite = new BSprite(r);
 			sprite.setAntialias(true);
 			BButton b = new BButton(sprite);
@@ -139,7 +130,7 @@ public class BGameHelp extends BSlidableContainer{
 		}
 		
 		@Override
-		public BResourceLocator background() {
+		public IBDrawable background() {
 			return null;
 		}
 	};

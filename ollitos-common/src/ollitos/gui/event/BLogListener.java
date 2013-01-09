@@ -14,11 +14,13 @@ import ollitos.geom.BRectangle;
 import ollitos.geom.IBPoint;
 import ollitos.geom.IBRectangle;
 import ollitos.geom.IBTransform;
+import ollitos.gui.basic.BDelayedSprite;
 import ollitos.gui.basic.BSprite;
 import ollitos.gui.basic.IBDrawable;
 import ollitos.gui.event.IBEvent.Type;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
+import ollitos.platform.raster.BRasterProviderCache;
 import ollitos.platform.raster.IBRasterProvider;
 import ollitos.util.BException;
 
@@ -45,8 +47,8 @@ public class BLogListener implements IBEventListener{
 			_nextEvent = readNextEvent();
 			
 			BResourceLocator rl = new BResourceLocator( "/examples/cursor.png" );
-			IBRasterProvider raster = BPlatform.instance().raster(rl);
-			_cursor = BPlatform.instance().sprite(raster);
+			IBRasterProvider raster = BRasterProviderCache.instance().get(rl,1,1);
+			_cursor = new BDelayedSprite(raster);
 			_cursor.transform().scale(.5, .5);
 			_cursor.setVisible(false);
 		}

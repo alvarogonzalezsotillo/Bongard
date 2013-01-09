@@ -34,6 +34,8 @@ import ollitos.platform.BPlatform;
 import ollitos.platform.IBCanvas;
 import ollitos.platform.IBGame;
 import ollitos.platform.IBRaster;
+import ollitos.platform.raster.BNewRasterProvider;
+import ollitos.platform.raster.IBRasterProvider;
 
 
 public class BIsoView extends BDrawableContainer implements BPhysicsView{
@@ -118,7 +120,7 @@ public class BIsoView extends BDrawableContainer implements BPhysicsView{
 			 */
 	};
 	private BPhysics _physics;
-	private IBRaster _doubleBuffer;
+	private IBRasterProvider _doubleBuffer;
 
 	private int zIndex(IBLocation l){
 		return (int)(-l.du()+(l.we()+l.sn())*COS30);
@@ -235,7 +237,7 @@ public class BIsoView extends BDrawableContainer implements BPhysicsView{
 	@Override
 	protected void draw_internal(IBCanvas c) {
 		if( true ){
-			IBRaster r = doubleBuffer();
+			IBRaster r = doubleBuffer().raster();;
 			IBCanvas doubleBuffer = r.canvas();
 			drawInCanvas(doubleBuffer, (BCanvasContext) platform().canvasContext(), false );
 			canvasContext().setAntialias(ANTIALIAS);
@@ -272,9 +274,11 @@ public class BIsoView extends BDrawableContainer implements BPhysicsView{
 		}
 	}
 	
-	private IBRaster doubleBuffer(){
+	private IBRasterProvider doubleBuffer(){
 		if( _doubleBuffer == null ){
-			_doubleBuffer = BPlatform.instance().rasterUtil().raster(originalSize());
+			int w = (int) originalSize().w();
+			int h = (int) originalSize().h();
+			_doubleBuffer = new BNewRasterProvider(w, h);
 		}
 		return _doubleBuffer;
 	}

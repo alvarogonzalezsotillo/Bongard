@@ -81,17 +81,12 @@ public abstract class BPlatform {
 		return new BLabel(text);
 	}
 	
-	public BSprite sprite( IBRasterProvider raster ){
-		return new BSprite(raster);
-	}
-	
+
 	public BBox box( IBRectangle r, IBColor color ){
 		return new BBox( r, color );
 	}
 
-	public IBRasterProvider raster(BResourceLocator test){
-		return BRasterProviderCache.instance().get(test);
-	}
+		
 	
 	public abstract URL platformURL(BResourceLocator r);
 	

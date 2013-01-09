@@ -18,6 +18,7 @@ import ollitos.geom.BRectangle;
 import ollitos.geom.IBPoint;
 import ollitos.geom.IBRectangle;
 import ollitos.gui.basic.BBox;
+import ollitos.gui.basic.BDelayedSprite;
 import ollitos.gui.basic.BDrawable;
 import ollitos.gui.basic.BLabel;
 import ollitos.gui.basic.BSprite;
@@ -33,6 +34,7 @@ import ollitos.gui.event.IBEvent;
 import ollitos.platform.BPlatform;
 import ollitos.platform.IBCanvas;
 import ollitos.platform.state.BState;
+import bongard.problem.BCardExtractor;
 import bongard.problem.BProblem;
 
 @SuppressWarnings("serial")
@@ -78,7 +80,7 @@ public class BGameField extends BDrawableContainer implements IBSlidablePage, Se
 
 	public void autoSolve(){
 		
-		boolean isOfSet1 = _problem.isOfSet1(_questionSprite.raster());
+		boolean isOfSet1 = _problem.isOfSet1(_questionSprite.rasterProvider());
 		
 		IBPoint orig = spritePosition(-1,1);
 		IBPoint dest = spritePosition(isOfSet1?0:1, 2);
@@ -177,11 +179,11 @@ public class BGameField extends BDrawableContainer implements IBSlidablePage, Se
 			if( _dragQuestion ){
 				BPlatform f = BPlatform.instance();
 				
-				boolean correctAnswer = _set1Over && _problem.isOfSet1(_questionSprite.raster()) ||
-										_set2Over && _problem.isOfSet2(_questionSprite.raster());
+				boolean correctAnswer = _set1Over && _problem.isOfSet1(_questionSprite.rasterProvider()) ||
+										_set2Over && _problem.isOfSet2(_questionSprite.rasterProvider());
 				
-				boolean badAnswer =  _set2Over && _problem.isOfSet1(_questionSprite.raster()) ||
-									 _set1Over && _problem.isOfSet2(_questionSprite.raster());
+				boolean badAnswer =  _set2Over && _problem.isOfSet1(_questionSprite.rasterProvider()) ||
+									 _set1Over && _problem.isOfSet2(_questionSprite.rasterProvider());
 				
 				if( correctAnswer && !_badAnswer ) setCorrectAnswer(true);
 				if( badAnswer && !_correctAnswer ) setBadAnswer(true);
@@ -282,15 +284,19 @@ public class BGameField extends BDrawableContainer implements IBSlidablePage, Se
 		BPlatform f = BPlatform.instance();
 		_problem = problem;
 		
+		
 		_set1Sprites = new BSprite[_problem.set1().length];
 		for( int i = 0 ; i < _set1Sprites.length ; i++ ){
-			_set1Sprites[i] = f.sprite(_problem.set1()[i]);
+			//_set1Sprites[i] = f.sprite(_problem.set1()[i]);
+			_set1Sprites[i] = new BDelayedSprite(_problem.set1()[i]);
 		}
 		_set2Sprites = new BSprite[_problem.set2().length];
 		for( int i = 0 ; i < _set2Sprites.length ; i++ ){
-			_set2Sprites[i] = f.sprite(_problem.set2()[i]);
+			//_set2Sprites[i] = f.sprite(_problem.set2()[i]);
+			_set2Sprites[i] = new BDelayedSprite(_problem.set2()[i]);
 		}
-		_questionSprite = f.sprite( _problem.image1() );
+		//_questionSprite = f.sprite( _problem.image1() );
+		_questionSprite = new BDelayedSprite( _problem.image1());
 		
 		_allSprites = new BSprite[_set1Sprites.length+_set2Sprites.length+1];
 		System.arraycopy(_set1Sprites, 0, _allSprites, 0, _set1Sprites.length );

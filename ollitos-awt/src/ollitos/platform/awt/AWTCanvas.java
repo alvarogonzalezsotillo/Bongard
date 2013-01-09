@@ -61,9 +61,8 @@ public class AWTCanvas implements IBCanvas{
 	}
 
 	@Override
-	public void drawRaster(CanvasContextHolder c, IBRasterProvider r, float x, float y) {
+	public void drawRaster(CanvasContextHolder c, IBRaster r, float x, float y) {
 		Graphics2D g = cloneAndSet(_graphics, c);
-		IBRaster raster = r.raster();
 		g.drawImage(((AWTRaster)r).image(), (int)x, (int)y, null);
 		g.dispose();
 	}

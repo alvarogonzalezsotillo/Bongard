@@ -5,6 +5,8 @@ import ollitos.platform.IBLogger;
 
 public class AWTLogger implements IBLogger{
 
+	private long _lastMillis;
+	
 	@Override
 	public void log(Object msg) {
 		log( null, msg );
@@ -17,7 +19,10 @@ public class AWTLogger implements IBLogger{
 		}
 		String s = sender != null ? sender.getClass().getName() : "-"; 
 		s = s.substring( s.lastIndexOf(".")+1, s.length() );
-		System.out.println(s + ": " + msg);
+		long millis = System.currentTimeMillis();
+		long m = millis - _lastMillis;
+		_lastMillis = millis;
+		System.out.println(m + " -- " + s + ": " + msg);
 	}
 
 }

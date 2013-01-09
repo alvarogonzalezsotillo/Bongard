@@ -7,12 +7,19 @@ import ollitos.geom.BRectangle;
 import ollitos.geom.IBRectangle;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
-import ollitos.platform.IBRaster;
+import ollitos.platform.IBColor;
+import ollitos.platform.raster.BRasterProviderCache;
+import ollitos.platform.raster.IBRasterProvider;
 import ollitos.util.BException;
 
 
 
 public abstract class BCardExtractor{
+
+	public static int CARDW = 100;
+	public static int CARDH = 100;
+	public static int PROBLEMW = 516;
+	public static int PROBLEMH = 330;
 	
 	
 	private static IBRectangle[] A = {
@@ -28,11 +35,12 @@ public abstract class BCardExtractor{
 	};
 	
 	private static IBRectangle getCard( int side, int row, int column ){
-		return new BRectangle(7+side*293+column*(100+8),5+row*(100+8),100,100);
+		return new BRectangle(7+side*293+column*(CARDW+8),5+row*(CARDH+8),CARDW,CARDH);
 	}
 
 
 	private static int TOTAL = 280;
+	private static IBColor _background = BPlatform.instance().COLOR_WHITE;
 
 	
 	/**
@@ -48,35 +56,26 @@ public abstract class BCardExtractor{
 	 * @param i
 	 * @return first dimension are sides of problem, second dimension is tiles of side
 	 */
-	public static IBRaster[][] extractImages( IBRaster testImage ){
-		IBRaster ret[][] = new IBRaster[2][];
-		ret[0] = new IBRaster[A.length];
-		ret[1] = new IBRaster[B.length];
+	public static IBRasterProvider[][] extractImages( IBRasterProvider testImage ){
+		IBRasterProvider ret[][] = new IBRasterProvider[2][];
+		ret[0] = new IBRasterProvider[A.length];
+		ret[1] = new IBRasterProvider[B.length];
 		
 		for( int j= 0 ; j < A.length ; j++ ){
 			IBRectangle r = A[j];
-			IBRaster card = extract( r, testImage );
+			IBRasterProvider card = BRasterProviderCache.instance().get(testImage,r,_background,false);
 			ret[0][j] = card;
 		}
 		
 		for( int j= 0 ; j < B.length ; j++ ){
 			IBRectangle r = B[j];
-			IBRaster card = extract( r, testImage );
+			IBRasterProvider card = BRasterProviderCache.instance().get(testImage,r,_background,false);
 			ret[1][j] = card;
 		}
 		return ret;
 	}
 
 
-	/**
-	 * 
-	 * @param r
-	 * @param i
-	 * @return
-	 */
-	public static IBRaster extract(IBRectangle r, IBRaster i){
-		return BPlatform.instance().rasterUtil().extract(r, i);
-	}
 
 
 	/**

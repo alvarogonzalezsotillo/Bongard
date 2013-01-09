@@ -20,7 +20,7 @@ import ollitos.platform.state.BState;
 
 public class BStartField extends BDrawableContainer{
 
-	private static final int PRESS_DELAY = 100;
+	private static final int PRESS_DELAY = 1;
 	private BButton _helpGameSprite;
 	private BButton _startGameSprite;
 	private BButton _helpOriginalSprite;
@@ -47,7 +47,7 @@ public class BStartField extends BDrawableContainer{
 	}
 	
 	private BButton createButton(int row, int column, String resource ){
-		BButton ret = BButton.create(resource);
+		BButton ret = BButton.create(resource, new BRectangle(-50,-50, 100, 100) );
 		ret.addClickedListener(_clickedListener );
 		IBRectangle r = spritePosition(row,column, ret.drawable().originalSize().w() );
 		ret.setSizeTo(r, false, true);
@@ -90,7 +90,9 @@ public class BStartField extends BDrawableContainer{
 	}
 	
 	protected void startGamePressed() {
+		platform().logger().log(this, "Restoring saved...");
 		IBDrawable saved = platform().stateManager().restore(BSlidableGameField.class);
+		platform().logger().log(this, "Restored");
 		final IBDrawable d = saved == null ? BGameModel.goToInitialLevel() : saved;
 		IBAnimation a = new BRunnableAnimation(PRESS_DELAY, new Runnable(){
 			@Override

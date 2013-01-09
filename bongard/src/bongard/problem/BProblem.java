@@ -5,10 +5,10 @@ import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Random;
 
-import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 import ollitos.platform.IBDisposable;
-import ollitos.platform.IBRaster;
+import ollitos.platform.raster.BRasterProviderCache;
+import ollitos.platform.raster.IBRasterProvider;
 import ollitos.util.BException;
 
 
@@ -20,17 +20,17 @@ import ollitos.util.BException;
 @SuppressWarnings("serial")
 public class BProblem implements Serializable, IBDisposable{
 	
-	transient private IBRaster _testImage;
+	transient private IBRasterProvider _testImage;
 	
-	transient private IBRaster[] _a;
-	transient private IBRaster[] _b;
-	transient private IBRaster[] _images;
+	transient private IBRasterProvider[] _a;
+	transient private IBRasterProvider[] _b;
+	transient private IBRasterProvider[] _images;
 
 	
-	transient private IBRaster[] _set1;
-	transient private IBRaster[] _set2;
-	transient private IBRaster _image1;
-	transient private IBRaster _image2;
+	transient private IBRasterProvider[] _set1;
+	transient private IBRasterProvider[] _set2;
+	transient private IBRasterProvider _image1;
+	transient private IBRasterProvider _image2;
 	
 	transient private boolean _image1_with_set1;
 	transient private boolean _disposed = true;
@@ -64,10 +64,10 @@ public class BProblem implements Serializable, IBDisposable{
 	 */
 	private void init( ){
 		
-		IBRaster[][] images = BCardExtractor.extractImages(testImage());
+		IBRasterProvider[][] images = BCardExtractor.extractImages(testImage());
 
-		IBRaster[] a = images[0];
-		IBRaster[] b = images[1];
+		IBRasterProvider[] a = images[0];
+		IBRasterProvider[] b = images[1];
 		
 		if( a == null || a.length != 6 ){
 			throw new BException("incorrect a", null );
@@ -77,7 +77,7 @@ public class BProblem implements Serializable, IBDisposable{
 		}
 		_a = a;
 		_b = b;
-		_images = new IBRaster[12];
+		_images = new IBRasterProvider[12];
 		System.arraycopy(_a, 0, _images, 0, 6);
 		System.arraycopy(_b, 0, _images, 6, 6);
 		
@@ -89,7 +89,7 @@ public class BProblem implements Serializable, IBDisposable{
 	 * 
 	 * @return
 	 */
-	public IBRaster[] aImages() {
+	public IBRasterProvider[] aImages() {
 		if( _a == null ) init();
 		return _a.clone();
 	}
@@ -98,7 +98,7 @@ public class BProblem implements Serializable, IBDisposable{
 	 * 
 	 * @return
 	 */
-	public IBRaster[] bImages() {
+	public IBRasterProvider[] bImages() {
 		if( _b == null ) init();
 		return _b.clone();
 	}
@@ -107,7 +107,7 @@ public class BProblem implements Serializable, IBDisposable{
 	 * 
 	 * @return
 	 */
-	public IBRaster[] images(){
+	public IBRasterProvider[] images(){
 		if( _images == null ) init();
 		return _images.clone();
 	}
@@ -116,7 +116,7 @@ public class BProblem implements Serializable, IBDisposable{
 	 * 
 	 * @return
 	 */
-	public IBRaster[] set1(){
+	public IBRasterProvider[] set1(){
 		if( _set1 == null ) init();
 		return _set1.clone();
 	}
@@ -125,7 +125,7 @@ public class BProblem implements Serializable, IBDisposable{
 	 * 
 	 * @return
 	 */
-	public IBRaster[] set2(){
+	public IBRasterProvider[] set2(){
 		if( _set2 == null ) init();
 		return _set2.clone();
 	}
@@ -134,7 +134,7 @@ public class BProblem implements Serializable, IBDisposable{
 	 * 
 	 * @return
 	 */
-	public IBRaster image1(){
+	public IBRasterProvider image1(){
 		if( _image1 == null ) init();
 		return _image1;
 	}
@@ -143,7 +143,7 @@ public class BProblem implements Serializable, IBDisposable{
 	 * 
 	 * @return
 	 */
-	public IBRaster image2(){
+	public IBRasterProvider image2(){
 		if( _image2 == null ) init();
 		return _image2;
 	}
@@ -153,20 +153,20 @@ public class BProblem implements Serializable, IBDisposable{
 	 */
 	public void shuffle(){
 		Random r = new Random(seed());
-		IBRaster[] a = shuffle( aImages(), r );
-		IBRaster[] b = shuffle( bImages(), r);
+		IBRasterProvider[] a = shuffle( aImages(), r );
+		IBRasterProvider[] b = shuffle( bImages(), r);
 		
-		_set1 = new IBRaster[5];
+		_set1 = new IBRasterProvider[5];
 		System.arraycopy(a, 0, _set1, 0, 5);
 		_image1 = a[5];
 		
-		_set2 = new IBRaster[5];
+		_set2 = new IBRasterProvider[5];
 		System.arraycopy(b, 0, _set2, 0, 5);
 		_image2 = b[5];
 		
 		_image1_with_set1 = r.nextBoolean();
 		if( !_image1_with_set1 ){
-			IBRaster temp = _image1;
+			IBRasterProvider temp = _image1;
 			_image1 = _image2;
 			_image2 = temp;
 		}
@@ -193,8 +193,8 @@ public class BProblem implements Serializable, IBDisposable{
 	 * @param image
 	 * @return
 	 */
-	public boolean isOfSet1( IBRaster image ){
-		boolean isImage1 = image == _image1;
+	public boolean isOfSet1( IBRasterProvider image ){
+		boolean isImage1 = image.raster() == _image1.raster();
 		return isImage1 && _image1_with_set1 || !isImage1 && !_image1_with_set1;
 	}
 	
@@ -203,13 +203,13 @@ public class BProblem implements Serializable, IBDisposable{
 	 * @param image
 	 * @return
 	 */
-	public boolean isOfSet2( IBRaster image ){
+	public boolean isOfSet2( IBRasterProvider image ){
 		return !isOfSet1(image);
 	}
 	
-	public IBRaster testImage() {
+	public IBRasterProvider testImage() {
 		if( _testImage == null ){
-			_testImage = BPlatform.instance().raster(_test).raster();
+			_testImage = BRasterProviderCache.instance().get(_test,BCardExtractor.PROBLEMW,BCardExtractor.PROBLEMH);
 		}
 		return _testImage;
 	}
@@ -225,7 +225,7 @@ public class BProblem implements Serializable, IBDisposable{
 			_testImage.dispose();
 		}
 		if( _images != null ){
-			for( IBRaster r : _images ){
+			for( IBRasterProvider r : _images ){
 				r.dispose();
 			}
 		}

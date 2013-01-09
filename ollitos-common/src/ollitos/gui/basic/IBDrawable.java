@@ -7,7 +7,7 @@ import ollitos.geom.IBTransform;
 import ollitos.geom.IBTransformHolder;
 import ollitos.platform.IBCanvas;
 
-public interface IBDrawable extends IBTemporaryTransformAnimable, IBTransformHolder{
+public interface IBDrawable extends IBTemporaryTransformAnimable, IBTransformHolder, IBCanvas.CanvasContextHolder{
 	
 	public interface DrawableHolder {
 		IBDrawable drawable();

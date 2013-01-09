@@ -33,6 +33,7 @@ public class AWTRaster implements IBRaster{
 
 	@Override
 	public void dispose() {
+		_image.flush();
 		_image = null;
 	}
 
@@ -59,13 +60,4 @@ public class AWTRaster implements IBRaster{
 		return new AWTCanvas( (Graphics2D) _image.getGraphics() );
 	}
 
-	@Override
-	public IBRaster raster() {
-		return this;
-	}
-
-	@Override
-	public String key() {
-		return null;
-	}
 }

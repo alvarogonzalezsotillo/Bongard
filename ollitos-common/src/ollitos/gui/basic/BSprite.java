@@ -12,27 +12,50 @@ public class BSprite extends BRectangularDrawable{
 
 	private IBRasterProvider _rasterProvider;
 	private IBRaster _raster;
+	private IBRectangle _initialPosition;
 
 	
 	private static IBRectangle computeOriginalPosition(IBRaster ra){
 		return new BRectangle( -ra.w()/2, -ra.h()/2, ra.w(), ra.h() );
 	}
-	
+
 	/**
 	 * 
 	 * @param raster
 	 */
 	public BSprite(IBRasterProvider rasterProvider){
-		_rasterProvider = rasterProvider;
-		_raster = _rasterProvider.raster();
-		setOriginalSize( computeOriginalPosition(_raster) );
-		setAlfa(1);
+		this(rasterProvider,null);
 	}
 	
-	public IBRaster raster(){
+	
+	public BSprite(IBRasterProvider rasterProvider, IBRectangle initialPositon) {
+		_rasterProvider = rasterProvider;
+		_initialPosition = initialPositon;
+		setOriginalSize(_initialPosition);
+		loadRaster();
+	}
+
+
+	protected void loadRaster() {
+		loadRasterImpl();
+	}
+
+	protected void loadRasterImpl() {
+		_raster = _rasterProvider.raster();
+		IBRectangle r = _initialPosition;
+		if( r == null ){
+			r = computeOriginalPosition(_raster);
+		}
+		setOriginalSize( r );
+	}
+	
+	protected IBRaster raster(){
 		return _raster;
 	}
 	
+	public IBRasterProvider rasterProvider(){
+		return _rasterProvider;
+	}
 
 	public void setAlfa(float alfa) {
 		canvasContext().setAlpha( alfa );

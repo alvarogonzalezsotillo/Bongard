@@ -2,6 +2,7 @@ package ollitos.gui.event;
 
 import ollitos.platform.BPlatform;
 import ollitos.platform.IBGame;
+import ollitos.platform.raster.BRasterProviderCache;
 
 public class BRestartListener extends BEventAdapter{
 
@@ -30,6 +31,14 @@ public class BRestartListener extends BEventAdapter{
 		else{
 			return false;
 		}
+	}
+	
+	@Override
+	public boolean keyPressed(IBEvent e) {
+		if( e.keyChar() == 'd' ){
+			BRasterProviderCache.instance().dump();
+		}
+		return super.keyPressed(e);
 	}
 
 }

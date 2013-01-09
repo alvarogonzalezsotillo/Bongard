@@ -8,6 +8,7 @@ import ollitos.geom.IBRectangle;
 import ollitos.gui.basic.BBox;
 import ollitos.gui.basic.BCheckBox;
 import ollitos.gui.basic.BCheckBox.StateListener;
+import ollitos.gui.basic.BDelayedSprite;
 import ollitos.gui.basic.BSprite;
 import ollitos.gui.basic.IBDrawable;
 import ollitos.gui.container.BDrawableContainer;
@@ -15,6 +16,7 @@ import ollitos.gui.container.BZoomDrawable;
 import ollitos.gui.container.IBSlidablePage;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
+import ollitos.platform.raster.BRasterProviderCache;
 import ollitos.platform.raster.IBRasterProvider;
 import bongard.problem.BProblem;
 
@@ -30,16 +32,18 @@ public class BBongardTestField extends BDrawableContainer implements IBSlidableP
 	public static HashMap<State, IBDrawable> _icons;
 	
 	static{
-		BPlatform p = BPlatform.instance();
-		
 		_rasters = new HashMap<State, IBRasterProvider>();
-		_rasters.put( State.undefined, p.raster( new BResourceLocator("/images/checkbox/undefined.png")) );
-		_rasters.put( State.good, p.raster( new BResourceLocator("/images/checkbox/good.png")) );
-		_rasters.put( State.bad, p.raster( new BResourceLocator("/images/checkbox/bad.png")) );
+		BRasterProviderCache rpc = BRasterProviderCache.instance();
+		IBRasterProvider undefinedr = rpc.get(new BResourceLocator("/images/checkbox/undefined.png"), 110, 110 );
+		_rasters.put( State.undefined, rpc.get(undefinedr, BPlatform.COLOR_WHITE, true ) );
+		IBRasterProvider goodr = rpc.get( new BResourceLocator("/images/checkbox/good.png"), 110, 110);
+		_rasters.put( State.good, rpc.get(goodr, BPlatform.COLOR_WHITE, true ) );
+		IBRasterProvider badr = rpc.get( new BResourceLocator("/images/checkbox/bad.png"), 110, 110);
+		_rasters.put( State.bad, rpc.get(badr, BPlatform.COLOR_WHITE, true ) );
 		
 		_sprites = new BSprite[State.values().length];
 		for( State s: State.values() ){
-			_sprites[s.ordinal()] = p.sprite(_rasters.get(s));
+			_sprites[s.ordinal()] = new BDelayedSprite(_rasters.get(s));
 		}
 		
 		_icons = new HashMap<State, IBDrawable>();
@@ -52,7 +56,6 @@ public class BBongardTestField extends BDrawableContainer implements IBSlidableP
 	private BResourceLocator _locator;
 	transient private BProblem _problem;
 	transient private BSprite _sprite;
-	transient private IBDrawable _drawable;
 	transient private BCheckBox _checkBox;
 	private State _state = State.undefined;
 	
@@ -88,12 +91,13 @@ public class BBongardTestField extends BDrawableContainer implements IBSlidableP
 	 * @param test
 	 */
 	private void setUpProblem(){
-		BPlatform f = BPlatform.instance();
 		if( _problem == null ){
 			_problem = new BProblem(_locator);
 		}
 		_problem.setUp();
-		_sprite = f.sprite(_problem.testImage());
+		IBRasterProvider testImage = _problem.testImage();
+		testImage = BRasterProviderCache.instance().get(testImage, new BRectangle(0,0,testImage.w(),testImage.h()), BPlatform.COLOR_WHITE, true);
+		_sprite = new BDelayedSprite(testImage);
 		_sprite.setAntialias(true);
 		_sprite.transform().translate( originalSize().w()/2, originalSize().h()/2 );
 		_sprite.transform().rotate(Math.PI/2);
@@ -128,6 +132,9 @@ public class BBongardTestField extends BDrawableContainer implements IBSlidableP
 	public void dispose() {
 		if( _problem != null ){
 			_problem.dispose();
+		}
+		if( _sprite != null && _sprite.rasterProvider() != null ){
+			_sprite.rasterProvider().dispose();
 		}
 		removeDrawables();
 	}

@@ -1,14 +1,13 @@
 package bongard.gui.game;
 
-import javax.naming.LimitExceededException;
-
 import ollitos.animation.BRunnableAnimation;
+import ollitos.gui.basic.BDelayedSprite;
 import ollitos.gui.basic.IBDrawable;
-import ollitos.gui.container.BSlidableContainer;
-import ollitos.gui.container.BZoomDrawable;
 import ollitos.gui.container.IBSlidableModel;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
+import ollitos.platform.raster.BRasterProviderCache;
+import ollitos.platform.raster.IBRasterProvider;
 import bongard.problem.BCardExtractor;
 import bongard.problem.BProblem;
 
@@ -18,7 +17,7 @@ public class BGameModel implements IBSlidableModel{
 	public static final int MAX_WIDTH = 12;
 	private static final int INITIAL_WIDTH = 2;
 	private static final int WIDTH_INCREMENT = 1;
-	transient private BResourceLocator _background;
+	transient private IBDrawable _background;
 	private BGameField[] _drawables;
 	private boolean _demo;
 	private BResourceLocator[] _problems;
@@ -62,9 +61,11 @@ public class BGameModel implements IBSlidableModel{
 	}
 
 	@Override
-	public BResourceLocator background(){
+	public IBDrawable background(){
 		if( _background == null ){
-			_background = new BResourceLocator( "/images/backgrounds/arrecibo.png" );
+			BResourceLocator rl = new BResourceLocator( "/images/backgrounds/arrecibo.png" );
+			IBRasterProvider rp = BRasterProviderCache.instance().get(rl, 146, 46);
+			_background = new BDelayedSprite(rp);
 		}
 		return _background;
 	}

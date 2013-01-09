@@ -234,4 +234,12 @@ public abstract class BPhysicalItem implements IBPhysicalItem{
 	public boolean disposed() {
 		return _disposed ;
 	}
+	
+	@Override
+	public String toString() {
+		if( mapItem() != null ){
+			return mapItem().type().toString() + "-" +region();
+		}
+		return getClass().getSimpleName() + "-" + region();
+	}
 }
