@@ -50,20 +50,4 @@ public class BDelayedSprite extends BSprite{
 		}
 		return ret;
 	}
-	
-	@Override
-	protected void draw_internal(IBCanvas c) {
-		if( raster() != null ){
-			super.draw_internal(c);
-			return;
-		}
-		
-		IBRectangle os = originalSize();
-		int x = (int)os.x();
-		int y = (int)os.y();
-		int h = (int)os.h();
-		int w = (int)os.w();
-		c.drawLine(this, x, y, x+w, y+h );
-		c.drawLine(this, x, h+y, w+x, y );
-	}
 }

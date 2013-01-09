@@ -73,11 +73,22 @@ public class BSprite extends BRectangularDrawable{
 	public void setAntialias( boolean a ){
 		canvasContext().setAntialias(a);
 	}
+
+	protected void draw_rasterNotAvailable(IBCanvas c){
+		IBRectangle os = originalSize();
+		int x = (int)os.x();
+		int y = (int)os.y();
+		int h = (int)os.h();
+		int w = (int)os.w();
+		c.drawLine(this, x, y, x+w, y+h );
+		c.drawLine(this, x, h+y, w+x, y );
+	}
 	
 	@Override
 	protected void draw_internal(IBCanvas c) {
-		if( raster().disposed() ){
-			new BException("Raster is disposed", null).printStackTrace();
+		
+		if( raster() == null || raster().disposed() ){
+			draw_rasterNotAvailable(c);
 			return;
 		}
 
