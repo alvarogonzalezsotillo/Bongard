@@ -125,20 +125,6 @@ public class AndrScreen extends BScreen{
 			}
 		}
 
-		@SuppressWarnings("unused")
-		private void drawTest() {
-			Paint paint = new Paint();
-			paint.setColor(Color.WHITE);
-			_currentAndroidCanvas.drawLine(0, 0, getMeasuredWidth(),getMeasuredHeight(), paint);
-			_currentAndroidCanvas.drawCircle(getMeasuredWidth(), getMeasuredHeight(), 20, paint);
-
-			BResourceLocator l = new BResourceLocator("/images/backgrounds/arrecibo.png");
-			IBRasterProvider r = BPlatform.instance().raster(l);
-			BSprite s = BPlatform.instance().sprite(r);
-
-			s.draw(canvas(), null);
-		}
-
 		private Canvas _currentAndroidCanvas;
 
 		public Canvas currentAndroidCanvas() {

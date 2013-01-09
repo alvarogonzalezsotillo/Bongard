@@ -46,19 +46,8 @@ public class AndrRaster implements IBRaster {
 	}
 
 	@Override
-	public IBRaster raster() {
-		return this;
-	}
-
-	@Override
 	public IBCanvas canvas() {
 		Canvas c = new Canvas(bitmap());
 		return new AndrCanvas(c);
 	}
-
-	@Override
-	public String key() {
-		return null;
-	} 	
-
 }

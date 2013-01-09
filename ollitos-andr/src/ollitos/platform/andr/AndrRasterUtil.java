@@ -7,6 +7,7 @@ import java.net.URL;
 import ollitos.geom.IBRectangle;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
+import ollitos.platform.IBColor;
 import ollitos.platform.IBRaster;
 import ollitos.platform.raster.IBRasterUtil;
 import ollitos.util.BException;
@@ -26,22 +27,17 @@ import android.widget.FrameLayout;
 public class AndrRasterUtil implements IBRasterUtil{
 
 	@Override
-	public IBRaster extract(IBRectangle r, IBRaster i) {
+	public IBRaster extract(IBRectangle r, IBRaster i, IBColor color) {
 		Bitmap src = ((AndrRaster)i).bitmap();
 		Bitmap b = Bitmap.createBitmap(src, (int)r.x(), (int)r.y(), (int)r.w(), (int)r.h(), null, false );
+		
+		b = opaqueBitmap(b, ((AndrColor)color).color(), true );
+		
 		return new AndrRaster(b);
 	}
-
-	@Override
-	public IBRaster raster(InputStream is)	throws IOException {
-		Bitmap b = BitmapFactory.decodeStream(is);
-		is.close();
-		if( b == null ){
-			throw new BException("Cant open image", null);
-		}
-
-		return new AndrRaster(b);
-		/*
+	
+	private Bitmap opaqueBitmap(Bitmap b, int color, boolean recycleOld) {
+		
 		Bitmap.Config config = b.getConfig();
 		if( config == null ){
 			config = defaultBitmapConfig();
@@ -54,9 +50,21 @@ public class AndrRasterUtil implements IBRasterUtil{
 		c.drawRect(0, 0, ret.getWidth(), ret.getHeight(), p);
 		c.drawBitmap(b, 0, 0, p);
 
-		b.recycle();
-		return new AndrRaster(ret);
-		*/
+		if( recycleOld ){
+			b.recycle();
+		}
+		return ret;
+	}
+
+	@Override
+	public IBRaster raster(InputStream is)	throws IOException {
+		Bitmap b = BitmapFactory.decodeStream(is);
+		is.close();
+		if( b == null ){
+			throw new BException("Cant open image", null);
+		}
+
+		return new AndrRaster(b);
 	}
 
 	private Bitmap.Config defaultBitmapConfig() {

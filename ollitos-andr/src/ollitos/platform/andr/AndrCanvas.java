@@ -53,12 +53,11 @@ public class AndrCanvas implements IBCanvas{
 	}
 
 	@Override
-	public void drawRaster(CanvasContextHolder c, IBRasterProvider r, float x, float y) {
+	public void drawRaster(CanvasContextHolder c, IBRaster r, float x, float y) {
 		CanvasContext canvasContext = c.canvasContext();
 		Canvas ac = save(canvasContext);
 		
-		IBRaster raster = r.raster();
-		Bitmap bitmap = ((AndrRaster)raster).bitmap();
+		Bitmap bitmap = ((AndrRaster)r).bitmap();
 
 		ac.drawBitmap(bitmap, x, y, paint(canvasContext) );
 
@@ -111,4 +110,5 @@ public class AndrCanvas implements IBCanvas{
 		restore();
 		
 	}
+
 }

@@ -2,16 +2,19 @@ package ollitos.platform.andr;
 
 import java.util.HashMap;
 
+import ollitos.platform.BPlatform;
 import ollitos.platform.state.IBKeyValueDatabase;
 import ollitos.platform.state.IBKeyValueTable;
 import ollitos.util.BException;
-
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class AndrKeyValueDatabase extends SQLiteOpenHelper implements IBKeyValueDatabase{
+	
+	private static final boolean FAKE = true;
 	
 	private static final int VERSION = 1;
 	private static final String TABLE = "tables";
@@ -99,6 +102,8 @@ public class AndrKeyValueDatabase extends SQLiteOpenHelper implements IBKeyValue
 
 		@Override
 		public boolean putBytes(byte[] b, Object... key) {
+			if( FAKE ) return true;
+			
 			SQLiteDatabase db = getWritableDatabase();
 			String k = Util.concatenate(key);
 			db.beginTransaction();
@@ -108,12 +113,19 @@ public class AndrKeyValueDatabase extends SQLiteOpenHelper implements IBKeyValue
 			cv.put( VALUE_COLUMN, b);
 			db.insert(TABLE, null, cv);
 			db.endTransaction();
-			db.close();
+			try{
+				db.close();
+			}
+			catch( SQLiteException e){
+				BPlatform.instance().logger().log( this, e );
+			}
 			return true;
 		}
 
 		@Override
 		public byte[] getBytes(Object... key) {
+			if( FAKE ) return null;
+			
 			SQLiteDatabase db = getWritableDatabase();
 			String k = Util.concatenate(key);
 			db.beginTransaction();
