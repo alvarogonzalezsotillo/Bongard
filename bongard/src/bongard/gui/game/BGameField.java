@@ -26,19 +26,15 @@ import ollitos.gui.basic.IBDrawable;
 import ollitos.gui.container.BDrawableContainer;
 import ollitos.gui.container.BSlidableContainer;
 import ollitos.gui.container.BZoomDrawable;
-import ollitos.gui.container.IBDrawableContainer;
 import ollitos.gui.container.IBSlidablePage;
 import ollitos.gui.event.BEventAdapter;
-import ollitos.gui.event.BListenerList;
-import ollitos.gui.event.IBEvent;
 import ollitos.platform.BPlatform;
 import ollitos.platform.IBCanvas;
 import ollitos.platform.state.BState;
-import bongard.problem.BCardExtractor;
 import bongard.problem.BProblem;
 
 @SuppressWarnings("serial")
-public class BGameField extends BDrawableContainer implements IBSlidablePage, Serializable{
+public class BGameField extends BDrawableContainer implements IBSlidablePage, Serializable, BState.Stateful{
 	
 	private static final int FOCUS_DELAY = 100;
 	private static final double FOCUS_ZOOM = 1.3;
@@ -473,7 +469,7 @@ public class BGameField extends BDrawableContainer implements IBSlidablePage, Se
 	}
 	
 	@Override
-	public BState save() {
+	public BState<BGameField> save() {
 		return new MyState(this);
 	}
 	

@@ -22,7 +22,7 @@ import ollitos.platform.state.BState;
 import ollitos.util.BException;
 import ollitos.util.BTransformUtil;
 
-public class BSlidableContainer extends BDrawableContainer {
+public class BSlidableContainer extends BDrawableContainer implements BState.Stateful{
 	
 	private static final double MARGIN = 50;
 	

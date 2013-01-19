@@ -3,8 +3,8 @@
 import ollitos.geom.IBRectangle;
 import ollitos.gui.basic.IBDrawable;
 import ollitos.gui.container.IBDrawableContainer;
-import ollitos.platform.state.BState;
 import ollitos.platform.state.BState.Stateful;
+import ollitos.platform.state.BStateManager;
 import ollitos.util.BException;
 
 
@@ -44,7 +44,8 @@ public abstract class BGame implements IBGame{
 	@Override
 	public void saveState() {
 		IBDrawable d = screen().drawable();
-		BPlatform.instance().stateManager().save(d);
+		Stateful s = BStateManager.asStateful(d);
+		BPlatform.instance().stateManager().save(s);
 	}
 	
 	@Override

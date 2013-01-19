@@ -13,6 +13,7 @@ import ollitos.gui.event.BListenerList;
 import ollitos.gui.event.IBEvent;
 import ollitos.gui.event.IBEventConsumer;
 import ollitos.gui.event.IBEventListener;
+import ollitos.platform.state.BStateManager;
 import ollitos.util.BTransformUtil;
 
 public abstract class BScreen implements IBScreen {
@@ -34,7 +35,7 @@ public abstract class BScreen implements IBScreen {
 		BPlatform p = BPlatform.instance();
 		IBLogger l = p.logger();
 		l.log( this, "saving current state...");
-		p.stateManager().save( drawable() );
+		p.stateManager().save( BStateManager.asStateful(drawable()) );
 		l.log( this, "saved current state");
 		if (false) {
 			setDrawable_simple(d);
@@ -43,7 +44,7 @@ public abstract class BScreen implements IBScreen {
 			setDrawable_animation(d);
 		}
 		l.log( this, "saving new state...");
-		p.stateManager().save(d);
+		p.stateManager().save( BStateManager.asStateful(d) );
 		l.log( this, "saved new state");
 	}
 

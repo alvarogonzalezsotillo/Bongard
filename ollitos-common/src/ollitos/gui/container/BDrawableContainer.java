@@ -16,7 +16,7 @@ import ollitos.platform.IBDisposable;
 import ollitos.platform.state.BState;
 import ollitos.util.BException;
 
-public abstract class BDrawableContainer extends BRectangularDrawable implements IBDrawableContainer, BState.Stateful{
+public abstract class BDrawableContainer extends BRectangularDrawable implements IBDrawableContainer{
 
 	private transient BListenerList _listeners;
 	private transient List<IBDrawable> _drawables = new ArrayList<IBDrawable>();
@@ -121,10 +121,6 @@ public abstract class BDrawableContainer extends BRectangularDrawable implements
 		return new BListenerList(this);
 	}
 
-	@Override
-	public BState save() {
-		throw new BException("save must be implemented or not called:"+ getClass().getName(), null);
-	}
 	
 	@Override
 	protected void draw_internal(IBCanvas c) {

@@ -17,7 +17,7 @@ import ollitos.platform.state.BState;
 
 
 
-public class BGameHelp extends BSlidableContainer{
+public class BGameHelp extends BSlidableContainer implements BState.Stateful{
 
 	public BGameHelp(){
 		super(BGameField.computeOriginalSize(),createModel());
@@ -142,7 +142,7 @@ public class BGameHelp extends BSlidableContainer{
 	}
 	
 	@SuppressWarnings("serial")
-	private static class MyState extends BState{
+	private static class MyState extends BState<BGameHelp>{
 		@Override
 		public BGameHelp create() {
 			return new BGameHelp();

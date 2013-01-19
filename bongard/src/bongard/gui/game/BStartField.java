@@ -135,9 +135,4 @@ public class BStartField extends BDrawableContainer{
 		});
 		platform().game().animator().addAnimation(a);
 	}
-	
-	@Override
-	public BState save() {
-		return null;
-	}
 }

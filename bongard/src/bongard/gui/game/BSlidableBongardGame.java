@@ -4,7 +4,7 @@ import ollitos.geom.BRectangle;
 import ollitos.gui.container.BSlidableContainer;
 import ollitos.platform.state.BState;
 
-public class BSlidableBongardGame extends BSlidableContainer{
+public class BSlidableBongardGame extends BSlidableContainer implements BState.Stateful{
 
 	private static BBongardGameModel createModel(){
 		return new BBongardGameModel();
@@ -19,7 +19,7 @@ public class BSlidableBongardGame extends BSlidableContainer{
 	}
 
 	@SuppressWarnings("serial")
-	private static class MyState extends BState{
+	private static class MyState extends BState<BSlidableBongardGame>{
 		private BBongardGameModel _myModel;
 		private int _index;
 		public MyState(BSlidableBongardGame fc) {

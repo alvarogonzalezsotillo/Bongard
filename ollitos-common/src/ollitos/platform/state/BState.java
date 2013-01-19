@@ -11,19 +11,19 @@ import ollitos.platform.BPlatform;
 import ollitos.util.BException;
 
 @SuppressWarnings("serial")
-public abstract class BState implements Serializable{
+public abstract class BState<T> implements Serializable{
 	
 	public abstract Stateful create();
 
 	public interface Stateful{
-		BState save();
+		<T> BState<T> save();
 	}
 	
 	public byte[] bytes(){
 		return bytes(this);
 	}
 	
-	public static Serializable fromBytes(byte[] ba){
+	public static <T extends Serializable> T fromBytes(byte[] ba){
 		if( ba == null ){
 			return null;
 		}
@@ -31,7 +31,7 @@ public abstract class BState implements Serializable{
 			ByteArrayInputStream bis = new ByteArrayInputStream(ba);
 			ObjectInputStream ois = new ObjectInputStream(bis);
 			Object object = ois.readObject();
-			return (Serializable)object;
+			return (T)object;
 		}
 		catch (Exception ex) {
 			BPlatform.instance().logger().log("-", "Can't load state:" + ex );

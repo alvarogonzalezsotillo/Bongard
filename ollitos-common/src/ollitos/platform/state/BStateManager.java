@@ -29,12 +29,24 @@ public class BStateManager implements IBDisposable{
 		}
 	}
 	
-	public void save( Stateful s){
+	public <T> void save( Stateful s){
+		try{
+			saveImpl(s);
+		}
+		catch( Error e ){
+			BPlatform.instance().logger().log( this, e );
+		}
+		catch( RuntimeException r ){
+			BPlatform.instance().logger().log( this, r );
+		}
+	}
+	
+	private <T> void saveImpl( Stateful s){
 		if( s == null ){
 			table().putBytes(null, LAST_KEY);
 			return;
 		}
-		BState state = s.save();
+		BState<T> state = s.save();
 		byte[] b = null;
 		if( state != null ){
 			b = state.bytes();
@@ -47,10 +59,23 @@ public class BStateManager implements IBDisposable{
 		return database().table(BStateManager.class);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public <T extends Stateful> T restore(Class<T> c){
+		try{
+			return restoreImpl(c);
+		}
+		catch( Error e ){
+			BPlatform.instance().logger().log( this, e );
+		}
+		catch( RuntimeException r ){
+			BPlatform.instance().logger().log( this, r );
+		}
+		return null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private <T extends Stateful> T restoreImpl(Class<T> c){
 		byte[] b = table().getBytes(c);
-		BState state = (BState) BState.fromBytes(b); 
+		BState<T> state = (BState<T>) BState.fromBytes(b); 
 		if( state == null ){
 			try {
 				return c.newInstance();
@@ -64,8 +89,21 @@ public class BStateManager implements IBDisposable{
 
 	
 	public Stateful last(){
+		try{
+			return lastImpl();
+		}
+		catch( Error e ){
+			BPlatform.instance().logger().log( this, e );
+		}
+		catch( RuntimeException r ){
+			BPlatform.instance().logger().log( this, r );
+		}
+		return null;
+	}
+	
+	private Stateful lastImpl(){
 		byte[] b = table().getBytes(LAST_KEY);
-		BState state = (BState) BState.fromBytes(b); 
+		BState<?> state = (BState<?>) BState.fromBytes(b); 
 		if( state == null ){
 			return null;
 		}
@@ -86,5 +124,12 @@ public class BStateManager implements IBDisposable{
 	@Override
 	public boolean disposed() {
 		return database().disposed();
+	}
+
+	public static Stateful asStateful(Object d) {
+		if( d instanceof Stateful ){
+			return (Stateful)d;
+		}
+		return null;
 	}
 }
