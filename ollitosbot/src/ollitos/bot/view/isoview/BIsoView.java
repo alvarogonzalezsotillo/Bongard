@@ -95,8 +95,6 @@ public class BIsoView extends BDrawableContainer implements BPhysicsView{
 	private IBPhysicalItem[] _items;
 	
 	private Comparator<IBMovableRegion> _viewComparator = new Comparator<IBMovableRegion>(){
-		private BLocation _c1 = BLocation.l(0,0,0);
-		private BLocation _c2 = BLocation.l(0,0,0);
 		public int compare(IBMovableRegion r1, IBMovableRegion r2){
 			IBLocation c1 = r1.region().vertex(gVertex);
 			IBLocation c2 = r2.region().vertex(gVertex);
@@ -237,7 +235,7 @@ public class BIsoView extends BDrawableContainer implements BPhysicsView{
 	@Override
 	protected void draw_internal(IBCanvas c) {
 		if( true ){
-			IBRaster r = doubleBuffer().raster();;
+			IBRaster r = doubleBuffer().raster();
 			IBCanvas doubleBuffer = r.canvas();
 			drawInCanvas(doubleBuffer, (BCanvasContext) platform().canvasContext(), false );
 			canvasContext().setAntialias(ANTIALIAS);

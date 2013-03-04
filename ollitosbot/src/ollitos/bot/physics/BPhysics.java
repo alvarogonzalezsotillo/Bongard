@@ -36,7 +36,7 @@ import ollitos.util.BException;
 
 public class BPhysics {
 
-	private final int STEP = 100;
+	private final int STEP = 1;
 
 	private ArrayList<IBPhysicalItem> _items = new ArrayList<IBPhysicalItem>();
 	private ArrayList<IBPhysicalItem> _fixedItems = new ArrayList<IBPhysicalItem>();
@@ -93,7 +93,7 @@ public class BPhysics {
 
 	public IBRegion region(){
 		if (_region == null) {
-			_region = new BRegion(BLocation.l(0,0,-100), BLocation.l(1,1,100) );
+			_region = createEmptyRegion();
 			for (IBPhysicalItem i : items() ){
 				IBRegion r = i.region();
 				IBRegion.Util.union(_region, r, _region);
@@ -101,6 +101,11 @@ public class BPhysics {
 		}
 
 		return _region;
+	}
+
+	private BRegion createEmptyRegion() {
+		int udMargin = 100;
+		return new BRegion(BLocation.l(0,0,-udMargin), BLocation.l(1,1,udMargin) );
 	}
 	
 	public void remove( IBPhysicalItem t ){
@@ -122,15 +127,15 @@ public class BPhysics {
 	private ArrayList<IBDisplacement> _displacements = new ArrayList<IBDisplacement>();
 	
 	public void step(){
-		BPlatform.instance().logger().log( "********  STEP **********" );
+		logger().log( "********  STEP **********" );
 		checkCollisions();
 		_displacements.clear();
 		computeDisplacementsOfBehaviours(_displacements);
 		
-//		int size = _displacements.size();
-//		for( int i = 0 ; i < size ; i++ ){
-//			computeInducedDisplacements(_displacements.get(i),_displacements);
-//		}
+		int size = _displacements.size();
+		for( int i = 0 ; i < size ; i++ ){
+			computeInducedDisplacements(_displacements.get(i),_displacements);
+		}
 		
 		while( _displacements.size() > 0 ){
 			IBDisplacement displacement = _displacements.remove(0);
@@ -139,6 +144,10 @@ public class BPhysics {
 		}
 		
 		notifyStepFinished();
+	}
+
+	private IBLogger logger() {
+		return BPlatform.instance().logger();
 	}
 
 	private void computeInducedDisplacements(IBDisplacement d, ArrayList<IBDisplacement> displacements){
@@ -182,7 +191,7 @@ public class BPhysics {
 	}
 	
 	private boolean applyMovement(IBDisplacement displacement) {
-		IBLogger logger = BPlatform.instance().logger();
+		IBLogger logger = logger();
 		logger.log( "applyMovement:" + displacement );
 
 		if( displacement.discarded() ){
