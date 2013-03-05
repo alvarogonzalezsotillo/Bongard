@@ -1,19 +1,16 @@
 package ollitos.bot.physics.displacement;
 
-import ollitos.bot.geom.IBLocation;
+import java.util.List;
+
+import ollitos.bot.geom.BDirection;
 import ollitos.bot.physics.IBPhysicalItem;
 
-public interface IBDisplacement extends IBDisplacementCause{
-	IBDisplacementCause cause();
-	IBPhysicalItem item();
-	IBLocation delta();
-	IBLocation finalDelta();
-	void setFinalDelta(IBLocation finalDelta);
+public interface IBDisplacement {
+	IBPhysicalItem item();	
+	IBImpulse rootCause();
+	IBDisplacement cause();
+	BDirection delta();
+	boolean canBeApplied();
 	void apply();
-	
-	/**
-	 * Discard the displacement. Discard also the root cause, if necesary
-	 */
-	void discard();
-	boolean discarded();
+	List<IBDisplacement> directlyInducedDisplacements();
 }

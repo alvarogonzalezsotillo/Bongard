@@ -9,10 +9,10 @@ import ollitos.bot.physics.BPhysics;
 import ollitos.bot.physics.IBPhysicalContact;
 import ollitos.bot.physics.IBPhysicalItem;
 import ollitos.bot.physics.displacement.BSupportDisplacement;
-import ollitos.bot.physics.displacement.IBDisplacement;
-import ollitos.bot.physics.displacement.IBDisplacementCause;
+import ollitos.bot.physics.displacement.IBImpulse;
+import ollitos.bot.physics.displacement.IBImpulseCause;
 
-public class BConveyorBeltBehaviour implements IBConveyorBeltBehaviour, IBDisplacementCause{
+public class BConveyorBeltBehaviour implements IBConveyorBeltBehaviour, IBImpulseCause{
 
 	private IBPhysicalItem _item;
 
@@ -21,18 +21,18 @@ public class BConveyorBeltBehaviour implements IBConveyorBeltBehaviour, IBDispla
 	}
 
 	@Override
-	public void nextMovement(List<IBDisplacement> ret) {
+	public void nextMovement(List<IBImpulse> ret) {
 		computeSupportDisplacements( _item, _item.direction(), this, ret, true );
 	}
 
 	private static List<IBPhysicalContact> _contacts = new ArrayList<IBPhysicalContact>();
 
-	public static void computeSupportDisplacements(IBPhysicalItem item, BDirection d, IBDisplacementCause cause, List<? super IBDisplacement> ret ){
+	public static void computeSupportDisplacements(IBPhysicalItem item, BDirection d, IBImpulseCause cause, List<? super IBImpulse> ret ){
 		computeSupportDisplacements(item,d,cause,ret,false);
 	}
 
 	
-	private static void computeSupportDisplacements(IBPhysicalItem item, BDirection d, IBDisplacementCause cause, List<? super IBDisplacement> ret, boolean conveyorBelt ){
+	private static void computeSupportDisplacements(IBPhysicalItem item, BDirection d, IBImpulseCause cause, List<? super IBImpulse> ret, boolean conveyorBelt ){
 		if( d == BDirection.up || d == BDirection.down ){
 			return;
 		}
@@ -42,7 +42,7 @@ public class BConveyorBeltBehaviour implements IBConveyorBeltBehaviour, IBDispla
 		for (IBPhysicalContact c : _contacts) {
 			for( IBPhysicalItem i : c.items() ){
 				if( i != item ){
-					IBDisplacement dis = null;
+					IBImpulse dis = null;
 					if( conveyorBelt ){
 						dis = new ConveyorBeltDisplacement(i, item, d.vector(), cause);
 					}
@@ -59,7 +59,7 @@ public class BConveyorBeltBehaviour implements IBConveyorBeltBehaviour, IBDispla
 
 		public ConveyorBeltDisplacement(IBPhysicalItem item,
 				IBPhysicalItem support, IBLocation delta,
-				IBDisplacementCause cause) {
+				IBImpulseCause cause) {
 			super(item, support, delta, cause);
 		}
 		

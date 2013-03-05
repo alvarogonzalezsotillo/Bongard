@@ -4,7 +4,7 @@ import java.util.List;
 
 import ollitos.bot.physics.IBPhysicalItem;
 import ollitos.bot.physics.displacement.BSelfDisplacement;
-import ollitos.bot.physics.displacement.IBDisplacement;
+import ollitos.bot.physics.displacement.IBImpulse;
 import ollitos.gui.event.BEventAdapter;
 import ollitos.gui.event.IBEvent;
 import ollitos.gui.event.IBEventListener;
@@ -57,7 +57,7 @@ public class BMoveWithkeyboardBehaviour implements IBMovementBehaviour{
 	}
 
 	@Override
-	public void nextMovement(List<IBDisplacement> ret) {
+	public void nextMovement(List<IBImpulse> ret) {
 		if( _turnRight ){
 			_item.setDirection(_item.direction().right());
 		}

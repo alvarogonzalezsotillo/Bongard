@@ -1,20 +1,39 @@
 package ollitos.bot.physics.displacement;
 
-import ollitos.bot.geom.IBLocation;
+import java.util.ArrayList;
+import java.util.List;
+
+import ollitos.bot.geom.BDirection;
+import ollitos.bot.physics.BPhysics;
+import ollitos.bot.physics.IBCollision;
 import ollitos.bot.physics.IBPhysicalItem;
 
-public class BDisplacement implements IBDisplacement{
+public abstract class BDisplacement implements IBDisplacement{
 
+	private List<IBDisplacement> _inducedImpulses;
+	private BDirection _delta;
+	private IBDisplacement _cause;
+	private IBImpulse _rootCause;
 	private IBPhysicalItem _item;
-	private IBLocation _delta;
-	private boolean _discarded;
-	private IBDisplacementCause _cause;
-	private IBLocation _finalDelta;
+
+	protected BDisplacement(IBPhysicalItem item, IBImpulse rootCause, BDirection delta ){
+		this( item, rootCause, null, delta );
+	}
+
 	
-	public BDisplacement(IBPhysicalItem i, IBLocation delta, IBDisplacementCause cause){
-		_item = i;
-		_delta = delta;
+	protected BDisplacement(IBPhysicalItem item, IBDisplacement cause, BDirection delta ){
+		this( item, null, cause, delta );
+	}
+	
+	protected BDisplacement(IBPhysicalItem item, IBImpulse rootCause, IBDisplacement cause, BDirection delta ){
+		_item = item;
+		_rootCause = rootCause;
 		_cause = cause;
+		_delta = delta;
+	}
+	
+	public BPhysics physics(){
+		return item().physics();
 	}
 	
 	@Override
@@ -23,46 +42,61 @@ public class BDisplacement implements IBDisplacement{
 	}
 
 	@Override
-	public IBLocation delta() {
+	public IBImpulse rootCause() {
+		if( _rootCause != null ){
+			return _rootCause;
+		}
+		if( cause() != null ){
+			return cause().rootCause();
+		}
+		return null;
+	}
+
+	@Override
+	public IBDisplacement cause() {
+		return _cause;
+	}
+
+	@Override
+	public BDirection delta() {
 		return _delta;
 	}
 
 	@Override
 	public void apply() {
-		IBLocation delta = finalDelta();
-		item().traslateRegion(delta);
-	}
-
-	@Override
-	public void discard() {
-		_discarded = true;
-	}
-
-	@Override
-	public boolean discarded() {
-		return _discarded;
-	}
-
-	@Override
-	public IBDisplacementCause cause() {
-		return _cause;
-	}
-
-	@Override
-	public IBLocation finalDelta() {
-		if( _finalDelta == null ){
-			return delta();
+		for(IBDisplacement i: directlyInducedDisplacements() ){
+			i.apply();
 		}
-		return _finalDelta;
+		IBPhysicalItem item = item();
+		item.traslateRegion(delta().vector());
 	}
 
 	@Override
-	public void setFinalDelta(IBLocation finalDelta) {
-		_finalDelta = finalDelta;
+	public List<IBDisplacement> directlyInducedDisplacements(){
+		if( _inducedImpulses == null ){
+			_inducedImpulses = computeDirectlyInducedDisplacements();
+		}
+		return _inducedImpulses;
 	}
 	
 	@Override
-	public String toString() {
-		return getClass().getSimpleName() + "-" + item() + "-" + delta();
+	public final boolean canBeApplied() {
+		for(IBDisplacement i: directlyInducedDisplacements() ){
+			if( !i.canBeApplied() ){
+				return false;
+			}
+		}
+		return physics().intersects(item(), item().region(), physics().fixedItems() );
+	}
+
+	private List<IBDisplacement> computeDirectlyInducedDisplacements(){
+		ArrayList<IBCollision> collisions = new ArrayList<IBCollision>();
+		physics().computeCollisions(item(), delta().vector(), collisions, physics().items() );
+		ArrayList<IBDisplacement> ret = new ArrayList<IBDisplacement>();
+		for( IBCollision c: collisions ){
+			BDisplacement d = new BPushDisplacement( c.pushed(), this, delta(), item() );
+			ret.add(d);
+		}
+		return ret;
 	}
 }

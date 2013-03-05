@@ -6,8 +6,8 @@ import ollitos.bot.geom.IBLocation;
 import ollitos.bot.physics.IBCollision;
 import ollitos.bot.physics.IBPhysicalItem;
 import ollitos.bot.physics.IBPhysicalListener;
-import ollitos.bot.physics.displacement.BDisplacement;
-import ollitos.bot.physics.displacement.IBDisplacement;
+import ollitos.bot.physics.displacement.BImpulse;
+import ollitos.bot.physics.displacement.IBImpulse;
 
 public class BSlideUntilContactBehaviour implements IBMovementBehaviour, IBPhysicalListener{
 
@@ -60,11 +60,11 @@ public class BSlideUntilContactBehaviour implements IBMovementBehaviour, IBPhysi
 	}
 
 	@Override
-	public void nextMovement(List<IBDisplacement> ret) {
+	public void nextMovement(List<IBImpulse> ret) {
 		if( _vector == null ){
 			return;
 		}
-		ret.add( new BDisplacement(_item, _vector, this) );
+		ret.add( new BImpulse(_item, _vector, this) );
 	}
 	
 }

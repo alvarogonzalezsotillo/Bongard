@@ -17,8 +17,8 @@ import ollitos.bot.physics.IBPhysicalContact;
 import ollitos.bot.physics.IBPhysicalItem;
 import ollitos.bot.physics.IBPhysicalListener;
 import ollitos.bot.physics.displacement.BSelfDisplacement;
-import ollitos.bot.physics.displacement.IBDisplacement;
-import ollitos.bot.physics.displacement.IBDisplacementCause;
+import ollitos.bot.physics.displacement.IBImpulse;
+import ollitos.bot.physics.displacement.IBImpulseCause;
 
 public class BCircularMovement implements IBMovementBehaviour, IBPhysicalListener{
 
@@ -41,7 +41,7 @@ public class BCircularMovement implements IBMovementBehaviour, IBPhysicalListene
 	
 
 	@Override
-	public void nextMovement(List<IBDisplacement> ret) {
+	public void nextMovement(List<IBImpulse> ret) {
 		BDirection d = direction();
 		if( d == null ){
 			return;

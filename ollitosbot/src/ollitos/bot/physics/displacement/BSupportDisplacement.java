@@ -1,5 +1,6 @@
 package ollitos.bot.physics.displacement;
 
+import ollitos.bot.geom.BDirection;
 import ollitos.bot.geom.IBLocation;
 import ollitos.bot.physics.IBPhysicalItem;
 
@@ -7,13 +8,9 @@ public class BSupportDisplacement extends BDisplacement implements IBSupportDisp
 
 	private IBPhysicalItem _support;
 
-	public BSupportDisplacement(IBPhysicalItem item, IBPhysicalItem support, IBLocation delta, IBDisplacementCause cause ){
-		super(item,delta,cause);
+	public BSupportDisplacement(IBPhysicalItem i, IBDisplacement cause, BDirection delta, IBPhysicalItem support){
+		super(i, cause, delta);
 		_support = support;
-	}
-	@Override
-	public IBPhysicalItem inductor() {
-		return _support;
 	}
 
 	@Override

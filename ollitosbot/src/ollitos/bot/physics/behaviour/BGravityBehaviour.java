@@ -5,9 +5,9 @@ import java.util.List;
 import ollitos.bot.geom.BDirection;
 import ollitos.bot.physics.IBCollision;
 import ollitos.bot.physics.IBPhysicalItem;
-import ollitos.bot.physics.displacement.BDisplacement;
-import ollitos.bot.physics.displacement.IBDisplacement;
-import ollitos.bot.physics.displacement.IBDisplacementCause;
+import ollitos.bot.physics.displacement.BImpulse;
+import ollitos.bot.physics.displacement.IBImpulse;
+import ollitos.bot.physics.displacement.IBImpulseCause;
 
 public class BGravityBehaviour implements IBMovementBehaviour{
 
@@ -18,11 +18,11 @@ public class BGravityBehaviour implements IBMovementBehaviour{
 	}
 	
 	@Override
-	public void nextMovement(List<IBDisplacement> ret){
+	public void nextMovement(List<IBImpulse> ret){
 		ret.add( new GravityDisplacement() );
 	}
 	
-	private class GravityDisplacement extends BDisplacement{
+	private class GravityDisplacement extends BImpulse{
 		public GravityDisplacement(){
 			super(_item, BDirection.down.vector(), BGravityBehaviour.this );
 		}
