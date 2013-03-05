@@ -3,14 +3,16 @@ package ollitos.bot.physics.displacement;
 import java.util.List;
 
 import ollitos.bot.geom.BDirection;
+import ollitos.bot.physics.IBCollision;
 import ollitos.bot.physics.IBPhysicalItem;
 
 public interface IBDisplacement {
-	IBPhysicalItem item();	
+	IBPhysicalItem item();
 	IBImpulse rootCause();
 	IBDisplacement cause();
 	BDirection delta();
 	boolean canBeApplied();
+	void collisionsIfApplied(List<IBCollision> collisions);
 	void apply();
 	List<IBDisplacement> directlyInducedDisplacements();
 }
