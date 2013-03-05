@@ -99,6 +99,7 @@ public abstract class BPlatform {
 		return f.openStream();
 	}
 
+	http://stackoverflow.com/questions/11225209/thread-exiting-with-uncaught-exception-no-stack-trace
 	protected BCanvasContext createCanvasContext(){
 		return new BCanvasContext();
 	}
