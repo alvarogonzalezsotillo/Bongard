@@ -25,15 +25,9 @@ public class BConveyorBeltBehaviour implements IBConveyorBeltBehaviour, IBImpuls
 	}
 
 
-	public static void computeSupportDisplacements(IBPhysicalItem item, BDirection d, IBImpulseCause cause, List<? super IBImpulse> ret ){
-		computeSupportDisplacements(item,d,cause,ret,false);
-	}
-
 	private static List<IBPhysicalContact> _contacts = new ArrayList<IBPhysicalContact>();
 	private static void computeSupportDisplacements(IBPhysicalItem item, BDirection d, IBImpulseCause cause, List<? super IBImpulse> ret, boolean conveyorBelt ){
-		if( d == BDirection.up || d == BDirection.down ){
-			return;
-		}
+		// TODO: How to not duplicate code with BDisplacement.computeDirectlyInducedSupportDisplacements?
 		BPhysics p = item.physics();
 		_contacts.clear();
 		p.contacts(item, item.region(), BDirection.up, _contacts, p.movableItems() );
@@ -46,5 +40,4 @@ public class BConveyorBeltBehaviour implements IBConveyorBeltBehaviour, IBImpuls
 			}
 		}
 	}
-
 }

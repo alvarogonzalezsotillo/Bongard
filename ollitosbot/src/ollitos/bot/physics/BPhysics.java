@@ -34,7 +34,7 @@ import ollitos.platform.IBLogger;
 import ollitos.util.BException;
 
 
-public class BPhysics {
+public class BPhysics extends BAbstractPhysics{
 
 	private final int STEP = 1;
 
