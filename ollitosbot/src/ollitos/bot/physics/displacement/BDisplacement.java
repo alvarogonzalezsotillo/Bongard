@@ -8,6 +8,7 @@ import ollitos.bot.physics.BPhysics;
 import ollitos.bot.physics.IBCollision;
 import ollitos.bot.physics.IBPhysicalContact;
 import ollitos.bot.physics.IBPhysicalItem;
+import ollitos.bot.physics.IBPhysics;
 import ollitos.bot.physics.behaviour.BFixedThingBehaviour;
 import ollitos.bot.physics.impulse.IBImpulse;
 
@@ -34,7 +35,7 @@ public abstract class BDisplacement implements IBDisplacement{
 		_delta = delta;
 	}
 
-	public BPhysics physics(){
+	public IBPhysics physics(){
 		return item().physics();
 	}
 
@@ -75,7 +76,7 @@ public abstract class BDisplacement implements IBDisplacement{
 	}
 
 	private void computeDirectlyInducedSupportDisplacements(List<BDisplacement> ret){
-		BPhysics p = physics();
+		IBPhysics p = physics();
 		List<IBPhysicalContact> contacts = new ArrayList<IBPhysicalContact>();
 		p.contacts(item(), item().region(), BDirection.up, contacts, p.movableItems() );
 		for (IBPhysicalContact c : contacts) {
@@ -89,7 +90,7 @@ public abstract class BDisplacement implements IBDisplacement{
 	}
 	
 	private void computeDirectlyInducedPushDisplacements(List<BDisplacement> ret){
-		BPhysics p = physics();
+		IBPhysics p = physics();
 		List<IBCollision> collisions = new ArrayList<IBCollision>();
 		
 		p.computeCollisions(item(), delta().vector(), collisions, p.items() );

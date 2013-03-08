@@ -9,10 +9,12 @@ import ollitos.bot.geom.IBLocation;
 import ollitos.bot.geom.IBRegion;
 import ollitos.bot.map.BItemType;
 import ollitos.bot.map.items.BMapItem;
+import ollitos.bot.physics.BAbstractPhysics;
 import ollitos.bot.physics.BPhysics;
 import ollitos.bot.physics.IBCollision;
 import ollitos.bot.physics.IBPhysicalItem;
 import ollitos.bot.physics.IBPhysicalListener;
+import ollitos.bot.physics.IBPhysics;
 import ollitos.bot.physics.behaviour.BDefaultSpriteBehaviour;
 import ollitos.bot.physics.behaviour.IBPhysicalBehaviour;
 
@@ -24,16 +26,16 @@ public abstract class BPhysicalItem implements IBPhysicalItem{
 	
 	private ArrayList<IBPhysicalBehaviour> _behaviours = new ArrayList<IBPhysicalBehaviour>();
 	private IBPhysicalBehaviour[] _behavioursArray;
-	private BPhysics _physics;
+	private IBPhysics _physics;
 	private ArrayList<IBPhysicalListener> _listeners;
 	private IBPhysicalListener[] _listenersArray;
 	private BItemType _itemType;
 	
-	protected BPhysicalItem(BItemType type, IBRegion region, BDirection d, BPhysics physics){
+	protected BPhysicalItem(BItemType type, IBRegion region, BDirection d, IBPhysics physics){
 		this(null,type,region,d,physics);
 	}
 	
-	private BPhysicalItem(BMapItem mapItem, BItemType type, IBRegion region, BDirection d, BPhysics physics){
+	private BPhysicalItem(BMapItem mapItem, BItemType type, IBRegion region, BDirection d, IBPhysics physics){
 		_itemType = type;
 		_physics = physics;
 		setMapItem(mapItem);
@@ -128,7 +130,7 @@ public abstract class BPhysicalItem implements IBPhysicalItem{
 	}
 	
 	@Override
-	public BPhysics physics(){
+	public IBPhysics physics(){
 		return _physics;
 	}
 	
