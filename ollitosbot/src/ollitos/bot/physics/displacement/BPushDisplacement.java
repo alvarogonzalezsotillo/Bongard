@@ -1,21 +1,23 @@
 package ollitos.bot.physics.displacement;
 
 import ollitos.bot.geom.BDirection;
-import ollitos.bot.physics.IBPhysicalItem;
+import ollitos.bot.physics.IBCollision;
 
 public class BPushDisplacement extends BDisplacement implements IBPushDisplacement{
 
-	public BPushDisplacement(IBPhysicalItem i, IBDisplacement cause, BDirection delta, IBPhysicalItem pusher){
-		super(i, cause, delta);
-		_pusher = pusher;
-	}
+	private IBCollision _collision;
 
-	private IBPhysicalItem _pusher;
+
+	// TODO: Compute delta from causeCollision
+	public BPushDisplacement(IBDisplacement cause, BDirection delta, IBCollision causeCollision){
+		super(causeCollision.pushed(), cause, delta);
+		_collision = causeCollision;
+	}
 
 
 	@Override
-	public IBPhysicalItem pusher() {
-		return _pusher;
+	public IBCollision causeCollision() {
+		return _collision;
 	}
 
 }

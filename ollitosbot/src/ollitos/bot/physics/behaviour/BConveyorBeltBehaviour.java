@@ -4,13 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ollitos.bot.geom.BDirection;
-import ollitos.bot.geom.IBLocation;
 import ollitos.bot.physics.BPhysics;
 import ollitos.bot.physics.IBPhysicalContact;
 import ollitos.bot.physics.IBPhysicalItem;
-import ollitos.bot.physics.displacement.BSupportDisplacement;
-import ollitos.bot.physics.displacement.IBImpulse;
-import ollitos.bot.physics.displacement.IBImpulseCause;
+import ollitos.bot.physics.impulse.BImpulse;
+import ollitos.bot.physics.impulse.IBImpulse;
+import ollitos.bot.physics.impulse.IBImpulseCause;
 
 public class BConveyorBeltBehaviour implements IBConveyorBeltBehaviour, IBImpulseCause{
 
@@ -25,13 +24,12 @@ public class BConveyorBeltBehaviour implements IBConveyorBeltBehaviour, IBImpuls
 		computeSupportDisplacements( _item, _item.direction(), this, ret, true );
 	}
 
-	private static List<IBPhysicalContact> _contacts = new ArrayList<IBPhysicalContact>();
 
 	public static void computeSupportDisplacements(IBPhysicalItem item, BDirection d, IBImpulseCause cause, List<? super IBImpulse> ret ){
 		computeSupportDisplacements(item,d,cause,ret,false);
 	}
 
-	
+	private static List<IBPhysicalContact> _contacts = new ArrayList<IBPhysicalContact>();
 	private static void computeSupportDisplacements(IBPhysicalItem item, BDirection d, IBImpulseCause cause, List<? super IBImpulse> ret, boolean conveyorBelt ){
 		if( d == BDirection.up || d == BDirection.down ){
 			return;
@@ -42,27 +40,11 @@ public class BConveyorBeltBehaviour implements IBConveyorBeltBehaviour, IBImpuls
 		for (IBPhysicalContact c : _contacts) {
 			for( IBPhysicalItem i : c.items() ){
 				if( i != item ){
-					IBImpulse dis = null;
-					if( conveyorBelt ){
-						dis = new ConveyorBeltDisplacement(i, item, d.vector(), cause);
-					}
-					else{
-						dis = new BSupportDisplacement(i, item, d.vector(), cause);
-					}
-					ret.add( dis );
+					IBImpulse imp = new BImpulse(i, d.vector(), cause);
+					ret.add( imp );
 				}
 			}
 		}
-	}
-	
-	private static class ConveyorBeltDisplacement extends BSupportDisplacement{
-
-		public ConveyorBeltDisplacement(IBPhysicalItem item,
-				IBPhysicalItem support, IBLocation delta,
-				IBImpulseCause cause) {
-			super(item, support, delta, cause);
-		}
-		
 	}
 
 }

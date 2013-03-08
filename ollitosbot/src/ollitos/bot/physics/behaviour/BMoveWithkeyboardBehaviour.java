@@ -3,8 +3,8 @@ package ollitos.bot.physics.behaviour;
 import java.util.List;
 
 import ollitos.bot.physics.IBPhysicalItem;
-import ollitos.bot.physics.displacement.BSelfDisplacement;
-import ollitos.bot.physics.displacement.IBImpulse;
+import ollitos.bot.physics.impulse.BImpulse;
+import ollitos.bot.physics.impulse.IBImpulse;
 import ollitos.gui.event.BEventAdapter;
 import ollitos.gui.event.IBEvent;
 import ollitos.gui.event.IBEventListener;
@@ -65,7 +65,7 @@ public class BMoveWithkeyboardBehaviour implements IBMovementBehaviour{
 			_item.setDirection(_item.direction().left());
 		}
 		if( _moveForward ){
-			ret.add( new BSelfDisplacement(_item, _item.direction(), this) );
+			ret.add( new BImpulse(_item, _item.direction().vector(), this) );
 		}
 		
 		_moveForward = _turnLeft = _turnRight = false;

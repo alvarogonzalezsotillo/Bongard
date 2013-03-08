@@ -1,7 +1,7 @@
 package ollitos.bot.physics.displacement;
 
-import ollitos.bot.physics.IBPhysicalItem;
+import ollitos.bot.physics.IBCollision;
 
 public interface IBPushDisplacement extends IBDisplacement{
-	IBPhysicalItem pusher();
+	IBCollision causeCollision();
 }

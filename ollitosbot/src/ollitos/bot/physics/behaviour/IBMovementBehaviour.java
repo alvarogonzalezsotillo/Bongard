@@ -2,8 +2,8 @@ package ollitos.bot.physics.behaviour;
 
 import java.util.List;
 
-import ollitos.bot.physics.displacement.IBImpulse;
-import ollitos.bot.physics.displacement.IBImpulseCause;
+import ollitos.bot.physics.impulse.IBImpulse;
+import ollitos.bot.physics.impulse.IBImpulseCause;
 
 public interface IBMovementBehaviour extends IBPhysicalBehaviour, IBImpulseCause{
 	void nextMovement(List<IBImpulse> ret);

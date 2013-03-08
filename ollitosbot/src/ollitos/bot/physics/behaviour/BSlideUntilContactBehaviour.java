@@ -6,8 +6,8 @@ import ollitos.bot.geom.IBLocation;
 import ollitos.bot.physics.IBCollision;
 import ollitos.bot.physics.IBPhysicalItem;
 import ollitos.bot.physics.IBPhysicalListener;
-import ollitos.bot.physics.displacement.BImpulse;
-import ollitos.bot.physics.displacement.IBImpulse;
+import ollitos.bot.physics.impulse.BImpulse;
+import ollitos.bot.physics.impulse.IBImpulse;
 
 public class BSlideUntilContactBehaviour implements IBMovementBehaviour, IBPhysicalListener{
 
@@ -38,7 +38,7 @@ public class BSlideUntilContactBehaviour implements IBMovementBehaviour, IBPhysi
 		
 		if( pushed == _item ){
 			stopSliding();
-			startSliding(collision.cause().finalDelta());
+			startSliding(collision.cause().delta().vector());
 		}
 		
 		if( pusher == _item ){
@@ -52,7 +52,6 @@ public class BSlideUntilContactBehaviour implements IBMovementBehaviour, IBPhysi
 
 	private void startSliding(IBLocation vector) {
 		_vector = IBLocation.Util.normalize(vector).vector();
-		_vector = IBLocation.Util.scale(_vector, 2, _vector);
 	}
 
 	@Override

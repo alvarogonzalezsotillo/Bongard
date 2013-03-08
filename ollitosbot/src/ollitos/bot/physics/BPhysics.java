@@ -23,9 +23,9 @@ import ollitos.bot.physics.behaviour.BFixedThingBehaviour;
 import ollitos.bot.physics.behaviour.BMovableThingBehaviour;
 import ollitos.bot.physics.behaviour.IBMovementBehaviour;
 import ollitos.bot.physics.displacement.BPushDisplacement;
-import ollitos.bot.physics.displacement.IBImpulse;
-import ollitos.bot.physics.displacement.IBImpulseCause;
 import ollitos.bot.physics.displacement.IBPushDisplacement;
+import ollitos.bot.physics.impulse.IBImpulse;
+import ollitos.bot.physics.impulse.IBImpulseCause;
 import ollitos.bot.physics.items.BBall;
 import ollitos.bot.physics.items.BRoomWall;
 import ollitos.bot.view.BPhysicsView;
@@ -38,10 +38,10 @@ public class BPhysics {
 
 	private final int STEP = 1;
 
-	private ArrayList<IBPhysicalItem> _items = new ArrayList<IBPhysicalItem>();
-	private ArrayList<IBPhysicalItem> _fixedItems = new ArrayList<IBPhysicalItem>();
-	private ArrayList<IBPhysicalItem> _movableItems = new ArrayList<IBPhysicalItem>();
-	
+	private final ArrayList<IBPhysicalItem> _items = new ArrayList<IBPhysicalItem>();
+	private final ArrayList<IBPhysicalItem> _fixedItems = new ArrayList<IBPhysicalItem>();
+	private final ArrayList<IBPhysicalItem> _movableItems = new ArrayList<IBPhysicalItem>();
+
 	private ArrayList<IBPhysicalListener> _physicalListeners;
 
 	private IBPhysicalItem[] _itemsArray;
@@ -49,21 +49,21 @@ public class BPhysics {
 
 	private PhysicsAnimation _animation;
 	private IBPhysicalItem[] _movableItemsArray;
-	private BPhysicsView _view;
-	
+	private final BPhysicsView _view;
+
 	private IBRegion _region;
-	
+
 	private BRoomWall[] _roomWalls;
-	
-	public BPhysics( BPhysicsView view ){
+
+	public BPhysics( final BPhysicsView view ){
 		_view = view;
 	}
-	
+
 	public BPhysicsView view(){
 		return _view;
 	}
-	
-	public void addPhysicalListener(IBPhysicalListener l) {
+
+	public void addPhysicalListener(final IBPhysicalListener l) {
 		if( _physicalListeners == null ){
 			_physicalListeners = new ArrayList<IBPhysicalListener>();
 		}
@@ -71,7 +71,7 @@ public class BPhysics {
 	}
 
 
-	public void add( IBPhysicalItem t ){
+	public void add( final IBPhysicalItem t ){
 		t.setUp();
 
 		_items.add(t);
@@ -85,17 +85,17 @@ public class BPhysics {
 			_movableItemsArray = null;
 		}
 		_region = null;
-		
-		
+
+
 		notifyItemAdded(t);
 	}
-	
+
 
 	public IBRegion region(){
 		if (_region == null) {
 			_region = createEmptyRegion();
-			for (IBPhysicalItem i : items() ){
-				IBRegion r = i.region();
+			for (final IBPhysicalItem i : items() ){
+				final IBRegion r = i.region();
 				IBRegion.Util.union(_region, r, _region);
 			}
 		}
@@ -104,37 +104,37 @@ public class BPhysics {
 	}
 
 	private BRegion createEmptyRegion() {
-		int udMargin = 100;
+		final int udMargin = 100;
 		return new BRegion(BLocation.l(0,0,-udMargin), BLocation.l(1,1,udMargin) );
 	}
-	
-	public void remove( IBPhysicalItem t ){
+
+	public void remove( final IBPhysicalItem t ){
 		_items.remove(t);
 		_itemsArray = null;
 
 		_fixedItems.remove(t);
 		_fixedItemsArray = null;
-		
+
 		_movableItems.remove(t);
 		_movableItemsArray = null;
 		_region = null;
-		
+
 		t.dispose();
-		
+
 		notifyItemRemoved(t);
 	}
 
-	private ArrayList<IBImpulse> _impulses = new ArrayList<IBImpulse>();
-	
+	private final ArrayList<IBImpulse> _impulses = new ArrayList<IBImpulse>();
+
 	public void step(){
 		logger().log( "********  STEP **********" );
 		checkCollisions();
 		_impulses.clear();
 		computeDisplacementsOfBehaviours(_impulses);
-		
-		
-		
-		
+
+
+
+
 		notifyStepFinished();
 	}
 
@@ -143,101 +143,101 @@ public class BPhysics {
 	}
 
 
-	
-	private void supportDisplacements(IBImpulse displacement, ArrayList<IBImpulse> inducedDisplacements ){
-		IBLocation delta = displacement.delta();
+
+	private void supportDisplacements(final IBImpulse displacement, final ArrayList<IBImpulse> inducedDisplacements ){
+		final IBLocation delta = displacement.delta();
 		if( IBLocation.Util.equals( displacement.delta(), IBLocation.ORIGIN ) ){
 			return;
 		}
-		BDirection d = IBLocation.Util.normalize(delta);
+		final BDirection d = IBLocation.Util.normalize(delta);
 		BConveyorBeltBehaviour.computeSupportDisplacements(displacement.item(), d, displacement, inducedDisplacements);
 	}
-	
-	private void pushDisplacements(IBImpulse displacement, ArrayList<IBImpulse> inducedDisplacements ){
-		
-		ArrayList<IBCollision> collisions = computeCollisions( displacement, null, items() );
+
+	private void pushDisplacements(final IBImpulse displacement, final ArrayList<IBImpulse> inducedDisplacements ){
+
+		final ArrayList<IBCollision> collisions = computeCollisions( displacement, null, items() );
 		notifyCollisions( collisions );
-		
-		
-		IBLocation delta = displacement.delta();
-		for( IBCollision c: collisions ){
-			IBPhysicalItem pushed = c.pushed();
-			IBPhysicalItem pusher = c.pusher();
-			
+
+
+		final IBLocation delta = displacement.delta();
+		for( final IBCollision c: collisions ){
+			final IBPhysicalItem pushed = c.pushed();
+			final IBPhysicalItem pusher = c.pusher();
+
 //			if( displacement instanceof BPushDisplacement ){
 //				// TO PREVENT STACK OVERFLOW WITH OVERLAPPING ITEMS
 //				if( ((BPushDisplacement)displacement).pusher() != displacement.item() ){
 //					continue;
 //				}
 //			}
-			
-			IBImpulseCause cause = displacement;
-			
-			IBPushDisplacement d = new BPushDisplacement(pushed, delta, pusher, cause);
+
+			final IBImpulseCause cause = displacement;
+
+			final IBPushDisplacement d = new BPushDisplacement(pushed, delta, pusher, cause);
 			inducedDisplacements.add(d);
 		}
 	}
 
-	
-	public ArrayList<IBCollision> computeCollisions(IBPhysicalItem item, IBLocation delta, ArrayList<IBCollision> ret, IBPhysicalItem ... items) {
+
+	public List<IBCollision> computeCollisions(final IBPhysicalItem item, final IBLocation delta, List<IBCollision> ret, final IBPhysicalItem ... items) {
 		if( ret == null ){
 			ret = new ArrayList<IBCollision>();
 		}
-		IBRegion region = IBRegion.Util.traslate(item.region(), delta, null);
-		
-		for( IBPhysicalItem i: items ){
+		final IBRegion region = IBRegion.Util.traslate(item.region(), delta, null);
+
+		for( final IBPhysicalItem i: items ){
 			if( i == item ){
 				continue;
 			}
-			IBRegion intersection = IBRegion.Util.intersection(region, i.region(), null);
+			final IBRegion intersection = IBRegion.Util.intersection(region, i.region(), null);
 			if( intersection != null ){
-				BCollision c = new BCollision(intersection,item,i,null);
+				final BCollision c = new BCollision(intersection,item,i,null);
 				ret.add( c );
 			}
 		}
 		return ret;
 	}
-	
-	private ArrayList<IBCollision> computeCollisions(IBImpulse displacement, ArrayList<IBCollision> ret, IBPhysicalItem ... items) {
+
+	private ArrayList<IBCollision> computeCollisions(final IBImpulse displacement, ArrayList<IBCollision> ret, final IBPhysicalItem ... items) {
 		if( ret == null ){
 			ret = new ArrayList<IBCollision>();
 		}
-		IBPhysicalItem item = displacement.item();
-		IBRegion region = IBRegion.Util.traslate(item.region(), displacement.delta(), null);
-		
-		for( IBPhysicalItem i: items ){
+		final IBPhysicalItem item = displacement.item();
+		final IBRegion region = IBRegion.Util.traslate(item.region(), displacement.delta(), null);
+
+		for( final IBPhysicalItem i: items ){
 			if( i == item ){
 				continue;
 			}
-			IBRegion intersection = IBRegion.Util.intersection(region, i.region(), null);
+			final IBRegion intersection = IBRegion.Util.intersection(region, i.region(), null);
 			if( intersection != null ){
-				BCollision c = new BCollision(intersection,item,i,displacement);
+				final BCollision c = new BCollision(intersection,item,i,displacement);
 				ret.add( c );
 			}
 		}
 		return ret;
 	}
-	
-	private boolean computeCollisions(IBPhysicalItem item, IBLocation delta, IBPhysicalItem ... items) {
-		IBRegion region = IBRegion.Util.traslate(item.region(), delta, null);
-		
-		for( IBPhysicalItem i: items ){
+
+	private boolean computeCollisions(final IBPhysicalItem item, final IBLocation delta, final IBPhysicalItem ... items) {
+		final IBRegion region = IBRegion.Util.traslate(item.region(), delta, null);
+
+		for( final IBPhysicalItem i: items ){
 			if( i == item ){
 				continue;
 			}
-			boolean intersection = IBRegion.Util.intersects(region, i.region());
+			final boolean intersection = IBRegion.Util.intersects(region, i.region());
 			if( intersection ){
 				return true;
 			}
 		}
 		return false;
 	}
-	
-	
-	private IBPhysicalItem[] itemsCollide(IBPhysicalItem ... items){
-		for( IBPhysicalItem item: items ){
-			IBRegion region = item.region();
-			for( IBPhysicalItem i: items ){
+
+
+	private IBPhysicalItem[] itemsCollide(final IBPhysicalItem ... items){
+		for( final IBPhysicalItem item: items ){
+			final IBRegion region = item.region();
+			for( final IBPhysicalItem i: items ){
 				if( item == i ){
 					continue;
 				}
@@ -248,28 +248,28 @@ public class BPhysics {
 		}
 		return null;
 	}
-	
+
 	private void checkCollisions(){
-		IBPhysicalItem[] items = itemsCollide(items());
+		final IBPhysicalItem[] items = itemsCollide(items());
 		if( items != null ){
 			throw new BException( "Some items collide:" + Arrays.asList(items), null );
 		}
 	}
 
-	private void notifyCollisions(ArrayList<IBCollision> collisions) {
-		for( IBCollision c: collisions ){
-			
-			for( IBPhysicalListener l: _physicalListeners ){
+	private void notifyCollisions(final ArrayList<IBCollision> collisions) {
+		for( final IBCollision c: collisions ){
+
+			for( final IBPhysicalListener l: _physicalListeners ){
 				l.collision(c);
 			}
-			IBPhysicalItem[] items = items();
-			for( IBPhysicalItem i: items ){
+			final IBPhysicalItem[] items = items();
+			for( final IBPhysicalItem i: items ){
 				if( c.pushed() == i || c.pusher() == i ){
-					
+
 					if( c.pushed() instanceof BBall && i instanceof BBall){
 						System.out.println( "Empujan a ball");
 					}
-					
+
 					if( i.physicalListener() != null ){
 						i.physicalListener().collision(c);
 					}
@@ -277,34 +277,34 @@ public class BPhysics {
 			}
 		}
 	}
-	
+
 	private void notifyStepFinished(){
-		for( IBPhysicalListener l: _physicalListeners ){
+		for( final IBPhysicalListener l: _physicalListeners ){
 			l.stepFinished();
 		}
-		for( IBPhysicalItem i: items() ){
+		for( final IBPhysicalItem i: items() ){
 			if( i.physicalListener() != null ){
 				i.physicalListener().stepFinished();
 			}
 		}
 	}
-	
-	private void notifyItemAdded(IBPhysicalItem t) {
-		for( IBPhysicalListener l: _physicalListeners ){
+
+	private void notifyItemAdded(final IBPhysicalItem t) {
+		for( final IBPhysicalListener l: _physicalListeners ){
 			l.itemAdded(t);
 		}
-		for( IBPhysicalItem i: items() ){
+		for( final IBPhysicalItem i: items() ){
 			if( i.physicalListener() != null ){
 				i.physicalListener().itemAdded(t);
 			}
 		}
 	}
 
-	private void notifyItemRemoved(IBPhysicalItem t) {
-		for( IBPhysicalListener l: _physicalListeners ){
+	private void notifyItemRemoved(final IBPhysicalItem t) {
+		for( final IBPhysicalListener l: _physicalListeners ){
 			l.itemRemoved(t);
 		}
-		for( IBPhysicalItem i: items() ){
+		for( final IBPhysicalItem i: items() ){
 			if( i.physicalListener() != null ){
 				i.physicalListener().itemRemoved(t);
 			}
@@ -312,61 +312,61 @@ public class BPhysics {
 	}
 
 
-	public List<IBPhysicalContact> contacts(IBPhysicalItem i, IBRegion regionOfItem, BDirection d, List<IBPhysicalContact> ret, IBPhysicalItem ... items) {
+	public List<IBPhysicalContact> contacts(final IBPhysicalItem i, final IBRegion regionOfItem, final BDirection d, List<IBPhysicalContact> ret, final IBPhysicalItem ... items) {
 		if( ret == null ){
 			ret = new ArrayList<IBPhysicalContact>();
 		}
-		
-		for( IBPhysicalItem item: items ){
+
+		for( final IBPhysicalItem item: items ){
 			if( item == i ){
 				continue;
 			}
-			
+
 			if( IBRegion.Util.contact(regionOfItem, item.region(), d) ){
 				ret.add( new BPhysicalContact(i,item) );
 			}
 		}
-		
+
 		return ret;
 	}
 
-	private void computeDisplacementsOfBehaviours(List<IBImpulse> ret){
+	private void computeDisplacementsOfBehaviours(final List<IBImpulse> ret){
 		computeDisplacementsOfMovementBehaviours(ret);
 	}
-	
-	private void computeDisplacementsOfMovementBehaviours(List<IBImpulse> ret) {
-		ArrayList<IBMovementBehaviour> list = new ArrayList<IBMovementBehaviour>();
-		for( IBPhysicalItem t: items() ){
+
+	private void computeDisplacementsOfMovementBehaviours(final List<IBImpulse> ret) {
+		final ArrayList<IBMovementBehaviour> list = new ArrayList<IBMovementBehaviour>();
+		for( final IBPhysicalItem t: items() ){
 			list.clear();
 			t.behaviours(IBMovementBehaviour.class, list);
-			for( IBMovementBehaviour b: list ){
+			for( final IBMovementBehaviour b: list ){
 				b.nextMovement(ret);
 			}
 		}
 	}
-	
+
 	public IBPhysicalItem[] items(){
 		if( _itemsArray == null ){
-			_itemsArray = (IBPhysicalItem[]) _items.toArray(new IBPhysicalItem[_items.size()]);
+			_itemsArray = _items.toArray(new IBPhysicalItem[_items.size()]);
 		}
 		return _itemsArray;
 	}
 
 	public IBPhysicalItem[] fixedItems(){
 		if( _fixedItemsArray == null ){
-			_fixedItemsArray = (IBPhysicalItem[]) _fixedItems.toArray(new IBPhysicalItem[_fixedItems.size()]);
+			_fixedItemsArray = _fixedItems.toArray(new IBPhysicalItem[_fixedItems.size()]);
 		}
 		return _fixedItemsArray;
 	}
 
 	public IBPhysicalItem[] movableItems(){
 		if( _movableItemsArray == null ){
-			_movableItemsArray = (IBPhysicalItem[]) _movableItems.toArray(new IBPhysicalItem[_movableItems.size()]);
+			_movableItemsArray = _movableItems.toArray(new IBPhysicalItem[_movableItems.size()]);
 		}
 		return _movableItemsArray;
 	}
 
-	
+
 	public void start(){
 		if( _animation == null ){
 			_animation = new PhysicsAnimation();
@@ -387,7 +387,7 @@ public class BPhysics {
 		private boolean _paused = true;
 
 		@Override
-		public void stepAnimation(long millis) {
+		public void stepAnimation(final long millis) {
 			if( _paused ){
 				return;
 			}
@@ -415,7 +415,7 @@ public class BPhysics {
 		}
 
 		@Override
-		public void setAnimables(IBAnimable... a) {
+		public void setAnimables(final IBAnimable... a) {
 		}
 
 		@Override
@@ -429,20 +429,20 @@ public class BPhysics {
 		}
 	}
 
-	public boolean inside(IBRegion r){
-		for (IBLocation l : r.vertices(null) ) {
+	public boolean inside(final IBRegion r){
+		for (final IBLocation l : r.vertices(null) ) {
 			if( !IBRegion.Util.inside(l, region()) ){
 				return false;
 			}
 		}
 		return true;
 	}
-	
-	public boolean intersects(IBPhysicalItem item, IBRegion regionOfItem, IBPhysicalItem ...items ){
+
+	public boolean intersects(final IBPhysicalItem item, IBRegion regionOfItem, final IBPhysicalItem ...items ){
 		if( regionOfItem == null ){
 			regionOfItem = item.region();
 		}
-		for (IBPhysicalItem i : items) {
+		for (final IBPhysicalItem i : items) {
 			if( i == item ){
 				continue;
 			}
@@ -452,28 +452,28 @@ public class BPhysics {
 		}
 		return false;
 	}
-	
+
 	public void updateRoomWalls(){
 		if( _roomWalls != null ){
-			for( BRoomWall w: _roomWalls ){
+			for( final BRoomWall w: _roomWalls ){
 				remove(w);
 			}
 		}
-		IBRegion region = region();
+		final IBRegion region = region();
 		_roomWalls = new BRoomWall[4];
 
 		/**
-		 * N  E    U     
+		 * N  E    U
 		 *  \/     |
 		 *  /\     |
 		 * W  S    D
-		 * 
+		 *
 		 */
 		// NORTH WALL
 		IBRegion r = new BRegion(region.vertex(west,north,down), region.vertex(east, north, up));
 		IBRegion.Util.grow(r, 1, north, r);
 		_roomWalls[0] = new BRoomWall(this, r);
-		
+
 		// SOUTH WALL
 		r = new BRegion(region.vertex(west,south,down), region.vertex(east, south, up));
 		IBRegion.Util.grow(r, 1, south, r);
@@ -488,8 +488,8 @@ public class BPhysics {
 		r = new BRegion(region.vertex(west,south,down), region.vertex(west, north, up));
 		IBRegion.Util.grow(r, 1, west, r);
 		_roomWalls[3] = new BRoomWall(this, r);
-		
-		for( BRoomWall w: _roomWalls ){
+
+		for( final BRoomWall w: _roomWalls ){
 			add(w);
 		}
 	}

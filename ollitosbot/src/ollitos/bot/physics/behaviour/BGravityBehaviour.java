@@ -5,9 +5,9 @@ import java.util.List;
 import ollitos.bot.geom.BDirection;
 import ollitos.bot.physics.IBCollision;
 import ollitos.bot.physics.IBPhysicalItem;
-import ollitos.bot.physics.displacement.BImpulse;
-import ollitos.bot.physics.displacement.IBImpulse;
-import ollitos.bot.physics.displacement.IBImpulseCause;
+import ollitos.bot.physics.impulse.BImpulse;
+import ollitos.bot.physics.impulse.IBImpulse;
+import ollitos.bot.physics.impulse.IBImpulseCause;
 
 public class BGravityBehaviour implements IBMovementBehaviour{
 

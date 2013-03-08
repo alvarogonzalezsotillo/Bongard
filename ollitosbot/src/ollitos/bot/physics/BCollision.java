@@ -1,23 +1,22 @@
 package ollitos.bot.physics;
 
-import ollitos.bot.geom.IBLocation;
 import ollitos.bot.geom.IBRegion;
-import ollitos.bot.physics.displacement.IBImpulse;
+import ollitos.bot.physics.displacement.IBDisplacement;
 
 public class BCollision implements IBCollision{
 
 	private IBRegion _collision;
 	private IBPhysicalItem[] _items;
-	private IBImpulse _cause;
+	private IBDisplacement _cause;
 
-	public BCollision(IBRegion collision, IBPhysicalItem pusher, IBPhysicalItem pushed, IBImpulse cause ){
+	public BCollision(IBRegion collision, IBPhysicalItem pusher, IBPhysicalItem pushed, IBDisplacement cause ){
 		_items = new IBPhysicalItem[]{pushed, pusher};
 		_collision = collision;
 		_cause = cause;
 	}
 	
 	@Override
-	public IBImpulse cause() {
+	public IBDisplacement cause() {
 		return _cause;
 	}
 	

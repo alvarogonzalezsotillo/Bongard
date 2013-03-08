@@ -124,6 +124,11 @@ public interface IBLocation {
 			return Math.sqrt(dotProduct(l, l));
 		}
 		
+		public static boolean unit(IBLocation l){
+			double tolerance = 0.01;
+			return Math.abs( mod(l) - 1 ) < tolerance;
+		}
+		
 		public static BDirection normalize(IBLocation l){
 			
 			if( l.du()>0 ){

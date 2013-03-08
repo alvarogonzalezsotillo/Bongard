@@ -1,5 +1,8 @@
 package ollitos.bot.physics.behaviour;
 
+import ollitos.bot.physics.IBPhysicalItem;
+
+
 public class BFixedThingBehaviour implements IBPhysicalBehaviour{
 
 	private static BFixedThingBehaviour _instance;
@@ -14,4 +17,7 @@ public class BFixedThingBehaviour implements IBPhysicalBehaviour{
 	private BFixedThingBehaviour(){
 	}
 	
+	public static boolean is( IBPhysicalItem i ){
+		return i.behaviour(BFixedThingBehaviour.class) == null;
+	}
 }

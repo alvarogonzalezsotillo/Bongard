@@ -16,9 +16,8 @@ import ollitos.bot.physics.IBCollision;
 import ollitos.bot.physics.IBPhysicalContact;
 import ollitos.bot.physics.IBPhysicalItem;
 import ollitos.bot.physics.IBPhysicalListener;
-import ollitos.bot.physics.displacement.BSelfDisplacement;
-import ollitos.bot.physics.displacement.IBImpulse;
-import ollitos.bot.physics.displacement.IBImpulseCause;
+import ollitos.bot.physics.impulse.BImpulse;
+import ollitos.bot.physics.impulse.IBImpulse;
 
 public class BCircularMovement implements IBMovementBehaviour, IBPhysicalListener{
 
@@ -53,7 +52,8 @@ public class BCircularMovement implements IBMovementBehaviour, IBPhysicalListene
 			return;
 		}
 		
-		ret.add( new BSelfDisplacement(i, d, this) );
+		BImpulse impulse = new BImpulse(i, d.vector(), this );
+		ret.add( impulse );
 	}
 	
 	private BDirection direction() {
