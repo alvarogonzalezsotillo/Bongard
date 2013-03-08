@@ -332,7 +332,7 @@ public abstract class BAbstractPhysics implements IBPhysics{
 		}
 	}
 	
-	protected void notifyCollisions(final ArrayList<IBCollision> collisions) {
+	protected void notifyCollisions( IBCollision ... collisions) {
 		for( final IBCollision c: collisions ){
 
 			for( final IBPhysicalListener l: _physicalListeners ){

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ollitos.bot.physics.behaviour.IBMovementBehaviour;
+import ollitos.bot.physics.displacement.IBDisplacement;
+import ollitos.bot.physics.displacement.IBPushDisplacement;
 import ollitos.bot.physics.impulse.IBImpulse;
 import ollitos.bot.view.BPhysicsView;
 import ollitos.platform.BPlatform;
@@ -29,6 +31,26 @@ public class BPhysics extends BAbstractPhysics{
 		_impulses.clear();
 		computeImpulsesOfBehaviours(_impulses);
 
+		List<IBDisplacement> inducedDisplacements = new ArrayList<IBDisplacement>();
+		for( IBImpulse i: _impulses ){
+			for( IBDisplacement d : i.toDisplacements() ){
+				inducedDisplacements.clear();
+				d.fillAllInducedDisplacements(inducedDisplacements);
+				
+				for( IBDisplacement id: inducedDisplacements ){
+					if( !(id instanceof IBPushDisplacement) ){
+						continue;
+					}
+					
+					IBPushDisplacement pd = (IBPushDisplacement) id;
+					IBCollision collision = pd.causeCollision();
+					notifyCollisions(collision);
+				}
+				
+				d.apply();
+			}
+			
+		}
 
 
 
@@ -38,8 +60,6 @@ public class BPhysics extends BAbstractPhysics{
 	private IBLogger logger() {
 		return BPlatform.instance().logger();
 	}
-
-
 
 
 
@@ -57,9 +77,5 @@ public class BPhysics extends BAbstractPhysics{
 			}
 		}
 	}
-
-
-
-
 
 }
