@@ -96,7 +96,7 @@ public abstract class BPhysicalItem implements IBPhysicalItem{
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> T behaviour(Class<T> c){
+	public <T extends IBPhysicalBehaviour> T behaviour(Class<T> c){
 		for( IBPhysicalBehaviour p: behaviours() ){
 			if( c.isAssignableFrom( p.getClass() ) ){
 				return (T) p;
@@ -107,7 +107,7 @@ public abstract class BPhysicalItem implements IBPhysicalItem{
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> List<T> behaviours(Class<T> c, List<T> ret){
+	public <T extends IBPhysicalBehaviour> List<T> behaviours(Class<T> c, List<T> ret){
 		if( ret == null ){
 			ret = new ArrayList<T>();
 		}

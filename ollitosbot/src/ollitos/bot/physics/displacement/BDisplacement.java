@@ -11,6 +11,7 @@ import ollitos.bot.physics.IBPhysicalItem;
 import ollitos.bot.physics.IBPhysics;
 import ollitos.bot.physics.behaviour.BFixedThingBehaviour;
 import ollitos.bot.physics.impulse.IBImpulse;
+import ollitos.platform.BPlatform;
 
 public abstract class BDisplacement implements IBDisplacement{
 
@@ -76,6 +77,10 @@ public abstract class BDisplacement implements IBDisplacement{
 	}
 
 	private void computeDirectlyInducedSupportDisplacements(List<BDisplacement> ret){
+		if( delta() == BDirection.up || delta() == BDirection.down ){
+			return;
+		}
+		
 		IBPhysics p = physics();
 		List<IBPhysicalContact> contacts = new ArrayList<IBPhysicalContact>();
 		p.contacts(item(), item().region(), BDirection.up, contacts, p.movableItems() );
@@ -104,9 +109,9 @@ public abstract class BDisplacement implements IBDisplacement{
 	@Override
 	public final void fillAllInducedDisplacements(List<IBDisplacement> displacements){
 		
-		System.out.println( "Induced displacements for:" + this );
+		log( "Induced displacements for:" + this );
 		for( BDisplacement d: directlyInducedDisplacements() ){
-			System.out.println( " --> " + d );
+			log( " --> " + d );
 		}
 		
 		for( BDisplacement d: directlyInducedDisplacements() ){
@@ -115,9 +120,15 @@ public abstract class BDisplacement implements IBDisplacement{
 		}
 	}
 	
+	private void log(String msg) {
+		BPlatform.instance().logger().log(msg);
+	}
+
 	@Override
 	public boolean apply() {
+		log( "apply:" + this );
 		if( !canBeApplied() ){
+			log( "  can't be applied" );
 			return false;
 		}
 		for(final IBDisplacement i: directlyInducedDisplacements() ){
@@ -131,6 +142,7 @@ public abstract class BDisplacement implements IBDisplacement{
 
 	private boolean canBeApplied() {
 		if( BFixedThingBehaviour.is( item() ) ){
+			log( "  can't apply " + this + ": item is fixed" );
 			return false;
 		}
 		
@@ -139,7 +151,9 @@ public abstract class BDisplacement implements IBDisplacement{
 				return false;
 			}
 		}
-		return physics().intersects(item(), item().region(), physics().fixedItems() );
+		boolean ret = physics().intersects(item(), item().region(), physics().fixedItems() );
+		log( "  can't apply " + this + ": intersects with fixed items" );
+		return ret;
 	}
 
 	@Override
