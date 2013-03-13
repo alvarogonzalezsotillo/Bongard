@@ -240,7 +240,7 @@ public abstract class BPhysicalItem implements IBPhysicalItem{
 	@Override
 	public String toString() {
 		if( mapItem() != null ){
-			return mapItem().type().toString() + "-" +region();
+			return mapItem().type().toString() + "-" + region();
 		}
 		return getClass().getSimpleName() + "-" + region();
 	}

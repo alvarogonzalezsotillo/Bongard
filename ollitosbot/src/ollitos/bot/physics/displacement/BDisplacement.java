@@ -103,6 +103,12 @@ public abstract class BDisplacement implements IBDisplacement{
 
 	@Override
 	public final void fillAllInducedDisplacements(List<IBDisplacement> displacements){
+		
+		System.out.println( "Induced displacements for:" + this );
+		for( BDisplacement d: directlyInducedDisplacements() ){
+			System.out.println( " --> " + d );
+		}
+		
 		for( BDisplacement d: directlyInducedDisplacements() ){
 			displacements.add(d);
 			d.fillAllInducedDisplacements(displacements);
@@ -136,5 +142,9 @@ public abstract class BDisplacement implements IBDisplacement{
 		return physics().intersects(item(), item().region(), physics().fixedItems() );
 	}
 
+	@Override
+	public String toString() {
+		return getClass().getSimpleName() + "(" + item() + ", " + delta() + ")";
+	}
 
 }

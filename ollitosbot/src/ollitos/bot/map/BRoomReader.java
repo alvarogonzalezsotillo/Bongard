@@ -323,7 +323,7 @@ public class BRoomReader {
 				"bx"
 			},
 		};
-		String[][] data = data3;
+		String[][] data = data2;
 		
 		for (int i = 0; i < data.length; i++) {
 			String[] layer = data[i];
