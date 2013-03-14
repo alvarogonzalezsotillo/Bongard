@@ -52,6 +52,7 @@ public class BCircularMovement implements IBMovementBehaviour, IBPhysicalListene
 			return;
 		}
 		
+		i.setDirection(d);
 		BImpulse impulse = new BImpulse(i, d.vector(), this );
 		ret.add( impulse );
 	}

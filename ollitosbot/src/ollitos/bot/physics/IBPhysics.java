@@ -13,7 +13,6 @@ public interface IBPhysics {
 	public IBPhysicalItem[] items();	
 	public IBPhysicalItem[] fixedItems();
 	List<IBPhysicalContact> contacts(IBPhysicalItem i, IBRegion regionOfItem, BDirection d, List<IBPhysicalContact> ret, final IBPhysicalItem ... items);
-	void computeCollisions(IBPhysicalItem item, IBLocation vector, List<IBCollision> collisions, IBPhysicalItem ... items);
 	boolean intersects(IBPhysicalItem item, IBRegion regionOfItem, IBPhysicalItem ...items );
 	BPhysicsView view();
 	

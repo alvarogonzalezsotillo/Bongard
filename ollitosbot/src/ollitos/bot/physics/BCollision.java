@@ -13,6 +13,9 @@ public class BCollision implements IBCollision{
 		_items = new IBPhysicalItem[]{pushed, pusher};
 		_collision = collision;
 		_cause = cause;
+		if( _cause == null ){
+			throw new IllegalArgumentException( "_cause is null" );
+		}
 	}
 	
 	@Override

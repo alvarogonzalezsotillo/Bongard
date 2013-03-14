@@ -8,6 +8,8 @@ import ollitos.bot.physics.IBPhysicalItem;
 import ollitos.bot.physics.IBPhysicalListener;
 import ollitos.bot.physics.impulse.BImpulse;
 import ollitos.bot.physics.impulse.IBImpulse;
+import ollitos.platform.BPlatform;
+import ollitos.platform.IBLogger;
 
 public class BSlideUntilContactBehaviour implements IBMovementBehaviour, IBPhysicalListener{
 
@@ -29,6 +31,11 @@ public class BSlideUntilContactBehaviour implements IBMovementBehaviour, IBPhysi
 	@Override
 	public void collision(IBCollision collision) {
 		
+		IBLogger logger = BPlatform.instance().logger();
+		logger.log( "Colision:" + collision );
+		logger.log( "Causa de la colision:" + collision.cause() );
+		logger.log( "Causa de la causa de la colision:" + collision.cause().rootCause() );
+		
 		if( BGravityBehaviour.gravityCollision(collision) ){
 			return;
 		}
@@ -47,10 +54,14 @@ public class BSlideUntilContactBehaviour implements IBMovementBehaviour, IBPhysi
 	}
 
 	private void stopSliding() {
+		IBLogger logger = BPlatform.instance().logger();
+		logger.log( "Stop sliding:" + _item );
 		_vector = null;
 	}
 
 	private void startSliding(IBLocation vector) {
+		IBLogger logger = BPlatform.instance().logger();
+		logger.log( "Start sliding:" + _item );
 		_vector = IBLocation.Util.normalize(vector).vector();
 	}
 

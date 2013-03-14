@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ollitos.bot.geom.BDirection;
+import ollitos.bot.geom.IBLocation;
+import ollitos.bot.geom.IBRegion;
+import ollitos.bot.physics.BAbstractPhysics;
+import ollitos.bot.physics.BCollision;
 import ollitos.bot.physics.BPhysics;
 import ollitos.bot.physics.IBCollision;
 import ollitos.bot.physics.IBPhysicalContact;
@@ -98,13 +102,36 @@ public abstract class BDisplacement implements IBDisplacement{
 		IBPhysics p = physics();
 		List<IBCollision> collisions = new ArrayList<IBCollision>();
 		
-		p.computeCollisions(item(), delta().vector(), collisions, p.items() );
+		computeCollisions(collisions, p.items() );
 		
 		for( IBCollision c : collisions ){
 			BDisplacement d = new BPushDisplacement( this, delta(), c );
 			ret.add(d);
 		}
 	}
+	
+	private void computeCollisions(List<IBCollision> ret, final IBPhysicalItem ... items) {
+		if( ret == null ){
+			throw new IllegalArgumentException();
+		}
+		
+		IBPhysicalItem item = item();
+		IBLocation delta = delta().vector();
+		
+		final IBRegion region = IBRegion.Util.traslate(item.region(), delta, null);
+
+		for( final IBPhysicalItem i: items ){
+			if( i == item ){
+				continue;
+			}
+			final IBRegion intersection = IBRegion.Util.intersection(region, i.region(), null);
+			if( intersection != null ){
+				final BCollision c = new BCollision(intersection,item,i,this);
+				ret.add( c );
+			}
+		}
+	}
+	
 
 	@Override
 	public final void fillAllInducedDisplacements(List<IBDisplacement> displacements){

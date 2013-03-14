@@ -292,23 +292,6 @@ public abstract class BAbstractPhysics implements IBPhysics{
 		return ret;
 	}
 
-	public void computeCollisions(final IBPhysicalItem item, final IBLocation delta, List<IBCollision> ret, final IBPhysicalItem ... items) {
-		if( ret == null ){
-			throw new IllegalArgumentException();
-		}
-		final IBRegion region = IBRegion.Util.traslate(item.region(), delta, null);
-
-		for( final IBPhysicalItem i: items ){
-			if( i == item ){
-				continue;
-			}
-			final IBRegion intersection = IBRegion.Util.intersection(region, i.region(), null);
-			if( intersection != null ){
-				final BCollision c = new BCollision(intersection,item,i,null);
-				ret.add( c );
-			}
-		}
-	}
 	
 	private IBPhysicalItem[] itemsCollide(final IBPhysicalItem ... items){
 		for( final IBPhysicalItem item: items ){
