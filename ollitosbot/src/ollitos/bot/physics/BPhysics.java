@@ -130,7 +130,8 @@ public class BPhysics extends BAbstractPhysics{
 		logger().log( "********  STEP **********" );
 		checkCollisions();
 		_impulses.clear();
-		computeDisplacementsOfBehaviours(_impulses);
+		
+		computeImpulsesOfBehaviours(_impulses);
 
 
 
