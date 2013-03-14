@@ -5,10 +5,11 @@ import ollitos.bot.geom.IBRegion;
 import ollitos.bot.map.BItemType;
 import ollitos.bot.map.items.BMapItem;
 import ollitos.bot.physics.BPhysics;
+import ollitos.bot.physics.IBPhysics;
 
 public class BBubbles extends BPhysicalItem{
 
-	public BBubbles(IBRegion region, BPhysics physics){
+	public BBubbles(IBRegion region, IBPhysics physics){
 		super(BItemType.bubbles, region, BDirection.south, physics);
 	}
 	

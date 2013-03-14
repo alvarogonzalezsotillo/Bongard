@@ -1,9 +1,10 @@
 package ollitos.bot.physics.behaviour;
 
-import ollitos.bot.physics.BPhysics;
+import ollitos.bot.geom.IBRegion;
 import ollitos.bot.physics.IBCollision;
 import ollitos.bot.physics.IBPhysicalItem;
 import ollitos.bot.physics.IBPhysicalListener;
+import ollitos.bot.physics.IBPhysics;
 import ollitos.bot.physics.items.BBubbles;
 
 public class BDissapearOnCollisionBehaviour implements IBPhysicalBehaviour, IBPhysicalListener{
@@ -27,7 +28,7 @@ public class BDissapearOnCollisionBehaviour implements IBPhysicalBehaviour, IBPh
 		if( collision.pushed() != _item ){
 			return;
 		}
-		BPhysics physics = _item.physics();
+		IBPhysics physics = _item.physics();
 		physics.remove(_item);
 		_bubbles = new BBubbles(_item.region(), physics){
 			{
@@ -55,5 +56,9 @@ public class BDissapearOnCollisionBehaviour implements IBPhysicalBehaviour, IBPh
 
 	@Override
 	public void itemRemoved(IBPhysicalItem i) {
+	}
+
+	@Override
+	public void itemMoved(IBPhysicalItem i, IBRegion oldRegion) {
 	}
 }

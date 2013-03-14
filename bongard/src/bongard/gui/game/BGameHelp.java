@@ -1,5 +1,6 @@
 package bongard.gui.game;
 
+import ollitos.bot.map.BTestRoomReader;
 import ollitos.bot.view.isoview.BIsoView;
 import ollitos.geom.BRectangle;
 import ollitos.geom.IBRectangle;
@@ -29,6 +30,42 @@ public class BGameHelp extends BSlidableContainer implements BState.Stateful{
 	
 	private static class Model implements IBSlidableModel{
 			
+		private final class SlidablePageForIsoView implements IBSlidablePage {
+			private IBDrawable _drawable;
+			private String[][] _roomData;
+			
+			public SlidablePageForIsoView(String[][] roomData){
+				_roomData = roomData;
+			}
+
+			@Override
+			public void setUp() {
+			}
+
+			@Override
+			public boolean disposed() {
+				return false;
+			}
+
+			@Override
+			public void dispose() {
+			}
+
+			@Override
+			public IBDrawable drawable() {
+				if( _drawable != null ){
+					return _drawable;
+				}
+				_drawable = new BIsoView(_roomData);
+				return _drawable;
+			}
+
+			@Override
+			public IBDrawable icon() {
+				return null;
+			}
+		}
+
 		private IBSlidablePage _fd[];
 		
 		public Model(){
@@ -37,7 +74,7 @@ public class BGameHelp extends BSlidableContainer implements BState.Stateful{
 
 		@Override
 		public int width(){
-			return 2;
+			return BTestRoomReader.ROOMS.length+1;
 		}
 		
 		public static IBDrawable internal(){
@@ -56,38 +93,8 @@ public class BGameHelp extends BSlidableContainer implements BState.Stateful{
 				return _fd[x];
 			}
 			
-			if( x == 0 ){
-				_fd[x] = new IBSlidablePage() {
-					
-					private IBDrawable _drawable;
-
-					@Override
-					public void setUp() {
-					}
-					
-					@Override
-					public boolean disposed() {
-						return false;
-					}
-					
-					@Override
-					public void dispose() {
-					}
-					
-					@Override
-					public IBDrawable drawable() {
-						if( _drawable != null ){
-							return _drawable;
-						}
-						_drawable = new BIsoView();
-						return _drawable;
-					}
-					
-					@Override
-					public IBDrawable icon() {
-						return null;
-					}
-				};
+			if( x != width()-1 ){
+				_fd[x] = new SlidablePageForIsoView(BTestRoomReader.ROOMS[x]);
 			}
 			else{
 				_fd[x] = new IBSlidablePage() {

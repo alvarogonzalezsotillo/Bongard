@@ -18,6 +18,6 @@ public class BFixedThingBehaviour implements IBPhysicalBehaviour{
 	}
 	
 	public static boolean is( IBPhysicalItem i ){
-		return i.behaviour(BFixedThingBehaviour.class) == null;
+		return i.behaviour(BFixedThingBehaviour.class) != null;
 	}
 }

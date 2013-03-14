@@ -9,10 +9,12 @@ import ollitos.bot.geom.IBLocation;
 import ollitos.bot.geom.IBRegion;
 import ollitos.bot.map.BItemType;
 import ollitos.bot.map.items.BMapItem;
+import ollitos.bot.physics.BAbstractPhysics;
 import ollitos.bot.physics.BPhysics;
 import ollitos.bot.physics.IBCollision;
 import ollitos.bot.physics.IBPhysicalItem;
 import ollitos.bot.physics.IBPhysicalListener;
+import ollitos.bot.physics.IBPhysics;
 import ollitos.bot.physics.behaviour.BDefaultSpriteBehaviour;
 import ollitos.bot.physics.behaviour.IBPhysicalBehaviour;
 
@@ -24,16 +26,16 @@ public abstract class BPhysicalItem implements IBPhysicalItem{
 	
 	private ArrayList<IBPhysicalBehaviour> _behaviours = new ArrayList<IBPhysicalBehaviour>();
 	private IBPhysicalBehaviour[] _behavioursArray;
-	private BPhysics _physics;
+	private IBPhysics _physics;
 	private ArrayList<IBPhysicalListener> _listeners;
 	private IBPhysicalListener[] _listenersArray;
 	private BItemType _itemType;
 	
-	protected BPhysicalItem(BItemType type, IBRegion region, BDirection d, BPhysics physics){
+	protected BPhysicalItem(BItemType type, IBRegion region, BDirection d, IBPhysics physics){
 		this(null,type,region,d,physics);
 	}
 	
-	private BPhysicalItem(BMapItem mapItem, BItemType type, IBRegion region, BDirection d, BPhysics physics){
+	private BPhysicalItem(BMapItem mapItem, BItemType type, IBRegion region, BDirection d, IBPhysics physics){
 		_itemType = type;
 		_physics = physics;
 		setMapItem(mapItem);
@@ -94,7 +96,7 @@ public abstract class BPhysicalItem implements IBPhysicalItem{
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> T behaviour(Class<T> c){
+	public <T extends IBPhysicalBehaviour> T behaviour(Class<T> c){
 		for( IBPhysicalBehaviour p: behaviours() ){
 			if( c.isAssignableFrom( p.getClass() ) ){
 				return (T) p;
@@ -105,7 +107,7 @@ public abstract class BPhysicalItem implements IBPhysicalItem{
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> List<T> behaviours(Class<T> c, List<T> ret){
+	public <T extends IBPhysicalBehaviour> List<T> behaviours(Class<T> c, List<T> ret){
 		if( ret == null ){
 			ret = new ArrayList<T>();
 		}
@@ -128,7 +130,7 @@ public abstract class BPhysicalItem implements IBPhysicalItem{
 	}
 	
 	@Override
-	public BPhysics physics(){
+	public IBPhysics physics(){
 		return _physics;
 	}
 	
@@ -205,6 +207,18 @@ public abstract class BPhysicalItem implements IBPhysicalItem{
 				}
 			}
 		}
+
+		@Override
+		public void itemMoved(IBPhysicalItem i, IBRegion oldRegion) {
+			for( IBPhysicalListener l: listenersArray()){
+				l.itemMoved(i, oldRegion);
+			}
+			for( IBPhysicalBehaviour b: behaviours() ){
+				if( b instanceof IBPhysicalListener ){
+					((IBPhysicalListener)b).itemMoved(i, oldRegion);
+				}
+			}
+		}
 	};
 	private boolean _disposed = true;
 	
@@ -238,7 +252,7 @@ public abstract class BPhysicalItem implements IBPhysicalItem{
 	@Override
 	public String toString() {
 		if( mapItem() != null ){
-			return mapItem().type().toString() + "-" +region();
+			return mapItem().type().toString() + "-" + region();
 		}
 		return getClass().getSimpleName() + "-" + region();
 	}

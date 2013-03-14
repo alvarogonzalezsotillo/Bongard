@@ -13,7 +13,7 @@ import ollitos.bot.map.items.BRoom;
 import ollitos.util.BException;
 
 
-public class BRoomReader {
+public abstract class BRoomReader {
 	
 	@SuppressWarnings("serial")
 	private static class MapItems extends ArrayList<BMapItem>{};
@@ -24,24 +24,22 @@ public class BRoomReader {
 	private BRoom _room;
 	private BMap _map;
 	
-	private BRoom room(){
+	protected BRoomReader(BMap map){
+		addDefaultLegend();		
+		_map = map;
+	}
+	
+	protected BRoom room(){
 		if (_room == null) {
-			_room = new BRoom( map());
+			_room = new BRoom( map() );
 		}
 		return _room;
 	}
 	
-	private BMap map() {
-		if (_map == null) {
-			_map = new BMap();
-		}
+	protected BMap map() {
 		return _map;
 	}
 	
-	public BRoomReader(){
-		addDefaultLegend();
-	}
-
 	private void addDefaultLegend(){
 		for (BItemType t : BItemType.values() ) {
 			_legendToItemType.put(t.defaultLegend(), t);
@@ -114,281 +112,22 @@ public class BRoomReader {
 		}
 	}
 	
+	public void traslate(String legend, int we, int sn, int du ){
+		throw new UnsupportedOperationException();
+	}
 	
-	public void traslate(String legend, int we, int sn, int du ){}
+	public void rotate(String legend, BDirection d){
+		throw new UnsupportedOperationException();
+	}
 	
-	public void rotate(String legend, BDirection d){}
-	
-	private static IBLocation traslateBasicBlocks(BMapItem i, int we, int sn, int du ){
+	protected static IBLocation traslateBasicBlocks(BMapItem i, int we, int sn, int du ){
 		IBLocation bc = BItemType.BASIC_MAP_CELL;
 		IBLocation l = BLocation.l(bc.we()*we,bc.sn()*sn, bc.du()*du );
 		i.traslateRegion( l );
 		return l;
 	}
 	
-	public BRoom createRoom_data(){
-		String[][] data1 = {
-			{
-				"fl fl fl fl fl fl fl fl",	
-				"fl fl fl fl fl fl fl fl",	
-				"fl fl fl fl fl fl fl fl",	
-				"fl fl fl fl fl fl fl fl",	
-				"fl fl fl fl fl fl fl fl",	
-				"fl fl fl fl fl fl fl fl",	
-				"fl fl fl fl fl fl fl fl",	
-				"fl fl fl fl fl fl fl fl",
-			},
-			{
-				"fl fl fl fl fl fl fl fl",
-				".  .  he  .   .  .   .  .",
-				".  .  .   .   .  cws .  .",
-				".  .  .   .   .  .   .  .",
-				"bx .  ccn .   .  cww .  .",
-				".  .  .   cce .  .   .  .",
-				".  .  .   .   bx .   .  .",
-				".  .  .   .   .  .   .  .",
-			},
-			{
-				"fl fl fl fl fl fl fl fl",
-				".  .  .   .  .  .   .  .",
-				".  .  bx  .  .  .   .  .",
-				".  .  .   .  .  bx  .  .",
-				".  .  .   .  .  .   .  ba",
-				".  .  .   .  .  .   .  .",
-				".  bx .   .  .  .   .  .",
-				".  .  .   ba .  .   .  .",
-			},
-			{
-				"fl fl fl fl fl fl fl fl",
-				".  .  .   .  .  .   .  .",
-				".  .  .   .  .  .   .  .",
-				".  .  .   .  .  .   .  .",
-				".  .  .   .  .  .   .  .",
-				".  .  .   .  .  .   .  .",
-				".  .  .   .  .  .   .  .",
-				".  .  .   .  .  .   .  .",
-			},
-			{
-				"fl fl fl fl fl fl fl fl",
-				".  .  .   .  .  .   .  .",
-				".  .  .   .  .  .   .  .",
-				".  .  .   .  .  .   .  .",
-				".  .  .   .  .  .   .  .",
-				".  .  .   .  .  .   .  .",
-				".  .  .   .  .  .   .  .",
-				".  .  .   .  .  .   .  .",
-			},
-			{
-				"fl fl fl fl fl fl fl fl",
-				".  .  .   .  .  .   .  .",
-				".  .  .   .  .  .   .  .",
-				".  .  .   .  .  .   .  .",
-				".  .  .   .  .  .   .  .",
-				".  .  .   .  .  .   .  .",
-				".  .  .   .  .  .   .  .",
-				".  .  .   .  .  .   .  .",
-			},
-			{
-				"fl fl fl fl fl fl fl fl",
-				".  .  .   .  .  .   .  .",
-				".  .  .   .  .  .   .  .",
-				".  .  .   .  .  bk  .  .",
-				".  .  .   .  .  .   .  .",
-				".  .  .   .  .  .   .  .",
-				".  .  .   .  .  .   .  .",
-				".  .  .   .  .  .   .  .",
-			},
-		};
-		
-		String[][] data2 = {
-			{
-				"fl fl fl fl",
-				"fl fl fl fl",
-				"fl fl fl fl",
-				"fl fl fl fl ",
-			},
-			{
-				"cw .  .  . ",
-				".  cc .  bx",
-				".  .  .  db ",
-				"bx .  db  . ",
-			},
-		};
-
-		String[][] data3 = {
-				{
-					"fl fl fl",
-					"fl fl fl",
-					"fl fl fl",
-					"fl fl db",
-				},
-				
-				{
-					".   .   . ",
-					".   .   . ",
-					".   .   . ",
-					"bee bee db "
-				},
-				{
-					"bes .   .",
-					"bes .   . ",
-					"bes .   . ",
-					".   .   db "
-				},
-				{
-					".   bew bew",
-					".   .   . ",
-					".   .   . ",
-					".   .   . "
-				},
-				{
-					".   .   . ",
-					".   .   . ",
-					".   .   . ",
-					".   .   . "
-				},
-				{
-					".   .   bx ",
-					".   .   . ",
-					".   .   . ",
-					".   .   . "
-				},
-				{
-					".   .   bx ",
-					".   .   . ",
-					".   .   . ",
-					".   .   . "
-				},
-				{
-					".   .   bx ",
-					".   .   . ",
-					".   .   . ",
-					".   .   . "
-				},
-				{
-					".   .   . ",
-					".   .   . ",
-					".   .   . ",
-					".   .   . "
-				},
-				{
-					".   .   bx ",
-					".   .   . ",
-					".   .   . ",
-					".   .   . "
-				},
-				{
-					".   .   bx",
-					".   .   . ",
-					".   .   . ",
-					".   .   . "
-				},
-			};
-
-		String[][] data4 = {
-			{
-				"be"
-			},
-			{
-				"."
-			},
-			{
-				"."
-			},
-			{
-				"."
-			},
-			{
-				"."
-			},
-			{
-				"."
-			},
-			{
-				"."
-			},
-			{
-				"bx"
-			},
-			{
-				"."
-			},
-			{
-				"bx"
-			},
-			{
-				"."
-			},
-			{
-				"bx"
-			},
-		};
-		String[][] data = data3;
-		
-		for (int i = 0; i < data.length; i++) {
-			String[] layer = data[i];
-			addLayer(i, layer);
-		}
-		
-		return room();
-	}
 	
-	public BRoom createRoom(){
-		return createRoom_data();
-	}
+	public abstract BRoom createRoom();
 		
-	public BRoom createRoom_code(){		
-		BRoom room = room();
-		
-		int cols = 9;
-		int rows = 9;
-		
-		for( int x = 0 ; x < cols ; x++ ){
-			for( int y = 0 ; y < rows ; y++ ){
-				BMapItem f = BItemType.floor.createItem(room);
-				traslateBasicBlocks(f,cols-x-1,rows-y-1,0);
-			}
-		}
-		
-		{
-			BMapItem block1 = BItemType.floor.createItem(room);
-			traslateBasicBlocks(block1,1,1,1);
-			BMapItem block2 = BItemType.floor.createItem(room);
-			traslateBasicBlocks(block2,1,1,2);
-		}
-		{
-			BMapItem block1 = BItemType.floor.createItem(room);
-			traslateBasicBlocks(block1,4,2,1);
-			BMapItem block2 = BItemType.floor.createItem(room);
-			traslateBasicBlocks(block2,4,2,2);
-		}
-		{
-			BMapItem block1 = BItemType.floor.createItem(room);
-			traslateBasicBlocks(block1,rows-2,cols-2,1);
-			BMapItem block2 = BItemType.floor.createItem(room);
-			traslateBasicBlocks(block2,rows-2,cols-2,2);
-		}
-
-		
-		
-		for( int x = 0 ; x < cols ; x++ ){
-			for( int y = 0 ; y < rows ; y++ ){
-				if( x == 0 || x == cols-1 || y == 0 || y == rows-1 ){
-					BMapItem f = BItemType.floor.createItem(room);
-					traslateBasicBlocks(f,cols-x-1,rows-y-1,1);
-				}
-			}
-		}
-		
-		BMapItem boot1 = BItemType.centinel_clockwise.createItem(room);
-		traslateBasicBlocks(boot1,1,2,1);
-		
-		BMapItem boot2 = BItemType.centinel_counterclockwise.createItem(room);
-		traslateBasicBlocks(boot2,3,4,1);
-		boot2.setDirection(BDirection.north);
-
-
-		
-		return room;
-	}
 }

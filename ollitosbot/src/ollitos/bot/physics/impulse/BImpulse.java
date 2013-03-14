@@ -47,8 +47,12 @@ public class BImpulse implements IBImpulse{
 		}
 
 		IBDisplacement[] ret = new IBDisplacement[1];
-		ret[0] = new ImpulseDisplacement(IBLocation.Util.normalize(delta));
+		ret[0] = createDisplacement(delta);
 		return ret;
+	}
+
+	protected ImpulseDisplacement createDisplacement(IBLocation delta){
+		return new ImpulseDisplacement(IBLocation.Util.normalize(delta));
 	}
 	
 	private class ImpulseDisplacement extends BDisplacement{

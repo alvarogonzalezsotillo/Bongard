@@ -17,7 +17,7 @@ import ollitos.bot.geom.BLocation;
 import ollitos.bot.geom.IBLocation;
 import ollitos.bot.geom.IBMovableRegion;
 import ollitos.bot.map.BItemType;
-import ollitos.bot.map.BRoomReader;
+import ollitos.bot.map.BTestRoomReader;
 import ollitos.bot.map.items.BRoom;
 import ollitos.bot.physics.BMapToPhysical;
 import ollitos.bot.physics.BPhysics;
@@ -54,6 +54,10 @@ public class BIsoView extends BDrawableContainer implements BPhysicsView{
 			_items = physics().items();
 		};
 	};
+	
+	public BIsoView( String[][] roomData ){
+		_roomData = roomData;
+	}
 	
 	public static class BFlatPoint{
 		private int _x;
@@ -119,6 +123,7 @@ public class BIsoView extends BDrawableContainer implements BPhysicsView{
 	};
 	private BPhysics _physics;
 	private IBRasterProvider _doubleBuffer;
+	private String[][] _roomData;
 
 	private int zIndex(IBLocation l){
 		return (int)(-l.du()+(l.we()+l.sn())*COS30);
@@ -322,7 +327,7 @@ public class BIsoView extends BDrawableContainer implements BPhysicsView{
 
 	private BRoom room(){
 		if( _room == null ){
-			_room = new BRoomReader().createRoom();
+			_room = new BTestRoomReader(_roomData).createRoom();
 		}
 		return _room;
 	}
@@ -373,7 +378,7 @@ public class BIsoView extends BDrawableContainer implements BPhysicsView{
 			@Override
 			public void run() {
 				IBGame g = BPlatform.instance().game();
-				g.setDefaultDrawable( new BIsoView() );
+				g.setDefaultDrawable( new BIsoView(BTestRoomReader.BIGROOM) );
 				g.restore();
 			}
 		} );

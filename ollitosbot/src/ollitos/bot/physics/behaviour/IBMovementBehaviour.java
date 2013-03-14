@@ -6,5 +6,5 @@ import ollitos.bot.physics.impulse.IBImpulse;
 import ollitos.bot.physics.impulse.IBImpulseCause;
 
 public interface IBMovementBehaviour extends IBPhysicalBehaviour, IBImpulseCause{
-	void nextMovement(List<IBImpulse> ret);
+	void nextImpulses(List<IBImpulse> ret);
 }

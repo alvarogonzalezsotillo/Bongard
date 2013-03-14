@@ -11,11 +11,11 @@ import ollitos.bot.ArrayUtil;
 import ollitos.bot.geom.BDirection;
 import ollitos.bot.geom.IBLocation;
 import ollitos.bot.geom.IBRegion;
-import ollitos.bot.physics.BPhysics;
 import ollitos.bot.physics.IBCollision;
 import ollitos.bot.physics.IBPhysicalContact;
 import ollitos.bot.physics.IBPhysicalItem;
 import ollitos.bot.physics.IBPhysicalListener;
+import ollitos.bot.physics.IBPhysics;
 import ollitos.bot.physics.impulse.BImpulse;
 import ollitos.bot.physics.impulse.IBImpulse;
 
@@ -40,18 +40,19 @@ public class BCircularMovement implements IBMovementBehaviour, IBPhysicalListene
 	
 
 	@Override
-	public void nextMovement(List<IBImpulse> ret) {
+	public void nextImpulses(List<IBImpulse> ret) {
 		BDirection d = direction();
 		if( d == null ){
 			return;
 		}
 		IBPhysicalItem i = item();
-		BPhysics p = i.physics();
+		IBPhysics p = i.physics();
 		List<IBPhysicalContact> contacts = p.contacts(i, i.region(), BDirection.down, null, p.fixedItems() );
 		if( contacts == null || contacts.size() == 0 ){
 			return;
 		}
 		
+		i.setDirection(d);
 		BImpulse impulse = new BImpulse(i, d.vector(), this );
 		ret.add( impulse );
 	}
@@ -88,5 +89,9 @@ public class BCircularMovement implements IBMovementBehaviour, IBPhysicalListene
 
 	@Override
 	public void itemRemoved(IBPhysicalItem i) {
+	}
+
+	@Override
+	public void itemMoved(IBPhysicalItem i, IBRegion oldRegion) {
 	}
 }

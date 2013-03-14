@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import ollitos.bot.geom.BDirection;
+import ollitos.bot.geom.IBRegion;
 import static ollitos.bot.geom.BDirection.*;
 import ollitos.bot.map.BItemType;
 import ollitos.bot.physics.IBCollision;
@@ -130,5 +131,9 @@ public class BDefaultSpriteBehaviour extends BSpriteBehaviour implements IBPhysi
 	@Override
 	public void stepFinished() {
 		advanceFrame();
+	}
+
+	@Override
+	public void itemMoved(IBPhysicalItem i, IBRegion oldRegion) {
 	}
 }
