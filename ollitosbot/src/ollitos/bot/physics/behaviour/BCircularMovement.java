@@ -90,4 +90,8 @@ public class BCircularMovement implements IBMovementBehaviour, IBPhysicalListene
 	@Override
 	public void itemRemoved(IBPhysicalItem i) {
 	}
+
+	@Override
+	public void itemMoved(IBPhysicalItem i, IBRegion oldRegion) {
+	}
 }

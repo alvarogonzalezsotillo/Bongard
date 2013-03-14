@@ -78,6 +78,12 @@ public interface IBLocation {
 			}
 			return ret;
 		}
+		
+		public static IBLocation subtract(IBLocation l1, IBLocation l2, IBLocation ret ){
+			IBLocation l2byminusone = scale(l2,-1,null);
+			return add(l1, l2byminusone, ret );
+		}
+		
 		public static IBLocation scale(IBLocation l, int f, IBLocation ret){
 			int we = l.we()*f;
 			int sn = l.sn()*f;

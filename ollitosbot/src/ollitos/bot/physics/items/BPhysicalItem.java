@@ -207,6 +207,18 @@ public abstract class BPhysicalItem implements IBPhysicalItem{
 				}
 			}
 		}
+
+		@Override
+		public void itemMoved(IBPhysicalItem i, IBRegion oldRegion) {
+			for( IBPhysicalListener l: listenersArray()){
+				l.itemMoved(i, oldRegion);
+			}
+			for( IBPhysicalBehaviour b: behaviours() ){
+				if( b instanceof IBPhysicalListener ){
+					((IBPhysicalListener)b).itemMoved(i, oldRegion);
+				}
+			}
+		}
 	};
 	private boolean _disposed = true;
 	

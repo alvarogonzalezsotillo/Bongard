@@ -30,7 +30,7 @@ public class BGameHelp extends BSlidableContainer implements BState.Stateful{
 	
 	private static class Model implements IBSlidableModel{
 			
-		private final class SlidablePageForIsoView implements	IBSlidablePage {
+		private final class SlidablePageForIsoView implements IBSlidablePage {
 			private IBDrawable _drawable;
 			private String[][] _roomData;
 			
@@ -74,7 +74,7 @@ public class BGameHelp extends BSlidableContainer implements BState.Stateful{
 
 		@Override
 		public int width(){
-			return 2;
+			return BTestRoomReader.ROOMS.length+1;
 		}
 		
 		public static IBDrawable internal(){
@@ -93,8 +93,8 @@ public class BGameHelp extends BSlidableContainer implements BState.Stateful{
 				return _fd[x];
 			}
 			
-			if( x == 0 ){
-				_fd[x] = new SlidablePageForIsoView(BTestRoomReader.BIGROOM);
+			if( x != width()-1 ){
+				_fd[x] = new SlidablePageForIsoView(BTestRoomReader.ROOMS[x]);
 			}
 			else{
 				_fd[x] = new IBSlidablePage() {

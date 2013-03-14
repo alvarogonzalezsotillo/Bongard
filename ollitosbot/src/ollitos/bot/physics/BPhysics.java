@@ -28,6 +28,9 @@ public class BPhysics extends BAbstractPhysics{
 	public void step(){
 		logger().log( "********  STEP **********" );
 		checkCollisions();
+
+		// TODO: store current positions and trigger itemMoved messages at end of step
+		
 		_impulses.clear();
 		computeImpulsesOfBehaviours(_impulses);
 
@@ -55,6 +58,11 @@ public class BPhysics extends BAbstractPhysics{
 
 
 		notifyStepFinished();
+	}
+
+	private void storePositions() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	private IBLogger logger() {

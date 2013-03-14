@@ -15,6 +15,7 @@ public class BTestRoomReader extends BRoomReader{
 		super( new BMap() );
 		_data = data;
 	}
+	
 
 	public static String[][] BIGROOM = {
 			{
@@ -105,7 +106,7 @@ public class BTestRoomReader extends BRoomReader{
 		};
 
 	public static String[][] CONVEYORBELTS = {
-				{
+				{	
 					"fl fl fl",
 					"fl fl fl",
 					"fl fl fl",
@@ -215,7 +216,7 @@ public class BTestRoomReader extends BRoomReader{
 			},
 		};
 			
-		String[][] SMALLANDBORING = {
+		public static String[][] SMALLANDBORING = {
 				{
 					"fl"
 				},
@@ -224,6 +225,9 @@ public class BTestRoomReader extends BRoomReader{
 					"bx"
 				},
 		};
+
+	public static String[][][] ROOMS = { BIGROOM, SMALLROOM, CONVEYORBELTS, UNIDIMENSIONAL, SMALLANDBORING };
+		
 		
 	public BRoom createRoomFromData(String[][] data ){	
 		

@@ -1,9 +1,12 @@
 package ollitos.bot.physics;
 
+import ollitos.bot.geom.IBRegion;
+
 public interface IBPhysicalListener {
 	void itemAdded(IBPhysicalItem i);
 	void itemRemoved(IBPhysicalItem i);
 	void collision( IBCollision collision );
+	void itemMoved(IBPhysicalItem i, IBRegion oldRegion );
 	void stepFinished();
 	
 	public static final IBPhysicalListener[] EMPTY = {};
@@ -23,6 +26,10 @@ public interface IBPhysicalListener {
 
 		@Override
 		public void stepFinished() {
+		}
+
+		@Override
+		public void itemMoved(IBPhysicalItem i, IBRegion oldRegion) {
 		}
 	}
 }

@@ -1,5 +1,6 @@
 package ollitos.bot.physics.behaviour;
 
+import ollitos.bot.geom.IBRegion;
 import ollitos.bot.physics.IBCollision;
 import ollitos.bot.physics.IBPhysicalItem;
 import ollitos.bot.physics.IBPhysicalListener;
@@ -55,5 +56,9 @@ public class BDissapearOnCollisionBehaviour implements IBPhysicalBehaviour, IBPh
 
 	@Override
 	public void itemRemoved(IBPhysicalItem i) {
+	}
+
+	@Override
+	public void itemMoved(IBPhysicalItem i, IBRegion oldRegion) {
 	}
 }
