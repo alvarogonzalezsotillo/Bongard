@@ -121,7 +121,7 @@ public abstract class BDisplacement implements IBDisplacement{
 	}
 	
 	private void log(String msg) {
-		BPlatform.instance().logger().log(msg);
+		//BPlatform.instance().logger().log(msg);
 	}
 
 	@Override
@@ -151,9 +151,11 @@ public abstract class BDisplacement implements IBDisplacement{
 				return false;
 			}
 		}
-		boolean ret = physics().intersects(item(), item().region(), physics().fixedItems() );
-		log( "  can't apply " + this + ": intersects with fixed items" );
-		return ret;
+		boolean intersects = physics().intersects(item(), item().region(), physics().fixedItems() );
+		if( !intersects ){
+			log( "  can't apply " + this + ": intersects with fixed items" );
+		}
+		return !intersects;
 	}
 
 	@Override

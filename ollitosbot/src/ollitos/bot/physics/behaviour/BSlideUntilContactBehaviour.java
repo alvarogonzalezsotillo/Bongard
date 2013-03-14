@@ -59,7 +59,7 @@ public class BSlideUntilContactBehaviour implements IBMovementBehaviour, IBPhysi
 	}
 
 	@Override
-	public void nextMovement(List<IBImpulse> ret) {
+	public void nextImpulses(List<IBImpulse> ret) {
 		if( _vector == null ){
 			return;
 		}

@@ -227,13 +227,13 @@ public class BRoomReader {
 					".   .   . ",
 					".   .   . ",
 					".   .   . ",
-					"bee bee db "
+					"bee bee . "
 				},
 				{
 					"bes .   .",
 					"bes .   . ",
 					"bes .   . ",
-					".   .   db "
+					".   .   . "
 				},
 				{
 					".   bew bew",
@@ -336,7 +336,7 @@ public class BRoomReader {
 				},
 		};
 		
-		String[][] data = data4;
+		String[][] data = data3;
 		
 		for (int i = 0; i < data.length; i++) {
 			String[] layer = data[i];

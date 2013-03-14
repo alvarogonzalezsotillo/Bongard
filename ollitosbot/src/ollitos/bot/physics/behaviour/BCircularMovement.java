@@ -40,7 +40,7 @@ public class BCircularMovement implements IBMovementBehaviour, IBPhysicalListene
 	
 
 	@Override
-	public void nextMovement(List<IBImpulse> ret) {
+	public void nextImpulses(List<IBImpulse> ret) {
 		BDirection d = direction();
 		if( d == null ){
 			return;

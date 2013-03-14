@@ -18,7 +18,7 @@ public class BGravityBehaviour implements IBMovementBehaviour{
 	}
 	
 	@Override
-	public void nextMovement(List<IBImpulse> ret){
+	public void nextImpulses(List<IBImpulse> ret){
 		ret.add( new GravityDisplacement() );
 	}
 	

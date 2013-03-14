@@ -20,13 +20,14 @@ public class BConveyorBeltBehaviour implements IBConveyorBeltBehaviour, IBImpuls
 	}
 
 	@Override
-	public void nextMovement(List<IBImpulse> ret) {
-		computeSupportDisplacements( _item, _item.direction(), this, ret, true );
+	public void nextImpulses(List<IBImpulse> ret) {
+		computeSupportDisplacements( _item, _item.direction(), ret );
 	}
 
 
 	private static List<IBPhysicalContact> _contacts = new ArrayList<IBPhysicalContact>();
-	private static void computeSupportDisplacements(IBPhysicalItem item, BDirection d, IBImpulseCause cause, List<? super IBImpulse> ret, boolean conveyorBelt ){
+	private void computeSupportDisplacements(IBPhysicalItem item, BDirection d, List<? super IBImpulse> ret ){
+		
 		// TODO: How to not duplicate code with BDisplacement.computeDirectlyInducedSupportDisplacements?
 		IBPhysics p = item.physics();
 		_contacts.clear();
@@ -34,10 +35,16 @@ public class BConveyorBeltBehaviour implements IBConveyorBeltBehaviour, IBImpuls
 		for (IBPhysicalContact c : _contacts) {
 			for( IBPhysicalItem i : c.items() ){
 				if( i != item ){
-					IBImpulse imp = new BImpulse(i, d.vector(), cause);
+					IBImpulse imp = new ConveyorBeltImpulse(i);
 					ret.add( imp );
 				}
 			}
+		}
+	}
+	
+	private class ConveyorBeltImpulse extends BImpulse{
+		public ConveyorBeltImpulse(IBPhysicalItem i ) {
+			super(i, _item.direction().vector(), BConveyorBeltBehaviour.this);
 		}
 	}
 }

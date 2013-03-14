@@ -14,7 +14,7 @@ import ollitos.platform.IBLogger;
 
 public class BPhysics extends BAbstractPhysics{
 
-	private static final int STEP = 1;
+	private static final int STEP = 50;
 
 
 	public BPhysics( final BPhysicsView view ){
@@ -73,7 +73,7 @@ public class BPhysics extends BAbstractPhysics{
 			list.clear();
 			t.behaviours(IBMovementBehaviour.class, list);
 			for( final IBMovementBehaviour b: list ){
-				b.nextMovement(ret);
+				b.nextImpulses(ret);
 			}
 		}
 	}
