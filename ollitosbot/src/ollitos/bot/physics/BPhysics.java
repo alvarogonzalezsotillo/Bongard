@@ -26,7 +26,6 @@ public class BPhysics extends BAbstractPhysics{
 
 	@Override
 	public void step(){
-		logger().log( "********  STEP **********" );
 		checkCollisions();
 
 		// TODO: store current positions and trigger itemMoved messages at end of step

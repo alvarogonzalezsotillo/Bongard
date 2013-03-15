@@ -8,6 +8,7 @@ import ollitos.gui.basic.BButton;
 import ollitos.gui.basic.BSprite;
 import ollitos.gui.basic.IBDrawable;
 import ollitos.gui.container.BSlidableContainer;
+import ollitos.gui.container.BZoomDrawable;
 import ollitos.gui.container.IBSlidableModel;
 import ollitos.gui.container.IBSlidablePage;
 import ollitos.platform.BResourceLocator;
@@ -56,7 +57,7 @@ public class BGameHelp extends BSlidableContainer implements BState.Stateful{
 				if( _drawable != null ){
 					return _drawable;
 				}
-				_drawable = new BIsoView(_roomData);
+				_drawable = new BZoomDrawable( new BIsoView(_roomData) );
 				return _drawable;
 			}
 

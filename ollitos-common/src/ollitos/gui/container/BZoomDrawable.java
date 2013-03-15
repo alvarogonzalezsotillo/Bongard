@@ -4,6 +4,7 @@ import ollitos.animation.BFixedDurationAnimation;
 import ollitos.animation.IBAnimation;
 import ollitos.geom.BRectangle;
 import ollitos.geom.IBPoint;
+import ollitos.geom.IBRectangle;
 import ollitos.geom.IBTransform;
 import ollitos.geom.IBTransformHolder;
 import ollitos.gui.basic.IBDrawable;
@@ -22,9 +23,18 @@ public class BZoomDrawable extends BDrawableContainer{
 	
 	private transient IBTransform _zoomTransform;
 	private transient IBEventListener _zoomListener;
+	private double _zoomFactor;
+	private int _zoomDelay;
+	
+	public BZoomDrawable(IBDrawable d, double zoomFactor, int zoomDelay ){
+		addDrawable(d);
+		_zoomFactor = zoomFactor;
+		_zoomDelay = zoomDelay;
+	}
 	
 	public BZoomDrawable(IBDrawable d){
-		addDrawable(d);
+		this( d, ZOOM_FACTOR, ZOOM_DELAY );
+		addListener( zoomListener() );
 	}
 	
 	@Override
@@ -33,15 +43,12 @@ public class BZoomDrawable extends BDrawableContainer{
 			throw new IllegalStateException( "At most one drawable allowed" );
 		}
 		setOriginalSize(BTransformUtil.transform(d.transform(),d.originalSize()));
-		addListener( zoomListener() );
 		super.addDrawable(d);
 	}
 	
 	@Override
 	public void removeDrawable(IBDrawable d) {
 		removeDrawables();
-		removeListener(zoomListener());
-		_zoomListener = null;
 	}
 	
 	private IBTransform zoomTransform(){
@@ -66,22 +73,6 @@ public class BZoomDrawable extends BDrawableContainer{
 		super.draw_children(c, dt);
 	}
 	
-	
-	@Override
-	protected BListenerList createListener() {
-		return new BListenerList(this, _zoomTransformHolder );
-	}
-	
-	private IBTransformHolder _zoomTransformHolder = new IBTransformHolder() {
-		
-		@Override
-		public IBTransform transform() {
-			IBTransform t = zoomTransform().copy();
-			t.concatenate(BZoomDrawable.this.transform());
-			return t;
-		}
-	};
-	
 	private IBTransform drawTransform(){
 		IBTransform zt = zoomTransform();
 		IBTransform t = BPlatform.instance().identityTransform();
@@ -91,7 +82,7 @@ public class BZoomDrawable extends BDrawableContainer{
 	}
 	
 	private class ZoomListener extends BEventAdapter{
-		private static final long DOUBLE_CLICK_THRESHOLD = 400;
+		private static final long DOUBLE_CLICK_THRESHOLD = 500;
 		private static final double MAX_DOUBLE_CLICK_DISTANCE = 20;
 		private boolean _in;
 		private boolean _out;
@@ -100,10 +91,6 @@ public class BZoomDrawable extends BDrawableContainer{
 		private IBPoint _lastPoint;
 		private long _lastPointTime;
 
-
-		public ZoomListener() {
-			super(BZoomDrawable.this);
-		}
 
 		@Override
 		public boolean pointerClick(IBPoint pInMyCoordinates) {
@@ -193,14 +180,14 @@ public class BZoomDrawable extends BDrawableContainer{
 
 		private IBPoint _center;
 		public ZoomInAnimation(IBPoint center) {
-			super(ZOOM_DELAY);
+			super(_zoomDelay);
 			_center = center;
 		}
 
 		@Override
 		public void stepAnimation(long millis) {
 			stepMillis(millis);
-			double f = 1 + (ZOOM_FACTOR-1)*currentMillis()/totalMillis();
+			double f = 1 + (_zoomFactor-1)*currentMillis()/totalMillis();
 
 			IBTransform t = platform().identityTransform();
 			t.translate(_center.x(), _center.y() );
@@ -214,14 +201,14 @@ public class BZoomDrawable extends BDrawableContainer{
 		
 		private IBPoint _center;
 		public ZoomOutAnimation(IBPoint center) {
-			super(ZOOM_DELAY);
+			super(_zoomDelay);
 			_center = center;
 		}
 
 		@Override
 		public void stepAnimation(long millis) {
 			stepMillis(millis);
-			double f = ZOOM_FACTOR - (ZOOM_FACTOR-1)*currentMillis()/totalMillis();
+			double f = _zoomFactor - (_zoomFactor-1)*currentMillis()/totalMillis();
 
 			IBTransform t = platform().identityTransform();
 			t.translate(_center.x(), _center.y() );
