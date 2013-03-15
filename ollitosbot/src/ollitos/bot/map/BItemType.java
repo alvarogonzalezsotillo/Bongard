@@ -23,7 +23,8 @@ public enum BItemType{
 	bubbles,
 	hero,
 	belt,
-	bot;
+	bot,
+	pusher;
 	
 	private static void init(){
 		Object[][] data = {
@@ -38,6 +39,7 @@ public enum BItemType{
 			{ ball, l(12,12,20), "ba" },
 			{ hero, l(12,12,20), "he" },
 			{ belt, BASIC_MAP_CELL, "be" },
+			{ pusher, BASIC_MAP_CELL, "pu" },
 		};
 		
 		_southSizes = new HashMap<BItemType, IBLocation>();
@@ -96,6 +98,8 @@ public enum BItemType{
 				return bot.name();
 			case dissapearing_box:
 				return box.name();
+			case pusher:
+				return bubbles.name();
 			default:
 				return name();
 		}

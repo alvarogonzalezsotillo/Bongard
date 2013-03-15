@@ -12,6 +12,7 @@ import ollitos.bot.physics.items.BCentinel;
 import ollitos.bot.physics.items.BDissapearingBox;
 import ollitos.bot.physics.items.BFloor;
 import ollitos.bot.physics.items.BHero;
+import ollitos.bot.physics.items.BPusher;
 import ollitos.util.BException;
 
 public class BMapToPhysical{
@@ -38,6 +39,7 @@ public class BMapToPhysical{
 			case ball: return new BBall(i, p);
 			case hero: return new BHero(i, p);
 			case belt: return new BBelt(i, p);
+			case pusher: return new BPusher(i, p);
 			default: throw new BException( "No implementantion:" + i.type(), null );
 		}
 	}
