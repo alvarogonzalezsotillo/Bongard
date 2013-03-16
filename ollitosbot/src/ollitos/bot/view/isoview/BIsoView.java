@@ -92,7 +92,7 @@ public class BIsoView extends BDrawableContainer implements BPhysicsView{
 	}
 	
 
-	private IBRectangle _originalSize = new BRectangle(0,0,640,480);
+	private IBRectangle _originalSize = new BRectangle(-640/2,-480/2,640,480);
 	private BRoom _room;
 
 
