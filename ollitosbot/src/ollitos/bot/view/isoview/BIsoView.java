@@ -56,6 +56,11 @@ public class BIsoView extends BDrawableContainer implements BPhysicsView{
 	};
 	
 	public BIsoView( String[][] roomData ){
+		this( 480, 640, roomData );
+	}
+	
+	private BIsoView( int width, int height, String[][] roomData ){
+		super( new BRectangle( width, height ) );
 		_roomData = roomData;
 	}
 	
@@ -170,6 +175,9 @@ public class BIsoView extends BDrawableContainer implements BPhysicsView{
 		int x = - pixelsSN*l.sn() + pixelsWE*l.we();
 		int y = - pixelsDU*l.du() - pixelsDU_SNWE*( l.sn() + l.we() );
 		
+		
+		
+		
 		dest.set( x, y );
 		return dest;
 	}
@@ -183,8 +191,10 @@ public class BIsoView extends BDrawableContainer implements BPhysicsView{
 	private BFlatPoint toScreen(BFlatPoint src, BFlatPoint dest ){
 		int srcx = src.x();
 		int srcy = src.y();
-		int x = srcx + (int)originalSize().w()/2;
-		int y = srcy + (int)originalSize().h();
+		
+		IBRectangle os = originalSize();
+		int x = (int)os.x() + srcx + (int)os.w()/2;
+		int y = (int)os.y() + srcy + (int)os.h();
 		if( dest == null ){
 			dest = new BFlatPoint();
 		}
@@ -231,24 +241,10 @@ public class BIsoView extends BDrawableContainer implements BPhysicsView{
     	return ret;
     }
 
-	@Override
-	public IBRectangle originalSize() {
-		return _originalSize;
-	}
-
 	
 	@Override
 	protected void draw_internal(IBCanvas c) {
-		if( true ){
-			IBRaster r = doubleBuffer().raster();
-			IBCanvas doubleBuffer = r.canvas();
-			drawInCanvas(doubleBuffer, (BCanvasContext) platform().canvasContext(), false );
-			canvasContext().setAntialias(ANTIALIAS);
-			c.drawRaster(this, r, 0, 0);
-		}
-		else{
-			drawInCanvas(c, canvasContext(), ANTIALIAS );
-		}
+		drawInCanvas(c, canvasContext(), ANTIALIAS );
 	}
 
 	private void drawInCanvas(IBCanvas c, BCanvasContext cc, boolean antialias ){

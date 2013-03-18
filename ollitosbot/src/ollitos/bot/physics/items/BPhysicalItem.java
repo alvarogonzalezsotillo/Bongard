@@ -44,7 +44,7 @@ public abstract class BPhysicalItem implements IBPhysicalItem{
 	}
 	
 	
-	protected BPhysicalItem(BMapItem mapItem, BPhysics physics){
+	protected BPhysicalItem(BMapItem mapItem, IBPhysics physics){
 		this( mapItem, mapItem.type(), mapItem.region(), mapItem.direction(), physics );
 	}
 

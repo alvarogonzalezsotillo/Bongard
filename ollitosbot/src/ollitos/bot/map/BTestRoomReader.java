@@ -30,13 +30,13 @@ public class BTestRoomReader extends BRoomReader{
 			},
 			{
 				"fl fl fl fl fl fl fl fl",
-				".  .  he  .   .  .   .  .",
+				"pu .  he  .   .  .   .  pu",
 				".  .  .   .   .  cws .  .",
 				".  .  .   .   .  .   .  .",
 				"bx .  ccn .   .  cww .  .",
 				".  .  .   cce .  .   .  .",
 				".  .  .   .   bx .   .  .",
-				".  .  .   .   .  .   .  .",
+				"pu .  .   .   .  .   .  pu",
 			},
 			{
 				"fl fl fl fl fl fl fl fl",
