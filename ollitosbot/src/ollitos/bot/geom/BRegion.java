@@ -1,7 +1,12 @@
 package ollitos.bot.geom;
 
+import static ollitos.bot.geom.BDirection.down;
+import static ollitos.bot.geom.BDirection.east;
+import static ollitos.bot.geom.BDirection.north;
+import static ollitos.bot.geom.BDirection.south;
+import static ollitos.bot.geom.BDirection.up;
+import static ollitos.bot.geom.BDirection.west;
 import static ollitos.bot.geom.BLocation.l;
-import static ollitos.bot.geom.BDirection.*;
 import ollitos.util.BException;
 
 public class BRegion implements IBRegion{
@@ -164,8 +169,9 @@ public class BRegion implements IBRegion{
 			return false;
 		}
 		IBRegion r = (IBRegion) obj;
-		return r.maxBound().equals(maxBound()) && r.minBound().equals(minBound());
+		return IBRegion.Util.regionEquals(this, r);
 	}
+
 
 	@Override
 	public int[] faceCoordinates(int[] dst) {

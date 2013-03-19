@@ -58,7 +58,7 @@ public abstract class BPhysicalItem implements IBPhysicalItem{
 		}
 	}
 
-	protected void setRegion(IBRegion region, boolean copy) {
+	private void setRegion(IBRegion region, boolean copy) {
 		_region = copy ? new BRegion(region) : region;
 	}
 

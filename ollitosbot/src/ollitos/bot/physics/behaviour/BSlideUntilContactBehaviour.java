@@ -2,6 +2,7 @@ package ollitos.bot.physics.behaviour;
 
 import java.util.List;
 
+import ollitos.bot.geom.BDirection;
 import ollitos.bot.geom.IBLocation;
 import ollitos.bot.geom.IBRegion;
 import ollitos.bot.geom.IBRegion.Vertex;
@@ -10,6 +11,8 @@ import ollitos.bot.physics.IBPhysicalItem;
 import ollitos.bot.physics.IBPhysicalListener;
 import ollitos.bot.physics.impulse.BImpulse;
 import ollitos.bot.physics.impulse.IBImpulse;
+import ollitos.platform.BPlatform;
+import ollitos.platform.IBLogger;
 
 public class BSlideUntilContactBehaviour implements IBMovementBehaviour, IBPhysicalListener{
 
@@ -74,13 +77,24 @@ public class BSlideUntilContactBehaviour implements IBMovementBehaviour, IBPhysi
 
 	@Override
 	public void itemMoved(IBPhysicalItem i, IBRegion oldRegion) {
+		IBLogger logger = BPlatform.instance().logger();
 		if( i != _item ){
 			return;
 		}
+		logger.log( "Ball moved:" + i + " --- " + oldRegion );		
 		if( sliding() ){
+			logger.log( "  estaba deslizando" );
 			return;
 		}
+		logger.log( "  NO estaba deslizando" );
 		IBLocation v = IBLocation.Util.subtract( i.region().vertex(Vertex.aVertex), oldRegion.vertex(Vertex.aVertex), null );
+		
+		BDirection d = IBLocation.Util.normalize(v);
+		if( d == BDirection.down || d == BDirection.up ){
+			logger.log( "  no se empieza a deslizar hacia:" + d );
+			return;
+		}
+		
 		startSliding(v);
 	}
 	

@@ -46,6 +46,16 @@ public interface IBLocation {
 			}
 			return Util.normalize(this).toString();
 		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			if( obj instanceof IBLocation ){
+				return IBLocation.Util.equals( this, (IBLocation) obj );
+			}
+			else{
+				return false;
+			}
+		}
 	}
 	
 	/**

@@ -20,7 +20,6 @@ import ollitos.bot.geom.IBLocation;
 import ollitos.bot.geom.IBRegion;
 import ollitos.bot.physics.behaviour.BFixedThingBehaviour;
 import ollitos.bot.physics.behaviour.BMovableThingBehaviour;
-import ollitos.bot.physics.items.BBall;
 import ollitos.bot.physics.items.BRoomWall;
 import ollitos.bot.view.BPhysicsView;
 import ollitos.platform.BPlatform;
@@ -252,6 +251,18 @@ public abstract class BAbstractPhysics implements IBPhysics{
 			}
 		}
 	}
+	
+	protected void notifyItemMoved(final IBPhysicalItem t, IBRegion oldRegion ) {
+		for( final IBPhysicalListener l: _physicalListeners ){
+			l.itemMoved(t, oldRegion);
+		}
+		for( final IBPhysicalItem i: items() ){
+			if( i.physicalListener() != null ){
+				i.physicalListener().itemMoved(t, oldRegion);
+			}
+		}
+	}
+	
 
 	public IBPhysicalItem[] items(){
 		if( _itemsArray == null ){
@@ -324,11 +335,6 @@ public abstract class BAbstractPhysics implements IBPhysics{
 			final IBPhysicalItem[] items = items();
 			for( final IBPhysicalItem i: items ){
 				if( c.pushed() == i || c.pusher() == i ){
-
-					if( c.pushed() instanceof BBall && i instanceof BBall){
-						System.out.println( "Empujan a ball");
-					}
-
 					if( i.physicalListener() != null ){
 						i.physicalListener().collision(c);
 					}

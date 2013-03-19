@@ -1,12 +1,17 @@
 package ollitos.bot.physics;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import ollitos.bot.geom.BRegion;
+import ollitos.bot.geom.IBRegion;
 import ollitos.bot.physics.behaviour.IBMovementBehaviour;
 import ollitos.bot.physics.displacement.IBDisplacement;
 import ollitos.bot.physics.displacement.IBPushDisplacement;
 import ollitos.bot.physics.impulse.IBImpulse;
+import ollitos.bot.physics.items.BBall;
 import ollitos.bot.view.BPhysicsView;
 import ollitos.platform.BPlatform;
 import ollitos.platform.IBLogger;
@@ -14,7 +19,7 @@ import ollitos.platform.IBLogger;
 
 public class BPhysics extends BAbstractPhysics{
 
-	private static final int STEP = 50;
+	private static final int STEP = 500;
 
 
 	public BPhysics( final BPhysicsView view ){
@@ -22,17 +27,26 @@ public class BPhysics extends BAbstractPhysics{
 	}
 
 
-	private final ArrayList<IBImpulse> _impulses = new ArrayList<IBImpulse>();
-
+	private final List<IBImpulse> _impulses = new ArrayList<IBImpulse>();
+	private final List<IBPhysicalItem> _movedItems = new ArrayList<IBPhysicalItem>();
+	private final Map<IBPhysicalItem, IBRegion> _regions = new HashMap<IBPhysicalItem, IBRegion>();
+	
+	
 	@Override
 	public void step(){
 		checkCollisions();
 
-		// TODO: store current positions and trigger itemMoved messages at end of step
+		_regions.clear();
+		fillCurrentRegions( _regions, movableItems() );
 		
 		_impulses.clear();
 		computeImpulsesOfBehaviours(_impulses);
-
+		
+		for( IBPhysicalItem i: movableItems() ){
+			if( i instanceof BBall ){
+				logger().log( "antes:" + i );
+			}
+		}
 		List<IBDisplacement> inducedDisplacements = new ArrayList<IBDisplacement>();
 		for( IBImpulse i: _impulses ){
 			for( IBDisplacement d : i.toDisplacements() ){
@@ -51,17 +65,38 @@ public class BPhysics extends BAbstractPhysics{
 				
 				d.apply();
 			}
-			
 		}
+		
+		for( IBPhysicalItem i: movableItems() ){
+			if( i instanceof BBall ){
+				logger().log( "despues:" + i + " --- " + _regions.get(i) );
+			}
+		}
+		
 
-
-
+		notifyItemsMoved( _regions );
 		notifyStepFinished();
 	}
 
-	private void storePositions() {
-		// TODO Auto-generated method stub
-		
+	private void notifyItemsMoved(Map<IBPhysicalItem, IBRegion> regions) {
+		for( IBPhysicalItem i: regions.keySet() ){
+			IBRegion r = regions.get(i);
+			if( !i.region().equals(r) ){
+				//if( i instanceof BBall ){
+					logger().log( "Se ha movido:" + i );
+				//}
+				notifyItemMoved(i, r);
+			}
+		}
+	}
+
+	private void fillCurrentRegions(Map<IBPhysicalItem, IBRegion> regions, IBPhysicalItem ... items ) {
+		for( IBPhysicalItem i: items ){
+			regions.put(i, new BRegion(i.region()) );
+			if( i instanceof BBall ){
+				logger().log( "BBall:" + i.region() );
+			}
+		}
 	}
 
 	private IBLogger logger() {

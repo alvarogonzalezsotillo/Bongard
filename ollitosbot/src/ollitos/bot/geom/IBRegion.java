@@ -8,8 +8,6 @@ import static ollitos.bot.geom.BDirection.south;
 import static ollitos.bot.geom.BDirection.up;
 import static ollitos.bot.geom.BDirection.west;
 import ollitos.bot.ArrayUtil;
-import ollitos.bot.view.isoview.BIsoView.BFlatPoint;
-import ollitos.geom.IBRectangle;
 import ollitos.util.BException;
 
 
@@ -211,6 +209,10 @@ public interface IBRegion {
 			
 			System.out.println( "intersects:" + intersects(r1, r2) );
 			System.out.println( "intersection:" + intersection(r1, r2,null) );
+		}
+
+		public static boolean regionEquals(BRegion r1, IBRegion r2) {
+			return r1.maxBound().equals(r2.maxBound()) && r1.minBound().equals(r2.minBound());
 		}
 		
 		
