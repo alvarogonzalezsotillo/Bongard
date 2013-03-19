@@ -19,7 +19,7 @@ import ollitos.platform.IBLogger;
 
 public class BPhysics extends BAbstractPhysics{
 
-	private static final int STEP = 500;
+	private static final int STEP = 1;
 
 
 	public BPhysics( final BPhysicsView view ){
@@ -42,11 +42,6 @@ public class BPhysics extends BAbstractPhysics{
 		_impulses.clear();
 		computeImpulsesOfBehaviours(_impulses);
 		
-		for( IBPhysicalItem i: movableItems() ){
-			if( i instanceof BBall ){
-				logger().log( "antes:" + i );
-			}
-		}
 		List<IBDisplacement> inducedDisplacements = new ArrayList<IBDisplacement>();
 		for( IBImpulse i: _impulses ){
 			for( IBDisplacement d : i.toDisplacements() ){
@@ -67,12 +62,6 @@ public class BPhysics extends BAbstractPhysics{
 			}
 		}
 		
-		for( IBPhysicalItem i: movableItems() ){
-			if( i instanceof BBall ){
-				logger().log( "despues:" + i + " --- " + _regions.get(i) );
-			}
-		}
-		
 
 		notifyItemsMoved( _regions );
 		notifyStepFinished();
@@ -82,9 +71,6 @@ public class BPhysics extends BAbstractPhysics{
 		for( IBPhysicalItem i: regions.keySet() ){
 			IBRegion r = regions.get(i);
 			if( !i.region().equals(r) ){
-				//if( i instanceof BBall ){
-					logger().log( "Se ha movido:" + i );
-				//}
 				notifyItemMoved(i, r);
 			}
 		}
@@ -93,9 +79,6 @@ public class BPhysics extends BAbstractPhysics{
 	private void fillCurrentRegions(Map<IBPhysicalItem, IBRegion> regions, IBPhysicalItem ... items ) {
 		for( IBPhysicalItem i: items ){
 			regions.put(i, new BRegion(i.region()) );
-			if( i instanceof BBall ){
-				logger().log( "BBall:" + i.region() );
-			}
 		}
 	}
 

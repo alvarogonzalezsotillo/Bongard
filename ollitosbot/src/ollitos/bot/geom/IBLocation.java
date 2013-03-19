@@ -69,7 +69,7 @@ public interface IBLocation {
 	public class Util{
 		
 		public static boolean equals(IBLocation l1, IBLocation l2){
-			return l1.du() == l2.du() && l1.we() == l2.we() && l1.du() == l2.du();
+			return l1.du() == l2.du() && l1.we() == l2.we() && l1.sn() == l2.sn();
 		}
 		
 		public static IBLocation add(IBLocation l1, IBLocation l2, IBLocation ret ){
