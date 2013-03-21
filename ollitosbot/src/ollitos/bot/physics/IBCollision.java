@@ -5,6 +5,7 @@ import ollitos.bot.geom.IBRegion;
 import ollitos.bot.physics.displacement.IBDisplacement;
 import ollitos.platform.BPlatform;
 import ollitos.platform.IBLogger;
+import sun.awt.CausedFocusEvent.Cause;
 
 
 public interface IBCollision extends IBPhysicalInteraction{
@@ -37,6 +38,10 @@ public interface IBCollision extends IBPhysicalInteraction{
 				// IF THE OTHER ITEM SHARE THE OPPOSITE FACE WITH THE COLLISION, THIS IS IT
 				BDirection oppositeDirection = d.opposite();
 				if( otherRegion.faceCoordinate(oppositeDirection) != collisionRegion.faceCoordinate(oppositeDirection) ){
+					continue;
+				}
+				
+				if( d != c.cause().delta() && d != c.cause().delta().opposite() ){
 					continue;
 				}
 				
