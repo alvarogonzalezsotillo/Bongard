@@ -126,7 +126,7 @@ public abstract class BDisplacement implements IBDisplacement{
 			}
 			final IBRegion intersection = IBRegion.Util.intersection(region, i.region(), null);
 			if( intersection != null ){
-				final BCollision c = new BCollision(intersection,item,i,this);
+				final BCollision c = new BCollision(intersection,item,region,i,this);
 				ret.add( c );
 			}
 		}

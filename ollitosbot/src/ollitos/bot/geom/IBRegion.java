@@ -70,7 +70,11 @@ public interface IBRegion {
 				return null;
 			}
 			
-			return new BRegion( BLocation.l(we[0], sn[0], du[0]), BLocation.l(we[1], sn[1], du[1]));
+			if( dst == null ){
+				return new BRegion( BLocation.l(we[0], sn[0], du[0]), BLocation.l(we[1], sn[1], du[1]));
+			}
+			throw new UnsupportedOperationException();
+			
 		}
 		
 		public static boolean contact( IBRegion r1, IBRegion r2, BDirection directionOfR1 ){
@@ -204,8 +208,8 @@ public interface IBRegion {
 		}
 		
 		public static void main(String[] args) {
-			BRegion r1 = new BRegion( BLocation.l(5, 5, 5), BLocation.l(10,10,10) );
-			BRegion r2 = new BRegion( BLocation.l(6, 6, 6), BLocation.l(6,6,6) );
+			BRegion r1 = new BRegion( BLocation.l(0, 96, 12), BLocation.l(16,112,24) );
+			BRegion r2 = new BRegion( BLocation.l(9,84,12), BLocation.l(21,96,32) );
 			
 			System.out.println( "intersects:" + intersects(r1, r2) );
 			System.out.println( "intersection:" + intersection(r1, r2,null) );

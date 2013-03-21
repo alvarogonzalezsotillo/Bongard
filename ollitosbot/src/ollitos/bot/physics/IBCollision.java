@@ -3,6 +3,8 @@ package ollitos.bot.physics;
 import ollitos.bot.geom.BDirection;
 import ollitos.bot.geom.IBRegion;
 import ollitos.bot.physics.displacement.IBDisplacement;
+import ollitos.platform.BPlatform;
+import ollitos.platform.IBLogger;
 
 
 public interface IBCollision extends IBPhysicalInteraction{
@@ -10,6 +12,8 @@ public interface IBCollision extends IBPhysicalInteraction{
 	IBPhysicalItem pushed();
 	IBDisplacement cause();
 	IBRegion collision();
+	IBRegion pusherRegion();
+	IBRegion pushedRegion();
 	
 	public static class Util{
 		private Util(){
@@ -20,16 +24,23 @@ public interface IBCollision extends IBPhysicalInteraction{
 				throw new IllegalArgumentException();
 			}
 			
+			IBRegion region = i == c.pusher() ? c.pusherRegion() : c.pushedRegion();
+			IBRegion otherRegion =  i == c.pushed() ? c.pusherRegion() : c.pushedRegion();
+			IBRegion collisionRegion = c.collision();
+			
 			for( BDirection d : BDirection.values() ){
-				
-				int fcItem = i.region().faceCoordinate(d);
-				int fcCollision = c.collision().faceCoordinate(d);
-					
-				if( fcItem == fcCollision ){
-					// ITEM AND COLLISION SHARE PART OF A FACE
-					// IF THE FACES ARE THE SAME THIS IS THE DIRECTION
-					return d;
+				if( region.faceCoordinate(d) != collisionRegion.faceCoordinate(d) ){
+					continue;
 				}
+				
+				// ITEM AND COLLISION SHARE PART OF A FACE
+				// IF THE OTHER ITEM SHARE THE OPPOSITE FACE WITH THE COLLISION, THIS IS IT
+				BDirection oppositeDirection = d.opposite();
+				if( otherRegion.faceCoordinate(oppositeDirection) != collisionRegion.faceCoordinate(oppositeDirection) ){
+					continue;
+				}
+				
+				return d;
 			}
 			
 			throw new IllegalStateException();
