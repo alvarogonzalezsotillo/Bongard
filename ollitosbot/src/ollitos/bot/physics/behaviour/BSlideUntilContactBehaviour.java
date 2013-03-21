@@ -77,21 +77,16 @@ public class BSlideUntilContactBehaviour implements IBMovementBehaviour, IBPhysi
 
 	@Override
 	public void itemMoved(IBPhysicalItem i, IBRegion oldRegion) {
-		IBLogger logger = BPlatform.instance().logger();
 		if( i != _item ){
 			return;
 		}
-		logger.log( "Ball moved:" + i + " --- " + oldRegion );		
 		if( sliding() ){
-			logger.log( "  estaba deslizando" );
 			return;
 		}
-		logger.log( "  NO estaba deslizando" );
 		IBLocation v = IBLocation.Util.subtract( i.region().vertex(Vertex.aVertex), oldRegion.vertex(Vertex.aVertex), null );
 		
 		BDirection d = IBLocation.Util.normalize(v);
 		if( d == BDirection.down || d == BDirection.up ){
-			logger.log( "  no se empieza a deslizar hacia:" + d );
 			return;
 		}
 		
