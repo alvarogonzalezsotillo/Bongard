@@ -89,9 +89,7 @@ public abstract class BRoomReader {
 		BMapItem i = t.createItem(room());
 		i.rotateTo(d);
 		
-		IBLocation a = alignementFromLegend(legendAndDirection);
-		
-		traslateBasicBlocks(i,we,sn,du, a);
+		traslateBasicBlocks(i,we,sn,du);
 		
 		items(legend).add(i);
 	}
@@ -126,7 +124,7 @@ public abstract class BRoomReader {
 		throw new UnsupportedOperationException();
 	}
 	
-	protected static IBLocation traslateBasicBlocks(BMapItem i, int we, int sn, int du, IBLocation alignement ){
+	protected static IBLocation traslateBasicBlocks(BMapItem i, int we, int sn, int du ){
 		IBLocation bc = BItemType.BASIC_MAP_CELL;
 		IBLocation l = BLocation.l(bc.we()*we,bc.sn()*sn, bc.du()*du );
 		i.traslateRegion( l );

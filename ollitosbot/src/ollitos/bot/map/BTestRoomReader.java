@@ -228,39 +228,29 @@ public class BTestRoomReader extends BRoomReader{
 		
 		public static String[][] DOORTEST = {
 			{
-				"fl fl fl fl",
-				"fl fl fl fl",
-				"fl fl fl fl",
-				"fl fl fl fl",
+				"fl fl fl fl fl fl fl fl",
+				"fl fl fl fl fl fl fl fl",
+				"fl fl fl fl fl fl fl fl",
+				"fl fl fl fl fl fl fl fl",
+				"fl fl fl fl fl fl fl fl",
+				"fl fl fl fl fl fl fl fl",
+				"fl fl fl fl fl fl fl fl",
+				"fl fl fl fl fl fl fl fl",
 			},
 			{
-				".   .   .   .",
-				".   .   .   .",
-				".   .   .   .",
-				"cs  cs  .  .",
-			},
-			{
-				".   .   .   .",
-				".   .   .   .",
-				".   .   .   .",
-				"cs  cs  .  .",
-			},
-			{
-				".   .   .   .",
-				".   .   .   .",
-				".   .   .   .",
-				"cs  cs  .  .",
-			},
-			{
-				".   .   .   .",
-				".   .   .   .",
-				".   .   .   .",
-				"ca  ca  .  .",
+				".   don .   don .   .   don .",
+				".   .   he  .   .   .   .   .",
+				".   .   .   don .   .   .   .",
+				".   .   dow .   doe .   .   doe",
+				"dow .   .   dos .   .   .   .",
+				".   .   .   .   .   .   .   .",
+				".   .   .   .   .   .   .   .",
+				".   dos .   dos .   .   dos .",
 			},
 		};
 
 
-	public static String[][][] ROOMS = { DOORTEST, BIGROOM, SMALLROOM, CONVEYORBELTS, UNIDIMENSIONAL, SMALLANDBORING };
+	public static String[][][] ROOMS = { DOORTEST, SMALLROOM, CONVEYORBELTS, UNIDIMENSIONAL, SMALLANDBORING, BIGROOM };
 		
 		
 	public BRoom createRoomFromData(String[][] data ){	

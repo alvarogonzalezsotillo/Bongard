@@ -19,7 +19,7 @@ public class BMapItem implements IBMovableRegion{
 		this(container, type, BDirection.south );
 	}
 	
-	public BMapItem( BRoom container, BItemType type, BDirection direction ){
+	protected BMapItem( BRoom container, BItemType type, BDirection direction ){
 		_type = type;
 		_room = container;
 		if( _room != null ){

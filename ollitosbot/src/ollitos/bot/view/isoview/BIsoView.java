@@ -23,8 +23,6 @@ import ollitos.bot.physics.IBPhysicalItem;
 import ollitos.bot.physics.IBPhysicalListener;
 import ollitos.bot.physics.behaviour.BMovableThingBehaviour;
 import ollitos.bot.physics.behaviour.BSpriteBehaviour;
-import ollitos.bot.physics.items.BColumnCapital;
-import ollitos.bot.physics.items.BColumnShaft;
 import ollitos.bot.view.BPhysicsView;
 import ollitos.geom.BRectangle;
 import ollitos.geom.IBRectangle;
@@ -254,7 +252,7 @@ public class BIsoView extends BDrawableContainer implements BPhysicsView{
 			if( r != null ){
 				c.drawRaster(cc, r, p.x(), p.y());
 			}
-			if( IN_DRAW_BOXES && (BMovableThingBehaviour.is(i) || i instanceof BColumnCapital || i instanceof BColumnShaft) ){
+			if( IN_DRAW_BOXES && (BMovableThingBehaviour.is(i) ) ){
 				drawBox(c,cc,i);
 			}
 		}
@@ -363,8 +361,8 @@ public class BIsoView extends BDrawableContainer implements BPhysicsView{
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		System.out.println( toFlatPoint(BLocation.l(8,8,12), null) );
-		System.out.println( toFlatPoint(BLocation.l(16,0,0), null) );
+		System.out.println( toFlatPoint(BLocation.l(12,12,12), null) );
+		System.out.println( toFlatPoint(BLocation.l(12,0,0), null) );
 	}
 
 	@Override

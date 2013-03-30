@@ -11,9 +11,7 @@ import ollitos.bot.map.items.BRoom;
 public enum BItemType{
 	room,
 	floor,
-	door_left,
-	door_right,
-	door_top,
+	door,
 	centinel_clockwise,
 	centinel_counterclockwise,
 	box,
@@ -31,6 +29,7 @@ public enum BItemType{
 	private static void init(){
 		Object[][] data = {
 			{ bot, l(12,12,20), "bo" },
+			{ door, l(32,8,42), "do" },
 			{ centinel_clockwise, l(12,12,20), "cw" },
 			{ centinel_counterclockwise, l(12,12,20), "cc" },
 			{ floor, BASIC_MAP_CELL, "fl" },
@@ -39,7 +38,7 @@ public enum BItemType{
 			{ dissapearing_box, BASIC_MAP_CELL, "db" },
 			{ bubbles, BASIC_MAP_CELL, "bb" },
 			{ ball, l(12,12,16), "ba" },
-			{ hero, l(12,12,20), "he" },
+			{ hero, l(12,12,12), "he" },
 			{ belt, BASIC_MAP_CELL, "be" },
 			{ pusher, BASIC_MAP_CELL, "pu" },
 			{ column_capital, l(16,8,6), "ca" },
@@ -102,7 +101,6 @@ public enum BItemType{
 		switch(this){
 			case centinel_clockwise:
 			case centinel_counterclockwise:
-			case hero:
 				return bot.name();
 			case dissapearing_box:
 				return box.name();

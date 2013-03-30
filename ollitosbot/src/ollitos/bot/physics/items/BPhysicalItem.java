@@ -30,19 +30,15 @@ public abstract class BPhysicalItem implements IBPhysicalItem{
 	private IBPhysicalListener[] _listenersArray;
 	private BItemType _itemType;
 	
-	protected BPhysicalItem(BItemType type, IBRegion region, BDirection d, IBPhysics physics){
-		this(null,type,region,d,physics);
-	}
 	
-	private BPhysicalItem(BMapItem mapItem, BItemType type, IBRegion region, BDirection d, IBPhysics physics){
+	protected BPhysicalItem(BMapItem mapItem, BItemType type, IBRegion region, BDirection d, IBPhysics physics){
 		_itemType = type;
 		_physics = physics;
 		setMapItem(mapItem);
 		setRegion(region, true);
 		_direction = d;
 	}
-	
-	
+
 	protected BPhysicalItem(BMapItem mapItem, IBPhysics physics){
 		this( mapItem, mapItem.type(), mapItem.region(), mapItem.direction(), physics );
 	}
