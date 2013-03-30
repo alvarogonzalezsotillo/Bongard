@@ -9,6 +9,8 @@ import ollitos.bot.physics.items.BBot;
 import ollitos.bot.physics.items.BBox;
 import ollitos.bot.physics.items.BBubbles;
 import ollitos.bot.physics.items.BCentinel;
+import ollitos.bot.physics.items.BColumnCapital;
+import ollitos.bot.physics.items.BColumnShaft;
 import ollitos.bot.physics.items.BDissapearingBox;
 import ollitos.bot.physics.items.BFloor;
 import ollitos.bot.physics.items.BHero;
@@ -37,6 +39,8 @@ public class BMapToPhysical{
 			case dissapearing_box: return new BDissapearingBox(i,p);
 			case bubbles: return new BBubbles(i, p);
 			case ball: return new BBall(i, p);
+			case column_capital: return new BColumnCapital(i, p);
+			case column_shaft: return new BColumnShaft(i, p);
 			case hero: return new BHero(i, p);
 			case belt: return new BBelt(i, p);
 			case pusher: return new BPusher(i, p);

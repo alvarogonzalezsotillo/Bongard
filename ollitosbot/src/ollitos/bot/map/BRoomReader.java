@@ -84,14 +84,20 @@ public abstract class BRoomReader {
 		if( t == null ){
 			throw new BException("No item for legend:" + legend + "(" + legendAndDirection + ")", null );
 		}
+		
 		BDirection d = directionFromLegend(legendAndDirection);
-		
 		BMapItem i = t.createItem(room());
-		i.setDirection(d);
+		i.rotateTo(d);
 		
-		traslateBasicBlocks(i,we,sn,du);
+		IBLocation a = alignementFromLegend(legendAndDirection);
+		
+		traslateBasicBlocks(i,we,sn,du, a);
 		
 		items(legend).add(i);
+	}
+
+	private IBLocation alignementFromLegend(String legendAndDirection) {
+		return BLocation.l(-1,-1,0);
 	}
 
 	private BDirection directionFromLegend(String legendAndDirection) {
@@ -120,7 +126,7 @@ public abstract class BRoomReader {
 		throw new UnsupportedOperationException();
 	}
 	
-	protected static IBLocation traslateBasicBlocks(BMapItem i, int we, int sn, int du ){
+	protected static IBLocation traslateBasicBlocks(BMapItem i, int we, int sn, int du, IBLocation alignement ){
 		IBLocation bc = BItemType.BASIC_MAP_CELL;
 		IBLocation l = BLocation.l(bc.we()*we,bc.sn()*sn, bc.du()*du );
 		i.traslateRegion( l );

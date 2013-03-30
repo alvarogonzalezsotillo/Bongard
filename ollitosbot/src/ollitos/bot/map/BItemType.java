@@ -1,9 +1,9 @@
 package ollitos.bot.map;
 
+import static ollitos.bot.geom.BLocation.l;
+
 import java.util.HashMap;
 
-
-import static ollitos.bot.geom.BLocation.*;
 import ollitos.bot.geom.IBLocation;
 import ollitos.bot.map.items.BMapItem;
 import ollitos.bot.map.items.BRoom;
@@ -24,6 +24,8 @@ public enum BItemType{
 	hero,
 	belt,
 	bot,
+	column_capital,
+	column_shaft,
 	pusher;
 	
 	private static void init(){
@@ -36,10 +38,12 @@ public enum BItemType{
 			{ book, BASIC_MAP_CELL, "bk" },
 			{ dissapearing_box, BASIC_MAP_CELL, "db" },
 			{ bubbles, BASIC_MAP_CELL, "bb" },
-			{ ball, l(12,12,20), "ba" },
+			{ ball, l(12,12,16), "ba" },
 			{ hero, l(12,12,20), "he" },
 			{ belt, BASIC_MAP_CELL, "be" },
 			{ pusher, BASIC_MAP_CELL, "pu" },
+			{ column_capital, l(16,8,6), "ca" },
+			{ column_shaft, l(8,8,12), "cs" },
 		};
 		
 		_southSizes = new HashMap<BItemType, IBLocation>();
@@ -49,7 +53,11 @@ public enum BItemType{
 		
 		_legends = new HashMap<BItemType, String>();
 		for( Object[] d: data ){
-			_legends.put( (BItemType)d[0], (String)d[2] );
+			String legend = (String)d[2];
+			if( _legends.containsKey(legend) ){
+				throw new IllegalStateException(legend);
+			}
+			_legends.put( (BItemType)d[0], legend );
 		}
 		
 	}
@@ -101,7 +109,7 @@ public enum BItemType{
 			case pusher:
 				return bubbles.name();
 			default:
-				return name();
+				return name().replace('_', '-');
 		}
 	}
 	
