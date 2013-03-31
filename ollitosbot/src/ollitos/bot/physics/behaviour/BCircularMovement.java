@@ -72,7 +72,12 @@ public class BCircularMovement implements IBMovementBehaviour, IBPhysicalListene
 		if( l.du() <= item().region().faceCoordinate(BDirection.down) ){
 			return;
 		}
-		_collisionInThisStep = true;
+		
+		BDirection d = IBCollision.Util.computeFaceOfCollision(_item, collision);
+		System.out.println( d + " -- " + direction() );
+		if( d == direction() ){
+			_collisionInThisStep = true;
+		}
 	}
 
 	@Override
