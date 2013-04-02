@@ -41,6 +41,7 @@ public class BSlideUntilContactBehaviour implements IBMovementBehaviour, IBPhysi
 		IBPhysicalItem pushed = collision.pushed();
 		IBPhysicalItem pusher = collision.pusher();
 		
+		// TODO: DETECT THE DIRECTION OF PUSHING
 		if( pushed == _item ){
 			stopSliding();
 			startSliding(collision.cause().delta().vector());
