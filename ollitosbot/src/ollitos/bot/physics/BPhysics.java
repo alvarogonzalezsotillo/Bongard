@@ -11,7 +11,6 @@ import ollitos.bot.physics.behaviour.IBMovementBehaviour;
 import ollitos.bot.physics.displacement.IBDisplacement;
 import ollitos.bot.physics.displacement.IBPushDisplacement;
 import ollitos.bot.physics.impulse.IBImpulse;
-import ollitos.bot.physics.items.BBall;
 import ollitos.bot.view.BPhysicsView;
 import ollitos.platform.BPlatform;
 import ollitos.platform.IBLogger;

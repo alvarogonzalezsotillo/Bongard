@@ -84,14 +84,18 @@ public abstract class BRoomReader {
 		if( t == null ){
 			throw new BException("No item for legend:" + legend + "(" + legendAndDirection + ")", null );
 		}
-		BDirection d = directionFromLegend(legendAndDirection);
 		
+		BDirection d = directionFromLegend(legendAndDirection);
 		BMapItem i = t.createItem(room());
-		i.setDirection(d);
+		i.rotateTo(d);
 		
 		traslateBasicBlocks(i,we,sn,du);
 		
 		items(legend).add(i);
+	}
+
+	private IBLocation alignementFromLegend(String legendAndDirection) {
+		return BLocation.l(-1,-1,0);
 	}
 
 	private BDirection directionFromLegend(String legendAndDirection) {

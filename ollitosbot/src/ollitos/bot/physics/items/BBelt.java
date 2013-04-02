@@ -14,7 +14,7 @@ public class BBelt extends BPhysicalItem{
 	@Override
 	protected void updateBehaviours() {
 		addBehaviour( BFixedThingBehaviour.instance() );
-		addBehaviour( new BConveyorBeltBehaviour(this) );
+		addBehaviour( withSkip( new BConveyorBeltBehaviour(this), 3 ) );
 	}
 
 }

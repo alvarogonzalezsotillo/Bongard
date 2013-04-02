@@ -1,11 +1,15 @@
 package ollitos.bot.physics.behaviour;
 
+import static ollitos.bot.geom.BDirection.east;
+import static ollitos.bot.geom.BDirection.north;
+import static ollitos.bot.geom.BDirection.south;
+import static ollitos.bot.geom.BDirection.west;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import ollitos.bot.geom.BDirection;
 import ollitos.bot.geom.IBRegion;
-import static ollitos.bot.geom.BDirection.*;
 import ollitos.bot.map.BItemType;
 import ollitos.bot.physics.IBCollision;
 import ollitos.bot.physics.IBPhysicalItem;
@@ -39,14 +43,22 @@ public class BDefaultSpriteBehaviour extends BSpriteBehaviour implements IBPhysi
 			int n = get(north).length;
 			int w = get(west).length;
 			int e = get(east).length;
-			
+
+			// ONLY SOUTH
 			if( n == 0 && w == 0 && e == 0 && s != 0 ){
 				put( north, get( south) );
 				put( west, get( south) );
 				put( east, get( south) );
 				return;
 			}
-			
+
+			// ONLY SOUTH AND EAST
+			if( n == 0 && w == 0 && e != 0 && e == s ){
+				put( north, get( south) );
+				put( west, get( east) );
+				return;
+			}
+
 			if( s != n || s != w || s != e ){
 				throw new BException("Bad frames", null );
 			}

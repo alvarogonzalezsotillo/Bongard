@@ -10,7 +10,7 @@ import ollitos.bot.physics.IBPhysics;
 public class BBubbles extends BPhysicalItem{
 
 	public BBubbles(IBRegion region, IBPhysics physics){
-		super(BItemType.bubbles, region, BDirection.south, physics);
+		super(null,BItemType.bubbles, region, BDirection.south, physics);
 	}
 	
 	public BBubbles(BMapItem mapItem, BPhysics physics) {

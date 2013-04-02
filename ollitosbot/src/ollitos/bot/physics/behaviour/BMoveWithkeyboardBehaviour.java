@@ -59,10 +59,10 @@ public class BMoveWithkeyboardBehaviour implements IBMovementBehaviour{
 	@Override
 	public void nextImpulses(List<IBImpulse> ret) {
 		if( _turnRight ){
-			_item.setDirection(_item.direction().right());
+			_item.rotateTo(_item.direction().right());
 		}
 		if( _turnLeft ){
-			_item.setDirection(_item.direction().left());
+			_item.rotateTo(_item.direction().left());
 		}
 		if( _moveForward ){
 			ret.add( new BImpulse(_item, _item.direction().vector(), this) );

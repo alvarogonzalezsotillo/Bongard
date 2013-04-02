@@ -8,7 +8,7 @@ import ollitos.bot.physics.behaviour.BFixedThingBehaviour;
 public class BRoomWall extends BPhysicalItem{
 
 	public BRoomWall(BAbstractPhysics physics, IBRegion r) {
-		super(null,r,BDirection.south,physics);
+		super(null,null,r,BDirection.south,physics);
 	}
 	
 	@Override

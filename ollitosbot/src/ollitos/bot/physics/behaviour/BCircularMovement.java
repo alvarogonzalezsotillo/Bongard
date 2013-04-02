@@ -52,7 +52,7 @@ public class BCircularMovement implements IBMovementBehaviour, IBPhysicalListene
 			return;
 		}
 		
-		i.setDirection(d);
+		i.rotateTo(d);
 		BImpulse impulse = new BImpulse(i, d.vector(), this );
 		ret.add( impulse );
 	}
@@ -63,7 +63,8 @@ public class BCircularMovement implements IBMovementBehaviour, IBPhysicalListene
 
 	@Override
 	public void collision(IBCollision collision) {
-		// ONLY TAKE INTO ACCOUNT COLLISIONS ON n, s, e, w 
+		// ONLY TAKE INTO ACCOUNT COLLISIONS ON n, s, e, w
+		// TODO: COLLISION ONLY IN THE DIRECTION OF THE CURRENT MOVEMENT
 		IBLocation l = IBRegion.Util.center( collision.collision(), null );
 		if( l.du() >= item().region().faceCoordinate(BDirection.up) ){
 			return;

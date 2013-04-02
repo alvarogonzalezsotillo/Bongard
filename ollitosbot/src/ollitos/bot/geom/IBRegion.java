@@ -121,6 +121,43 @@ public interface IBRegion {
 			return dst;
 		}
 		
+		/**
+		 * 
+		 * @param src
+		 * @param currentD
+		 * @param newD
+		 * @param dst
+		 * @return dst.min == src.min
+		 */
+		public static IBRegion rotate( IBRegion src, BDirection currentD, BDirection newD, IBRegion dst ){
+			// IN CASE THERE IS NO ROTATION, OR A 180 DEGREES ROTATION
+			if( currentD == newD || currentD == newD.opposite() ){
+				if( src != dst && dst instanceof BRegion ){
+					((BRegion)dst).set( src.minBound(), src.maxBound() );
+				}
+				return dst;
+			}
+			
+			IBLocation max = src.maxBound();
+			IBLocation min = src.minBound();
+			int sn = max.sn() - min.sn();
+			int we = max.we() - min.we();
+			int max_sn = we + min.sn(); 
+			int max_du = max.du();
+			int max_we = sn + min.we();
+			
+			if( dst == null ){
+				dst = new BRegion();
+			}
+			if( !(dst instanceof BRegion) ){
+				throw new IllegalArgumentException();
+			}
+			
+			((BRegion)dst).set(min,BLocation.l(max_we,max_sn,max_du) );
+			
+			return dst;
+		}
+		
 		public static IBRegion fromSize( IBLocation size ){
 			return new BRegion( BLocation.ORIGIN, size );
 		}

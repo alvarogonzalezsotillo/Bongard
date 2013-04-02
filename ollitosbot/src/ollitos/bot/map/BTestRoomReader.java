@@ -32,11 +32,11 @@ public class BTestRoomReader extends BRoomReader{
 				"fl fl fl fl fl fl fl fl",
 				"pu .  he  .   .  .   .  pu",
 				".  .  .   .   .  cws .  .",
-				".  .  .   .   .  .   .  .",
+				".  .  .   .   .  .   .  cas",
 				"bx .  ccn .   .  cww .  .",
 				".  .  .   cce .  .   .  .",
 				".  .  .   .   bx .   .  .",
-				"pu .  .   .   .  .   .  pu",
+				"pu .  cae .   .  .   .  pu",
 			},
 			{
 				"fl fl fl fl fl fl fl fl",
@@ -217,16 +217,40 @@ public class BTestRoomReader extends BRoomReader{
 		};
 			
 		public static String[][] SMALLANDBORING = {
-				{
-					"fl"
-				},
-				
-				{
-					"bx"
-				},
+			{
+				"fl"
+			},
+			
+			{
+				"cas"
+			},
+		};
+		
+		public static String[][] DOORTEST = {
+			{
+				"fl fl fl fl fl fl fl fl",
+				"fl fl fl fl fl fl fl fl",
+				"fl fl fl fl fl fl fl fl",
+				"fl fl fl fl fl fl fl fl",
+				"fl fl fl fl fl fl fl fl",
+				"fl fl fl fl fl fl fl fl",
+				"fl fl fl fl fl fl fl fl",
+				"fl fl fl fl fl fl fl fl",
+			},
+			{
+				".   don .   don .   .   don .",
+				".   .   he  .   .   .   .   .",
+				".   .   .   don .   .   .   .",
+				".   .   dow .   doe .   .   doe",
+				"dow .   .   dos .   .   .   .",
+				".   .   .   .   .   .   .   .",
+				".   .   .   .   .   .   .   .",
+				".   dos .   dos .   .   dos .",
+			},
 		};
 
-	public static String[][][] ROOMS = { BIGROOM, SMALLROOM, CONVEYORBELTS, UNIDIMENSIONAL, SMALLANDBORING };
+
+	public static String[][][] ROOMS = { DOORTEST, SMALLROOM, CONVEYORBELTS, UNIDIMENSIONAL, SMALLANDBORING, BIGROOM };
 		
 		
 	public BRoom createRoomFromData(String[][] data ){	
@@ -287,7 +311,7 @@ public class BTestRoomReader extends BRoomReader{
 		
 		BMapItem boot2 = BItemType.centinel_counterclockwise.createItem(room);
 		traslateBasicBlocks(boot2,3,4,1);
-		boot2.setDirection(BDirection.north);
+		boot2.rotateTo(BDirection.north);
 
 
 		

@@ -11,8 +11,6 @@ import static ollitos.bot.geom.IBRegion.Vertex.gVertex;
 import java.util.Arrays;
 import java.util.Comparator;
 
-import javax.swing.SwingUtilities;
-
 import ollitos.bot.geom.BLocation;
 import ollitos.bot.geom.IBLocation;
 import ollitos.bot.geom.IBMovableRegion;
@@ -23,6 +21,7 @@ import ollitos.bot.physics.BMapToPhysical;
 import ollitos.bot.physics.BPhysics;
 import ollitos.bot.physics.IBPhysicalItem;
 import ollitos.bot.physics.IBPhysicalListener;
+import ollitos.bot.physics.behaviour.BMovableThingBehaviour;
 import ollitos.bot.physics.behaviour.BSpriteBehaviour;
 import ollitos.bot.view.BPhysicsView;
 import ollitos.geom.BRectangle;
@@ -32,7 +31,6 @@ import ollitos.gui.event.IBEventSource;
 import ollitos.platform.BCanvasContext;
 import ollitos.platform.BPlatform;
 import ollitos.platform.IBCanvas;
-import ollitos.platform.IBGame;
 import ollitos.platform.IBRaster;
 import ollitos.platform.raster.BNewRasterProvider;
 import ollitos.platform.raster.IBRasterProvider;
@@ -43,7 +41,7 @@ public class BIsoView extends BDrawableContainer implements BPhysicsView{
 	private static final double COS30 = Math.cos(30*Math.PI/180);
 	private static final boolean ANTIALIAS = true;
 	private static final boolean POST_DRAW_BOXES = false;
-	private static final boolean IN_DRAW_BOXES = false;
+	private static final boolean IN_DRAW_BOXES = true;
 	
 	private IBPhysicalListener _physicalListener = new IBPhysicalListener.Default(){
 		public void itemAdded(IBPhysicalItem i) {
@@ -134,11 +132,7 @@ public class BIsoView extends BDrawableContainer implements BPhysicsView{
 		return (int)(-l.du()+(l.we()+l.sn())*COS30);
 	}
 	
-	public static final IBLocation BASIC_VIEW_CELL = BLocation.l(32, 32, 24);
-
-
-
-
+	private static final IBLocation BASIC_VIEW_CELL = BLocation.l(32, 32, 24);
 
 	
 	/**
@@ -174,9 +168,6 @@ public class BIsoView extends BDrawableContainer implements BPhysicsView{
 		
 		int x = - pixelsSN*l.sn() + pixelsWE*l.we();
 		int y = - pixelsDU*l.du() - pixelsDU_SNWE*( l.sn() + l.we() );
-		
-		
-		
 		
 		dest.set( x, y );
 		return dest;
@@ -261,7 +252,7 @@ public class BIsoView extends BDrawableContainer implements BPhysicsView{
 			if( r != null ){
 				c.drawRaster(cc, r, p.x(), p.y());
 			}
-			if( IN_DRAW_BOXES ){
+			if( IN_DRAW_BOXES && (BMovableThingBehaviour.is(i) ) ){
 				drawBox(c,cc,i);
 			}
 		}
@@ -370,14 +361,8 @@ public class BIsoView extends BDrawableContainer implements BPhysicsView{
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		SwingUtilities.invokeLater( new Runnable() {
-			@Override
-			public void run() {
-				IBGame g = BPlatform.instance().game();
-				g.setDefaultDrawable( new BIsoView(BTestRoomReader.BIGROOM) );
-				g.restore();
-			}
-		} );
+		System.out.println( toFlatPoint(BLocation.l(12,12,12), null) );
+		System.out.println( toFlatPoint(BLocation.l(12,0,0), null) );
 	}
 
 	@Override

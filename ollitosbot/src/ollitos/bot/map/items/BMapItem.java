@@ -1,7 +1,6 @@
 package ollitos.bot.map.items;
 
 import ollitos.bot.geom.BDirection;
-import ollitos.bot.geom.BLocation;
 import ollitos.bot.geom.IBLocation;
 import ollitos.bot.geom.IBMovableRegion;
 import ollitos.bot.geom.IBRegion;
@@ -20,7 +19,7 @@ public class BMapItem implements IBMovableRegion{
 		this(container, type, BDirection.south );
 	}
 	
-	public BMapItem( BRoom container, BItemType type, BDirection direction ){
+	protected BMapItem( BRoom container, BItemType type, BDirection direction ){
 		_type = type;
 		_room = container;
 		if( _room != null ){
@@ -28,7 +27,8 @@ public class BMapItem implements IBMovableRegion{
 		}
 		
 		_region = IBRegion.Util.fromSize(southSize());
-		setDirection(direction);
+		_direction = BDirection.south;
+		rotateTo(direction);
 	}
 	
 	public BDirection direction(){
@@ -73,7 +73,8 @@ public class BMapItem implements IBMovableRegion{
 	}
 
 	@Override
-	public void setDirection(BDirection d) {
+	public void rotateTo(BDirection d) {
+		IBRegion.Util.rotate(_region, _direction, d, _region);
 		_direction = d;
 	}
 }

@@ -9,13 +9,12 @@ import ollitos.bot.geom.IBLocation;
 import ollitos.bot.geom.IBRegion;
 import ollitos.bot.map.BItemType;
 import ollitos.bot.map.items.BMapItem;
-import ollitos.bot.physics.BAbstractPhysics;
-import ollitos.bot.physics.BPhysics;
 import ollitos.bot.physics.IBCollision;
 import ollitos.bot.physics.IBPhysicalItem;
 import ollitos.bot.physics.IBPhysicalListener;
 import ollitos.bot.physics.IBPhysics;
 import ollitos.bot.physics.behaviour.BDefaultSpriteBehaviour;
+import ollitos.bot.physics.behaviour.IBMovementBehaviour;
 import ollitos.bot.physics.behaviour.IBPhysicalBehaviour;
 
 public abstract class BPhysicalItem implements IBPhysicalItem{
@@ -31,19 +30,15 @@ public abstract class BPhysicalItem implements IBPhysicalItem{
 	private IBPhysicalListener[] _listenersArray;
 	private BItemType _itemType;
 	
-	protected BPhysicalItem(BItemType type, IBRegion region, BDirection d, IBPhysics physics){
-		this(null,type,region,d,physics);
-	}
 	
-	private BPhysicalItem(BMapItem mapItem, BItemType type, IBRegion region, BDirection d, IBPhysics physics){
+	protected BPhysicalItem(BMapItem mapItem, BItemType type, IBRegion region, BDirection d, IBPhysics physics){
 		_itemType = type;
 		_physics = physics;
 		setMapItem(mapItem);
-		setDirection(d);
 		setRegion(region, true);
+		_direction = d;
 	}
-	
-	
+
 	protected BPhysicalItem(BMapItem mapItem, IBPhysics physics){
 		this( mapItem, mapItem.type(), mapItem.region(), mapItem.direction(), physics );
 	}
@@ -75,7 +70,8 @@ public abstract class BPhysicalItem implements IBPhysicalItem{
 		return _direction;
 	}
 	
-	public void setDirection(BDirection d){
+	public void rotateTo(BDirection d){
+		IBRegion.Util.rotate(_region, _direction, d, _region);
 		_direction = d;
 	}
 
@@ -255,5 +251,9 @@ public abstract class BPhysicalItem implements IBPhysicalItem{
 			return mapItem().type().toString() + "-" + region();
 		}
 		return getClass().getSimpleName() + "-" + region();
+	}
+	
+	protected IBMovementBehaviour withSkip( IBMovementBehaviour b, int skip ){
+		return IBMovementBehaviour.Util.withSkip( b, skip );
 	}
 }

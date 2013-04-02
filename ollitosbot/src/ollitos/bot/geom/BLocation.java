@@ -8,10 +8,6 @@ public class BLocation implements IBLocation{
 	int  _we, _sn, _du;
 	
 
-	private BLocation(){
-		this(0,0,0);
-	}
-	
 	private BLocation( int we, int sn, int du ){
 		set(we, sn, du);
 	}

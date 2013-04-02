@@ -61,7 +61,15 @@ public abstract class BAbstractPhysics implements IBPhysics{
 	}
 
 
-	public void add( final IBPhysicalItem t ){
+	public void add(IBPhysicalItem ... items ){
+		for( IBPhysicalItem pi: items ){
+			if( pi != null ){
+				add(pi);
+			}
+		}
+	}
+	
+	public void add(IBPhysicalItem  t ){
 		t.setUp();
 
 		_items.add(t);
