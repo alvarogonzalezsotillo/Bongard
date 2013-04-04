@@ -216,14 +216,28 @@ public class BTestRoomReader extends BRoomReader{
 			},
 		};
 			
-		public static String[][] SMALLANDBORING = {
+		public static String[][] BALLTEST = {
 			{
-				"fl"
+				"fl fl fl fl fl fl fl fl",
+				"fl fl fl fl fl fl fl fl",
+				"fl fl fl fl fl fl fl fl",
+				"fl fl fl fl fl fl fl fl",
+				"fl fl fl fl fl fl fl fl",
+				"fl fl fl fl fl fl fl fl",
+				"fl fl fl fl fl fl fl fl",
+				"fl fl fl fl fl fl fl fl",
+			},
+			{
+				"pu  .   .  .  .  .  .  pu",
+				".   .   .  .  .  .  .  .",
+				".   he  .  .  .  .  .  bk",
+				".   .   .  .  .  .  .  .",
+				".   ba  .  bk  .  ba  .  .",
+				".   .   .  .  .  .  .  .",
+				".   .   .  .  .  .  .  .",
+				"pu  .   .  bk  .  .  .  pu",
 			},
 			
-			{
-				"cas"
-			},
 		};
 		
 		public static String[][] DOORTEST = {
@@ -250,7 +264,7 @@ public class BTestRoomReader extends BRoomReader{
 		};
 
 
-	public static String[][][] ROOMS = { DOORTEST, SMALLROOM, CONVEYORBELTS, UNIDIMENSIONAL, SMALLANDBORING, BIGROOM };
+	public static String[][][] ROOMS = { BALLTEST, DOORTEST, SMALLROOM, CONVEYORBELTS, UNIDIMENSIONAL,  BIGROOM };
 		
 		
 	public BRoom createRoomFromData(String[][] data ){	

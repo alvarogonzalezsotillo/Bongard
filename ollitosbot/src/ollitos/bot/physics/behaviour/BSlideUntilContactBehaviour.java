@@ -18,6 +18,7 @@ public class BSlideUntilContactBehaviour implements IBMovementBehaviour, IBPhysi
 
 	private IBPhysicalItem _item;
 	private IBLocation _vector;
+	private boolean _stopInThisStep = false;
 	
 	public BSlideUntilContactBehaviour(IBPhysicalItem i){
 		_item = i;
@@ -38,25 +39,25 @@ public class BSlideUntilContactBehaviour implements IBMovementBehaviour, IBPhysi
 			return;
 		}
 		
-		IBPhysicalItem pushed = collision.pushed();
-		IBPhysicalItem pusher = collision.pusher();
-		
-		// TODO: DETECT THE DIRECTION OF PUSHING
-		if( pushed == _item ){
-			stopSliding();
-			startSliding(collision.cause().delta().vector());
+		if( sliding() ){
+			BDirection faceOfCollision = IBCollision.Util.computeFaceOfCollision(_item, collision);
+			BDirection v = IBLocation.Util.normalize(_vector);
+			if( faceOfCollision == v ){
+				stopSliding();
+			}
 		}
 		
-		if( pusher == _item ){
-			stopSliding();
-		}
 	}
 
 	private void stopSliding() {
 		_vector = null;
+		_stopInThisStep = true;
 	}
 
 	private void startSliding(IBLocation vector) {
+		if( _stopInThisStep ){
+			return;
+		}
 		_vector = IBLocation.Util.normalize(vector).vector();
 	}
 
@@ -66,6 +67,7 @@ public class BSlideUntilContactBehaviour implements IBMovementBehaviour, IBPhysi
 	
 	@Override
 	public void stepFinished() {
+		_stopInThisStep = false;
 	}
 
 	@Override
