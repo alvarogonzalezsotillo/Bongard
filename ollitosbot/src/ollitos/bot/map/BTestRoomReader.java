@@ -225,7 +225,7 @@ public class BTestRoomReader extends BRoomReader{
 				"fl fl fl fl fl fl fl fl",
 				"fl fl fl fl fl fl fl fl",
 				"fl fl fl fl fl fl fl fl",
-				"fl fl fl fl fl fl fl fl",
+				"fl fl fl fl fl fl bee fl",
 			},
 			{
 				"pu  .   .  .  .  .  .  pu",

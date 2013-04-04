@@ -83,6 +83,14 @@ public abstract class BPhysicalItem implements IBPhysicalItem{
 	}
 	
 	@Override
+	public void removeBehaviour(IBPhysicalBehaviour b) {
+		if( _behaviours.contains(b) ){
+			_behaviours.remove(b);
+			_behavioursArray = null;
+		}
+	}
+	
+	@Override
 	public IBPhysicalBehaviour[] behaviours() {
 		if( _behavioursArray == null ){
 			_behavioursArray = (IBPhysicalBehaviour[]) _behaviours.toArray(new IBPhysicalBehaviour[_behaviours.size()]);

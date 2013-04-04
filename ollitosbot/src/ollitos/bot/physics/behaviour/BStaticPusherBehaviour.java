@@ -14,6 +14,24 @@ import ollitos.bot.physics.impulse.IBImpulseCause;
 
 public class BStaticPusherBehaviour implements IBMovementBehaviour, IBImpulseCause, IBPhysicalListener{
 
+	private static class TemporarySlideUntilContactBehaviour extends BSlideUntilContactBehaviour{
+
+		public TemporarySlideUntilContactBehaviour(IBPhysicalItem i) {
+			super(i);
+		}
+		
+		@Override
+		protected void stopSliding() {
+			super.stopSliding();
+			autoDestroy();
+		}
+
+		private void autoDestroy() {
+			item().removeBehaviour(this);
+		}
+		
+	}
+	
 	private List<IBCollision> _collisions = new ArrayList<IBCollision>(); 
 	private IBPhysicalItem _item;
 	
@@ -28,6 +46,11 @@ public class BStaticPusherBehaviour implements IBMovementBehaviour, IBImpulseCau
 			BDirection faceOfCollision = IBCollision.Util.computeFaceOfCollision( _item, c );
 			IBImpulse i = new BImpulse( toPush, faceOfCollision.vector(), this );
 			ret.add(i);
+			
+			if( toPush.behaviour(BSlideUntilContactBehaviour.class) == null ){
+				toPush.addBehaviour( new TemporarySlideUntilContactBehaviour(toPush) );
+			}
+			
 		}
 		_collisions.clear();
 	}

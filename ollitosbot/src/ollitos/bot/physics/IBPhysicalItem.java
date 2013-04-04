@@ -10,6 +10,8 @@ public interface IBPhysicalItem extends IBMovableRegion, IBDisposable{
 	IBPhysicalBehaviour[] behaviours();
 	<T extends IBPhysicalBehaviour> T behaviour(Class<T> c);
 	<T extends IBPhysicalBehaviour> List<T> behaviours(Class<T> c, List<T> ret);
+	void addBehaviour(IBPhysicalBehaviour b);
+	void removeBehaviour(IBPhysicalBehaviour b);
 	IBPhysics physics();
 	IBPhysicalListener physicalListener();
 	void addPhysicalListener(IBPhysicalListener l);

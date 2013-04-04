@@ -23,6 +23,10 @@ public class BSlideUntilContactBehaviour implements IBMovementBehaviour, IBPhysi
 	public BSlideUntilContactBehaviour(IBPhysicalItem i){
 		_item = i;
 	}
+	
+	public IBPhysicalItem item(){
+		return _item;
+	}
 
 	@Override
 	public void itemAdded(IBPhysicalItem i) {
@@ -49,7 +53,7 @@ public class BSlideUntilContactBehaviour implements IBMovementBehaviour, IBPhysi
 		
 	}
 
-	private void stopSliding() {
+	protected void stopSliding() {
 		_vector = null;
 		_stopInThisStep = true;
 	}
