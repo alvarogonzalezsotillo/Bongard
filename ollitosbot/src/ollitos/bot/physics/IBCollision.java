@@ -3,9 +3,6 @@ package ollitos.bot.physics;
 import ollitos.bot.geom.BDirection;
 import ollitos.bot.geom.IBRegion;
 import ollitos.bot.physics.displacement.IBDisplacement;
-import ollitos.platform.BPlatform;
-import ollitos.platform.IBLogger;
-import sun.awt.CausedFocusEvent.Cause;
 
 
 public interface IBCollision extends IBPhysicalInteraction{
