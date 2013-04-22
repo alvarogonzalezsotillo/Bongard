@@ -3,7 +3,7 @@ package ollitos.bot.physics.items;
 import ollitos.bot.geom.BDirection;
 import ollitos.bot.geom.IBRegion;
 import ollitos.bot.map.BItemType;
-import ollitos.bot.map.items.BMapItem;
+import ollitos.bot.map.BMapItem;
 import ollitos.bot.physics.BPhysics;
 import ollitos.bot.physics.IBPhysics;
 

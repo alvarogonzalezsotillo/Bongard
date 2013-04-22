@@ -1,6 +1,6 @@
 package ollitos.bot.physics.items;
 
-import ollitos.bot.map.items.BMapItem;
+import ollitos.bot.map.BMapItem;
 import ollitos.bot.physics.BPhysics;
 import ollitos.bot.physics.behaviour.BFixedThingBehaviour;
 

@@ -7,13 +7,10 @@ import java.util.StringTokenizer;
 import ollitos.bot.geom.BDirection;
 import ollitos.bot.geom.BLocation;
 import ollitos.bot.geom.IBLocation;
-import ollitos.bot.map.items.BMap;
-import ollitos.bot.map.items.BMapItem;
-import ollitos.bot.map.items.BRoom;
 import ollitos.util.BException;
 
 
-public abstract class BRoomReader {
+public abstract class BRoomReader implements IBRoomReader{
 	
 	@SuppressWarnings("serial")
 	private static class MapItems extends ArrayList<BMapItem>{};
@@ -22,9 +19,9 @@ public abstract class BRoomReader {
 	private HashMap<String, MapItems> _legendToItems = new HashMap<String, MapItems>();
 	
 	private BRoom _room;
-	private BMap _map;
+	private IBMap _map;
 	
-	protected BRoomReader(BMap map){
+	protected BRoomReader(IBMap map){
 		addDefaultLegend();		
 		_map = map;
 	}
@@ -36,7 +33,7 @@ public abstract class BRoomReader {
 		return _room;
 	}
 	
-	protected BMap map() {
+	protected IBMap map() {
 		return _map;
 	}
 	
@@ -116,6 +113,13 @@ public abstract class BRoomReader {
 		}
 	}
 	
+	public void addLayers(String[][] layers) {
+		for (int i = 0; i < layers.length; i++) {
+			String[] layer = layers[i];
+			addLayer(i, layer);
+		}
+	}
+	
 	public void traslate(String legend, int we, int sn, int du ){
 		throw new UnsupportedOperationException();
 	}
@@ -132,6 +136,11 @@ public abstract class BRoomReader {
 	}
 	
 	
-	public abstract BRoom createRoom();
+	public BRoom readRoom(){
+		populateRoom();
+		return room();
+	}
+	
+	protected abstract BRoom populateRoom();
 		
 }

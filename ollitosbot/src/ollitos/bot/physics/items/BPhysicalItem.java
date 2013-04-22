@@ -8,7 +8,7 @@ import ollitos.bot.geom.BRegion;
 import ollitos.bot.geom.IBLocation;
 import ollitos.bot.geom.IBRegion;
 import ollitos.bot.map.BItemType;
-import ollitos.bot.map.items.BMapItem;
+import ollitos.bot.map.BMapItem;
 import ollitos.bot.physics.IBCollision;
 import ollitos.bot.physics.IBPhysicalItem;
 import ollitos.bot.physics.IBPhysicalListener;

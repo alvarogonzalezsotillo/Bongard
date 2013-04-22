@@ -1,0 +1,24 @@
+String[][] layers = {
+	{
+		"fl fl fl fl fl fl fl fl",
+		"fl fl fl fl fl fl fl fl",
+		"fl fl fl fl fl fl fl fl",
+		"fl fl fl fl fl fl fl fl",
+		"fl fl fl fl fl fl fl fl",
+		"fl fl fl fl fl fl fl fl",
+		"fl fl fl fl fl fl fl fl",
+		"fl fl fl fl fl fl bee fl",
+	},
+	{
+		"pu  .   .  .  .  .  .  pu",
+		".   .   .  .  .  .  .  .",
+		".   he  .  .  .  .  .  bk",
+		".   ba   .  .  .  .  .  .",
+		".   ba    bk  .  ba  .  .",
+		".   ba   .  .  .  .  .  .",
+		".   ba   .  .  .  .  .  .",
+		"pu  .   .  bk  .  .  .  pu",
+	}
+};
+
+self.addLayers( layers );

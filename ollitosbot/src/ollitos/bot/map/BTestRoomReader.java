@@ -1,9 +1,6 @@
 package ollitos.bot.map;
 
 import ollitos.bot.geom.BDirection;
-import ollitos.bot.map.items.BMap;
-import ollitos.bot.map.items.BMapItem;
-import ollitos.bot.map.items.BRoom;
 
 public class BTestRoomReader extends BRoomReader{
 	
@@ -11,8 +8,8 @@ public class BTestRoomReader extends BRoomReader{
 	private String[][] _data;
 
 
-	public BTestRoomReader( String[][] data ){
-		super( new BMap() );
+	public BTestRoomReader( IBMap map, String[][] data ){
+		super(map);
 		_data = data;
 	}
 	
@@ -269,12 +266,16 @@ public class BTestRoomReader extends BRoomReader{
 		
 	public BRoom createRoomFromData(String[][] data ){	
 		
-		for (int i = 0; i < data.length; i++) {
-			String[] layer = data[i];
-			addLayer(i, layer);
-		}
+		addLayers(data);
 		
 		return room();
+	}
+
+	public void addLayers(String[][] layers) {
+		for (int i = 0; i < layers.length; i++) {
+			String[] layer = layers[i];
+			addLayer(i, layer);
+		}
 	}
 	
 	public BRoom createRoom_code(){		
@@ -333,7 +334,8 @@ public class BTestRoomReader extends BRoomReader{
 	}
 	
 	
-	public BRoom createRoom(){
+	@Override
+	protected BRoom populateRoom(){
 		return createRoomFromData(_data);
 	}
 

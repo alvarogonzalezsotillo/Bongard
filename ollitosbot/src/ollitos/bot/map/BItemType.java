@@ -5,8 +5,6 @@ import static ollitos.bot.geom.BLocation.l;
 import java.util.HashMap;
 
 import ollitos.bot.geom.IBLocation;
-import ollitos.bot.map.items.BMapItem;
-import ollitos.bot.map.items.BRoom;
 
 public enum BItemType{
 	room,

@@ -15,8 +15,9 @@ import ollitos.bot.geom.BLocation;
 import ollitos.bot.geom.IBLocation;
 import ollitos.bot.geom.IBMovableRegion;
 import ollitos.bot.map.BItemType;
-import ollitos.bot.map.BTestRoomReader;
-import ollitos.bot.map.items.BRoom;
+import ollitos.bot.map.BRoom;
+import ollitos.bot.map.IBMapReader;
+import ollitos.bot.map.bsh.BBeanShellMapReader;
 import ollitos.bot.physics.BMapToPhysical;
 import ollitos.bot.physics.BPhysics;
 import ollitos.bot.physics.IBPhysicalItem;
@@ -314,9 +315,13 @@ public class BIsoView extends BDrawableContainer implements BPhysicsView{
 
 	private BRoom room(){
 		if( _room == null ){
-			_room = new BTestRoomReader(_roomData).createRoom();
+			_room = mapReader().readMap().initialRoom();
 		}
 		return _room;
+	}
+
+	private IBMapReader mapReader() {
+		return new BBeanShellMapReader( "/map/debugMap/" );
 	}
 	
 	private BPhysics physics(){

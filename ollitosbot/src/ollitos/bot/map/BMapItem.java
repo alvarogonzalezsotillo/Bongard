@@ -1,10 +1,9 @@
-package ollitos.bot.map.items;
+package ollitos.bot.map;
 
 import ollitos.bot.geom.BDirection;
 import ollitos.bot.geom.IBLocation;
 import ollitos.bot.geom.IBMovableRegion;
 import ollitos.bot.geom.IBRegion;
-import ollitos.bot.map.BItemType;
 
 
 

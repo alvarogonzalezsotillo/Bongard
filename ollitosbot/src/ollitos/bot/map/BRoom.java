@@ -1,4 +1,4 @@
-package ollitos.bot.map.items;
+package ollitos.bot.map;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,13 +11,13 @@ import ollitos.bot.physics.BPhysics;
 
 public class BRoom{
 
-	private BMap _map;
+	private IBMap _map;
 
-	public BRoom(BMap map, BMapItem ... items) {
+	public BRoom(IBMap map, BMapItem ... items) {
 		_map = map;
 	}
 	
-	public BMap map(){
+	public IBMap map(){
 		return _map;
 	}
 
