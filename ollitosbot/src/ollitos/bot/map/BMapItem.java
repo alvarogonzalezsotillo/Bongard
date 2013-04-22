@@ -13,6 +13,7 @@ public class BMapItem implements IBMovableRegion{
 	private BItemType _type;
 	private BDirection _direction;
 	private IBRegion _region;
+	private String _index;
 	
 	public BMapItem( BRoom container, BItemType type ){
 		this(container, type, BDirection.south );
@@ -76,4 +77,17 @@ public class BMapItem implements IBMovableRegion{
 		IBRegion.Util.rotate(_region, _direction, d, _region);
 		_direction = d;
 	}
+	
+	public String index(){
+		return _index;
+	}
+	
+	public void setIndex(String i){
+		_index = i;
+	}
+	
+	@Override
+	public String toString() {
+		return type() + "-" + direction() + "-" + index() + "-" + region();
+	} 
 }

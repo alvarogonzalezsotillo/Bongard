@@ -21,4 +21,9 @@ String[][] layers = {
 	}
 };
 
-self.addLayers( layers );
+try{
+	self.addLayers( layers );
+}
+catch( Exception e ){
+	e.printStackTrace();
+}

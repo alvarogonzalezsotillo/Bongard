@@ -60,6 +60,9 @@ public class BBeanShellRoomReader extends BRoomReader {
 			Reader r = reader();
 			i.eval(r);
 		}
+		catch( BException e ){
+			throw e;
+		}
 		catch (Exception e) {
 			throw new BException(e.toString(), e );
 		}

@@ -3,6 +3,8 @@ package ollitos.bot.map;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import ollitos.bot.geom.BDirection;
 import ollitos.bot.geom.BLocation;
@@ -71,40 +73,54 @@ public abstract class BRoomReader implements IBRoomReader{
 		}
 	}
 	
+	class LegendAndDirection{
+		public LegendAndDirection(String l, String i, String d ){
+			legend = l;
+			index = i;
+			direction = d;
+		}
+		String legend;
+		String index;
+		String direction;
+	}
+	
+	private LegendAndDirection parseLegendAndDirection(String legendAndDirection){
+		String regexp = "(\\.|([a-z][a-z]))([0-9])?([s|n|w|e])?";
+		Pattern p = Pattern.compile(regexp);
+		Matcher m = p.matcher(legendAndDirection);
+		if( !m.matches() ){
+			throw new BException( "Can't match cell:" + legendAndDirection, null );
+		}
+		return new LegendAndDirection(m.group(2), m.group(3), m.group(4) );
+	}
 	
 	private void addElement(int du, int sn, int we, String legendAndDirection) {
-		if( ".".equals(legendAndDirection) ){
+		LegendAndDirection lad = parseLegendAndDirection(legendAndDirection);
+		
+		if( ".".equals(lad.legend) ){
 			return;
 		}
-		String legend = legend(legendAndDirection);
-		BItemType t = _legendToItemType.get(legend);
+		
+		BItemType t = _legendToItemType.get(lad.legend);
 		if( t == null ){
-			throw new BException("No item for legend:" + legend + "(" + legendAndDirection + ")", null );
+			throw new BException("No item for legend:" + lad.legend + "(" + legendAndDirection + ")", null );
 		}
 		
-		BDirection d = directionFromLegend(legendAndDirection);
+		BDirection d = BDirection.south;
+		if( lad.direction != null ){
+			d = BDirection.fromChar(lad.direction.charAt(0));
+		}
+		
 		BMapItem i = t.createItem(room());
 		i.rotateTo(d);
-		
+		System.out.println( legendAndDirection + " -- " + lad.legend + " -- " + i );
 		traslateBasicBlocks(i,we,sn,du);
 		
-		items(legend).add(i);
+		i.setIndex(lad.index);
+		
+		items(lad.legend).add(i);
 	}
 
-	private IBLocation alignementFromLegend(String legendAndDirection) {
-		return BLocation.l(-1,-1,0);
-	}
-
-	private BDirection directionFromLegend(String legendAndDirection) {
-		if( legendAndDirection.length() < 3 ){
-			return BDirection.south;
-		}
-		return BDirection.fromChar(legendAndDirection.charAt(2));
-	}
-
-	private String legend(String legendAndDirection) {
-		return legendAndDirection.substring(0, 2);
-	}
 
 	public void addLayer(int du, String[] layer){
 		for (int sn = 0; sn < layer.length; sn++) {
