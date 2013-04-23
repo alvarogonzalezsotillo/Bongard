@@ -24,6 +24,7 @@ public class BDoorPassThrough implements IBPhysicalBehaviour{
 			if( !(collision.pushed() instanceof BRoomWall ) ){
 				return;
 			}
+			System.out.println( "******** ME HE DADO CON LA PARED *********" );			
 			if( !passThroughDoor() ){
 				return;
 			}
@@ -40,13 +41,15 @@ public class BDoorPassThrough implements IBPhysicalBehaviour{
 	
 	public boolean passThroughDoor() {
 		IBPhysics p = _item.physics();
-		IBLocation center = IBRegion.Util.center( _item.region(), null );
 		
 		List<IBPhysicalItem> doors = new ArrayList<IBPhysicalItem>();
 		p.itemsOfType( BItemType.door, doors );
 		for( IBPhysicalItem door : doors ){
-			if( IBRegion.Util.inside( center, door.mapItem().region() ) ){
-				return true;
+			
+			for( IBLocation l: _item.region().vertices(null) ){
+				if( IBRegion.Util.inside( l, door.mapItem().region() ) ){
+					return true;
+				}
 			}
 		}
 		return false;
