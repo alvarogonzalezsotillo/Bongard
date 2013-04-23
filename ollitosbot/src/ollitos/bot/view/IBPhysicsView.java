@@ -2,6 +2,6 @@ package ollitos.bot.view;
 
 import ollitos.gui.event.IBEventSource;
 
-public interface BPhysicsView{
+public interface IBPhysicsView{
 	public IBEventSource eventSource();
 }

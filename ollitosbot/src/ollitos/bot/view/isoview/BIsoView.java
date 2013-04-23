@@ -24,7 +24,7 @@ import ollitos.bot.physics.IBPhysicalItem;
 import ollitos.bot.physics.IBPhysicalListener;
 import ollitos.bot.physics.behaviour.BMovableThingBehaviour;
 import ollitos.bot.physics.behaviour.BSpriteBehaviour;
-import ollitos.bot.view.BPhysicsView;
+import ollitos.bot.view.IBPhysicsView;
 import ollitos.geom.BRectangle;
 import ollitos.geom.IBRectangle;
 import ollitos.gui.container.BDrawableContainer;
@@ -37,7 +37,7 @@ import ollitos.platform.raster.BNewRasterProvider;
 import ollitos.platform.raster.IBRasterProvider;
 
 
-public class BIsoView extends BDrawableContainer implements BPhysicsView{
+public class BIsoView extends BDrawableContainer implements IBPhysicsView{
 
 	private static final double COS30 = Math.cos(30*Math.PI/180);
 	private static final boolean ANTIALIAS = true;

@@ -3,6 +3,7 @@ package ollitos.bot.physics;
 import java.util.List;
 
 import ollitos.bot.geom.IBMovableRegion;
+import ollitos.bot.map.BMapItem;
 import ollitos.bot.physics.behaviour.IBPhysicalBehaviour;
 import ollitos.platform.IBDisposable;
 
@@ -13,6 +14,7 @@ public interface IBPhysicalItem extends IBMovableRegion, IBDisposable{
 	void addBehaviour(IBPhysicalBehaviour b);
 	void removeBehaviour(IBPhysicalBehaviour b);
 	IBPhysics physics();
+	BMapItem mapItem();
 	IBPhysicalListener physicalListener();
 	void addPhysicalListener(IBPhysicalListener l);
 }

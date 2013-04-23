@@ -18,10 +18,11 @@ import ollitos.bot.geom.BLocation;
 import ollitos.bot.geom.BRegion;
 import ollitos.bot.geom.IBLocation;
 import ollitos.bot.geom.IBRegion;
+import ollitos.bot.map.BItemType;
 import ollitos.bot.physics.behaviour.BFixedThingBehaviour;
 import ollitos.bot.physics.behaviour.BMovableThingBehaviour;
 import ollitos.bot.physics.items.BRoomWall;
-import ollitos.bot.view.BPhysicsView;
+import ollitos.bot.view.IBPhysicsView;
 import ollitos.platform.BPlatform;
 import ollitos.util.BException;
 
@@ -37,19 +38,19 @@ public abstract class BAbstractPhysics implements IBPhysics{
 
 	private PhysicsAnimation _animation;
 	private IBPhysicalItem[] _movableItemsArray;
-	private final BPhysicsView _view;
+	private final IBPhysicsView _view;
 
 	private IBRegion _region;
 
 	private BRoomWall[] _roomWalls;
 	private long _stepMillis;
 	
-	protected BAbstractPhysics(BPhysicsView view, long stepMillis ){
+	protected BAbstractPhysics(IBPhysicsView view, long stepMillis ){
 		_view = view;
 		_stepMillis = stepMillis;
 	}
 	
-	public BPhysicsView view(){
+	public IBPhysicsView view(){
 		return _view;
 	}
 
@@ -375,6 +376,15 @@ public abstract class BAbstractPhysics implements IBPhysics{
 		return false;
 	}
 	
+
+	@Override
+	public void itemsOfType(BItemType type, List<IBPhysicalItem> ret) {
+		for( IBPhysicalItem i: items() ){
+			if( i.mapItem() != null && i.mapItem().type() == type ){
+				ret.add(i);
+			}
+		}
+	}
 	
 
 	public abstract void step();

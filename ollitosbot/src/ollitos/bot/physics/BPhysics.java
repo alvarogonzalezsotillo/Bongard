@@ -7,11 +7,12 @@ import java.util.Map;
 
 import ollitos.bot.geom.BRegion;
 import ollitos.bot.geom.IBRegion;
+import ollitos.bot.map.BItemType;
 import ollitos.bot.physics.behaviour.IBMovementBehaviour;
 import ollitos.bot.physics.displacement.IBDisplacement;
 import ollitos.bot.physics.displacement.IBPushDisplacement;
 import ollitos.bot.physics.impulse.IBImpulse;
-import ollitos.bot.view.BPhysicsView;
+import ollitos.bot.view.IBPhysicsView;
 import ollitos.platform.BPlatform;
 import ollitos.platform.IBLogger;
 
@@ -21,13 +22,12 @@ public class BPhysics extends BAbstractPhysics{
 	private static final int STEP = 1;
 
 
-	public BPhysics( final BPhysicsView view ){
+	public BPhysics( final IBPhysicsView view ){
 		super(view, STEP);
 	}
 
 
 	private final List<IBImpulse> _impulses = new ArrayList<IBImpulse>();
-	private final List<IBPhysicalItem> _movedItems = new ArrayList<IBPhysicalItem>();
 	private final Map<IBPhysicalItem, IBRegion> _regions = new HashMap<IBPhysicalItem, IBRegion>();
 	
 	
