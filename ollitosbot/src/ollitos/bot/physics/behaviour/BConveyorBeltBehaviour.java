@@ -6,7 +6,9 @@ import java.util.List;
 import ollitos.bot.geom.BDirection;
 import ollitos.bot.physics.IBPhysicalContact;
 import ollitos.bot.physics.IBPhysicalItem;
+import ollitos.bot.physics.IBPhysicalListener;
 import ollitos.bot.physics.IBPhysics;
+import ollitos.bot.physics.behaviour.BCircularMovement.Listener;
 import ollitos.bot.physics.impulse.BImpulse;
 import ollitos.bot.physics.impulse.IBImpulse;
 import ollitos.bot.physics.impulse.IBImpulseCause;
@@ -47,4 +49,9 @@ public class BConveyorBeltBehaviour implements IBConveyorBeltBehaviour, IBImpuls
 			super(i, _item.direction().vector(), BConveyorBeltBehaviour.this);
 		}
 	}
+	@Override
+	public IBPhysicalListener physicalListener() {
+		return null;
+	}
+
 }

@@ -19,7 +19,7 @@ import ollitos.bot.physics.IBPhysics;
 import ollitos.bot.physics.impulse.BImpulse;
 import ollitos.bot.physics.impulse.IBImpulse;
 
-public class BCircularMovement implements IBMovementBehaviour, IBPhysicalListener{
+public class BCircularMovement implements IBMovementBehaviour{
 
 	private static BDirection[] _directionsCounterClockWise = { north, west, south, east };
 	private static BDirection[] _directionsClockWise = { north, east, south, west };
@@ -61,43 +61,43 @@ public class BCircularMovement implements IBMovementBehaviour, IBPhysicalListene
 		return _directions[_directionIndex];
 	}
 
-	@Override
-	public void collision(IBCollision collision) {
-		// ONLY TAKE INTO ACCOUNT COLLISIONS ON n, s, e, w
-		// TODO: COLLISION ONLY IN THE DIRECTION OF THE CURRENT MOVEMENT
-		IBLocation l = IBRegion.Util.center( collision.collision(), null );
-		if( l.du() >= item().region().faceCoordinate(BDirection.up) ){
-			return;
+	class Listener extends IBPhysicalListener.Default{
+		@Override
+		public void collision(IBCollision collision) {
+			// ONLY TAKE INTO ACCOUNT COLLISIONS ON n, s, e, w
+			// TODO: COLLISION ONLY IN THE DIRECTION OF THE CURRENT MOVEMENT
+			IBLocation l = IBRegion.Util.center( collision.collision(), null );
+			if( l.du() >= item().region().faceCoordinate(BDirection.up) ){
+				return;
+			}
+			if( l.du() <= item().region().faceCoordinate(BDirection.down) ){
+				return;
+			}
+			
+			BDirection d = IBCollision.Util.computeFaceOfCollision(_item, collision);
+			System.out.println( d + " -- " + direction() );
+			if( d == direction() ){
+				_collisionInThisStep = true;
+			}
 		}
-		if( l.du() <= item().region().faceCoordinate(BDirection.down) ){
-			return;
-		}
-		
-		BDirection d = IBCollision.Util.computeFaceOfCollision(_item, collision);
-		System.out.println( d + " -- " + direction() );
-		if( d == direction() ){
-			_collisionInThisStep = true;
+	
+		@Override
+		public void stepFinished() {
+			if( _collisionInThisStep ){
+				_directionIndex++;
+				_directionIndex %= _directions.length;
+			}
+			_collisionInThisStep = false;
 		}
 	}
-
+	
+	private IBPhysicalListener _listener;
 	@Override
-	public void stepFinished() {
-		if( _collisionInThisStep ){
-			_directionIndex++;
-			_directionIndex %= _directions.length;
+	public IBPhysicalListener physicalListener() {
+		if (_listener == null) {
+			_listener = new Listener();
+			
 		}
-		_collisionInThisStep = false;
-	}
-
-	@Override
-	public void itemAdded(IBPhysicalItem i) {
-	}
-
-	@Override
-	public void itemRemoved(IBPhysicalItem i) {
-	}
-
-	@Override
-	public void itemMoved(IBPhysicalItem i, IBRegion oldRegion) {
+		return _listener;
 	}
 }

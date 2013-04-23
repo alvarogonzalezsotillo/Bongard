@@ -170,8 +170,8 @@ public abstract class BPhysicalItem implements IBPhysicalItem{
 				l.collision(collision);
 			}
 			for( IBPhysicalBehaviour b: behaviours() ){
-				if( b instanceof IBPhysicalListener ){
-					((IBPhysicalListener)b).collision(collision);
+				if( b.physicalListener() != null ){
+					b.physicalListener().collision(collision);
 				}
 			}
 		}
@@ -182,8 +182,8 @@ public abstract class BPhysicalItem implements IBPhysicalItem{
 				l.stepFinished();
 			}
 			for( IBPhysicalBehaviour b: behaviours() ){
-				if( b instanceof IBPhysicalListener ){
-					((IBPhysicalListener)b).stepFinished();
+				if( b.physicalListener() != null ){
+					b.physicalListener().stepFinished();
 				}
 			}
 		}
@@ -194,8 +194,8 @@ public abstract class BPhysicalItem implements IBPhysicalItem{
 				l.itemAdded(i);
 			}
 			for( IBPhysicalBehaviour b: behaviours() ){
-				if( b instanceof IBPhysicalListener ){
-					((IBPhysicalListener)b).itemAdded(i);
+				if( b.physicalListener() != null ){
+					b.physicalListener().itemAdded(i);
 				}
 			}
 		}
@@ -206,8 +206,8 @@ public abstract class BPhysicalItem implements IBPhysicalItem{
 				l.itemRemoved(i);
 			}
 			for( IBPhysicalBehaviour b: behaviours() ){
-				if( b instanceof IBPhysicalListener ){
-					((IBPhysicalListener)b).itemRemoved(i);
+				if( b.physicalListener() != null ){
+					b.physicalListener().itemRemoved(i);
 				}
 			}
 		}
@@ -218,8 +218,8 @@ public abstract class BPhysicalItem implements IBPhysicalItem{
 				l.itemMoved(i, oldRegion);
 			}
 			for( IBPhysicalBehaviour b: behaviours() ){
-				if( b instanceof IBPhysicalListener ){
-					((IBPhysicalListener)b).itemMoved(i, oldRegion);
+				if( b.physicalListener() != null ){
+					b.physicalListener().itemMoved(i, oldRegion);
 				}
 			}
 		}

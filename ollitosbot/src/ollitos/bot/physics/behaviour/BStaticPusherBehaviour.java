@@ -8,11 +8,12 @@ import ollitos.bot.geom.IBRegion;
 import ollitos.bot.physics.IBCollision;
 import ollitos.bot.physics.IBPhysicalItem;
 import ollitos.bot.physics.IBPhysicalListener;
+import ollitos.bot.physics.behaviour.BSlideUntilContactBehaviour.Listener;
 import ollitos.bot.physics.impulse.BImpulse;
 import ollitos.bot.physics.impulse.IBImpulse;
 import ollitos.bot.physics.impulse.IBImpulseCause;
 
-public class BStaticPusherBehaviour implements IBMovementBehaviour, IBImpulseCause, IBPhysicalListener{
+public class BStaticPusherBehaviour implements IBMovementBehaviour, IBImpulseCause{
 
 	private static class TemporarySlideUntilContactBehaviour extends BSlideUntilContactBehaviour{
 
@@ -56,27 +57,23 @@ public class BStaticPusherBehaviour implements IBMovementBehaviour, IBImpulseCau
 	}
 
 
-	@Override
-	public void itemAdded(IBPhysicalItem i){
-	}
-
-	@Override
-	public void itemRemoved(IBPhysicalItem i){
-	}
-
-	@Override
-	public void collision(IBCollision collision){
-		if( collision.pushed() == _item || collision.pusher() == _item ){
-			_collisions.add(collision);
+	class Listener extends IBPhysicalListener.Default{
+		@Override
+		public void collision(IBCollision collision){
+			if( collision.pushed() == _item || collision.pusher() == _item ){
+				_collisions.add(collision);
+			}
 		}
 	}
 
+	private IBPhysicalListener _listener;
 	@Override
-	public void itemMoved(IBPhysicalItem i, IBRegion oldRegion) {
-	}
-
-	@Override
-	public void stepFinished() {
+	public IBPhysicalListener physicalListener() {
+		if (_listener == null) {
+			_listener = new Listener();
+			
+		}
+		return _listener;
 	}
 
 }

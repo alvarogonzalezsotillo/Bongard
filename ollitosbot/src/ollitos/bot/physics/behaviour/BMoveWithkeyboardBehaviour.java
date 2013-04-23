@@ -3,6 +3,7 @@ package ollitos.bot.physics.behaviour;
 import java.util.List;
 
 import ollitos.bot.physics.IBPhysicalItem;
+import ollitos.bot.physics.IBPhysicalListener;
 import ollitos.bot.physics.impulse.BImpulse;
 import ollitos.bot.physics.impulse.IBImpulse;
 import ollitos.gui.event.BEventAdapter;
@@ -69,5 +70,10 @@ public class BMoveWithkeyboardBehaviour implements IBMovementBehaviour{
 		}
 		
 		_moveForward = _turnLeft = _turnRight = false;
+	}
+
+	@Override
+	public IBPhysicalListener physicalListener() {
+		return null;
 	}
 }

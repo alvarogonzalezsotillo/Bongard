@@ -2,6 +2,7 @@ package ollitos.bot.physics.behaviour;
 
 import java.util.List;
 
+import ollitos.bot.physics.IBPhysicalListener;
 import ollitos.bot.physics.impulse.IBImpulse;
 import ollitos.bot.physics.impulse.IBImpulseCause;
 
@@ -28,6 +29,11 @@ public interface IBMovementBehaviour extends IBPhysicalBehaviour, IBImpulseCause
 					_counter = _skip;
 					_decorated.nextImpulses(ret);
 				}
+			}
+
+			@Override
+			public IBPhysicalListener physicalListener() {
+				return null;
 			}
 		}
 		

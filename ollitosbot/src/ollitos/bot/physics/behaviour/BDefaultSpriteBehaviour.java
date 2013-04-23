@@ -14,13 +14,14 @@ import ollitos.bot.map.BItemType;
 import ollitos.bot.physics.IBCollision;
 import ollitos.bot.physics.IBPhysicalItem;
 import ollitos.bot.physics.IBPhysicalListener;
+import ollitos.bot.physics.behaviour.BCircularMovement.Listener;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 import ollitos.platform.IBRaster;
 import ollitos.platform.raster.BRasterProviderCache;
 import ollitos.util.BException;
 
-public class BDefaultSpriteBehaviour extends BSpriteBehaviour implements IBPhysicalListener{
+public class BDefaultSpriteBehaviour extends BSpriteBehaviour{
 	
 	private static final String ISO_ITEMS  = "/iso/items";
 	private BItemType _t;
@@ -128,24 +129,21 @@ public class BDefaultSpriteBehaviour extends BSpriteBehaviour implements IBPhysi
 		new BDefaultSpriteBehaviour(BItemType.bot).dump();
 	}
 
+	class Listener extends IBPhysicalListener.Default{
+		@Override
+		public void stepFinished() {
+			advanceFrame();
+		}
+	}
+	
+	private IBPhysicalListener _listener;
 	@Override
-	public void itemAdded(IBPhysicalItem i) {
+	public IBPhysicalListener physicalListener() {
+		if (_listener == null) {
+			_listener = new Listener();
+			
+		}
+		return _listener;
 	}
 
-	@Override
-	public void itemRemoved(IBPhysicalItem i) {
-	}
-
-	@Override
-	public void collision(IBCollision collision) {
-	}
-
-	@Override
-	public void stepFinished() {
-		advanceFrame();
-	}
-
-	@Override
-	public void itemMoved(IBPhysicalItem i, IBRegion oldRegion) {
-	}
 }

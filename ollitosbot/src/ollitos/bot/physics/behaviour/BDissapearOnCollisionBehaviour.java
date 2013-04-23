@@ -5,9 +5,10 @@ import ollitos.bot.physics.IBCollision;
 import ollitos.bot.physics.IBPhysicalItem;
 import ollitos.bot.physics.IBPhysicalListener;
 import ollitos.bot.physics.IBPhysics;
+import ollitos.bot.physics.behaviour.BCircularMovement.Listener;
 import ollitos.bot.physics.items.BBubbles;
 
-public class BDissapearOnCollisionBehaviour implements IBPhysicalBehaviour, IBPhysicalListener{
+public class BDissapearOnCollisionBehaviour implements IBPhysicalBehaviour{
 
 	private IBPhysicalItem _item;
 	private BBubbles _bubbles;
@@ -23,42 +24,42 @@ public class BDissapearOnCollisionBehaviour implements IBPhysicalBehaviour, IBPh
 		this(item,6);
 	}
 
-	@Override
-	public void collision(IBCollision collision) {
-		if( collision.pushed() != _item ){
-			return;
-		}
-		IBPhysics physics = _item.physics();
-		physics.remove(_item);
-		_bubbles = new BBubbles(_item.region(), physics){
-			{
-				addBehaviour(BFixedThingBehaviour.instance());
-				addPhysicalListener(BDissapearOnCollisionBehaviour.this);
+	class Listener extends IBPhysicalListener.Default{
+		@Override
+		public void collision(IBCollision collision) {
+			if( collision.pushed() != _item ){
+				return;
 			}
-		};
-		physics.add( _bubbles );
-	}
-
+			IBPhysics physics = _item.physics();
+			physics.remove(_item);
+			_bubbles = new BBubbles(_item.region(), physics){
+				{
+					addBehaviour(BFixedThingBehaviour.instance());
+				}
+			};
+			physics.add( _bubbles );
+		}
 	
-	@Override
-	public void stepFinished() {
-		if( _bubbles != null ){
-			_bubblesSteps++;
-			if( _bubblesSteps > _totalSteps ){
-				_bubbles.physics().remove(_bubbles);
+		
+		@Override
+		public void stepFinished() {
+			if( _bubbles != null ){
+				_bubblesSteps++;
+				if( _bubblesSteps > _totalSteps ){
+					_bubbles.physics().remove(_bubbles);
+				}
 			}
 		}
 	}
-
+	
+	private IBPhysicalListener _listener;
 	@Override
-	public void itemAdded(IBPhysicalItem i) {
+	public IBPhysicalListener physicalListener() {
+		if (_listener == null) {
+			_listener = new Listener();
+			
+		}
+		return _listener;
 	}
 
-	@Override
-	public void itemRemoved(IBPhysicalItem i) {
-	}
-
-	@Override
-	public void itemMoved(IBPhysicalItem i, IBRegion oldRegion) {
-	}
 }
