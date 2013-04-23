@@ -54,13 +54,13 @@ public class BIsoView extends BDrawableContainer implements BPhysicsView{
 		};
 	};
 	
-	public BIsoView( String[][] roomData ){
-		this( 480, 640, roomData );
+	public BIsoView( IBMapReader reader ){
+		this( 480, 640, reader );
 	}
 	
-	private BIsoView( int width, int height, String[][] roomData ){
+	private BIsoView( int width, int height, IBMapReader reader ){
 		super( new BRectangle( width, height ) );
-		_roomData = roomData;
+		_mapReader = reader;
 	}
 	
 	public static class BFlatPoint{
@@ -96,7 +96,6 @@ public class BIsoView extends BDrawableContainer implements BPhysicsView{
 	}
 	
 
-	private IBRectangle _originalSize = new BRectangle(-640/2,-480/2,640,480);
 	private BRoom _room;
 
 
@@ -127,7 +126,7 @@ public class BIsoView extends BDrawableContainer implements BPhysicsView{
 	};
 	private BPhysics _physics;
 	private IBRasterProvider _doubleBuffer;
-	private String[][] _roomData;
+	private IBMapReader _mapReader;
 
 	private int zIndex(IBLocation l){
 		return (int)(-l.du()+(l.we()+l.sn())*COS30);
@@ -320,8 +319,8 @@ public class BIsoView extends BDrawableContainer implements BPhysicsView{
 		return _room;
 	}
 
-	private IBMapReader mapReader() {
-		return new BBeanShellMapReader( "/map/debugMap/" );
+	public IBMapReader mapReader() {
+		return _mapReader;
 	}
 	
 	private BPhysics physics(){

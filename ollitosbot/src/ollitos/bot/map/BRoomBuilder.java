@@ -12,7 +12,7 @@ import ollitos.bot.geom.IBLocation;
 import ollitos.util.BException;
 
 
-public abstract class BRoomReader implements IBRoomReader{
+public class BRoomBuilder{
 	
 	@SuppressWarnings("serial")
 	private static class MapItems extends ArrayList<BMapItem>{};
@@ -21,22 +21,14 @@ public abstract class BRoomReader implements IBRoomReader{
 	private HashMap<String, MapItems> _legendToItems = new HashMap<String, MapItems>();
 	
 	private BRoom _room;
-	private IBMap _map;
 	
-	protected BRoomReader(IBMap map){
+	public BRoomBuilder(BRoom room){
+		_room = room;
 		addDefaultLegend();		
-		_map = map;
 	}
 	
-	protected BRoom room(){
-		if (_room == null) {
-			_room = new BRoom( map() );
-		}
+	public BRoom room(){
 		return _room;
-	}
-	
-	protected IBMap map() {
-		return _map;
 	}
 	
 	private void addDefaultLegend(){
@@ -73,29 +65,39 @@ public abstract class BRoomReader implements IBRoomReader{
 		}
 	}
 	
-	class LegendAndDirection{
-		public LegendAndDirection(String l, String i, String d ){
+	static class LegendAndDirection{
+		private static Pattern _pattern;
+
+		private LegendAndDirection(String l, String i, String d ){
 			legend = l;
 			index = i;
 			direction = d;
 		}
+		
+		public static LegendAndDirection parse(String s){
+			Matcher m = pattern().matcher(s);
+			if( !m.matches() ){
+				throw new BException( "Can't match LegendAndDirection:" + s, null );
+			}
+			return new LegendAndDirection(m.group(1), m.group(2), m.group(3) );
+		}
+		
 		String legend;
 		String index;
 		String direction;
-	}
-	
-	private LegendAndDirection parseLegendAndDirection(String legendAndDirection){
-		String regexp = "(\\.|([a-z][a-z]))([0-9])?([s|n|w|e])?";
-		Pattern p = Pattern.compile(regexp);
-		Matcher m = p.matcher(legendAndDirection);
-		if( !m.matches() ){
-			throw new BException( "Can't match cell:" + legendAndDirection, null );
+		
+		private static Pattern pattern(){
+			if (_pattern == null) {
+				String regexp = "(\\.|[a-z]{2})([0-9])?([s|n|w|e])?";
+				_pattern = Pattern.compile(regexp);
+			}
+
+			return _pattern;
 		}
-		return new LegendAndDirection(m.group(2), m.group(3), m.group(4) );
 	}
 	
 	private void addElement(int du, int sn, int we, String legendAndDirection) {
-		LegendAndDirection lad = parseLegendAndDirection(legendAndDirection);
+		LegendAndDirection lad = LegendAndDirection.parse(legendAndDirection);
 		
 		if( ".".equals(lad.legend) ){
 			return;
@@ -113,7 +115,6 @@ public abstract class BRoomReader implements IBRoomReader{
 		
 		BMapItem i = t.createItem(room());
 		i.rotateTo(d);
-		System.out.println( legendAndDirection + " -- " + lad.legend + " -- " + i );
 		traslateBasicBlocks(i,we,sn,du);
 		
 		i.setIndex(lad.index);
@@ -150,13 +151,4 @@ public abstract class BRoomReader implements IBRoomReader{
 		i.traslateRegion( l );
 		return l;
 	}
-	
-	
-	public BRoom readRoom(){
-		populateRoom();
-		return room();
-	}
-	
-	protected abstract BRoom populateRoom();
-		
 }

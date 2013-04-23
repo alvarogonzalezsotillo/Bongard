@@ -1,15 +1,13 @@
 package ollitos.bot.map;
 
-import ollitos.bot.geom.BDirection;
 
-public class BTestRoomReader extends BRoomReader{
+public class BTestRoomReader{
 	
 	
 	private String[][] _data;
 
 
-	public BTestRoomReader( IBMap map, String[][] data ){
-		super(map);
+	public BTestRoomReader( String[][] data ){
 		_data = data;
 	}
 	
@@ -259,84 +257,5 @@ public class BTestRoomReader extends BRoomReader{
 				".   dos .   dos .   .   dos .",
 			},
 		};
-
-
-	public static String[][][] ROOMS = { BALLTEST, DOORTEST, SMALLROOM, CONVEYORBELTS, UNIDIMENSIONAL,  BIGROOM };
-		
-		
-	public BRoom createRoomFromData(String[][] data ){	
-		
-		addLayers(data);
-		
-		return room();
-	}
-
-	public void addLayers(String[][] layers) {
-		for (int i = 0; i < layers.length; i++) {
-			String[] layer = layers[i];
-			addLayer(i, layer);
-		}
-	}
-	
-	public BRoom createRoom_code(){		
-		BRoom room = room();
-		
-		int cols = 9;
-		int rows = 9;
-		
-		for( int x = 0 ; x < cols ; x++ ){
-			for( int y = 0 ; y < rows ; y++ ){
-				BMapItem f = BItemType.floor.createItem(room);
-				traslateBasicBlocks(f,cols-x-1,rows-y-1,0);
-			}
-		}
-		
-		{
-			BMapItem block1 = BItemType.floor.createItem(room);
-			traslateBasicBlocks(block1,1,1,1);
-			BMapItem block2 = BItemType.floor.createItem(room);
-			traslateBasicBlocks(block2,1,1,2);
-		}
-		{
-			BMapItem block1 = BItemType.floor.createItem(room);
-			traslateBasicBlocks(block1,4,2,1);
-			BMapItem block2 = BItemType.floor.createItem(room);
-			traslateBasicBlocks(block2,4,2,2);
-		}
-		{
-			BMapItem block1 = BItemType.floor.createItem(room);
-			traslateBasicBlocks(block1,rows-2,cols-2,1);
-			BMapItem block2 = BItemType.floor.createItem(room);
-			traslateBasicBlocks(block2,rows-2,cols-2,2);
-		}
-
-		
-		
-		for( int x = 0 ; x < cols ; x++ ){
-			for( int y = 0 ; y < rows ; y++ ){
-				if( x == 0 || x == cols-1 || y == 0 || y == rows-1 ){
-					BMapItem f = BItemType.floor.createItem(room);
-					traslateBasicBlocks(f,cols-x-1,rows-y-1,1);
-				}
-			}
-		}
-		
-		BMapItem boot1 = BItemType.centinel_clockwise.createItem(room);
-		traslateBasicBlocks(boot1,1,2,1);
-		
-		BMapItem boot2 = BItemType.centinel_counterclockwise.createItem(room);
-		traslateBasicBlocks(boot2,3,4,1);
-		boot2.rotateTo(BDirection.north);
-
-
-		
-		return room;
-	}
-	
-	
-	@Override
-	protected BRoom populateRoom(){
-		return createRoomFromData(_data);
-	}
 
 }

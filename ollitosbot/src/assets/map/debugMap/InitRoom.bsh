@@ -10,7 +10,7 @@ String[][] layers = {
 		"fl fl fl fl fl fl bee fl",
 	},
 	{
-		"pu  .   .  .  .  .  .  pu",
+		"pu  .   .  do1n  .  .  .  pu",
 		".   .   .  .  .  .  .  .",
 		".   he  .  .  .  .  .  bk",
 		".   ba   .  .  .  .  .  .",
@@ -21,9 +21,4 @@ String[][] layers = {
 	}
 };
 
-try{
-	self.addLayers( layers );
-}
-catch( Exception e ){
-	e.printStackTrace();
-}
+addLayers( layers );

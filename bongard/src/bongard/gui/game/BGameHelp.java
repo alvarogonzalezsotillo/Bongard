@@ -1,6 +1,8 @@
 package bongard.gui.game;
 
 import ollitos.bot.map.BTestRoomReader;
+import ollitos.bot.map.IBMapReader;
+import ollitos.bot.map.bsh.BBeanShellMapReader;
 import ollitos.bot.view.isoview.BIsoView;
 import ollitos.geom.BRectangle;
 import ollitos.geom.IBRectangle;
@@ -33,10 +35,10 @@ public class BGameHelp extends BSlidableContainer implements BState.Stateful{
 			
 		private final class SlidablePageForIsoView implements IBSlidablePage {
 			private IBDrawable _drawable;
-			private String[][] _roomData;
+			private IBMapReader _mapReader;
 			
-			public SlidablePageForIsoView(String[][] roomData){
-				_roomData = roomData;
+			public SlidablePageForIsoView(IBMapReader mapReader){
+				_mapReader = mapReader;
 			}
 
 			@Override
@@ -57,7 +59,7 @@ public class BGameHelp extends BSlidableContainer implements BState.Stateful{
 				if( _drawable != null ){
 					return _drawable;
 				}
-				_drawable = new BZoomDrawable( new BIsoView(_roomData) );
+				_drawable = new BZoomDrawable( new BIsoView(_mapReader) );
 				return _drawable;
 			}
 
@@ -75,7 +77,7 @@ public class BGameHelp extends BSlidableContainer implements BState.Stateful{
 
 		@Override
 		public int width(){
-			return BTestRoomReader.ROOMS.length+1;
+			return 2;
 		}
 		
 		public static IBDrawable internal(){
@@ -95,7 +97,7 @@ public class BGameHelp extends BSlidableContainer implements BState.Stateful{
 			}
 			
 			if( x != width()-1 ){
-				_fd[x] = new SlidablePageForIsoView(BTestRoomReader.ROOMS[x]);
+				_fd[x] = new SlidablePageForIsoView( new BBeanShellMapReader("/map/debugMap"));
 			}
 			else{
 				_fd[x] = new IBSlidablePage() {
