@@ -1,13 +1,13 @@
 package ollitos.bot.physics.items;
 
 import ollitos.bot.map.BMapItem;
-import ollitos.bot.physics.BPhysics;
+import ollitos.bot.physics.IBPhysics;
 import ollitos.bot.physics.behaviour.BGravityBehaviour;
 import ollitos.bot.physics.behaviour.BMovableThingBehaviour;
 
 public class BBook extends BPhysicalItem{
 
-	public BBook(BMapItem mapItem, BPhysics physics) {
+	public BBook(BMapItem mapItem, IBPhysics physics) {
 		super(mapItem, physics);
 	}
 	

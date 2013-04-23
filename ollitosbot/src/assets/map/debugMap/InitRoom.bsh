@@ -22,3 +22,4 @@ String[][] layers = {
 };
 
 addLayers( layers );
+setDoorDestination("1","SecondRoom","1");

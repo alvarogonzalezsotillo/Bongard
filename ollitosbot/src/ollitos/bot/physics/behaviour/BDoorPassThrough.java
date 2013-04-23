@@ -6,6 +6,11 @@ import java.util.List;
 import ollitos.bot.geom.IBLocation;
 import ollitos.bot.geom.IBRegion;
 import ollitos.bot.map.BItemType;
+import ollitos.bot.map.BMapItem;
+import ollitos.bot.map.BRoom;
+import ollitos.bot.map.IBMapReader;
+import ollitos.bot.physics.BMapToPhysical;
+import ollitos.bot.physics.BPhysics;
 import ollitos.bot.physics.IBCollision;
 import ollitos.bot.physics.IBPhysicalItem;
 import ollitos.bot.physics.IBPhysicalListener;
@@ -24,11 +29,13 @@ public class BDoorPassThrough implements IBPhysicalBehaviour{
 			if( !(collision.pushed() instanceof BRoomWall ) ){
 				return;
 			}
-			System.out.println( "******** ME HE DADO CON LA PARED *********" );			
-			if( !passThroughDoor() ){
+			
+			IBPhysicalItem door = underDoor();
+			if( door == null ){
 				return;
 			}
-			System.out.println( "******** SALGO DE LA HABITACION *********" );
+			
+			passThrough(door);
 		}
 	}
 
@@ -39,7 +46,22 @@ public class BDoorPassThrough implements IBPhysicalBehaviour{
 		_item = i;
 	}
 	
-	public boolean passThroughDoor() {
+	public void passThrough(IBPhysicalItem door) {
+		BMapItem dItem = door.mapItem();
+		BRoom room = dItem.room();
+		BRoom.DoorDestinationInfo id = room.doorDestination(dItem.index());
+		IBMapReader mapReader = room.map().mapReader();
+		BRoom readRoom = mapReader.readRoom(id.roomId);
+		BPhysics physics = (BPhysics) door.physics();
+		physics.clear();
+		BMapToPhysical.fillFromRoom(physics, readRoom);
+		physics.updateRoomWalls();
+		physics.start();
+		
+		// TODO: TAKE INTO ACCOUNT DESTINATION DOOR
+	}
+
+	public IBPhysicalItem underDoor() {
 		IBPhysics p = _item.physics();
 		
 		List<IBPhysicalItem> doors = new ArrayList<IBPhysicalItem>();
@@ -48,11 +70,11 @@ public class BDoorPassThrough implements IBPhysicalBehaviour{
 			
 			for( IBLocation l: _item.region().vertices(null) ){
 				if( IBRegion.Util.inside( l, door.mapItem().region() ) ){
-					return true;
+					return door;
 				}
 			}
 		}
-		return false;
+		return null;
 	}
 
 	@Override

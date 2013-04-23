@@ -4,13 +4,12 @@ import ollitos.bot.geom.BDirection;
 import ollitos.bot.geom.IBRegion;
 import ollitos.bot.map.BItemType;
 import ollitos.bot.map.BMapItem;
-import ollitos.bot.physics.BPhysics;
 import ollitos.bot.physics.IBPhysics;
 import ollitos.bot.physics.behaviour.BFixedThingBehaviour;
 
 public class BColumnShaft extends BPhysicalItem{
 
-	public BColumnShaft(BMapItem mapItem, BPhysics physics) {
+	public BColumnShaft(BMapItem mapItem, IBPhysics physics) {
 		super(mapItem, physics);
 	}
 	

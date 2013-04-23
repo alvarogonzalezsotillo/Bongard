@@ -90,6 +90,7 @@ public class BBeanShellMapReader implements IBMapReader{
 		i.set( "room", builder.room() );
 		i.set( "builder", builder );
 		i.eval( "void addLayers(String[][] s){ builder.addLayers(s); }" );
+		i.eval( "void setDoorDestination(String doorIndex, String destRoomId, String destDoorIndex){ room.setDoorDestination(doorIndex,destRoomId,destDoorIndex); }" );
 	}
 	
 	public void populateRoom(BResourceLocator script, BRoom room) throws EvalError, IOException{

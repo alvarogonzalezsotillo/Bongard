@@ -30,8 +30,7 @@ public abstract class BAbstractPhysics implements IBPhysics{
 	private final ArrayList<IBPhysicalItem> _items = new ArrayList<IBPhysicalItem>();
 	private final ArrayList<IBPhysicalItem> _fixedItems = new ArrayList<IBPhysicalItem>();
 	private final ArrayList<IBPhysicalItem> _movableItems = new ArrayList<IBPhysicalItem>();
-
-	private ArrayList<IBPhysicalListener> _physicalListeners;
+	private final ArrayList<IBPhysicalListener> _physicalListeners = new ArrayList<IBPhysicalListener>();
 
 	private IBPhysicalItem[] _itemsArray;
 	private IBPhysicalItem[] _fixedItemsArray;
@@ -55,9 +54,6 @@ public abstract class BAbstractPhysics implements IBPhysics{
 	}
 
 	public void addPhysicalListener(final IBPhysicalListener l) {
-		if( _physicalListeners == null ){
-			_physicalListeners = new ArrayList<IBPhysicalListener>();
-		}
 		_physicalListeners.add(l);
 	}
 
@@ -385,7 +381,21 @@ public abstract class BAbstractPhysics implements IBPhysics{
 			}
 		}
 	}
-	
+
+	@Override
+	public void clear() {
+		_items.clear();
+		_fixedItems.clear();
+		_movableItems.clear();
+		_physicalListeners.clear();
+
+		_itemsArray = null;
+		_fixedItemsArray = null;
+		_movableItemsArray = null;
+		
+		_region = null;
+		_roomWalls = null;
+	}
 
 	public abstract void step();
 }

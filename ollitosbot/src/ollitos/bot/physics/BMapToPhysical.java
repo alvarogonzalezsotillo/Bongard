@@ -25,16 +25,17 @@ import ollitos.util.BException;
 
 public class BMapToPhysical{
 	
-	public static void fillFromRoom( BPhysics ret, BRoom room ){
+	public static void fillFromRoom( IBPhysics ret, BRoom room ){
 		BMapItem[] items = room.items();
 		for (int i = 0; i < items.length; i++) {
 			BMapItem item = items[i];
-			IBPhysicalItem[] pi = fromMapItem(item, ret);
-			ret.add(pi);
+			for( IBPhysicalItem pi : fromMapItem(item, ret) ){
+				ret.add(pi);
+			}
 		}
 	}
 	
-	private static IBPhysicalItem[] fromMapItem( BMapItem i, BPhysics p){
+	private static IBPhysicalItem[] fromMapItem( BMapItem i, IBPhysics p){
 		IBPhysicalItem[] ret = new IBPhysicalItem[1];
 		switch( i.type() ){
 			case bot: ret[0] = new BBot(i,p); break;
@@ -58,7 +59,7 @@ public class BMapToPhysical{
 		return ret;
 	}
 
-	private static IBPhysicalItem[] createDoor(BMapItem i, BPhysics p) {
+	private static IBPhysicalItem[] createDoor(BMapItem i, IBPhysics p) {
 		IBPhysicalItem[] ret = new IBPhysicalItem[8];
 		BDirection d = i.direction();
 		IBRegion doorRegion = i.region();

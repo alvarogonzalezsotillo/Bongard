@@ -22,5 +22,5 @@ public interface IBPhysics {
 	
 	void add( IBPhysicalItem t );	
 	void remove( IBPhysicalItem t );
-	
+	void clear();
 }

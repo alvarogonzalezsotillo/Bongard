@@ -2,14 +2,24 @@ package ollitos.bot.map;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.Map;
+
+import javax.print.attribute.standard.Destination;
 
 import ollitos.bot.geom.BDirection;
 import ollitos.bot.geom.BRegion;
 import ollitos.bot.geom.IBRegion;
-import ollitos.bot.physics.BPhysics;
 
 public class BRoom{
+
+	public class DoorDestinationInfo {
+		public DoorDestinationInfo(String doorIndex, String roomId ){
+			this.doorIndex = doorIndex;
+			this.roomId = roomId;
+		}
+		public final String doorIndex;
+		public final String roomId;
+	}
 
 	private IBMap _map;
 
@@ -21,30 +31,13 @@ public class BRoom{
 		return _map;
 	}
 
-	private static HashMap<BDirection, BRoom> _to;
+	private Map<String,DoorDestinationInfo> _doorToDestination = new HashMap<String,DoorDestinationInfo>();
 	
-	public void setTo(BDirection d, BRoom r){
-		if( _to == null ){
-			_to = new HashMap<BDirection, BRoom>();
-		}
-		if( r == null ){
-			_to.remove(d);
-		}
-		else{
-			_to.put(d,r);
-		}
-	}
 	
-	public BRoom to(BDirection d) {
-		if( _to == null ){
-			return null;
-		}
-		return _to.get(d);
-	}
-
 	private BMapItem[] _itemsArray;
 	private ArrayList<BMapItem> _items = new ArrayList<BMapItem>();
 	private IBRegion _region;
+	private HashMap<String, String> _doorIndexToRoomId;
 	
 
 	public void add(BMapItem ... items) {
@@ -96,6 +89,14 @@ public class BRoom{
 			IBRegion.Util.union( ret, i.region(), ret );
 		}
 		return ret;
+	}
+
+	public void setDoorDestination( String doorIndex, String destRoomId, String destDoorIndex ){
+		_doorToDestination.put(doorIndex, new DoorDestinationInfo(destDoorIndex, destRoomId) );
+	}
+	
+	public DoorDestinationInfo doorDestination(String index){
+		return _doorToDestination.get(index);
 	}
 
 }

@@ -13,7 +13,7 @@ public class BBubbles extends BPhysicalItem{
 		super(null,BItemType.bubbles, region, BDirection.south, physics);
 	}
 	
-	public BBubbles(BMapItem mapItem, BPhysics physics) {
+	public BBubbles(BMapItem mapItem, IBPhysics physics) {
 		super(mapItem, physics);
 	}
 	

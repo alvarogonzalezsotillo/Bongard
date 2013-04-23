@@ -4,13 +4,12 @@ import ollitos.bot.geom.BDirection;
 import ollitos.bot.geom.IBRegion;
 import ollitos.bot.map.BItemType;
 import ollitos.bot.map.BMapItem;
-import ollitos.bot.physics.BPhysics;
 import ollitos.bot.physics.IBPhysics;
 import ollitos.bot.physics.behaviour.BFixedThingBehaviour;
 
 public class BColumnCapital extends BPhysicalItem{
 
-	public BColumnCapital(BMapItem mapItem, BPhysics physics) {
+	public BColumnCapital(BMapItem mapItem, IBPhysics physics) {
 		super(mapItem, physics);
 	}
 	

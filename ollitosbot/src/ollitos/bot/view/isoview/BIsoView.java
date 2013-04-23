@@ -47,6 +47,7 @@ public class BIsoView extends BDrawableContainer implements IBPhysicsView{
 	private IBPhysicalListener _physicalListener = new IBPhysicalListener.Default(){
 		public void itemAdded(IBPhysicalItem i) {
 			_items = physics().items();
+			System.out.println( "Item added:" + i );
 		};
 		
 		public void itemRemoved(IBPhysicalItem i) {

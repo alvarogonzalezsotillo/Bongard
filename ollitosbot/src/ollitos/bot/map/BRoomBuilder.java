@@ -51,7 +51,7 @@ public class BRoomBuilder{
 	}
 	
 	private void addLine(int du, int sn, String line){
-		StringTokenizer st = new StringTokenizer(line, " ");
+		StringTokenizer st = new StringTokenizer(line, " \t");
 		
 		int tokens = st.countTokens();
 		String[] lineA = new String[tokens];
