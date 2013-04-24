@@ -223,6 +223,17 @@ public abstract class BPhysicalItem implements IBPhysicalItem{
 				}
 			}
 		}
+		
+		public void playerAction(ollitos.bot.physics.BPlayerAction pa) {
+			for( IBPhysicalListener l: listenersArray()){
+				l.playerAction(pa);
+			}
+			for( IBPhysicalBehaviour b: behaviours() ){
+				if( b.physicalListener() != null ){
+					b.physicalListener().playerAction(pa);
+				}
+			}
+		};
 	};
 	private boolean _disposed = true;
 	

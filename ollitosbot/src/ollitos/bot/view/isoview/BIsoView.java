@@ -7,6 +7,7 @@ import static ollitos.bot.geom.BDirection.south;
 import static ollitos.bot.geom.BDirection.up;
 import static ollitos.bot.geom.BDirection.west;
 import static ollitos.bot.geom.IBRegion.Vertex.gVertex;
+import static ollitos.bot.physics.BPlayerAction.*;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -20,6 +21,7 @@ import ollitos.bot.map.IBMapReader;
 import ollitos.bot.map.bsh.BBeanShellMapReader;
 import ollitos.bot.physics.BMapToPhysical;
 import ollitos.bot.physics.BPhysics;
+import ollitos.bot.physics.BPlayerAction;
 import ollitos.bot.physics.IBPhysicalItem;
 import ollitos.bot.physics.IBPhysicalListener;
 import ollitos.bot.physics.behaviour.BMovableThingBehaviour;
@@ -28,6 +30,9 @@ import ollitos.bot.view.IBPhysicsView;
 import ollitos.geom.BRectangle;
 import ollitos.geom.IBRectangle;
 import ollitos.gui.container.BDrawableContainer;
+import ollitos.gui.event.BEventAdapter;
+import ollitos.gui.event.IBEvent;
+import ollitos.gui.event.IBEventListener;
 import ollitos.gui.event.IBEventSource;
 import ollitos.platform.BCanvasContext;
 import ollitos.platform.BPlatform;
@@ -44,10 +49,22 @@ public class BIsoView extends BDrawableContainer implements IBPhysicsView{
 	private static final boolean POST_DRAW_BOXES = false;
 	private static final boolean IN_DRAW_BOXES = true;
 	
+	private IBEventListener _listener = new BEventAdapter(){
+		public boolean keyPressed(IBEvent e) {
+			switch(e.keyChar()){
+				case 'q': physics().playerAction(moveForward); return true;
+				case 'o': physics().playerAction(turnLeft); return true;
+				case 'p': physics().playerAction(turnRight); return true;
+				case ' ': physics().playerAction(jump); return true;
+			}
+			return false;
+		}
+
+	};
+	
 	private IBPhysicalListener _physicalListener = new IBPhysicalListener.Default(){
 		public void itemAdded(IBPhysicalItem i) {
 			_items = physics().items();
-			System.out.println( "Item added:" + i );
 		};
 		
 		public void itemRemoved(IBPhysicalItem i) {
@@ -62,6 +79,7 @@ public class BIsoView extends BDrawableContainer implements IBPhysicsView{
 	private BIsoView( int width, int height, IBMapReader reader ){
 		super( new BRectangle( width, height ) );
 		_mapReader = reader;
+		addListener(_listener);
 	}
 	
 	public static class BFlatPoint{
@@ -370,8 +388,4 @@ public class BIsoView extends BDrawableContainer implements IBPhysicsView{
 		System.out.println( toFlatPoint(BLocation.l(12,0,0), null) );
 	}
 
-	@Override
-	public IBEventSource eventSource() {
-		return this;
-	}
 }

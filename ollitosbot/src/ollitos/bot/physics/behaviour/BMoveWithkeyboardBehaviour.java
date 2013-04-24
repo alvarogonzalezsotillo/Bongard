@@ -2,6 +2,7 @@ package ollitos.bot.physics.behaviour;
 
 import java.util.List;
 
+import ollitos.bot.physics.BPlayerAction;
 import ollitos.bot.physics.IBPhysicalItem;
 import ollitos.bot.physics.IBPhysicalListener;
 import ollitos.bot.physics.impulse.BImpulse;
@@ -13,38 +14,19 @@ import ollitos.gui.event.IBEventListener;
 public class BMoveWithkeyboardBehaviour implements IBMovementBehaviour{
 	private IBPhysicalItem _item;
 	
-	private IBEventListener _listener = new BEventAdapter(){
-		public boolean keyPressed(IBEvent e) {
-			switch(e.keyChar()){
-				case 'q': moveForward(); return true;
-				case 'o': turnLeft(); return true;
-				case 'p': turnRight(); return true;
-				case ' ': jump(); return true;
-			}
-			return false;
-		}
-
-	};
 	private boolean _turnRight;
 	private boolean _turnLeft;
 	private boolean _moveForward;
 
+	
 	public BMoveWithkeyboardBehaviour( IBPhysicalItem i ){
 		_item = i;
-		installListener();
 	}
 
 	protected void jump() {
 		// TODO Auto-generated method stub
 	}
 
-	private void installListener(){
-		if( _item.physics().view() == null ){
-			throw new IllegalStateException("View is null");
-		}
-		_item.physics().view().eventSource().addListener(_listener);
-	}
-	
 	private void turnRight(){
 		_turnRight = true;
 	}
@@ -54,11 +36,13 @@ public class BMoveWithkeyboardBehaviour implements IBMovementBehaviour{
 	}
 
 	private void moveForward(){
+		System.out.println( this.hashCode() + "moveForward" );
 		_moveForward = true;
 	}
 
 	@Override
 	public void nextImpulses(List<IBImpulse> ret) {
+		System.out.println( this.hashCode() + "nextImpulses:" + _turnLeft + _turnRight + _moveForward );
 		if( _turnRight ){
 			_item.rotateTo(_item.direction().right());
 		}
@@ -72,8 +56,25 @@ public class BMoveWithkeyboardBehaviour implements IBMovementBehaviour{
 		_moveForward = _turnLeft = _turnRight = false;
 	}
 
+	private class Listener extends IBPhysicalListener.Default{
+		@Override
+		public void playerAction(BPlayerAction pa) {
+			switch(pa){
+				case moveForward: moveForward(); return;
+				case turnLeft: turnLeft(); return;
+				case turnRight: turnRight(); return;
+				case jump: jump(); return;
+			}
+		}
+	};
+
+	private IBPhysicalListener _listener;
 	@Override
 	public IBPhysicalListener physicalListener() {
-		return null;
+		if (_listener == null) {
+			_listener = new Listener();
+		}
+
+		return _listener;
 	}
 }

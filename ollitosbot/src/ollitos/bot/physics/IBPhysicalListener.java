@@ -8,6 +8,7 @@ public interface IBPhysicalListener {
 	void collision( IBCollision collision );
 	void itemMoved(IBPhysicalItem i, IBRegion oldRegion );
 	void stepFinished();
+	void playerAction(BPlayerAction pa);
 	
 	public static final IBPhysicalListener[] EMPTY = {};
 	
@@ -30,6 +31,10 @@ public interface IBPhysicalListener {
 
 		@Override
 		public void itemMoved(IBPhysicalItem i, IBRegion oldRegion) {
+		}
+
+		@Override
+		public void playerAction(BPlayerAction pa) {
 		}
 	}
 }

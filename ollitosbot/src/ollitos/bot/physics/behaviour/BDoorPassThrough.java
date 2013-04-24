@@ -53,7 +53,7 @@ public class BDoorPassThrough implements IBPhysicalBehaviour{
 		IBMapReader mapReader = room.map().mapReader();
 		BRoom readRoom = mapReader.readRoom(id.roomId);
 		BPhysics physics = (BPhysics) door.physics();
-		physics.clear();
+		physics.clearButListeners();
 		BMapToPhysical.fillFromRoom(physics, readRoom);
 		physics.updateRoomWalls();
 		physics.start();

@@ -22,5 +22,7 @@ public interface IBPhysics {
 	
 	void add( IBPhysicalItem t );	
 	void remove( IBPhysicalItem t );
-	void clear();
+	void clearButListeners();
+	
+	void playerAction( BPlayerAction a);
 }
