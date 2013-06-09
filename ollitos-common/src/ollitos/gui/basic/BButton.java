@@ -61,9 +61,9 @@ public class BButton extends BRectangularDrawable implements IBEventConsumer, IB
 				platform().game().animator().addAnimation(_pressedAnimation);
 				return true;
 			}
-			return false;
+            return false;
 		}
-		
+
 		public boolean pointerUp(IBPoint pInMyCoordinates) {
 			if( !_pressed ){
 				return false;

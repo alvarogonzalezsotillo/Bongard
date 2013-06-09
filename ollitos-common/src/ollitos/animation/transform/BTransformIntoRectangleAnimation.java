@@ -25,7 +25,6 @@ public class BTransformIntoRectangleAnimation extends BFixedDurationAnimation{
 	
 	@Override
 	public void stepAnimation(long millis) {
-		// TODO Auto-generated method stub
 		stepMillis(millis);
 		double f = 1.0*currentMillis()/totalMillis();
 

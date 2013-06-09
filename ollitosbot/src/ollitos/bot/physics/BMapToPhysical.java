@@ -102,7 +102,6 @@ public class BMapToPhysical{
 		}
 		
 		
-		// SOUTH
 		BRegion r = new BRegion();
 		BLocation delta = BLocation.l(0,0,0);
 		int retIndex = 0;

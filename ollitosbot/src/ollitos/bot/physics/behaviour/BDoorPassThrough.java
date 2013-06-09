@@ -58,7 +58,7 @@ public class BDoorPassThrough implements IBPhysicalBehaviour{
 		physics.updateRoomWalls();
 		physics.start();
 		
-		// TODO: TAKE INTO ACCOUNT DESTINATION DOOR
+		// TODO: TAKE INTO ACCOUNT DESTINATION DOOR TO LOCATE HERO
 	}
 
 	public IBPhysicalItem underDoor() {
@@ -67,9 +67,10 @@ public class BDoorPassThrough implements IBPhysicalBehaviour{
 		List<IBPhysicalItem> doors = new ArrayList<IBPhysicalItem>();
 		p.itemsOfType( BItemType.door, doors );
 		for( IBPhysicalItem door : doors ){
-			
+            IBRegion doorRegion = door.mapItem().region();
+            IBRegion.Util.grow(doorRegion,1,doorRegion);
 			for( IBLocation l: _item.region().vertices(null) ){
-				if( IBRegion.Util.inside( l, door.mapItem().region() ) ){
+                if( IBRegion.Util.inside( l, doorRegion) ){
 					return door;
 				}
 			}

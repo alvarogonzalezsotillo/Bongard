@@ -24,7 +24,7 @@ public class BMoveWithkeyboardBehaviour implements IBMovementBehaviour{
 	}
 
 	protected void jump() {
-		// TODO Auto-generated method stub
+		// TODO: Implement jump state/behaviour
 	}
 
 	private void turnRight(){
@@ -36,13 +36,11 @@ public class BMoveWithkeyboardBehaviour implements IBMovementBehaviour{
 	}
 
 	private void moveForward(){
-		System.out.println( this.hashCode() + "moveForward" );
 		_moveForward = true;
 	}
 
 	@Override
 	public void nextImpulses(List<IBImpulse> ret) {
-		System.out.println( this.hashCode() + "nextImpulses:" + _turnLeft + _turnRight + _moveForward );
 		if( _turnRight ){
 			_item.rotateTo(_item.direction().right());
 		}

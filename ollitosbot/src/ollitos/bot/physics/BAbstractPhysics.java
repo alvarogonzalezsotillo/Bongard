@@ -410,7 +410,7 @@ public abstract class BAbstractPhysics implements IBPhysics{
 
 	@Override
 	public void playerAction(BPlayerAction a){
-		
+		notifyPlayerAction(a);
 	}
 	
 	public abstract void step();

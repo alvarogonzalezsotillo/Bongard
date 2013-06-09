@@ -18,10 +18,8 @@ import ollitos.bot.geom.IBMovableRegion;
 import ollitos.bot.map.BItemType;
 import ollitos.bot.map.BRoom;
 import ollitos.bot.map.IBMapReader;
-import ollitos.bot.map.bsh.BBeanShellMapReader;
 import ollitos.bot.physics.BMapToPhysical;
 import ollitos.bot.physics.BPhysics;
-import ollitos.bot.physics.BPlayerAction;
 import ollitos.bot.physics.IBPhysicalItem;
 import ollitos.bot.physics.IBPhysicalListener;
 import ollitos.bot.physics.behaviour.BMovableThingBehaviour;
@@ -33,7 +31,6 @@ import ollitos.gui.container.BDrawableContainer;
 import ollitos.gui.event.BEventAdapter;
 import ollitos.gui.event.IBEvent;
 import ollitos.gui.event.IBEventListener;
-import ollitos.gui.event.IBEventSource;
 import ollitos.platform.BCanvasContext;
 import ollitos.platform.BPlatform;
 import ollitos.platform.IBCanvas;
@@ -65,11 +62,11 @@ public class BIsoView extends BDrawableContainer implements IBPhysicsView{
 	private IBPhysicalListener _physicalListener = new IBPhysicalListener.Default(){
 		public void itemAdded(IBPhysicalItem i) {
 			_items = physics().items();
-		};
+		}
 		
 		public void itemRemoved(IBPhysicalItem i) {
 			_items = physics().items();
-		};
+		}
 	};
 	
 	public BIsoView( IBMapReader reader ){
@@ -220,7 +217,7 @@ public class BIsoView extends BDrawableContainer implements IBPhysicsView{
 	 *  V
 	 * 
 	 */
-    private BFlatPoint spritePosition(IBCanvas canvas, IBPhysicalItem i, BFlatPoint ret ){
+    private BFlatPoint spritePosition(IBPhysicalItem i, BFlatPoint ret){
 		/*
 		 * N  E    U     
 		 *  \/     |
@@ -265,7 +262,7 @@ public class BIsoView extends BDrawableContainer implements IBPhysicsView{
 		BFlatPoint p = new BFlatPoint();
 		
 		for (IBPhysicalItem i : items) {
-			spritePosition(c,i, p);
+			spritePosition(i, p);
 			IBRaster r;
 			r = rasterFor(i);
 			if( r != null ){

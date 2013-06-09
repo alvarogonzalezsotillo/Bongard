@@ -212,7 +212,16 @@ public interface IBRegion {
 			
 			return true;
 		}
-		
+
+        public static IBRegion grow( IBRegion r, int i, IBRegion dst ){
+            BDirection[] directions = BDirection.values();
+            grow( r, i, directions[0], dst );
+            for( int j = 1 ; j < directions.length ; j++ ){
+                grow( dst, i, directions[j], dst );
+            }
+            return dst;
+        }
+
 		public static IBRegion grow(IBRegion r, int i, BDirection d, IBRegion dst ){
 			int[] faceCoordinates = r.faceCoordinates(null);
 			
