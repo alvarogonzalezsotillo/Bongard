@@ -25,4 +25,6 @@ public interface IBPhysics {
 	void clearButListeners();
 	
 	void playerAction( BPlayerAction a);
+
+    IBPhysicalItem item(BItemType type);
 }

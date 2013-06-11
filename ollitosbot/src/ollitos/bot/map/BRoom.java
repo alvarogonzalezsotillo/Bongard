@@ -12,7 +12,20 @@ import ollitos.bot.geom.IBRegion;
 
 public class BRoom{
 
-	public class DoorDestinationInfo {
+    public BMapItem door(String doorIndex){
+        for( BMapItem i: items() ){
+            if( i.type() != BItemType.door ){
+                continue;
+            }
+            if( !i.index().equals(doorIndex) ){
+                continue;
+            }
+            return i;
+        }
+        return null;
+    }
+
+    public class DoorDestinationInfo {
 		public DoorDestinationInfo(String doorIndex, String roomId ){
 			this.doorIndex = doorIndex;
 			this.roomId = roomId;

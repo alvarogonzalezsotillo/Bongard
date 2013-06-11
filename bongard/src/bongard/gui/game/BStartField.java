@@ -6,17 +6,9 @@ import ollitos.geom.BRectangle;
 import ollitos.geom.IBRectangle;
 import ollitos.gui.basic.BButton;
 import ollitos.gui.basic.BButton.ClickedListener;
-import ollitos.gui.basic.BCheckBox;
-import ollitos.gui.basic.BSprite;
 import ollitos.gui.basic.IBDrawable;
 import ollitos.gui.container.BDrawableContainer;
-import ollitos.gui.container.BSlidableContainer;
 import ollitos.gui.event.BRestartListener;
-import ollitos.gui.event.BZoomIntoDetailListener;
-import ollitos.platform.BPlatform;
-import ollitos.platform.BResourceLocator;
-import ollitos.platform.IBRaster;
-import ollitos.platform.state.BState;
 
 public class BStartField extends BDrawableContainer{
 

@@ -3,6 +3,8 @@ package ollitos.bot.physics.behaviour;
 import java.util.ArrayList;
 import java.util.List;
 
+import ollitos.bot.geom.BLocation;
+import ollitos.bot.geom.BRegion;
 import ollitos.bot.geom.IBLocation;
 import ollitos.bot.geom.IBRegion;
 import ollitos.bot.map.BItemType;
@@ -15,6 +17,7 @@ import ollitos.bot.physics.IBCollision;
 import ollitos.bot.physics.IBPhysicalItem;
 import ollitos.bot.physics.IBPhysicalListener;
 import ollitos.bot.physics.IBPhysics;
+import ollitos.bot.physics.items.BHero;
 import ollitos.bot.physics.items.BRoomWall;
 
 public class BDoorPassThrough implements IBPhysicalBehaviour{
@@ -46,26 +49,52 @@ public class BDoorPassThrough implements IBPhysicalBehaviour{
 		_item = i;
 	}
 	
-	public void passThrough(IBPhysicalItem door) {
-		BMapItem dItem = door.mapItem();
+	public void passThrough(IBPhysicalItem exitDoor) {
+		BMapItem dItem = exitDoor.mapItem();
 		BRoom room = dItem.room();
 		BRoom.DoorDestinationInfo id = room.doorDestination(dItem.index());
+        
 		IBMapReader mapReader = room.map().mapReader();
-		BRoom readRoom = mapReader.readRoom(id.roomId);
-		BPhysics physics = (BPhysics) door.physics();
+		BRoom newRoom = mapReader.readRoom(id.roomId);
+		BPhysics physics = (BPhysics) exitDoor.physics();
+        
 		physics.clearButListeners();
-		BMapToPhysical.fillFromRoom(physics, readRoom);
+		BMapToPhysical.fillFromRoom(physics, newRoom);
 		physics.updateRoomWalls();
 		physics.start();
 		
-		// TODO: TAKE INTO ACCOUNT DESTINATION DOOR TO LOCATE HERO
-	}
+        BMapItem enterDoor = newRoom.door(id.doorIndex);
+        setHeroInPosition(enterDoor);
+    }
 
-	public IBPhysicalItem underDoor() {
+    private void setHeroInPosition(IBPhysics p, BMapItem enterDoor) {
+        // CREATE A HERO IN THE ROOM, IF THERE ISN'T ONE YET
+        IBPhysicalItem hero = p.item(BItemType.hero);
+        if( hero == null ){
+            hero = new BHero(p);
+        }
+
+        IBRegion rHero = hero.region();
+        IBRegion rDoor = enterDoor.region();
+
+        IBRegion.Util.center(rDoor, rHero, rHero);
+
+        int dHero = rHero.minBound().du();
+        int dDoor = rDoor.minBound().du();
+
+        IBLocation delta = BLocation.l(0,0, dDoor - dHero);
+        IBRegion.Util.traslate(rHero,delta,rHero);
+
+        hero.rotateTo(enterDoor.direction());
+    }
+
+    public IBPhysicalItem underDoor() {
 		IBPhysics p = _item.physics();
 		
 		List<IBPhysicalItem> doors = new ArrayList<IBPhysicalItem>();
 		p.itemsOfType( BItemType.door, doors );
+
+
 		for( IBPhysicalItem door : doors ){
             IBRegion doorRegion = door.mapItem().region();
             IBRegion.Util.grow(doorRegion,1,doorRegion);

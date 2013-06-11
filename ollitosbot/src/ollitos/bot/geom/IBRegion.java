@@ -228,9 +228,9 @@ public interface IBRegion {
 			if( ArrayUtil.arraySearch(BDirection.MIN_DIRECTIONS, d ) >= 0 ){
 				i = -i;
 			}
-			
+
 			faceCoordinates[d.ordinal()] += i;
-			
+
 			if( dst == null ){
 				dst = new BRegion(faceCoordinates);
 			}
@@ -240,23 +240,28 @@ public interface IBRegion {
 			else{
 				throw new BException( "Cannot modify region:" + dst, null );
 			}
-			
+
 			return dst;
-			
-			
+
+
 		}
-		
+
 		public static IBLocation center(IBRegion r, IBLocation ret){
 			int sn = (r.minBound().sn()+r.maxBound().sn())/2;
 			int we = (r.minBound().we()+r.maxBound().we())/2;
 			int du = (r.minBound().du()+r.maxBound().du())/2;
 			return BLocation.l(we, sn, du, ret);
 		}
-		
+
+        public static IBRegion center(IBRegion centerIn, IBRegion toBeCentered, IBRegion dst) {
+            // TODO: FINISH ME
+            throw new UnsupportedOperationException();
+        }
+
 		public static void main(String[] args) {
 			BRegion r1 = new BRegion( BLocation.l(0, 96, 12), BLocation.l(16,112,24) );
 			BRegion r2 = new BRegion( BLocation.l(9,84,12), BLocation.l(21,96,32) );
-			
+
 			System.out.println( "intersects:" + intersects(r1, r2) );
 			System.out.println( "intersection:" + intersection(r1, r2,null) );
 		}
@@ -264,9 +269,9 @@ public interface IBRegion {
 		public static boolean regionEquals(BRegion r1, IBRegion r2) {
 			return r1.maxBound().equals(r2.maxBound()) && r1.minBound().equals(r2.minBound());
 		}
-		
-		
-	}
+
+
+    }
 
 	IBLocation minBound();
 	IBLocation maxBound();
