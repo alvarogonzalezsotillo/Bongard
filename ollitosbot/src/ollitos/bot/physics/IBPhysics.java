@@ -7,6 +7,7 @@ import ollitos.bot.geom.IBLocation;
 import ollitos.bot.geom.IBRegion;
 import ollitos.bot.map.BItemType;
 import ollitos.bot.map.BMapItem;
+import ollitos.bot.physics.items.BRoomWall;
 import ollitos.bot.view.IBPhysicsView;
 
 public interface IBPhysics {
@@ -27,4 +28,8 @@ public interface IBPhysics {
 	void playerAction( BPlayerAction a);
 
     IBPhysicalItem item(BItemType type);
+
+    BRoomWall[] roomWalls();
+
+    void itemsOfMap(BMapItem mi, List<IBPhysicalItem> ret);
 }

@@ -19,6 +19,7 @@ import ollitos.bot.geom.BRegion;
 import ollitos.bot.geom.IBLocation;
 import ollitos.bot.geom.IBRegion;
 import ollitos.bot.map.BItemType;
+import ollitos.bot.map.BMapItem;
 import ollitos.bot.physics.behaviour.BFixedThingBehaviour;
 import ollitos.bot.physics.behaviour.BMovableThingBehaviour;
 import ollitos.bot.physics.items.BRoomWall;
@@ -394,6 +395,16 @@ public abstract class BAbstractPhysics implements IBPhysics{
 		}
 	}
 
+
+    @Override
+    public void itemsOfMap(BMapItem mi, List<IBPhysicalItem> ret) {
+        for( IBPhysicalItem i: items() ){
+            if( i.mapItem() == mi ){
+                ret.add(i);
+            }
+        }
+    }
+
     @Override
     public IBPhysicalItem item( BItemType type){
         List<IBPhysicalItem> ret = new ArrayList<IBPhysicalItem>();
@@ -404,7 +415,13 @@ public abstract class BAbstractPhysics implements IBPhysics{
         return ret.get(0);
     }
 
-	@Override
+
+    @Override
+    public BRoomWall[] roomWalls() {
+        return _roomWalls.clone();
+    }
+
+    @Override
 	public void clearButListeners() {
 		_items.clear();
 		_fixedItems.clear();

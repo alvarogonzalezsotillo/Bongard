@@ -3,10 +3,7 @@ package ollitos.bot.physics.behaviour;
 import java.util.ArrayList;
 import java.util.List;
 
-import ollitos.bot.geom.BLocation;
-import ollitos.bot.geom.BRegion;
-import ollitos.bot.geom.IBLocation;
-import ollitos.bot.geom.IBRegion;
+import ollitos.bot.geom.*;
 import ollitos.bot.map.BItemType;
 import ollitos.bot.map.BMapItem;
 import ollitos.bot.map.BRoom;
@@ -61,10 +58,10 @@ public class BDoorPassThrough implements IBPhysicalBehaviour{
 		physics.clearButListeners();
 		BMapToPhysical.fillFromRoom(physics, newRoom);
 		physics.updateRoomWalls();
-		physics.start();
-		
+
         BMapItem enterDoor = newRoom.door(id.doorIndex);
-        setHeroInPosition(enterDoor);
+        setHeroInPosition(physics,enterDoor);
+        physics.start();
     }
 
     private void setHeroInPosition(IBPhysics p, BMapItem enterDoor) {
@@ -75,17 +72,39 @@ public class BDoorPassThrough implements IBPhysicalBehaviour{
         }
 
         IBRegion rHero = hero.region();
-        IBRegion rDoor = enterDoor.region();
+
+        IBRegion rDoor = getDoorRegion(p, enterDoor);
 
         IBRegion.Util.center(rDoor, rHero, rHero);
 
+        // PUT HERO IN THE GROUND (AT THE SAME LEVEL OF THE DOOR)
         int dHero = rHero.minBound().du();
         int dDoor = rDoor.minBound().du();
-
         IBLocation delta = BLocation.l(0,0, dDoor - dHero);
-        IBRegion.Util.traslate(rHero,delta,rHero);
+        IBRegion.Util.traslate(rHero, delta, rHero);
 
-        hero.rotateTo(enterDoor.direction());
+        // PUSH THE HERO INTO THE ROOM, USING THE DOOR DIRECTION
+        BDirection dir = enterDoor.direction().opposite();
+        hero.rotateTo(dir);
+        while( p.intersects(hero, rHero, p.roomWalls() ) ){
+            IBRegion.Util.traslate(rHero, dir.vector(), rHero);
+        }
+
+
+    }
+
+    private IBRegion getDoorRegion(IBPhysics p, BMapItem enterDoor) {
+        List<IBPhysicalItem> doorItems = new ArrayList<IBPhysicalItem>();
+        p.itemsOfMap(enterDoor, doorItems);
+        if( doorItems.size() == 0 ){
+            throw new IllegalStateException( "Cant find enter door in physics");
+        }
+
+        IBRegion rDoor = new BRegion( doorItems.get(0).region() );
+        for( int i = 1 ; i < doorItems.size() ; i++ ){
+            IBRegion.Util.union(doorItems.get(i).region(), rDoor, rDoor );
+        }
+        return rDoor;
     }
 
     public IBPhysicalItem underDoor() {

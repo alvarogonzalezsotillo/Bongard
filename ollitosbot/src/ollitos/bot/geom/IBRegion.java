@@ -8,6 +8,8 @@ import static ollitos.bot.geom.BDirection.south;
 import static ollitos.bot.geom.BDirection.up;
 import static ollitos.bot.geom.BDirection.west;
 import ollitos.bot.ArrayUtil;
+import ollitos.platform.BPlatform;
+import ollitos.platform.IBLogger;
 import ollitos.util.BException;
 
 
@@ -253,9 +255,49 @@ public interface IBRegion {
 			return BLocation.l(we, sn, du, ret);
 		}
 
+        public static int we(IBRegion r){
+            return r.maxBound().we() - r.minBound().we();
+        }
+
+        public static int du(IBRegion r){
+            return r.maxBound().du() - r.minBound().du();
+        }
+
+        public static int sn(IBRegion r){
+            return r.maxBound().sn() - r.minBound().sn();
+        }
+
+
         public static IBRegion center(IBRegion centerIn, IBRegion toBeCentered, IBRegion dst) {
-            // TODO: FINISH ME
-            throw new UnsupportedOperationException();
+            //int w, e, s, n, d, u;
+
+            int w = centerIn.faceCoordinate(west) + (we(centerIn) - we(toBeCentered))/2;
+            int e = w + we(toBeCentered);
+
+            int s = centerIn.faceCoordinate(south) + (sn(centerIn) - sn(toBeCentered))/2;
+            int n = s + sn(toBeCentered);
+
+            int d = centerIn.faceCoordinate(down) + (du(centerIn) - du(toBeCentered))/2;
+            int u = d + du(toBeCentered);
+
+            IBLocation min = BLocation.l(w,s,d);
+            IBLocation max = BLocation.l(e,n,u);
+
+            if( dst == null ){
+                dst = new BRegion(min, max);
+            }
+            else if( dst instanceof BRegion ){
+                ((BRegion)dst).set(min,max);
+            }
+            else{
+                throw new BException( "Cannot modify region:" + dst, null );
+            }
+
+            System.out.println("centerIn = [" + centerIn + "], toBeCentered = [" + toBeCentered + "], dst = [" + dst + "]");
+
+
+
+            return dst;
         }
 
 		public static void main(String[] args) {
