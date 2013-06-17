@@ -14,7 +14,7 @@ String[][] layers = {
 		".   .   .  .  .  .  .  .",
 		".   he  .  .  .  .  .  bk",
 		".   ba   .  .  .  .  .  .",
-		".   ba    bk  .  ba  .  .",
+		".   ba    bk  .  ba  .  .  do2e",
 		".   ba   .  .  .  .  .  .",
 		".   ba   .  .  .  .  .  .",
 		"pu  .   .  bk  .  .  .  pu",

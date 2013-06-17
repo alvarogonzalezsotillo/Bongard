@@ -406,11 +406,11 @@ public abstract class BAbstractPhysics implements IBPhysics{
     }
 
     @Override
-    public IBPhysicalItem item( BItemType type){
+    public IBPhysicalItem item( BItemType type ){
         List<IBPhysicalItem> ret = new ArrayList<IBPhysicalItem>();
         itemsOfType(type,ret);
         if( ret.size() != 1 ){
-            throw new IllegalStateException("One item expected:" + type + " -- " + ret.size() );
+            return null;
         }
         return ret.get(0);
     }

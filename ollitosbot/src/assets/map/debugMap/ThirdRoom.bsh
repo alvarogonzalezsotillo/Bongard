@@ -1,0 +1,25 @@
+String[][] layers = {
+        {
+        "fl fl fl fl fl fl fl fl",
+        "fl fl fl fl fl fl fl fl",
+        "fl fl fl fl fl fl fl fl",
+        "fl fl fl fl fl fl fl fl",
+        "fl fl fl fl fl fl fl fl",
+        "fl fl fl fl fl fl fl fl",
+        "fl fl fl fl fl fl fl fl",
+        "fl fl fl fl fl fl fl fl",
+        },
+        {
+        ".	.	.	.	.	.	.	.",
+        ".	.	.	.	.	.	.	.",
+        ".	.	.	.	.	.	.	.",
+        "do2w	.	.	.	.	.	.	.",
+        ".	.	.	.	.	.	.	.",
+        ".	.	.	.	.	.	.	.",
+        ".	.	.	do1s	.	.	.	.",
+        }
+        };
+
+addLayers( layers );
+setDoorDestination("1","FourthRoom","2");
+setDoorDestination("2","SecondRoom","2");

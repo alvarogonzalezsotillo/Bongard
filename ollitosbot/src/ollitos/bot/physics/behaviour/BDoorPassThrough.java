@@ -8,12 +8,7 @@ import ollitos.bot.map.BItemType;
 import ollitos.bot.map.BMapItem;
 import ollitos.bot.map.BRoom;
 import ollitos.bot.map.IBMapReader;
-import ollitos.bot.physics.BMapToPhysical;
-import ollitos.bot.physics.BPhysics;
-import ollitos.bot.physics.IBCollision;
-import ollitos.bot.physics.IBPhysicalItem;
-import ollitos.bot.physics.IBPhysicalListener;
-import ollitos.bot.physics.IBPhysics;
+import ollitos.bot.physics.*;
 import ollitos.bot.physics.items.BHero;
 import ollitos.bot.physics.items.BRoomWall;
 
@@ -50,14 +45,29 @@ public class BDoorPassThrough implements IBPhysicalBehaviour{
 		BMapItem dItem = exitDoor.mapItem();
 		BRoom room = dItem.room();
 		BRoom.DoorDestinationInfo id = room.doorDestination(dItem.index());
-        
+        if( id == null ){
+            fillErrorRoom(exitDoor.physics(), id);
+            return;
+        }
+
 		IBMapReader mapReader = room.map().mapReader();
 		BRoom newRoom = mapReader.readRoom(id.roomId);
-		BPhysics physics = (BPhysics) exitDoor.physics();
-        
-		physics.clearButListeners();
-		BMapToPhysical.fillFromRoom(physics, newRoom);
-		physics.updateRoomWalls();
+        if( newRoom == null ){
+            fillErrorRoom(exitDoor.physics(), id);
+            return;
+        }
+
+        goToNewRoom(exitDoor.physics(), id, newRoom);
+    }
+
+    private void fillErrorRoom(IBPhysics physics, BRoom.DoorDestinationInfo id) {
+        throw new UnsupportedOperationException();
+    }
+
+    private void goToNewRoom(IBPhysics physics, BRoom.DoorDestinationInfo id, BRoom newRoom) {
+        physics.clearButListeners();
+        BMapToPhysical.fillFromRoom(physics, newRoom);
+        ((BAbstractPhysics)physics).updateRoomWalls();
 
         BMapItem enterDoor = newRoom.door(id.doorIndex);
         setHeroInPosition(physics,enterDoor);
@@ -69,6 +79,7 @@ public class BDoorPassThrough implements IBPhysicalBehaviour{
         IBPhysicalItem hero = p.item(BItemType.hero);
         if( hero == null ){
             hero = new BHero(p);
+            p.add(hero);
         }
 
         IBRegion rHero = hero.region();
@@ -115,10 +126,12 @@ public class BDoorPassThrough implements IBPhysicalBehaviour{
 
 
 		for( IBPhysicalItem door : doors ){
-            IBRegion doorRegion = door.mapItem().region();
-            IBRegion.Util.grow(doorRegion,1,doorRegion);
-			for( IBLocation l: _item.region().vertices(null) ){
-                if( IBRegion.Util.inside( l, doorRegion) ){
+            BMapItem mapItem = door.mapItem();
+            IBRegion doorRegion = getDoorRegion(p, mapItem);
+            IBRegion.Util.grow(doorRegion,1,mapItem.direction(), doorRegion);
+            IBRegion.Util.grow(doorRegion,1,mapItem.direction().opposite(), doorRegion);
+			for( IBLocation v: _item.region().vertices(null) ){
+                if( IBRegion.Util.inside( v, doorRegion) ){
 					return door;
 				}
 			}

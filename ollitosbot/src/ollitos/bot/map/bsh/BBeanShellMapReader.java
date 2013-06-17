@@ -60,7 +60,11 @@ public class BBeanShellMapReader implements IBMapReader{
 		BResourceLocator l = computeLocator(id);
 		BRoom room = new BRoom(readMap());
 		try {
-			populateRoom(l, room);
+			boolean ret = populateRoom(l, room);
+            if( !ret ){
+                BPlatform.instance().logger().log( this, "Can't find room:" + id + " -- " + l );
+                return null;
+            }
 		}
 		catch (BException e) {
 			throw e;
@@ -93,15 +97,22 @@ public class BBeanShellMapReader implements IBMapReader{
 		i.eval( "void setDoorDestination(String doorIndex, String destRoomId, String destDoorIndex){ room.setDoorDestination(doorIndex,destRoomId,destDoorIndex); }" );
 	}
 	
-	public void populateRoom(BResourceLocator script, BRoom room) throws EvalError, IOException{
+	public boolean populateRoom(BResourceLocator script, BRoom room) throws EvalError, IOException{
 		Interpreter i = interpreter();
 		setCommonVars(i, room);
 		Reader r = reader(script);
+        if( r == null ){
+            return false;
+        }
 		i.eval(r);
+        return true;
 	}
 
 	private Reader reader(BResourceLocator script) throws IOException {
 		InputStream in = BPlatform.instance().open( script );
+        if( in == null ){
+            return null;
+        }
 		return new InputStreamReader(in);
 	}	
 }
