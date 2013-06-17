@@ -10,7 +10,7 @@ String[][] layers = {
         "fl fl fl fl fl fl fl fl",
         },
         {
-        ".	.	.	do2n	.	.	.	.",
+        ". 	.	.	do2n	.	.	.	.",
         ".	.	.	.	.	.	.	.",
         ".	.	.	.	.	.	.	.",
         "do1w	.	.	.	.	.	.	.",
@@ -20,6 +20,7 @@ String[][] layers = {
         ".	.	.	.	.	.	.	.",
         }
         };
+
 
 addLayers( layers );
 setDoorDestination("1","InitRoom","2");
