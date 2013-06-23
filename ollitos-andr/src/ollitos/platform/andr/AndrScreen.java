@@ -146,6 +146,11 @@ public class AndrScreen extends BScreen{
 			return listeners().handle(e);
 		}
 
+        if( keyCode == KeyEvent.KEYCODE_Q){
+            IBEvent e = new IBEvent( IBEvent.Type.keyPressed, 'q' );
+            return listeners().handle(e);
+        }
+
 		return false;
 	}
 	

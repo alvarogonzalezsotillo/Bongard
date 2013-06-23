@@ -44,7 +44,15 @@ public class BCheckBox extends BButton{
 			i = (i+1)%c.possibleStates();
 			c.setState(i);
 		}
-	};
+
+        @Override
+        public void pressed(BButton b) {
+        }
+
+        @Override
+        public void released(BButton b) {
+        }
+    };
 	
 	private IBDrawable[] _stateDrawables;
 	private int _state;

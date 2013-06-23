@@ -13,6 +13,7 @@ import java.util.List;
 
 import ollitos.animation.IBAnimable;
 import ollitos.animation.IBAnimation;
+import ollitos.bot.control.IBPhysicsControl;
 import ollitos.bot.geom.BDirection;
 import ollitos.bot.geom.BLocation;
 import ollitos.bot.geom.BRegion;
@@ -32,8 +33,9 @@ public abstract class BAbstractPhysics implements IBPhysics{
 	private final ArrayList<IBPhysicalItem> _fixedItems = new ArrayList<IBPhysicalItem>();
 	private final ArrayList<IBPhysicalItem> _movableItems = new ArrayList<IBPhysicalItem>();
 	private final ArrayList<IBPhysicalListener> _physicalListeners = new ArrayList<IBPhysicalListener>();
+    private final IBPhysicsControl _control;
 
-	private IBPhysicalItem[] _itemsArray;
+    private IBPhysicalItem[] _itemsArray;
 	private IBPhysicalItem[] _fixedItemsArray;
 
 	private PhysicsAnimation _animation;
@@ -45,14 +47,19 @@ public abstract class BAbstractPhysics implements IBPhysics{
 	private BRoomWall[] _roomWalls;
 	private long _stepMillis;
 	
-	protected BAbstractPhysics(IBPhysicsView view, long stepMillis ){
+	protected BAbstractPhysics(IBPhysicsView view, IBPhysicsControl control,long stepMillis ){
 		_view = view;
+        _control = control;
 		_stepMillis = stepMillis;
 	}
 	
 	public IBPhysicsView view(){
 		return _view;
 	}
+
+    public IBPhysicsControl control(){
+        return _control;
+    }
 
 	public void addPhysicalListener(final IBPhysicalListener l) {
 		_physicalListeners.add(l);

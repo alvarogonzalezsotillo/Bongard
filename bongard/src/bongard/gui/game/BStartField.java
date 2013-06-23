@@ -22,7 +22,15 @@ public class BStartField extends BDrawableContainer{
 		public void clicked(BButton b) {
 			BStartField.this.clicked(b);
 		}
-	};
+
+        @Override
+        public void pressed(BButton b) {
+        }
+
+        @Override
+        public void released(BButton b) {
+        }
+    };
 
 	@Override
 	public IBRectangle originalSize() {

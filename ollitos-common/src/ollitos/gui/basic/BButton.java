@@ -27,14 +27,20 @@ public class BButton extends BRectangularDrawable implements IBEventConsumer, IB
 	private static final double CLICK_SCALE = 0.9;
 	private List<ClickedListener> _clickedListeners = new ArrayList<ClickedListener>();
 	private IBDrawable _drawable;
-	
+    private boolean _pressed = false;
+
+    public boolean pressed(){
+        return _pressed;
+    }
+
 	public interface ClickedListener{
 		void clicked(BButton b);
+        void pressed(BButton b);
+        void released(BButton b);
 	}
-	
+
 	private BEventAdapter _adapter = new BEventAdapter(this) {
-		
-		private boolean _pressed = false;
+
 		private IBAnimation _pressedAnimation;
 		private IBAnimation _releasedAnimation;
 		

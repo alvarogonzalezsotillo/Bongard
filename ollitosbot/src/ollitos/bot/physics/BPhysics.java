@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ollitos.bot.control.IBPhysicsControl;
 import ollitos.bot.geom.BRegion;
 import ollitos.bot.geom.IBRegion;
 import ollitos.bot.map.BItemType;
@@ -22,8 +23,8 @@ public class BPhysics extends BAbstractPhysics{
 	private static final int STEP = 1;
 
 
-	public BPhysics( final IBPhysicsView view ){
-		super(view, STEP);
+	public BPhysics(  IBPhysicsView view, IBPhysicsControl control){
+		super(view, control, STEP);
 	}
 
 

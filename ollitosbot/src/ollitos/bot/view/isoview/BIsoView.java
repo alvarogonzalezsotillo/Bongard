@@ -12,6 +12,9 @@ import static ollitos.bot.physics.BPlayerAction.*;
 import java.util.Arrays;
 import java.util.Comparator;
 
+import ollitos.bot.control.BAbstractControls;
+import ollitos.bot.control.BUserButton;
+import ollitos.bot.control.IBPhysicsControl;
 import ollitos.bot.geom.BLocation;
 import ollitos.bot.geom.IBLocation;
 import ollitos.bot.geom.IBMovableRegion;
@@ -26,7 +29,9 @@ import ollitos.bot.physics.behaviour.BMovableThingBehaviour;
 import ollitos.bot.physics.behaviour.BSpriteBehaviour;
 import ollitos.bot.view.IBPhysicsView;
 import ollitos.geom.BRectangle;
+import ollitos.geom.IBPoint;
 import ollitos.geom.IBRectangle;
+import ollitos.gui.basic.BButton;
 import ollitos.gui.container.BDrawableContainer;
 import ollitos.gui.event.BEventAdapter;
 import ollitos.gui.event.IBEvent;
@@ -68,8 +73,10 @@ public class BIsoView extends BDrawableContainer implements IBPhysicsView{
 			_items = physics().items();
 		}
 	};
-	
-	public BIsoView( IBMapReader reader ){
+
+    private IBPhysicsControl _control;
+
+    public BIsoView( IBMapReader reader ){
 		this( 480, 640, reader );
 	}
 	
@@ -252,6 +259,9 @@ public class BIsoView extends BDrawableContainer implements IBPhysicsView{
 	@Override
 	protected void draw_internal(IBCanvas c) {
 		drawInCanvas(c, canvasContext(), ANTIALIAS );
+        IBRectangle r = originalSize();
+        c.drawBox(this, r,false);
+        super.draw_internal(c);
 	}
 
 	private void drawInCanvas(IBCanvas c, BCanvasContext cc, boolean antialias ){
@@ -341,14 +351,79 @@ public class BIsoView extends BDrawableContainer implements IBPhysicsView{
 	
 	private BPhysics physics(){
 		if (_physics == null) {
-			_physics = new BPhysics(this);
+			_physics = new BPhysics(this, control() );
 			_physics.addPhysicalListener(_physicalListener);
 		}
 
 		return _physics;
 	}
-	
-	private IBPhysicalItem[] physicalItems() {
+
+    private IBPhysicsControl control() {
+        if (_control == null) {
+            _control = createControls();
+        }
+        return _control;
+    }
+
+    private IBPhysicsControl createControls() {
+
+        class Controls extends BAbstractControls{
+
+            public Controls(){
+                install();
+            }
+
+            private void install() {
+                removeDrawables();
+
+                IBRectangle or = BIsoView.this.originalSize();
+                int s = (int)Math.min(or.w(), or.h()) / 6;
+
+                class CL implements BButton.ClickedListener{
+                    private BButton _b;
+                    private String _action;
+
+                    public CL(BButton b, String action){
+                        _b = b;
+                        _action = action;
+                    }
+                    @Override
+                    public void clicked(BButton b) {
+                    }
+
+                    @Override
+                    public void pressed(BButton b){
+                        if( b == _b ) button(_action).setState(BUserButton.State.pressed);
+                    }
+
+                    @Override
+                    public void released(BButton b) {
+                        if( b == _b ) button(_action).setState(BUserButton.State.released);
+                    }
+                }
+
+                BRectangle r = new BRectangle(-50,-50,100,100);
+                BRectangle forwardR = new BRectangle(or.x() + s, or.y() + or.h() - s * 2, s, s);
+                BButton forward = BButton.create("/controls/button-forward.png", r);
+                forward.setSizeTo(forwardR,false,true);
+                addDrawable(forward);
+
+                BRectangle rightR = new BRectangle(or.x() + or.w() - s, forwardR.y(), s, s);
+                BButton right = BButton.create("/controls/button-right.png", r);
+                right.setSizeTo(rightR,false,true);
+                addDrawable(right);
+
+                BRectangle leftR = new BRectangle(rightR.x() - s * 1.5, forwardR.y(), s, s);
+                BButton left = BButton.create("/controls/button-left.png", r);
+                left.setSizeTo(leftR,false,true);
+                addDrawable(left);
+            }
+        }
+
+        return new Controls();
+    }
+
+    private IBPhysicalItem[] physicalItems() {
 		if( _items == null ){
 			loadRoomIntoPhysics();
 			_items = physics().items();
