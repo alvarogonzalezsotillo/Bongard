@@ -2,6 +2,7 @@ package ollitos.bot.physics;
 
 import java.util.List;
 
+import ollitos.bot.control.IBPhysicsControl;
 import ollitos.bot.geom.BDirection;
 import ollitos.bot.geom.IBLocation;
 import ollitos.bot.geom.IBRegion;
@@ -18,6 +19,7 @@ public interface IBPhysics {
 	List<IBPhysicalContact> contacts(IBPhysicalItem i, IBRegion regionOfItem, BDirection d, List<IBPhysicalContact> ret, final IBPhysicalItem ... items);
 	boolean intersects(IBPhysicalItem item, IBRegion regionOfItem, IBPhysicalItem ...items );
 	IBPhysicsView view();
+    IBPhysicsControl control();
 	
 	public void itemsOfType( BItemType type, List<IBPhysicalItem> ret ); 
 	
@@ -25,8 +27,6 @@ public interface IBPhysics {
 	void remove( IBPhysicalItem t );
 	void clearButListeners();
 	
-	void playerAction( BPlayerAction a);
-
     IBPhysicalItem item(BItemType type);
 
     BRoomWall[] roomWalls();

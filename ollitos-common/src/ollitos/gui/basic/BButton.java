@@ -29,9 +29,6 @@ public class BButton extends BRectangularDrawable implements IBEventConsumer, IB
 	private IBDrawable _drawable;
     private boolean _pressed = false;
 
-    public boolean pressed(){
-        return _pressed;
-    }
 
 	public interface ClickedListener{
 		void clicked(BButton b);
@@ -51,7 +48,7 @@ public class BButton extends BRectangularDrawable implements IBEventConsumer, IB
 			if( BRectangle.inside( originalSize(), pInMyCoordinates ) ){
 				platform().game().animator().post(CLICK_DELAY, new Runnable(){
 					public void run(){
-						clicked();
+						nofityClicked();
 					}
 				});
 				return true;
@@ -62,6 +59,11 @@ public class BButton extends BRectangularDrawable implements IBEventConsumer, IB
 		public boolean pointerDown(IBPoint pInMyCoordinates) {
 			if( BRectangle.inside( originalSize(), pInMyCoordinates ) ){
 				_pressed = true;
+                platform().game().animator().post(CLICK_DELAY, new Runnable() {
+                    public void run() {
+                        notifyPressed();
+                    }
+                });
 				_pressedAnimation = new BScaleAnimation(CLICK_SCALE, CLICK_SCALE, CLICK_DELAY, BButton.this );
 				_pressedAnimation = new BWaitForAnimation(_pressedAnimation, _releasedAnimation );
 				platform().game().animator().addAnimation(_pressedAnimation);
@@ -75,7 +77,13 @@ public class BButton extends BRectangularDrawable implements IBEventConsumer, IB
 				return false;
 			}
 			_pressed = false;
-			_releasedAnimation = new BScaleAnimation(1/CLICK_SCALE, 1/CLICK_SCALE, CLICK_DELAY, BButton.this );
+            platform().game().animator().post(CLICK_DELAY, new Runnable(){
+                public void run(){
+                    notifyReleased();
+                }
+            });
+
+            _releasedAnimation = new BScaleAnimation(1/CLICK_SCALE, 1/CLICK_SCALE, CLICK_DELAY, BButton.this );
 			_releasedAnimation = new BWaitForAnimation(_releasedAnimation,_pressedAnimation);
 			platform().game().animator().addAnimation(_releasedAnimation);
 			return true;
@@ -108,7 +116,7 @@ public class BButton extends BRectangularDrawable implements IBEventConsumer, IB
 		BTransformUtil.setTo(_drawable.transform(), _drawable.originalSize(), originalSize(), true, true);
 	}
 
-	protected void clicked(){
+	protected void nofityClicked(){
 		platform().logger().log( this, "clicked" );
 		if( _clickedListeners != null ){
 			for (ClickedListener l : listeners() ) {
@@ -116,8 +124,26 @@ public class BButton extends BRectangularDrawable implements IBEventConsumer, IB
 			}
 		}
 	}
-	
-	@Override
+
+    protected void notifyPressed(){
+        platform().logger().log( this, "pressed" );
+        if( _clickedListeners != null ){
+            for (ClickedListener l : listeners() ) {
+                l.pressed(this);
+            }
+        }
+    }
+
+    protected void notifyReleased(){
+        platform().logger().log( this, "    protected void released(){\n" );
+        if( _clickedListeners != null ){
+            for (ClickedListener l : listeners() ) {
+                l.released(this);
+            }
+        }
+    }
+
+    @Override
 	public IBEventListener listener() {
 		return _adapter;
 	}

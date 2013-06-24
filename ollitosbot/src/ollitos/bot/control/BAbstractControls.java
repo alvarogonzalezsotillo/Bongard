@@ -8,6 +8,10 @@ public class BAbstractControls implements IBPhysicsControl{
 
     private Map<String, BUserButton> _buttons = new HashMap<String,BUserButton>();
 
+    protected BAbstractControls(){
+        init();
+    }
+
     private void addButton(BUserButton b){
         _buttons.put( b.name(), b );
     }
@@ -28,6 +32,10 @@ public class BAbstractControls implements IBPhysicsControl{
     }
 
     public boolean buttonPressed(String s){
-        return button(s).pressed();
+        BUserButton button = button(s);
+        if( button == null ){
+            return false;
+        }
+        return button.pressed();
     }
 }

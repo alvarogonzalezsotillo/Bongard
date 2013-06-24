@@ -276,18 +276,7 @@ public abstract class BAbstractPhysics implements IBPhysics{
 		}
 	}
 	
-	protected void notifyPlayerAction(final BPlayerAction a ) {
-		for( final IBPhysicalListener l: _physicalListeners ){
-			l.playerAction(a);
-		}
-		for( final IBPhysicalItem i: items() ){
-			if( i.physicalListener() != null ){
-				i.physicalListener().playerAction(a);
-			}
-		}
-	}
-	
-	
+
 
 	public IBPhysicalItem[] items(){
 		if( _itemsArray == null ){
@@ -442,10 +431,6 @@ public abstract class BAbstractPhysics implements IBPhysics{
 		_roomWalls = null;
 	}
 
-	@Override
-	public void playerAction(BPlayerAction a){
-		notifyPlayerAction(a);
-	}
-	
+
 	public abstract void step();
 }

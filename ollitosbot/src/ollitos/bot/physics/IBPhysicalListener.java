@@ -8,8 +8,7 @@ public interface IBPhysicalListener {
 	void collision( IBCollision collision );
 	void itemMoved(IBPhysicalItem i, IBRegion oldRegion );
 	void stepFinished();
-	void playerAction(BPlayerAction pa);
-	
+
 	public static final IBPhysicalListener[] EMPTY = {};
 	
 	public class Default implements IBPhysicalListener{
@@ -33,8 +32,5 @@ public interface IBPhysicalListener {
 		public void itemMoved(IBPhysicalItem i, IBRegion oldRegion) {
 		}
 
-		@Override
-		public void playerAction(BPlayerAction pa) {
-		}
 	}
 }

@@ -1,17 +1,5 @@
 package ollitos.bot.view.isoview;
 
-import static ollitos.bot.geom.BDirection.down;
-import static ollitos.bot.geom.BDirection.east;
-import static ollitos.bot.geom.BDirection.north;
-import static ollitos.bot.geom.BDirection.south;
-import static ollitos.bot.geom.BDirection.up;
-import static ollitos.bot.geom.BDirection.west;
-import static ollitos.bot.geom.IBRegion.Vertex.gVertex;
-import static ollitos.bot.physics.BPlayerAction.*;
-
-import java.util.Arrays;
-import java.util.Comparator;
-
 import ollitos.bot.control.BAbstractControls;
 import ollitos.bot.control.BUserButton;
 import ollitos.bot.control.IBPhysicsControl;
@@ -29,7 +17,6 @@ import ollitos.bot.physics.behaviour.BMovableThingBehaviour;
 import ollitos.bot.physics.behaviour.BSpriteBehaviour;
 import ollitos.bot.view.IBPhysicsView;
 import ollitos.geom.BRectangle;
-import ollitos.geom.IBPoint;
 import ollitos.geom.IBRectangle;
 import ollitos.gui.basic.BButton;
 import ollitos.gui.container.BDrawableContainer;
@@ -43,6 +30,12 @@ import ollitos.platform.IBRaster;
 import ollitos.platform.raster.BNewRasterProvider;
 import ollitos.platform.raster.IBRasterProvider;
 
+import java.util.Arrays;
+import java.util.Comparator;
+
+import static ollitos.bot.geom.BDirection.*;
+import static ollitos.bot.geom.IBRegion.Vertex.gVertex;
+
 
 public class BIsoView extends BDrawableContainer implements IBPhysicsView{
 
@@ -53,12 +46,7 @@ public class BIsoView extends BDrawableContainer implements IBPhysicsView{
 	
 	private IBEventListener _listener = new BEventAdapter(){
 		public boolean keyPressed(IBEvent e) {
-			switch(e.keyChar()){
-				case 'q': physics().playerAction(moveForward); return true;
-				case 'o': physics().playerAction(turnLeft); return true;
-				case 'p': physics().playerAction(turnRight); return true;
-				case ' ': physics().playerAction(jump); return true;
-			}
+            // TO DO: Detect physical keyboard
 			return false;
 		}
 
@@ -258,9 +246,7 @@ public class BIsoView extends BDrawableContainer implements IBPhysicsView{
 	
 	@Override
 	protected void draw_internal(IBCanvas c) {
-		drawInCanvas(c, canvasContext(), ANTIALIAS );
-        IBRectangle r = originalSize();
-        c.drawBox(this, r,false);
+		drawInCanvas(c, canvasContext(), ANTIALIAS);
         super.draw_internal(c);
 	}
 
@@ -374,10 +360,6 @@ public class BIsoView extends BDrawableContainer implements IBPhysicsView{
             }
 
             private void install() {
-                removeDrawables();
-
-                IBRectangle or = BIsoView.this.originalSize();
-                int s = (int)Math.min(or.w(), or.h()) / 6;
 
                 class CL implements BButton.ClickedListener{
                     private BButton _b;
@@ -401,22 +383,30 @@ public class BIsoView extends BDrawableContainer implements IBPhysicsView{
                         if( b == _b ) button(_action).setState(BUserButton.State.released);
                     }
                 }
+                removeDrawables();
 
-                BRectangle r = new BRectangle(-50,-50,100,100);
-                BRectangle forwardR = new BRectangle(or.x() + s, or.y() + or.h() - s * 2, s, s);
+                IBRectangle or = BIsoView.this.originalSize();
+                int s = (int)Math.min(or.w(), or.h()) / 8;
+
+                int imageSize = 242;
+                BRectangle r = new BRectangle(-imageSize /2,-imageSize /2, imageSize, imageSize);
+                BRectangle forwardR = new BRectangle(or.x() + s/2, or.y() + or.h() - s/2, s, s);
                 BButton forward = BButton.create("/controls/button-forward.png", r);
-                forward.setSizeTo(forwardR,false,true);
-                addDrawable(forward);
+                forward.addClickedListener( new CL(forward,"forward") );
+                forward.setSizeTo(forwardR,true, true);
+                BIsoView.this.addDrawable(forward);
 
-                BRectangle rightR = new BRectangle(or.x() + or.w() - s, forwardR.y(), s, s);
+                BRectangle rightR = new BRectangle(or.x() + or.w() - s*1.5, forwardR.y(), s, s);
                 BButton right = BButton.create("/controls/button-right.png", r);
-                right.setSizeTo(rightR,false,true);
-                addDrawable(right);
+                right.addClickedListener( new CL(right,"right") );
+                right.setSizeTo(rightR,true, true);
+                BIsoView.this.addDrawable(right);
 
                 BRectangle leftR = new BRectangle(rightR.x() - s * 1.5, forwardR.y(), s, s);
                 BButton left = BButton.create("/controls/button-left.png", r);
-                left.setSizeTo(leftR,false,true);
-                addDrawable(left);
+                left.addClickedListener( new CL(left,"left") );
+                left.setSizeTo(leftR,true, true);
+                BIsoView.this.addDrawable(left);
             }
         }
 
