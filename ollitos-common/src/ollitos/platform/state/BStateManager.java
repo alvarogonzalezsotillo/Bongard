@@ -34,10 +34,12 @@ public class BStateManager implements IBDisposable{
 			saveImpl(s);
 		}
 		catch( Error e ){
+            e.printStackTrace();
 			BPlatform.instance().logger().log( this, e );
 		}
 		catch( RuntimeException r ){
-			BPlatform.instance().logger().log( this, r );
+            r.printStackTrace();
+            BPlatform.instance().logger().log( this, r );
 		}
 	}
 	
@@ -64,10 +66,12 @@ public class BStateManager implements IBDisposable{
 			return restoreImpl(c);
 		}
 		catch( Error e ){
+            e.printStackTrace();
 			BPlatform.instance().logger().log( this, e );
 		}
 		catch( RuntimeException r ){
-			BPlatform.instance().logger().log( this, r );
+            r.printStackTrace();
+            BPlatform.instance().logger().log( this, r );
 		}
 		return null;
 	}

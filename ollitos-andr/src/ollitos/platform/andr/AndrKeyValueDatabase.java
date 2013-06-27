@@ -14,7 +14,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class AndrKeyValueDatabase extends SQLiteOpenHelper implements IBKeyValueDatabase{
 	
-	private static final boolean FAKE = true;
+	private static final boolean FAKE = false;
 	
 	private static final int VERSION = 1;
 	private static final String TABLE = "tables";
@@ -106,20 +106,23 @@ public class AndrKeyValueDatabase extends SQLiteOpenHelper implements IBKeyValue
 			
 			SQLiteDatabase db = getWritableDatabase();
 			String k = Util.concatenate(key);
-			db.beginTransaction();
+
+            db.beginTransaction();
 			db.delete(TABLE, SELECTOR, new String[]{name(), k} );
+            db.setTransactionSuccessful();
+            db.endTransaction();
+
+            db.beginTransaction();
 			ContentValues cv = new ContentValues(2);
+            cv.put( TABLE_COLUMN, name());
 			cv.put( KEY_COLUMN, k);
 			cv.put( VALUE_COLUMN, b);
 			db.insert(TABLE, null, cv);
+
+            db.setTransactionSuccessful();
 			db.endTransaction();
-			try{
-				db.close();
-			}
-			catch( SQLiteException e){
-				BPlatform.instance().logger().log( this, e );
-			}
-			return true;
+
+            return true;
 		}
 
 		@Override
@@ -132,17 +135,20 @@ public class AndrKeyValueDatabase extends SQLiteOpenHelper implements IBKeyValue
 			Cursor c = db.query(TABLE, new String[]{VALUE_COLUMN}, SELECTOR, new String[]{name(),k}, null, null, null);
 			int count = c.getCount();
 			if( count == 0 ){
+                c.close();
+                db.endTransaction();
 				return null;
 			}
 			if( count > 1 ){
+                c.close();
+                db.endTransaction();
 				throw new BException( "More than one row:" + k, null );
 			}
 			
 			c.moveToFirst();
-			byte[] blob = c.getBlob(2);
+			byte[] blob = c.getBlob(c.getColumnIndex(VALUE_COLUMN));
 			c.close();
 			db.endTransaction();
-			db.close();
 			return blob;
 		}
 		

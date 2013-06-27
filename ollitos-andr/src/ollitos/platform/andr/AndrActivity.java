@@ -26,6 +26,9 @@ public class AndrActivity extends Activity {
 		    public void uncaughtException(Thread paramThread, Throwable paramThrowable) {
 			    Log.getStackTraceString(paramThrowable);
 			    Log.e("UncaughtE", "uncaughtException", paramThrowable);
+                if(paramThrowable instanceof OutOfMemoryError ){
+                    System.exit(-1);
+                }
 			    UEH.uncaughtException(paramThread, paramThrowable);
 		    }
 		});
