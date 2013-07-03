@@ -1,9 +1,6 @@
 package ollitos.platform.awt;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -102,7 +99,11 @@ public class AWTRasterUtil implements IBRasterUtil{
 	public IBRaster html(IBRectangle s, BResourceLocator rl) throws IOException {
 		final JEditorPane ep = new JEditorPane();
 		ep.setBackground((AWTColor)BPlatform.COLOR_DARKGRAY);
-		ep.setSize( (int)s.w(), (int)s.h());
+        Dimension d = new Dimension((int)s.w(), (int)s.h());
+		ep.setSize(d);
+        ep.setPreferredSize(d);
+        ep.setMaximumSize(d);
+        ep.setMinimumSize(d);
 		URL u = null;
 		
 		if( rl.url() != null ){

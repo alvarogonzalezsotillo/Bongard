@@ -20,8 +20,9 @@ public interface IBRasterUtil {
 	
 	public static class BProgressAnimation extends BFixedDurationAnimation{
 
-		
-		private IBRaster _r;
+
+        private static final boolean ENABLED = false;
+        private IBRaster _r;
 		private BBox _b;
 
 		public BProgressAnimation(IBRaster r) {
@@ -34,7 +35,9 @@ public interface IBRasterUtil {
 		public void stepAnimation(long millis) {
 			stepMillis(millis);
 			_b.setOriginalSize( new BRectangle(10, 10, currentMillis()*(_r.w()-10*2)/totalMillis(), 5) );
-			_r.canvas().drawBox(_b, _b.originalSize(), true );
+			if( ENABLED ){
+                _r.canvas().drawBox(_b, _b.originalSize(), true );
+            }
 		}
 	}
 }

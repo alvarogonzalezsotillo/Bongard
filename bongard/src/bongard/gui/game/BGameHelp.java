@@ -77,61 +77,58 @@ public class BGameHelp extends BSlidableContainer implements BState.Stateful{
 
 		@Override
 		public int width(){
-			return 2;
+			return 5;
 		}
 		
-		public static IBDrawable internal(){
-			BResourceLocator l = new BResourceLocator("/examples/help.html" );
-			IBRectangle htmlRectangle = new BRectangle(0, 0, 240, 320);
+		public static IBDrawable internal(int x){
+            String locator = String.format("/examples/help%02d.html", x);
+			BResourceLocator l = new BResourceLocator(locator );
+            IBRectangle os = BGameField.computeOriginalSize();
+            IBRectangle.Util.scale(os,os,0.8);
+            IBRectangle htmlRectangle = new BRectangle(0,0,320,480);
 			IBRasterProvider r = BRasterProviderCache.instance().getFromHTML(l, htmlRectangle);
 			BSprite sprite = new BSprite(r);
 			sprite.setAntialias(true);
-			BButton b = new BButton(sprite);
-			return b;
+			return sprite;
 		}
 		
 		@Override
-		public IBSlidablePage page(int x) {
+		public IBSlidablePage page(final int x) {
 			if( _fd[x] != null ){
 				return _fd[x];
 			}
 			
-			if( x != width()-1 ){
-				_fd[x] = new SlidablePageForIsoView( new BBeanShellMapReader("/map/debugMap"));
-			}
-			else{
-				_fd[x] = new IBSlidablePage() {
-					
-					private IBDrawable _d;
-	
-					@Override
-					public void setUp() {
-					}
-					
-					@Override
-					public boolean disposed() {
-						return false;
-					}
-					
-					@Override
-					public void dispose() {
-					}
-					
-					@Override
-					public IBDrawable drawable() {
-						if( _d == null ){
-							_d = internal();
-						}
-						return _d;
-					}
-					
-					@Override
-					public IBDrawable icon() {
-						return null;
-					}
-				};
-			}
-			
+            _fd[x] = new IBSlidablePage() {
+
+                private IBDrawable _d;
+
+                @Override
+                public void setUp() {
+                }
+
+                @Override
+                public boolean disposed() {
+                    return false;
+                }
+
+                @Override
+                public void dispose() {
+                }
+
+                @Override
+                public IBDrawable drawable() {
+                    if( _d == null ){
+                        _d = internal(x);
+                    }
+                    return _d;
+                }
+
+                @Override
+                public IBDrawable icon() {
+                    return null;
+                }
+            };
+
 			return _fd[x];
 		}
 		

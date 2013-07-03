@@ -83,7 +83,7 @@ public class BZoomDrawable extends BDrawableContainer{
 	
 	private class ZoomListener extends BEventAdapter{
 		private static final long DOUBLE_CLICK_THRESHOLD = 500;
-		private static final double MAX_DOUBLE_CLICK_DISTANCE = 20;
+		private static final double MAX_DOUBLE_CLICK_DISTANCE = 40;
 		private boolean _in;
 		private boolean _out;
 		private IBAnimation _inAnimation;

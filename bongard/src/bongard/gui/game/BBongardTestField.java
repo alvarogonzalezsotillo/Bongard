@@ -24,7 +24,7 @@ import bongard.problem.BProblem;
 public class BBongardTestField extends BDrawableContainer implements IBSlidablePage, Serializable{
 
 	public static enum State{
-		undefined, good, bad
+		undefined, solved,
 	};
 	
 	public static HashMap<State, IBRasterProvider> _rasters;
@@ -34,13 +34,11 @@ public class BBongardTestField extends BDrawableContainer implements IBSlidableP
 	static{
 		_rasters = new HashMap<State, IBRasterProvider>();
 		BRasterProviderCache rpc = BRasterProviderCache.instance();
-		IBRasterProvider undefinedr = rpc.get(new BResourceLocator("/images/checkbox/undefined.png"), 110, 110 );
-		_rasters.put( State.undefined, rpc.get(undefinedr, BPlatform.COLOR_WHITE, true ) );
-		IBRasterProvider goodr = rpc.get( new BResourceLocator("/images/checkbox/good.png"), 110, 110);
-		_rasters.put( State.good, rpc.get(goodr, BPlatform.COLOR_WHITE, true ) );
-		IBRasterProvider badr = rpc.get( new BResourceLocator("/images/checkbox/bad.png"), 110, 110);
-		_rasters.put( State.bad, rpc.get(badr, BPlatform.COLOR_WHITE, true ) );
-		
+		IBRasterProvider undefinedR = rpc.get(new BResourceLocator("/images/checkbox/undefined.png"), 110, 110 );
+		_rasters.put( State.undefined, rpc.get(undefinedR, BPlatform.COLOR_WHITE, true ) );
+		IBRasterProvider solvedR = rpc.get( new BResourceLocator("/images/checkbox/good.png"), 110, 110);
+		_rasters.put( State.solved, rpc.get(solvedR, BPlatform.COLOR_WHITE, true ) );
+
 		_sprites = new BSprite[State.values().length];
 		for( State s: State.values() ){
 			_sprites[s.ordinal()] = new BDelayedSprite(_rasters.get(s));
@@ -48,8 +46,7 @@ public class BBongardTestField extends BDrawableContainer implements IBSlidableP
 		
 		_icons = new HashMap<State, IBDrawable>();
 		_icons.put( State.undefined, null );
-		_icons.put( State.good, new BBox( new BRectangle(0,0,15,15), BPlatform.COLOR_WHITE, true) );
-		_icons.put( State.bad, new BBox( new BRectangle(0,0,15,15), BPlatform.COLOR_BLACK, true) );
+		_icons.put( State.solved, new BBox( new BRectangle(0,0,15,15), BPlatform.COLOR_WHITE, true) );
 	}
 	
 	
