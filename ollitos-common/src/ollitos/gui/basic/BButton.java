@@ -45,7 +45,7 @@ public class BButton extends BRectangularDrawable implements IBEventConsumer, IB
 		public boolean pointerClick(IBPoint pInMyCoordinates) {
 			IBLogger l = platform().logger();
 			l.log(this,"click:" + pInMyCoordinates );
-			if( BRectangle.inside( originalSize(), pInMyCoordinates ) ){
+			if( IBRectangle.Util.inside(originalSize(), pInMyCoordinates) ){
 				platform().game().animator().post(CLICK_DELAY, new Runnable(){
 					public void run(){
 						nofityClicked();
@@ -57,7 +57,7 @@ public class BButton extends BRectangularDrawable implements IBEventConsumer, IB
 		}
 		
 		public boolean pointerDown(IBPoint pInMyCoordinates) {
-			if( BRectangle.inside( originalSize(), pInMyCoordinates ) ){
+			if( IBRectangle.Util.inside(originalSize(), pInMyCoordinates) ){
 				_pressed = true;
                 platform().game().animator().post(CLICK_DELAY, new Runnable() {
                     public void run() {
@@ -104,10 +104,13 @@ public class BButton extends BRectangularDrawable implements IBEventConsumer, IB
 
 		return ret;
 	}
+
+    public BButton(IBDrawable drawable){
+        this(drawable,new BRectangle(-1,-1,2,2));
+    }
 	
-	
-	public BButton(IBDrawable drawable) {
-		super( new BRectangle(-1,-1,2,2) );
+	public BButton(IBDrawable drawable, IBRectangle r) {
+		super( r );
 		setDrawable(drawable);
 	}
 

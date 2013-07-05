@@ -2,14 +2,11 @@ package ollitos.gui.container;
 
 import ollitos.animation.BFixedDurationAnimation;
 import ollitos.animation.IBAnimation;
-import ollitos.geom.BRectangle;
 import ollitos.geom.IBPoint;
 import ollitos.geom.IBRectangle;
 import ollitos.geom.IBTransform;
-import ollitos.geom.IBTransformHolder;
 import ollitos.gui.basic.IBDrawable;
 import ollitos.gui.event.BEventAdapter;
-import ollitos.gui.event.BListenerList;
 import ollitos.gui.event.IBEvent;
 import ollitos.gui.event.IBEventListener;
 import ollitos.platform.BPlatform;
@@ -95,7 +92,7 @@ public class BZoomDrawable extends BDrawableContainer{
 		@Override
 		public boolean pointerClick(IBPoint pInMyCoordinates) {
 			
-			boolean inside = BRectangle.inside( originalSize(), pInMyCoordinates );
+			boolean inside = IBRectangle.Util.inside(originalSize(), pInMyCoordinates);
 			
 			IBLogger l = platform().logger();
 			l.log( this, "size:" + originalSize() );

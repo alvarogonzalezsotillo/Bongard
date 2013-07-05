@@ -9,9 +9,13 @@ public abstract class BHTMLDrawable extends BRectangularDrawable implements IBDi
 
 	private String _html;
 	private BResourceLocator _url;
-	
-	public BHTMLDrawable() {
-		super(BPlatform.instance().game().defaultScreenSize());
+
+    public BHTMLDrawable(IBRectangle r) {
+        super(r);
+    }
+
+    public BHTMLDrawable() {
+		this(BPlatform.instance().game().defaultScreenSize());
 	}
 	
 	public String html(){

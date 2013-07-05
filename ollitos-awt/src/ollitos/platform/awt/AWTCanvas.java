@@ -1,16 +1,10 @@
 package ollitos.platform.awt;
 
-import java.awt.AlphaComposite;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.Paint;
-import java.awt.RenderingHints;
-import java.awt.Shape;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
+import ollitos.geom.BRectangle;
 import ollitos.geom.IBRectangle;
 import ollitos.platform.IBCanvas;
 import ollitos.platform.IBRaster;
@@ -91,5 +85,26 @@ public class AWTCanvas implements IBCanvas{
 		
 		g.dispose();
 	}
+
+    @Override
+    public IBRectangle stringBounds(CanvasContextHolder c, String s, IBRectangle dst) {
+        Graphics2D g = _graphics;
+
+        FontMetrics fm = g.getFontMetrics();
+        Rectangle2D bounds = fm.getStringBounds(s, g);
+
+        if( dst == null ){
+            dst = new BRectangle();
+        }
+
+        if( dst instanceof BRectangle ){
+            BRectangle ret = (BRectangle) dst;
+            ret.set(bounds.getX(),bounds.getY(),bounds.getWidth(),bounds.getHeight());
+        }
+        else{
+            throw new IllegalArgumentException();
+        }
+        return dst;
+    }
 
 }

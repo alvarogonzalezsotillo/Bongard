@@ -16,7 +16,7 @@ import ollitos.platform.IBDisposable;
 import ollitos.platform.state.BState;
 import ollitos.util.BException;
 
-public abstract class BDrawableContainer extends BRectangularDrawable implements IBDrawableContainer{
+public class BDrawableContainer extends BRectangularDrawable implements IBDrawableContainer{
 
 	private transient BListenerList _listeners;
 	private transient List<IBDrawable> _drawables = new ArrayList<IBDrawable>();

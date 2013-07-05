@@ -17,7 +17,7 @@ import ollitos.platform.BResourceLocator;
 import ollitos.platform.IBColor;
 import ollitos.platform.IBRaster;
 import ollitos.platform.raster.IBRasterUtil;
-
+import ollitos.util.BException;
 
 
 public class AWTRasterUtil implements IBRasterUtil{
@@ -96,38 +96,67 @@ public class AWTRasterUtil implements IBRasterUtil{
 	}
 
 	@Override
-	public IBRaster html(IBRectangle s, BResourceLocator rl) throws IOException {
+	public IBRaster html(IBRectangle s, BResourceLocator rl) throws BException {
+        try{
+            return html(s,rl,null);
+        }
+        catch( IOException e ){
+            throw new BException(e.toString(),e);
+        }
+    }
+
+    private IBRaster html(IBRectangle r, BResourceLocator rl, String str) throws IOException{
 		final JEditorPane ep = new JEditorPane();
 		ep.setBackground((AWTColor)BPlatform.COLOR_DARKGRAY);
-        Dimension d = new Dimension((int)s.w(), (int)s.h());
+        Dimension d = new Dimension((int)r.w(), (int)r.h());
 		ep.setSize(d);
         ep.setPreferredSize(d);
         ep.setMaximumSize(d);
         ep.setMinimumSize(d);
-		URL u = null;
+
+        if( rl !=null ){
+            URL u = null;
+
+            if( rl.url() != null ){
+                u = rl.url();
+            }
+            if( u == null ){
+                u = BPlatform.instance().platformURL( rl );
+            }
+            if( u != null ){
+                ep.setPage( u );
+            }
+        }
+        else if( str != null ){
+            ep.setContentType("text/html");
+            ep.setText(str);
+        }
+        else{
+            throw new IllegalArgumentException();
+        }
 		
-		if( rl.url() != null ){
-			u = rl.url();
-		}
-		if( u == null ){
-			u = BPlatform.instance().platformURL( rl );
-		}
-		if( u != null ){
-			ep.setPage( u );
-		}
-		
-		final AWTRaster r = raster(s);
-		Graphics2D g = r.canvas().graphics();
+		final AWTRaster ret = raster(r);
+		Graphics2D g = ret.canvas().graphics();
 		ep.paint(g);
 		
-		ep.addPropertyChangeListener("page", new PageLoadedListener(ep, r));
+		ep.addPropertyChangeListener("page", new PageLoadedListener(ep, ret));
 
-		BPlatform.instance().game().animator().addAnimation( new BProgressAnimation(r) );
+		BPlatform.instance().game().animator().addAnimation( new BProgressAnimation(ret) );
 		
-		return r;
+		return ret;
 	}
 
-	@Override
+    @Override
+    public IBRaster html(IBRectangle r, String html) throws BException{
+        try{
+            return html(r,null,html);
+        }
+        catch( IOException e ){
+            throw new BException(e.toString(),e);
+        }
+    }
+
+    @Override
 	public AWTRaster raster(IBRectangle r) {
 		AWTScreen screen = (AWTScreen) BPlatform.instance().game().screen();
 		Image i = screen.canvasImpl().createImage((int)r.w(), (int)r.h());

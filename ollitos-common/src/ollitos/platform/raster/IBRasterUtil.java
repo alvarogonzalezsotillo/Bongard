@@ -11,12 +11,14 @@ import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 import ollitos.platform.IBColor;
 import ollitos.platform.IBRaster;
+import ollitos.util.BException;
 
 public interface IBRasterUtil {
 	IBRaster extract(IBRectangle r, IBRaster i, IBColor color);
 	IBRaster raster( InputStream is ) throws IOException;
 	IBRaster raster( IBRectangle r );
-	IBRaster html( IBRectangle r, BResourceLocator rl ) throws IOException;
+	IBRaster html( IBRectangle r, BResourceLocator rl ) throws BException;
+    IBRaster html( IBRectangle r, String html ) throws BException;
 	
 	public static class BProgressAnimation extends BFixedDurationAnimation{
 

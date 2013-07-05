@@ -80,7 +80,27 @@ public class AndrRasterUtil implements IBRasterUtil{
 	}
 
 	@Override
-	public AndrRaster html(IBRectangle s, BResourceLocator rl) throws IOException {
+	public AndrRaster html(IBRectangle s, BResourceLocator rl) throws BException {
+        try{
+            return html(s,rl,null);
+        }
+        catch( IOException e ){
+            throw new BException(e.toString(),e);
+        }
+
+    }
+
+    @Override
+    public AndrRaster html(IBRectangle s, String str) throws BException {
+        try{
+            return html(s,null,str);
+        }
+        catch( IOException e ){
+            throw new BException(e.toString(),e);
+        }
+    }
+
+    private AndrRaster html(IBRectangle s, BResourceLocator rl, String string) throws IOException {
 		final AndrRaster ret = raster(s);
 		final WebView webview = new WebView(AndrPlatform.context());
 		webview.setWebViewClient( new WebViewClient(){
@@ -132,16 +152,24 @@ public class AndrRasterUtil implements IBRasterUtil{
 //		view.measure(MeasureSpec.makeMeasureSpec(r, MeasureSpec.EXACTLY), 
 //                 	 MeasureSpec.makeMeasureSpec(b, MeasureSpec.EXACTLY));
 //		view.layout(l, t, r, b);
-		
-		URL u = null;
-		if( rl.url() != null ){
-			u = rl.url();
-		}
-		if( u == null ){
-			u = BPlatform.instance().platformURL( rl );
-		}
-		String str = u.toExternalForm();
-		webview.loadUrl(str);
+
+        if( rl != null ){
+            URL u = null;
+            if( rl.url() != null ){
+                u = rl.url();
+            }
+            if( u == null ){
+                u = BPlatform.instance().platformURL( rl );
+            }
+            String str = u.toExternalForm();
+            webview.loadUrl(str);
+        }
+        else if( string != null ){
+            webview.loadData(string,"text/html",null);
+        }
+        else{
+            throw new IllegalArgumentException();
+        }
 		
 		BPlatform.instance().game().animator().addAnimation( new BProgressAnimation(ret) );
 		

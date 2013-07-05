@@ -19,9 +19,10 @@ public interface IBCanvas{
 		public void setTransform(IBTransform t);
 		public void setAntialias(boolean a);
 	}
-	
+
 	void drawString(CanvasContextHolder c, String str, float x, float y );
 	void drawRaster(CanvasContextHolder c, IBRaster r, float x, float y );
 	void drawBox( CanvasContextHolder c,  IBRectangle r, boolean filled );
 	void drawLine( CanvasContextHolder c, float x1, float y1, float x2, float y2 );
+    public IBRectangle stringBounds(CanvasContextHolder c, String s, IBRectangle dst);
 }

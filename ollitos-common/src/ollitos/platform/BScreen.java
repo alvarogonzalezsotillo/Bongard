@@ -4,7 +4,6 @@ import ollitos.animation.BConcatenateAnimation;
 import ollitos.animation.BRunnableAnimation;
 import ollitos.animation.IBAnimation;
 import ollitos.animation.transform.BTransformIntoRectangleAnimation;
-import ollitos.geom.BRectangle;
 import ollitos.geom.IBPoint;
 import ollitos.geom.IBRectangle;
 import ollitos.geom.IBTransform;
@@ -105,7 +104,7 @@ public abstract class BScreen implements IBScreen {
 	private IBAnimation enterAnimation(IBDrawable d){
 		IBRectangle current = d.originalSize();
 		IBRectangle dst = originalSize();
-		IBRectangle src = BRectangle.scale(dst, 1./ENTER_LEAVE_ZOOM);
+		IBRectangle src = IBRectangle.Util.scale(dst, 1. / ENTER_LEAVE_ZOOM);
 		BTransformUtil.setTo(d.transform(), current, src, true, true );
 		
 		IBAnimation a = new BTransformIntoRectangleAnimation(src, dst, ENTER_LEAVE_MILLIS, d);
@@ -115,7 +114,7 @@ public abstract class BScreen implements IBScreen {
 	
 	private IBAnimation leaveAnimation(IBDrawable d){
 		IBRectangle src = originalSize();
-		IBRectangle dst = BRectangle.scale(src, 1./ENTER_LEAVE_ZOOM);
+		IBRectangle dst = IBRectangle.Util.scale(src, 1. / ENTER_LEAVE_ZOOM);
 		IBAnimation a = new BTransformIntoRectangleAnimation(src, dst, ENTER_LEAVE_MILLIS, d);
 		return a;
 	}

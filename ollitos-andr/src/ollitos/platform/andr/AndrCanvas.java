@@ -1,13 +1,11 @@
 package ollitos.platform.andr;
 
+import android.graphics.*;
+import ollitos.geom.BRectangle;
 import ollitos.geom.IBRectangle;
 import ollitos.platform.IBCanvas;
 import ollitos.platform.IBRaster;
 import ollitos.platform.raster.IBRasterProvider;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Matrix;
-import android.graphics.Paint;
 
 public class AndrCanvas implements IBCanvas{
 	
@@ -111,4 +109,23 @@ public class AndrCanvas implements IBCanvas{
 		
 	}
 
+    @Override
+    public IBRectangle stringBounds(CanvasContextHolder c, String s, IBRectangle dst) {
+        Paint paint = paint(c.canvasContext());
+        Rect bounds = new Rect();
+        paint.getTextBounds(s,0,s.length(),bounds);
+
+        if( dst == null ){
+            dst = new BRectangle();
+        }
+
+        if( dst instanceof BRectangle ){
+            BRectangle ret = (BRectangle) dst;
+            ret.set(bounds.left,bounds.top,bounds.width(),bounds.height());
+        }
+        else{
+            throw new IllegalArgumentException();
+        }
+        return dst;
+    }
 }

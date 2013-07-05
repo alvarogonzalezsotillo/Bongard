@@ -70,7 +70,7 @@ public class BTransformIntoRectangleAnimation extends BFixedDurationAnimation{
 	
 	public static BTransformIntoRectangleAnimation zoom( int millis, IBDrawable r, IBPoint beforeSamePoint, IBPoint afterSamePoint, double scale ){
 		IBRectangle src = BTransformUtil.transform( r.transform(), r.originalSize() );
-		IBRectangle dst = BRectangle.scale(src, scale);
+		IBRectangle dst = IBRectangle.Util.scale(src, scale);
 
 		double fx = (beforeSamePoint.x() - src.x())/src.w();
 		double fy = (beforeSamePoint.y() - src.y())/src.h();

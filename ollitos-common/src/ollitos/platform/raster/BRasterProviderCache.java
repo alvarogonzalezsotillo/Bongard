@@ -40,8 +40,12 @@ public class BRasterProviderCache {
 	public IBRasterProvider getFromHTML( BResourceLocator l, IBRectangle r ){
 		return get( new BRasterProviderFromHTML(r, l) );
 	}
-	
-	public IBRasterProvider get( IBRasterProvider key ){
+
+    public IBRasterProvider getFromHTML( String str, IBRectangle r ){
+        return get( new BRasterProviderFromHTML(r, str) );
+    }
+
+    public IBRasterProvider get( IBRasterProvider key ){
 		synchronized (_map) {
 			String k = key.key();
 			IBRasterProvider ret = _map.get(key);

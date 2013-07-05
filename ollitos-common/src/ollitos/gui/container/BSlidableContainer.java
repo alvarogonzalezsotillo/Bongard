@@ -149,8 +149,8 @@ public class BSlidableContainer extends BDrawableContainer implements BState.Sta
 			}
 			for (int i = 0; i < _boxes.length; i++) {
 				IBRectangle r = _boxes[i];
-				r = BRectangle.grow(r, BOX_SPACING);
-				if( BRectangle.inside(r, pInMyCoordinates) ){
+				r = IBRectangle.Util.grow(r, BOX_SPACING);
+				if( IBRectangle.Util.inside(r, pInMyCoordinates) ){
 					platform().game().animator().addAnimation( new GoToIndexAnimation(_currentScroll+i) );
 					return true;
 				}
@@ -533,7 +533,7 @@ public class BSlidableContainer extends BDrawableContainer implements BState.Sta
 			
 			IBRectangle r = boxes[screenIndex]; //new BRectangle( x0+BOX_SPACING/2+screenIndex*(BOX_SPACING+ICON_SIZE), boxY, ICON_SIZE/2, ICON_SIZE/2 );
 			if( index == currentIndex() ){
-				r = BRectangle.grow(r, 3);
+				r = IBRectangle.Util.grow(r, 3);
 			}
 			IBDrawable rd = model().page(index).icon();
 			if( rd == null ){

@@ -41,7 +41,7 @@ public abstract class BRectangularDrawable extends BDrawable{
 		
 		IBPoint inverseP = inverseT.transform(p);		
 		
-		return BRectangle.inside( originalSize(), inverseP);
+		return IBRectangle.Util.inside(originalSize(), inverseP);
 	}
 
 	public IBRectangle originalSize(){
