@@ -9,7 +9,6 @@ import ollitos.gui.basic.BLabel;
 import ollitos.gui.basic.BSprite;
 import ollitos.gui.basic.IBDrawable;
 import ollitos.gui.container.*;
-import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 import ollitos.platform.IBCanvas;
 import ollitos.platform.raster.BRasterProviderCache;
@@ -30,7 +29,7 @@ public class BGameHelp extends BSlidableContainer implements BState.Stateful{
 	
 	private static class Model implements IBSlidableModel{
 
-        private static class HelpPage implements IBSlidablePage {
+        private class HelpPage implements IBSlidablePage {
 
             private final int _x;
             private IBDrawable _d;
@@ -77,52 +76,39 @@ public class BGameHelp extends BSlidableContainer implements BState.Stateful{
             public IBDrawable internal(int x){
                 String locator = String.format("/examples/help%02d.html", x);
                 BResourceLocator l = new BResourceLocator(locator );
-                IBRectangle os = BGameField.computeOriginalSize();
-                IBRectangle.Util.scale(os,os,0.8);
-                IBRectangle htmlRectangle = new BRectangle(0,0,320,480);
+                IBRectangle htmlRectangle = new BRectangle(-320/2,-480/2,320,480);
                 IBRasterProvider r = BRasterProviderCache.instance().getFromHTML(l, htmlRectangle);
                 BSprite sprite = new BSprite(r);
                 sprite.setAntialias(true);
-                return sprite;
+
+                BDrawableContainer ret = new BDrawableContainer(htmlRectangle);
+                ret.addDrawable(sprite);
+
+                if( x == width()-1 ){
+                   addButtonsOfLastPage(ret);
+                }
+
+                return ret;
             }
 
-        }
+            private void addButtonsOfLastPage( BDrawableContainer cont ){
+                IBRectangle os = cont.originalSize();
 
-        private static class AboutPage extends HelpPage{
+                IBRectangle buttonR = new BRectangle(0,0,6*os.w()/8,os.h()/10);
 
-            public AboutPage(int x) {
-                super(x);
-            }
 
-            private String tabletize(String s){
-                return "<body bgcolor=888888><table width=100% bgcolor=#ffffff border=1><tr><td valign=middle><center>" + s + "</center></td></tr></table></body>";
-            }
+                BButton foundalisSiteButton = BHtmlButton.fromText("Web de Harry Foundalis", buttonR );
+                BButton authorSiteButton = BHtmlButton.fromText("Web del autor", buttonR);
 
-            @Override
-            public IBDrawable internal(int x){
-                BRectangle os = BGameField.computeOriginalSize();
+                BDrawableContainer ret = cont;
 
-                BLabel authorL = new BLabel("Sitio web del autor");
-                BButton authorSiteButton = new BButton(authorL, IBRectangle.Util.centerAtOrigin(authorL.originalSize()) );
-
-                IBRectangle foundalisR = new BRectangle(os.w()/8,2*os.h()/3,6*os.w()/8,os.h()/8);
-
-                IBRasterProvider rp = BRasterProviderCache.instance().getFromHTML(tabletize("Sitio de Harry Foundalis"),foundalisR);
-                BSprite foundalisL = new BSprite(rp);
-                foundalisL.setAntialias(true);
-                BButton foundalisSiteButton = new BButton(foundalisL, IBRectangle.Util.centerAtOrigin(foundalisL.originalSize()) );
-
-                BDrawableContainer ret = new BDrawableContainer(os);
-
-                authorSiteButton.transform().translate(os.w()/2,os.h()/3);
-                foundalisSiteButton.transform().translate(os.w()/2,2*os.h()/3);
+                foundalisSiteButton.transform().translate(0,2*os.h()/8);
+                authorSiteButton.transform().translate(0,3*os.h()/8);
 
 
 
                 ret.addDrawable(authorSiteButton);
                 ret.addDrawable(foundalisSiteButton);
-
-                return ret;
             }
         }
 
@@ -180,12 +166,7 @@ public class BGameHelp extends BSlidableContainer implements BState.Stateful{
 				return _fd[x];
 			}
 
-            if( x < 6 ){
-                _fd[x] = new HelpPage(x);
-            }
-            else{
-                _fd[x] = new AboutPage(x);
-            }
+            _fd[x] = new HelpPage(x);
 
 			return _fd[x];
 		}
@@ -218,4 +199,24 @@ public class BGameHelp extends BSlidableContainer implements BState.Stateful{
 	public BState save() {
 		return new MyState();
 	}
+
+    public static class BHtmlButton{
+
+        private static String tabletize(String s){
+            String style = "margin-bottom: 0px; margin-top: 0px; margin-left: 0px; margin-right: 0px;" ;
+            return "<body bgcolor=888888 style=\"" + style + "\"><table width=100% bgcolor=#ffffff border=1><tr><td valign=middle><center>" + s + "</center></td></tr></table></body>";
+        }
+
+        public static BButton fromText(String s, IBRectangle r){
+            return fromHtml(tabletize(s), r );
+        }
+
+        private static BButton fromHtml(String html, IBRectangle r){
+            r = IBRectangle.Util.centerAtOrigin(r);
+            IBRasterProvider rp = BRasterProviderCache.instance().getFromHTML(html,r);
+            BSprite sp = new BSprite(rp);
+            sp.setAntialias(true);
+            return new BButton( sp, r );
+        }
+    }
 }

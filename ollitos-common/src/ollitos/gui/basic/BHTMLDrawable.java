@@ -5,6 +5,9 @@ import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 import ollitos.platform.IBDisposable;
 
+
+@Deprecated
+// TODO: USE THE PROVIDERS, OR DELETE THIS CLASS
 public abstract class BHTMLDrawable extends BRectangularDrawable implements IBDisposable{
 
 	private String _html;

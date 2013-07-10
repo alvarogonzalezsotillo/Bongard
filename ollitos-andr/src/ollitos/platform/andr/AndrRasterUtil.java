@@ -3,7 +3,10 @@ package ollitos.platform.andr;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.net.URLEncoder;
 
+import android.util.Base64;
+import android.webkit.WebSettings;
 import ollitos.geom.IBRectangle;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
@@ -100,7 +103,7 @@ public class AndrRasterUtil implements IBRasterUtil{
         }
     }
 
-    private AndrRaster html(IBRectangle s, BResourceLocator rl, String string) throws IOException {
+    private AndrRaster html(final IBRectangle s, final BResourceLocator rl, final String string) throws IOException {
 		final AndrRaster ret = raster(s);
 		final WebView webview = new WebView(AndrPlatform.context());
 		webview.setWebViewClient( new WebViewClient(){
@@ -153,26 +156,46 @@ public class AndrRasterUtil implements IBRasterUtil{
 //                 	 MeasureSpec.makeMeasureSpec(b, MeasureSpec.EXACTLY));
 //		view.layout(l, t, r, b);
 
-        if( rl != null ){
-            URL u = null;
-            if( rl.url() != null ){
-                u = rl.url();
+        webview.setHorizontalScrollBarEnabled(false);
+        webview.setVerticalScrollBarEnabled(false);
+        webview.getSettings().setDefaultZoom(WebSettings.ZoomDensity.MEDIUM);
+        webview.setInitialScale(125);
+
+
+        Runnable loadRunable = new Runnable(){
+            @Override
+            public void run() {
+                if( rl != null ){
+                    URL u = null;
+                    if( rl.url() != null ){
+                        u = rl.url();
+                    }
+                    if( u == null ){
+                        u = BPlatform.instance().platformURL( rl );
+                    }
+                    String str = u.toExternalForm();
+                    webview.loadUrl(str);
+                }
+                else if( string != null ){
+                    try{
+                        System.err.println( "HTML:" + string );
+                        String encoded = URLEncoder.encode(string,"UTF-8");
+                        System.err.println( "HTML:" + encoded );
+                        encoded = encoded.replace('+',' ');
+                        webview.loadData(encoded,"text/html",null);
+                    }
+                    catch( IOException ex ){
+                        throw new BException( ex.toString(), ex );
+                    }
+                }
+                else{
+                    throw new IllegalArgumentException();
+                }
             }
-            if( u == null ){
-                u = BPlatform.instance().platformURL( rl );
-            }
-            String str = u.toExternalForm();
-            webview.loadUrl(str);
-        }
-        else if( string != null ){
-            webview.loadData(string,"text/html",null);
-        }
-        else{
-            throw new IllegalArgumentException();
-        }
-		
-		BPlatform.instance().game().animator().addAnimation( new BProgressAnimation(ret) );
-		
+        };
+
+        BPlatform.instance().game().animator().post(loadRunable);
+
 		return ret;
 	}
 

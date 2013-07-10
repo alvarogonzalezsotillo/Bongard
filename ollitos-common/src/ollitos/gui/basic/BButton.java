@@ -25,7 +25,8 @@ public class BButton extends BRectangularDrawable implements IBEventConsumer, IB
 
 	private static final int CLICK_DELAY = 50;
 	private static final double CLICK_SCALE = 0.9;
-	private List<ClickedListener> _clickedListeners = new ArrayList<ClickedListener>();
+    private static final boolean DRAW_BORDER = false;
+    private List<ClickedListener> _clickedListeners = new ArrayList<ClickedListener>();
 	private IBDrawable _drawable;
     private boolean _pressed = false;
 
@@ -169,6 +170,9 @@ public class BButton extends BRectangularDrawable implements IBEventConsumer, IB
 	protected void draw_internal(IBCanvas c) {
 		IBTransform t = canvasContext().transform();
 		drawable().draw(c, t);
+        if( DRAW_BORDER ){
+            c.drawBox(this,originalSize(),false);
+        }
 	}
 
 	@Override
