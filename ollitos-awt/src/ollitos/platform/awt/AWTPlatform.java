@@ -1,15 +1,17 @@
 package ollitos.platform.awt;
 
-import java.awt.Color;
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 import ollitos.platform.state.BStateManager;
 import ollitos.platform.state.IBKeyValueDatabase;
-
+import ollitos.util.BException;
 
 
 public class AWTPlatform extends BPlatform {
@@ -45,7 +47,29 @@ public class AWTPlatform extends BPlatform {
 		return new AWTPoint(x, y);
 	}
 
-	@Override
+    @Override
+    public boolean openInExternalApplication(BResourceLocator l){
+
+        try{
+            Desktop desktop = Desktop.getDesktop();
+
+            if( l.url() != null && desktop.isSupported(Desktop.Action.BROWSE) ){
+                desktop.browse(l.url().toURI());
+                return true;
+            }
+
+            if( l.string() != null && desktop.isSupported(Desktop.Action.OPEN) ){
+                desktop.open( new File(l.string()));
+                return true;
+            }
+        }
+        catch( Exception e ){
+            logger().log(this, e.toString() );
+        }
+        return false;
+    }
+
+    @Override
 	public AWTRasterUtil rasterUtil() {
 		if (_rasterUtil == null) {
 			_rasterUtil = new AWTRasterUtil();

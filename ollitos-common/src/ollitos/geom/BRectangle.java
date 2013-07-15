@@ -41,4 +41,16 @@ public class BRectangle implements IBRectangle, Serializable{
 		return "(" + x() + "," + y() + "," + w() + "," + h() + ")";
 	}
 
+    @Override
+    public boolean equals(Object obj){
+        if( this == obj ){
+           return true;
+        }
+        if( obj instanceof IBRectangle ){
+            IBRectangle t = (IBRectangle) obj;
+            return _x == t.x() && _y == t.y() && _w == t.w() && _h == t.h();
+        }
+
+        return false;
+    }
 }

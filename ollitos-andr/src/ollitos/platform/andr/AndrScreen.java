@@ -1,9 +1,12 @@
 package ollitos.platform.andr;
 
+import ollitos.animation.BAnimator;
+import ollitos.animation.transform.BTransformIntoRectangleAnimation;
 import ollitos.geom.BRectangle;
 import ollitos.geom.IBPoint;
 import ollitos.geom.IBRectangle;
 import ollitos.gui.basic.BSprite;
+import ollitos.gui.basic.IBDrawable;
 import ollitos.gui.event.IBEvent;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
@@ -28,7 +31,7 @@ public class AndrScreen extends BScreen{
 
 		private class AndrListener implements OnTouchListener{
 
-			private static final int CLICK_THRESHOLD = 20;
+			private static final int CLICK_THRESHOLD = 50;
 			private IBPoint _lastPointerDown;
 
 			@Override
@@ -96,7 +99,6 @@ public class AndrScreen extends BScreen{
 		
 		public AndrView(Context context) {
 			super(context);
-			setBackgroundColor(Color.BLUE);
 			AndrListener al = new AndrListener();
 			setOnTouchListener(al);
 			setBackgroundColor( ((AndrColor)backgroundColor()).color() );
@@ -108,10 +110,14 @@ public class AndrScreen extends BScreen{
 			adjustTransformIfNecesary();
 			try {
 				super.onDraw(_currentAndroidCanvas);
-				if (drawable() != null) {
-					drawable().draw(canvas(), transform());
+                IBDrawable drawable = drawable();
+                if (drawable != null) {
+					drawable.draw(canvas(), transform());
 				}
-				//drawTest();
+                BAnimator animator = BPlatform.instance().game().animator();
+
+//                String desc = animator.desc();
+//                canvas.drawText(animator.desc(), 0, desc.length(), 10, 10, new Paint() );
 			}
 			finally {
 				_currentAndroidCanvas = null;
@@ -122,6 +128,7 @@ public class AndrScreen extends BScreen{
 			IBRectangle os = originalSize();
 			if( !os.equals( _lastOriginalSize) ){
 				adjustTransformToSize();
+                _lastOriginalSize = os;
 			}
 		}
 
@@ -191,10 +198,16 @@ public class AndrScreen extends BScreen{
 		_view.invalidate();
 	}
 
+    private BRectangle _originalSize;
+
 	@Override
 	public IBRectangle originalSize() {
 		View v = view();
-		return new BRectangle(0, 0, v.getMeasuredWidth(), v.getMeasuredHeight());
+        if( _originalSize == null ||
+            ((int)_originalSize.w() != v.getMeasuredWidth() || (int)_originalSize.h() != v.getMeasuredHeight() ) ){
+            _originalSize = new BRectangle(0, 0, v.getMeasuredWidth(), v.getMeasuredHeight());
+        }
+        return _originalSize;
 	}
 
 	public Canvas androidCanvas() {

@@ -2,6 +2,7 @@ package ollitos.platform;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import ollitos.geom.IBPoint;
@@ -35,6 +36,8 @@ public abstract class BPlatform {
 		}
 		return _instance;
 	}
+
+    public abstract boolean openInExternalApplication(BResourceLocator l);
 	
 
 	private static BPlatform createInstance() {

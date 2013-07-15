@@ -9,12 +9,18 @@ import ollitos.gui.basic.BLabel;
 import ollitos.gui.basic.BSprite;
 import ollitos.gui.basic.IBDrawable;
 import ollitos.gui.container.*;
+import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 import ollitos.platform.IBCanvas;
 import ollitos.platform.raster.BRasterProviderCache;
 import ollitos.platform.raster.IBRasterProvider;
 import ollitos.platform.state.BState;
+import ollitos.util.BException;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Properties;
 
 
 public class BGameHelp extends BSlidableContainer implements BState.Stateful{
@@ -24,10 +30,10 @@ public class BGameHelp extends BSlidableContainer implements BState.Stateful{
 	}
 	
 	private static IBSlidableModel createModel() {
-		return new Model();
+		return new HelpModel();
 	}
 	
-	private static class Model implements IBSlidableModel{
+	private static class HelpModel implements IBSlidableModel{
 
         private class HelpPage implements IBSlidablePage {
 
@@ -74,15 +80,19 @@ public class BGameHelp extends BSlidableContainer implements BState.Stateful{
             }
 
             public IBDrawable internal(int x){
-                String locator = String.format("/examples/help%02d.html", x);
-                BResourceLocator l = new BResourceLocator(locator );
-                IBRectangle htmlRectangle = new BRectangle(-320/2,-480/2,320,480);
-                IBRasterProvider r = BRasterProviderCache.instance().getFromHTML(l, htmlRectangle);
+                String locator = String.format("/help/help%02d.html", x);
+                BResourceLocator l = new BResourceLocator(locator);
+                l = BResourceLocator.localizedResource(l);
+                int w = 320*2;
+                int h = 480*2;
+                IBRectangle rect = new BRectangle(-w/2,-h/2,w,h);
+                IBRasterProvider r = BRasterProviderCache.instance().getFromHTML(l, rect);
                 BSprite sprite = new BSprite(r);
                 sprite.setAntialias(true);
 
-                BDrawableContainer ret = new BDrawableContainer(htmlRectangle);
-                ret.addDrawable(sprite);
+                BDrawableContainer ret = new BDrawableContainer(rect);
+
+                ret.addDrawable(new BZoomDrawable(sprite));
 
                 if( x == width()-1 ){
                    addButtonsOfLastPage(ret);
@@ -94,21 +104,64 @@ public class BGameHelp extends BSlidableContainer implements BState.Stateful{
             private void addButtonsOfLastPage( BDrawableContainer cont ){
                 IBRectangle os = cont.originalSize();
 
-                IBRectangle buttonR = new BRectangle(0,0,6*os.w()/8,os.h()/10);
+                IBRectangle buttonR = new BRectangle(0,0,6*os.w()/16,os.h()/20);
 
+                String locator = "/help/help.properties";
+                BResourceLocator l = new BResourceLocator(locator);
+                l = BResourceLocator.localizedResource(l);
+                Properties props = new Properties();
+                try {
+                    props.load( BPlatform.instance().open(l) );
+                }
+                catch (IOException e) {
+                    throw new BException( e.toString(), e );
+                }
 
-                BButton foundalisSiteButton = BHtmlButton.fromText("Web de Harry Foundalis", buttonR );
-                BButton authorSiteButton = BHtmlButton.fromText("Web del autor", buttonR);
+                BButton foundalisSiteButton = BHtmlButton.fromText(props.getProperty("harryFoundalisWeb"), buttonR );
+                BButton authorSiteButton = BHtmlButton.fromText(props.getProperty("authorWeb"), buttonR);
+
+                foundalisSiteButton.addClickedListener(new URLListener("http://www.foundalis.com/res/diss_research.html") );
+                authorSiteButton.addClickedListener(new URLListener("http://sites.google.com/site/alvarogonzalezsotillo") );
 
                 BDrawableContainer ret = cont;
 
                 foundalisSiteButton.transform().translate(0,2*os.h()/8);
-                authorSiteButton.transform().translate(0,3*os.h()/8);
+                foundalisSiteButton.transform().scale(2,2);
 
+                authorSiteButton.transform().translate(0,3*os.h()/8);
+                authorSiteButton.transform().scale(2,2);
 
 
                 ret.addDrawable(authorSiteButton);
                 ret.addDrawable(foundalisSiteButton);
+            }
+
+            private class URLListener implements BButton.ClickedListener {
+
+                private final String _url;
+
+                public URLListener( String url ){
+                    _url = url;
+                }
+                @Override
+                public void clicked(BButton b) {
+                    URL u = null;
+                    try {
+                        u = new URL(_url);
+                        BPlatform.instance().openInExternalApplication( new BResourceLocator(u) );
+                    }
+                    catch (MalformedURLException e) {
+                        throw new BException( e.toString(), e );
+                    }
+                }
+
+                @Override
+                public void pressed(BButton b) {
+                }
+
+                @Override
+                public void released(BButton b) {
+                }
             }
         }
 
@@ -150,7 +203,7 @@ public class BGameHelp extends BSlidableContainer implements BState.Stateful{
 
 		private transient IBSlidablePage _fd[];
 		
-		public Model(){
+		public HelpModel(){
 			_fd = new IBSlidablePage[width()];
 		}
 
@@ -189,15 +242,23 @@ public class BGameHelp extends BSlidableContainer implements BState.Stateful{
 	
 	@SuppressWarnings("serial")
 	private static class MyState extends BState<BGameHelp>{
+        private int _index;
+
+        public MyState(int current){
+            _index = current;
+        }
+
 		@Override
 		public BGameHelp create() {
-			return new BGameHelp();
+            BGameHelp ret = new BGameHelp();
+            ret.setCurrent(_index);
+            return ret;
 		}
 	}
 	
 	@Override
 	public BState save() {
-		return new MyState();
+		return new MyState( currentIndex() );
 	}
 
     public static class BHtmlButton{

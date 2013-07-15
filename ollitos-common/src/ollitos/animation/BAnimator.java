@@ -109,6 +109,21 @@ public abstract class BAnimator {
 			stepAnimations(1000);
 		}
 	}
+
+    private boolean hasAnimation( Class<? extends IBAnimation> c ){
+        // TODO: REMOVE THIS METHOD
+        IBAnimation[] an;
+        synchronized (_lock ) {
+            an = _animations.toArray( new IBAnimation[0] );
+        }
+        for( IBAnimation a: an ){
+            if( c.isAssignableFrom(a.getClass()) ){
+                return true;
+            }
+        }
+
+        return false;
+    }
 	
 	protected void refresh() {
 		BPlatform.instance().game().screen().refresh();
@@ -139,4 +154,18 @@ public abstract class BAnimator {
 			}
 		});
 	}
+
+    public String desc() {
+        IBAnimation[] an;
+        synchronized (_lock ) {
+            an = _animations.toArray( new IBAnimation[0] );
+        }
+
+        StringBuffer ret = new StringBuffer();
+        for( IBAnimation a: an ){
+            ret.append( a.toString() );
+        }
+
+        return ret.toString();
+    }
 }

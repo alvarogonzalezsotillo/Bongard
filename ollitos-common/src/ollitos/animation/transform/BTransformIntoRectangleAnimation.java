@@ -8,6 +8,8 @@ import ollitos.geom.IBRectangle;
 import ollitos.geom.IBTransform;
 import ollitos.gui.basic.BDrawable;
 import ollitos.gui.basic.IBDrawable;
+import ollitos.platform.BPlatform;
+import ollitos.platform.IBCanvas;
 import ollitos.util.BTransformUtil;
 
 public class BTransformIntoRectangleAnimation extends BFixedDurationAnimation{
@@ -37,9 +39,10 @@ public class BTransformIntoRectangleAnimation extends BFixedDurationAnimation{
 			
 			IBTransform ret = rd.transform();
 			BTransformUtil.setTo(ret, os, r, true, true);
-			
-			//BPlatform.instance().logger().log( this, "_dst:" + _dst + " -- f:" + f + " -- " + r );
-		}
+
+            String log = "_dst:" + _dst + " -- f:" + f + " -- " + r;
+			BPlatform.instance().logger().log( this, log );
+        }
 	}
 	
 	private IBRectangle scale( IBRectangle os, double scale ){
@@ -84,4 +87,9 @@ public class BTransformIntoRectangleAnimation extends BFixedDurationAnimation{
 		return new BTransformIntoRectangleAnimation(src, dst, millis, r);
 	}
 
+    @Override
+    public String toString() {
+        double f = 1.0*currentMillis()/totalMillis();
+        return "TransformIntoRectangle:" + f;
+    }
 }

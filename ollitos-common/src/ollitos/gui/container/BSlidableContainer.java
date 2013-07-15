@@ -130,14 +130,30 @@ public class BSlidableContainer extends BDrawableContainer implements BState.Sta
 		}
 
 		@Override
-		public boolean endReached() {
+		public boolean endReached(){
+            boolean ret= endReachedImpl();
+            if( ret ){
+                _goToIndexAnimation = null;
+            }
+            return ret;
+        }
+
+        private boolean endReachedImpl(){
+            if( _initIndex < _endIndex && currentIndex() >= _endIndex ){
+                return true;
+            }
+            if( _initIndex > _endIndex && currentIndex() <= _endIndex ){
+                return true;
+            }
 			return _endReached;
 		}
 		
 		
 	}
 
-	private BEventAdapter _flipAdapter = new BEventAdapter(this) {
+    private GoToIndexAnimation _goToIndexAnimation;
+
+    private BEventAdapter _flipAdapter = new BEventAdapter(this) {
 		IBPoint _lastPoint;
 		private BWaitForAnimation _dragAnimation;
 		private BWaitForAnimation _releaseAnimation;
@@ -147,11 +163,17 @@ public class BSlidableContainer extends BDrawableContainer implements BState.Sta
 			if( _boxes == null ){
 				return false;
 			}
+
+            if( _goToIndexAnimation != null ){
+                return true;
+            }
+
 			for (int i = 0; i < _boxes.length; i++) {
 				IBRectangle r = _boxes[i];
 				r = IBRectangle.Util.grow(r, BOX_SPACING);
 				if( IBRectangle.Util.inside(r, pInMyCoordinates) ){
-					platform().game().animator().addAnimation( new GoToIndexAnimation(_currentScroll+i) );
+                    _goToIndexAnimation = new GoToIndexAnimation(_currentScroll + i);
+                    platform().game().animator().addAnimation(_goToIndexAnimation);
 					return true;
 				}
 			}
@@ -161,7 +183,8 @@ public class BSlidableContainer extends BDrawableContainer implements BState.Sta
 			if( IBPoint.Util.distance(p, pInMyCoordinates) < BOX_SPACING*3 ){
 				int index = currentIndex()-MAX_DRAWABLES_WIDTH;
 				index = Math.max(index, 0);
-				platform().game().animator().addAnimation( new GoToIndexAnimation(index) );
+                _goToIndexAnimation = new GoToIndexAnimation(index);
+                platform().game().animator().addAnimation(_goToIndexAnimation);
 				return true;
 			}
 			
@@ -170,7 +193,8 @@ public class BSlidableContainer extends BDrawableContainer implements BState.Sta
 			if( IBPoint.Util.distance(p, pInMyCoordinates) < BOX_SPACING*3 ){
 				int index = currentIndex()+MAX_DRAWABLES_WIDTH;
 				index = Math.min(index, model().width()-1);
-				platform().game().animator().addAnimation( new GoToIndexAnimation(index) );
+                _goToIndexAnimation = new GoToIndexAnimation(index);
+                platform().game().animator().addAnimation( _goToIndexAnimation );
 				return true;
 			}
 			
@@ -275,7 +299,7 @@ public class BSlidableContainer extends BDrawableContainer implements BState.Sta
 
 	public BSlidableContainer(IBRectangle r, IBSlidableModel model,int x) {
 		super( r );
-		setModel(model,x);
+		setModel(model, x);
 	}
 
 	public void setModel(IBSlidableModel model, int x) {
@@ -636,7 +660,7 @@ public class BSlidableContainer extends BDrawableContainer implements BState.Sta
 		if( destination == null ){
 			throw new BException("destination is null:" + this,null );
 		}
-		BTransformUtil.setTo(drawable.transform(),origin, destination, true, true);
+		BTransformUtil.setTo(drawable.transform(), origin, destination, true, true);
 	}
 
 

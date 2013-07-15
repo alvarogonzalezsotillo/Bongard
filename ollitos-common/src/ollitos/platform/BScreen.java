@@ -89,10 +89,10 @@ public abstract class BScreen implements IBScreen {
 					_d = d;
 					adjustTransformToSize();
 					
-					IBAnimation a = enterAnimation(_d);
+					IBAnimation enterAnimation = enterAnimation(_d);
 					
-					a = new BConcatenateAnimation(a, new BRunnableAnimation(10,	rListener));
-					BPlatform.instance().game().animator().addAnimation(a);
+					enterAnimation = new BConcatenateAnimation(enterAnimation, new BRunnableAnimation(10,	rListener));
+					BPlatform.instance().game().animator().addAnimation(enterAnimation);
 				}
 			};
 

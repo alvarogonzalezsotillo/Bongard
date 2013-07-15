@@ -5,6 +5,10 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
+import android.webkit.WebView;
 import ollitos.geom.IBRectangle;
 import ollitos.gui.basic.BHTMLDrawable;
 import ollitos.gui.basic.BLabel;
@@ -25,7 +29,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-public class AndrPlatform extends BPlatform{
+public class
+        AndrPlatform extends BPlatform{
 
 	private static Context _context;
 	private AndrGame _game;
@@ -109,7 +114,20 @@ public class AndrPlatform extends BPlatform{
 		return ret;
 	}
 
-	@Override
+    @Override
+    public boolean openInExternalApplication(BResourceLocator l) {
+        Uri uri = Uri.parse( l.toString() );
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        try{
+            context().startActivity(intent);
+            return true;
+        }
+        catch( ActivityNotFoundException e ){
+            return false;
+        }
+    }
+
+    @Override
 	public IBRasterUtil rasterUtil() {
 		if( _rasterUtil == null ){
 			_rasterUtil = new AndrRasterUtil();
