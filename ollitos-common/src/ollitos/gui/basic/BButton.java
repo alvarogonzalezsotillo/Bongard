@@ -130,7 +130,6 @@ public class BButton extends BRectangularDrawable implements IBEventConsumer, IB
 	}
 
     protected void notifyPressed(){
-        platform().logger().log( this, "pressed" );
         if( _clickedListeners != null ){
             for (ClickedListener l : listeners() ) {
                 l.pressed(this);

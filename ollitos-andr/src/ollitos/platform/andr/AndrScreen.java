@@ -37,7 +37,6 @@ public class AndrScreen extends BScreen{
 			@Override
 			public boolean onTouch(View v, MotionEvent e){
 				
-				BPlatform.instance().logger().log( e.toString() );
 				final IBEvent ev = event( e );
 				
 				if( ev != null && ev.type() == IBEvent.Type.pointerDown ){

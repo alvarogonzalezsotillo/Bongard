@@ -4,10 +4,7 @@ import ollitos.bot.map.IBMapReader;
 import ollitos.bot.view.isoview.BIsoView;
 import ollitos.geom.BRectangle;
 import ollitos.geom.IBRectangle;
-import ollitos.gui.basic.BButton;
-import ollitos.gui.basic.BLabel;
-import ollitos.gui.basic.BSprite;
-import ollitos.gui.basic.IBDrawable;
+import ollitos.gui.basic.*;
 import ollitos.gui.container.*;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
@@ -89,6 +86,8 @@ public class BGameHelp extends BSlidableContainer implements BState.Stateful{
                 IBRasterProvider r = BRasterProviderCache.instance().getFromHTML(l, rect);
                 BSprite sprite = new BSprite(r);
                 sprite.setAntialias(true);
+                sprite.setNotAvailableColor(BPlatform.COLOR_DARKGRAY);
+                sprite.setNotAvailableBorderColor(BPlatform.COLOR_DARKGRAY);
 
                 BDrawableContainer ret = new BDrawableContainer(rect);
 

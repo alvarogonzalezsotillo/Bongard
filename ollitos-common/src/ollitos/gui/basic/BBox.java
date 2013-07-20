@@ -13,9 +13,19 @@ public class BBox extends BRectangularDrawable{
 		super(r);
 		setColor(color);
 		setFilled(filled);
+        setAntialias(true);
 	}
-	
-	public BBox( IBRectangle r, IBColor color ){
+
+    public boolean antialias(){
+        return canvasContext().antialias();
+    }
+
+    public void setAntialias( boolean a ){
+        canvasContext().setAntialias(a);
+    }
+
+
+    public BBox( IBRectangle r, IBColor color ){
 		this(r,color,true);
 	}
 

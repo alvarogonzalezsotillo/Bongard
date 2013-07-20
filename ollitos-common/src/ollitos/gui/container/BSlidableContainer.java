@@ -274,7 +274,7 @@ public class BSlidableContainer extends BDrawableContainer implements BState.Sta
 	private double _dx;
 
 
-	private IBDrawable _backgroundSprite;
+	private IBDrawable _backgroundDrawable;
 
 	private BBox _box;
 
@@ -306,10 +306,10 @@ public class BSlidableContainer extends BDrawableContainer implements BState.Sta
 		_model = model;
 		IBDrawable background = _model != null ? _model.background() : null;
 		if( background != null ){
-			_backgroundSprite = background;
+			_backgroundDrawable = background;
 		}
 		else{
-			_backgroundSprite = null;
+			_backgroundDrawable = null;
 		}
 		setCurrent(x);
 	}
@@ -435,44 +435,46 @@ public class BSlidableContainer extends BDrawableContainer implements BState.Sta
 	}
 	
 	private void draw_background(IBCanvas c) {
-		if( _backgroundSprite == null ){
+		if( _backgroundDrawable == null ){
 			return;
 		}
 
 		// FIT INSIDE
-		IBTransform t = _backgroundSprite.transform();
-		IBRectangle size = originalSize();
-		BTransformUtil.setTo(t, _backgroundSprite.originalSize(), size, true, false);
+		IBTransform t = _backgroundDrawable.transform();
+		IBRectangle originalSize = originalSize();
+		BTransformUtil.setTo(t, _backgroundDrawable.originalSize(), originalSize, true, false);
 
 		// ADJUST INITIAL POSITION
-		IBRectangle rect = BTransformUtil.transform(t, _backgroundSprite.originalSize());
-		IBTransform d = platform().identityTransform();
-		d.translate(-rect.x(), 0);
-		t.preConcatenate(d);
+		IBRectangle drawableSize = BTransformUtil.transform(t, _backgroundDrawable.originalSize());
+		int h = (int) drawableSize.h();
+		int w = (int) drawableSize.w();
+        double factor = 0.25;
 
-		
-		int h = (int) rect.h();
-		double scale = (size.h())/h;
-		int w = (int) rect.w();
-		
-		double offsetAtFirstIndex = 0;
-		double offsetAtLastIndex = -w + size.w()/scale;
-		double offsetPerIndex = (offsetAtFirstIndex + offsetAtLastIndex)/(model().width()-1);
-		if( offsetPerIndex < -size.w()/scale ){
-			offsetPerIndex = -size.w()/scale;
-		}
-		double offset = offsetPerIndex*currentIndex();
-		double offsetFromAnimation = -offsetPerIndex*drawableOffset()/(size.w()+MARGIN);
+		double offsetPerIndex = originalSize.w() * factor;
+
+		double offset = -offsetPerIndex*currentIndex();
+		double offsetFromAnimation = offsetPerIndex*(drawableOffset()/(originalSize.w()+MARGIN));
 		offset += offsetFromAnimation;
-		
-		
-		
-		
-		d = platform().identityTransform();
-		d.translate(offset,0);
-		t.preConcatenate(d);
-		_backgroundSprite.canvasContext().setAlpha(.3f);
-		_backgroundSprite.draw(c, canvasContext().transform() );
+
+
+        // COMPUTE FIRST INDEX OF BACKGROUND STAMP
+        int maxStamp = (int) ((model().width() * offsetPerIndex)/drawableSize.w());
+        for( int stamp = 0 ; stamp <= maxStamp ; stamp ++ ){
+            double dx = -originalSize.w() / 2 + drawableSize.w() / 2;
+            dx += offset;
+            dx += stamp*drawableSize.w();
+
+            if( dx < 0-drawableSize.w()*2 || dx > originalSize.w()*3 ){
+                continue;
+            }
+
+            BTransformUtil.setTo(t, _backgroundDrawable.originalSize(), originalSize, true, false);
+            IBTransform d = platform().identityTransform();
+            d.translate(dx,0);
+            t.preConcatenate(d);
+            _backgroundDrawable.canvasContext().setAlpha(.3f);
+            _backgroundDrawable.draw(c, canvasContext().transform());
+        }
 	}
 
 	private BBox defaultIcon(){

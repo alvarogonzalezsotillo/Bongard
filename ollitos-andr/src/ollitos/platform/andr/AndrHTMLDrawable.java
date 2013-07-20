@@ -79,7 +79,6 @@ public class AndrHTMLDrawable extends BHTMLDrawable{
 	@Override
 	protected void draw_internal(IBCanvas c) {
 		View v = view();
-		BPlatform.instance().logger().log( this, "ready:" + ready( ) );
 		Canvas ac = ((AndrCanvas)c).androidCanvas();
 		ac.save();
 		ac.setMatrix((AndrTransform)canvasContext().transform());

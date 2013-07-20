@@ -63,9 +63,12 @@ public class BGameModel implements IBSlidableModel{
 	@Override
 	public IBDrawable background(){
 		if( _background == null ){
-			BResourceLocator rl = new BResourceLocator( "/images/backgrounds/arrecibo.png" );
+			BResourceLocator rl = new BResourceLocator( "/images/backgrounds/arecibo.png" );
 			IBRasterProvider rp = BRasterProviderCache.instance().get(rl, 146, 46);
-			_background = new BDelayedSprite(rp);
+            BDelayedSprite sprite = new BDelayedSprite(rp);
+            sprite.setNotAvailableBorderColor(BPlatform.COLOR_DARKGRAY);
+            sprite.setNotAvailableColor(BPlatform.COLOR_DARKGRAY);
+			_background = sprite;
 		}
 		return _background;
 	}

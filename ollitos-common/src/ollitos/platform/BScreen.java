@@ -23,9 +23,8 @@ public abstract class BScreen implements IBScreen {
 	private IBDrawable _d;
 	private BListenerList _listeners = new BListenerList(this){
 		public boolean handle(IBEvent e) {
-			BPlatform.instance().logger().log(e);
 			return super.handle(e);
-		};
+		}
 	};
 
 

@@ -43,7 +43,6 @@ public class AWTScreen extends BScreen{
 		public void keyTyped(KeyEvent e) {
 			char c = e.getKeyChar();
 			c = Character.toLowerCase(c);
-			BPlatform.instance().logger().log( this, "KeyTyped:" + c );
 			listeners().handle( new IBEvent(IBEvent.Type.keyPressed,c));
 		}
 	}

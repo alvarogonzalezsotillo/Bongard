@@ -17,6 +17,7 @@ import ollitos.animation.transform.IBTemporaryTransformAnimable;
 import ollitos.geom.BRectangle;
 import ollitos.geom.IBPoint;
 import ollitos.geom.IBRectangle;
+import ollitos.geom.IBTransform;
 import ollitos.gui.basic.BBox;
 import ollitos.gui.basic.BDelayedSprite;
 import ollitos.gui.basic.BDrawable;
@@ -114,7 +115,6 @@ public class BGameField extends BDrawableContainer implements IBSlidablePage, Se
 		@Override
 		public boolean pointerDown(IBPoint p) {
 			boolean inside = _questionSprite.inside(p, null);
-			platform().logger().log( this, "pointerDown: inside:" + inside );
 			if( inside ){
 				_pickUpAnimation = createPickUpAnimation();
 				animator().addAnimation( _pickUpAnimation );
@@ -160,10 +160,15 @@ public class BGameField extends BDrawableContainer implements IBSlidablePage, Se
 
 
 		private boolean near(BSprite questionSprite, BSprite[] sprites) {
+            double insideFactor = 1.5;
+
+
 			IBPoint p = questionSprite.temporaryPosition();
-			
+
+            IBTransform t = platform().identityTransform();
+            t.scale(insideFactor, insideFactor);
 			for( BSprite s: sprites ){
-				if( s.inside(p, null) ){
+				if( s.inside(p, t) ){
 					return true;
 				}
 			}

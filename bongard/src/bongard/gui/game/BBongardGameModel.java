@@ -4,11 +4,15 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import ollitos.gui.basic.BDelayedSprite;
 import ollitos.gui.basic.IBDrawable;
 import ollitos.gui.container.IBSlidableModel;
 import ollitos.gui.container.IBSlidablePage;
+import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 import bongard.problem.BCardExtractor;
+import ollitos.platform.raster.BRasterProviderCache;
+import ollitos.platform.raster.IBRasterProvider;
 
 
 @SuppressWarnings("serial")
@@ -16,8 +20,9 @@ public class BBongardGameModel implements IBSlidableModel{
 
 	transient private BResourceLocator[] _resources;
 	private BBongardTestField[] _drawables;
-	
-	private BResourceLocator[] resources(){
+    transient private BDelayedSprite _background;
+
+    private BResourceLocator[] resources(){
 		if (_resources == null) {
 			_resources = BCardExtractor.allProblems();
 		}
@@ -56,10 +61,18 @@ public class BBongardGameModel implements IBSlidableModel{
 		}
 	}
 
-	@Override
-	public IBDrawable background() {
-		return null;
-	}
+    @Override
+    public IBDrawable background(){
+        if( _background == null ){
+            BResourceLocator rl = new BResourceLocator( "/images/backgrounds/arecibo.png" );
+            IBRasterProvider rp = BRasterProviderCache.instance().get(rl, 146, 46);
+            BDelayedSprite sprite = new BDelayedSprite(rp);
+            sprite.setNotAvailableBorderColor(BPlatform.COLOR_DARKGRAY);
+            sprite.setNotAvailableColor(BPlatform.COLOR_DARKGRAY);
+            _background = sprite;
+        }
+        return _background;
+    }
 	
 	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		stream.defaultReadObject();

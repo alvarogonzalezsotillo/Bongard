@@ -10,13 +10,16 @@ import ollitos.platform.IBColor;
 import ollitos.platform.IBRaster;
 
 public class BLabel extends BDrawable{
-	
+
+
+
 	private String _text;
     private IBRectangle _originalSize;
 
     public BLabel(String text){
 		setText(text);
 		setColor(BPlatform.COLOR_WHITE);
+        setAntialias(true);
 	}
 	
 	public IBColor color(){
@@ -58,5 +61,13 @@ public class BLabel extends BDrawable{
         }
 		return _originalSize;
 	}
+
+    public boolean antialias(){
+        return canvasContext().antialias();
+    }
+
+    public void setAntialias( boolean a ){
+        canvasContext().setAntialias(a);
+    }
 
 }

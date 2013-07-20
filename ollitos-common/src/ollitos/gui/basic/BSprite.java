@@ -2,7 +2,9 @@ package ollitos.gui.basic;
 
 import ollitos.geom.BRectangle;
 import ollitos.geom.IBRectangle;
+import ollitos.platform.BPlatform;
 import ollitos.platform.IBCanvas;
+import ollitos.platform.IBColor;
 import ollitos.platform.IBRaster;
 import ollitos.platform.raster.IBRasterProvider;
 import ollitos.util.BException;
@@ -13,21 +15,33 @@ public class BSprite extends BRectangularDrawable{
 	private IBRasterProvider _rasterProvider;
 	private IBRaster _raster;
 	private IBRectangle _initialPosition;
+    private IBColor _notAvailableBorderColor = BPlatform.COLOR_BLACK;
+    private IBColor _notAvailableColor = BPlatform.COLOR_WHITE;
 
-	
-	private static IBRectangle computeOriginalPosition(IBRaster ra){
+    public void setNotAvailableColor( IBColor color ){
+        _notAvailableColor = color;
+    }
+
+    public void setNotAvailableBorderColor( IBColor color ){
+        _notAvailableBorderColor = color;
+    }
+
+    private static IBRectangle computeOriginalPosition(IBRaster ra){
 		return new BRectangle( -ra.w()/2, -ra.h()/2, ra.w(), ra.h() );
 	}
 
 	/**
-	 * 
 	 * @param raster
 	 */
 	public BSprite(IBRasterProvider rasterProvider){
 		this(rasterProvider,null);
 	}
-	
-	
+
+
+    /**
+     * @param rasterProvider
+     * @param initialPositon
+     */
 	public BSprite(IBRasterProvider rasterProvider, IBRectangle initialPositon) {
 		_rasterProvider = rasterProvider;
 		_initialPosition = initialPositon;
@@ -76,13 +90,18 @@ public class BSprite extends BRectangularDrawable{
 
 	protected void draw_rasterNotAvailable(IBCanvas c){
 		IBRectangle os = originalSize();
-		int x = (int)os.x();
-		int y = (int)os.y();
-		int h = (int)os.h();
-		int w = (int)os.w();
-		c.drawLine(this, x, y, x+w, y+h );
-		c.drawLine(this, x, h+y, w+x, y );
-	}
+//		int x = (int)os.x();
+//		int y = (int)os.y();
+//		int h = (int)os.h();
+//		int w = (int)os.w();
+//		c.drawLine(this, x, y, x+w, y+h );
+//		c.drawLine(this, x, h+y, w+x, y );
+        canvasContext().setColor(_notAvailableColor);
+        c.drawBox(this, os, true);
+
+        canvasContext().setColor(_notAvailableBorderColor);
+        c.drawBox(this,os,false);
+    }
 	
 	@Override
 	protected void draw_internal(IBCanvas c) {

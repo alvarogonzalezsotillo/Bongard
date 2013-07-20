@@ -90,9 +90,7 @@ public class BStartField extends BDrawableContainer{
 	}
 	
 	protected void startGamePressed() {
-		platform().logger().log(this, "Restoring saved...");
 		IBDrawable saved = platform().stateManager().restore(BSlidableGameField.class);
-		platform().logger().log(this, "Restored");
 		final IBDrawable d = saved == null ? BGameModel.goToInitialLevel() : saved;
 		IBAnimation a = new BRunnableAnimation(PRESS_DELAY, new Runnable(){
 			@Override
@@ -126,7 +124,7 @@ public class BStartField extends BDrawableContainer{
 	}
 
 	protected void helpOriginalPressed() {
-		final BGameHelp d = new BGameHelp();
+		final BGameHelp d = platform().stateManager().restore(BGameHelp.class);
 		IBAnimation a = new BRunnableAnimation(PRESS_DELAY, new Runnable(){
 			@Override
 			public void run() {

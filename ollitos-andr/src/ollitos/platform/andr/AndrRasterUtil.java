@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLEncoder;
 
+import android.os.Looper;
 import android.util.Base64;
 import android.webkit.WebSettings;
 import ollitos.geom.IBRectangle;
@@ -104,7 +105,7 @@ public class AndrRasterUtil implements IBRasterUtil{
     }
 
     private AndrRaster html(final IBRectangle s, final BResourceLocator rl, final String string) throws IOException {
-		final AndrRaster ret = raster(s);
+        final AndrRaster ret = raster(s);
 		final WebView webview = new WebView(AndrPlatform.context());
 		webview.setWebViewClient( new WebViewClient(){
 			@Override
