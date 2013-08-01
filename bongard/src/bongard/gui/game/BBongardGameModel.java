@@ -48,7 +48,8 @@ public class BBongardGameModel implements IBSlidableModel{
 	public IBSlidablePage page(int x) {
 		BBongardTestField ret = drawables()[x];
 		if( ret == null ){
-			ret = new BBongardTestField(resources()[x]);
+			//ret = new BBongardTestField(resources()[x]);
+            ret = new BRearangedBongardTestField(resources()[x]);
 			drawables()[x] = ret;
 		}
 		return ret;

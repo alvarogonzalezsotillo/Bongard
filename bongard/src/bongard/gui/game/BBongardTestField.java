@@ -92,22 +92,26 @@ public class BBongardTestField extends BDrawableContainer implements IBSlidableP
 			_problem = new BProblem(_locator);
 		}
 		_problem.setUp();
-		IBRasterProvider testImage = _problem.testImage();
-		testImage = BRasterProviderCache.instance().get(testImage, new BRectangle(0,0,testImage.w(),testImage.h()), BPlatform.COLOR_WHITE, true);
-		_sprite = new BDelayedSprite(testImage);
-		_sprite.setAntialias(true);
-		_sprite.transform().translate( originalSize().w()/2, originalSize().h()/2 );
-		_sprite.transform().rotate(Math.PI/2);
-		_sprite.transform().scale(.95,.95);		
-		BZoomDrawable z = new BZoomDrawable(_sprite);
-		addDrawable(z);
+        createProblemDrawables(_problem);
 		
 		_checkBox = createCheckBox();
 		_checkBox.setState( state().ordinal() );
 		addDrawable(_checkBox);
 	}
 
-	@Override
+    protected void createProblemDrawables(BProblem problem) {
+        IBRasterProvider testImage = problem.testImage();
+        //testImage = BRasterProviderCache.instance().get(testImage, new BRectangle(0,0,testImage.w(),testImage.h()), true);
+        _sprite = new BDelayedSprite(testImage);
+        _sprite.setAntialias(true);
+        _sprite.transform().translate(originalSize().w() / 2, originalSize().h() / 2);
+        _sprite.transform().rotate(Math.PI / 2);
+        _sprite.transform().scale(.95, .95);
+        BZoomDrawable z = new BZoomDrawable(_sprite);
+        addDrawable(z);
+    }
+
+    @Override
 	public IBRectangle originalSize() {
 		return BGameField.computeOriginalSize();
 	}

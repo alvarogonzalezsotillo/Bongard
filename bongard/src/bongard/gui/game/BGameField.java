@@ -284,6 +284,7 @@ public class BGameField extends BDrawableContainer implements IBSlidablePage, Se
 		}
 		BPlatform f = BPlatform.instance();
 		_problem = problem;
+        _problem.setSkipBorder(true);
 		
 		
 		_set1Sprites = new BSprite[_problem.set1().length];

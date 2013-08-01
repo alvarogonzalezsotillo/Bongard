@@ -35,11 +35,13 @@ public class BProblem implements Serializable, IBDisposable{
 	transient private boolean _image1_with_set1;
 	transient private boolean _disposed = true;
 	
+    private transient boolean _skipBorder = true;
+
 	private long _seed;
 	private BResourceLocator _test;
 
-	
-	public BProblem( BResourceLocator test ){
+
+    public BProblem( BResourceLocator test ){
 		this( test, newSeed() );
 	}
 
@@ -57,6 +59,16 @@ public class BProblem implements Serializable, IBDisposable{
 		}
 	}
 
+    public boolean skipBorder(){
+        return _skipBorder;
+    }
+
+    public void setSkipBorder(boolean b){
+        if( _images != null && _skipBorder != b ){
+            dispose();
+        }
+        _skipBorder = b;
+    }
 	
 	/**
 	 * 
@@ -64,7 +76,7 @@ public class BProblem implements Serializable, IBDisposable{
 	 */
 	private void init( ){
 		
-		IBRasterProvider[][] images = BCardExtractor.extractImages(testImage());
+		IBRasterProvider[][] images = BCardExtractor.extractImages(testImage(), _skipBorder);
 
 		IBRasterProvider[] a = images[0];
 		IBRasterProvider[] b = images[1];

@@ -23,19 +23,34 @@ public abstract class BCardExtractor{
 	
 	
 	private static IBRectangle[] A = {
-		getCard(0,0,0), getCard(0,0,1), 
-		getCard(0,1,0), getCard(0,1,1),
-		getCard(0,2,0), getCard(0,2,1)
+		getCard(0,0,0,false), getCard(0,0,1,false),
+		getCard(0,1,0,false), getCard(0,1,1,false),
+		getCard(0,2,0,false), getCard(0,2,1,false)
 	};
 
-	private static IBRectangle[] B = {
-		getCard(1,0,0), getCard(1,0,1), 
-		getCard(1,1,0), getCard(1,1,1),
-		getCard(1,2,0), getCard(1,2,1)
+    private static IBRectangle[] A_NOBORDER = {
+            getCard(0,0,0,true), getCard(0,0,1,true),
+            getCard(0,1,0,true), getCard(0,1,1,true),
+            getCard(0,2,0,true), getCard(0,2,1,true)
+    };
+
+
+    private static IBRectangle[] B = {
+		getCard(1,0,0,false), getCard(1,0,1,false),
+		getCard(1,1,0,false), getCard(1,1,1,false),
+		getCard(1,2,0,false), getCard(1,2,1,false)
 	};
-	
-	private static IBRectangle getCard( int side, int row, int column ){
-		return new BRectangle(7+side*293+column*(CARDW+8),5+row*(CARDH+8),CARDW,CARDH);
+
+    private static IBRectangle[] B_NOBORDER = {
+            getCard(1,0,0,true), getCard(1,0,1,true),
+            getCard(1,1,0,true), getCard(1,1,1,true),
+            getCard(1,2,0,true), getCard(1,2,1,true)
+    };
+
+    private static IBRectangle getCard( int side, int row, int column, boolean skipBorder ){
+        int xy = skipBorder ? 2 : 0;
+        int wh = skipBorder ? -4 : 0;
+		return new BRectangle(xy+7+side*293+column*(CARDW+8), xy+5+row*(CARDH+8), wh+CARDW,wh+CARDH);
 	}
 
 
@@ -56,20 +71,22 @@ public abstract class BCardExtractor{
 	 * @param i
 	 * @return first dimension are sides of problem, second dimension is tiles of side
 	 */
-	public static IBRasterProvider[][] extractImages( IBRasterProvider testImage ){
+	public static IBRasterProvider[][] extractImages( IBRasterProvider testImage, boolean skipBorder ){
 		IBRasterProvider ret[][] = new IBRasterProvider[2][];
-		ret[0] = new IBRasterProvider[A.length];
-		ret[1] = new IBRasterProvider[B.length];
+        IBRectangle[] a = skipBorder ? A_NOBORDER : A;
+        IBRectangle[] b = skipBorder ? B_NOBORDER : B;
+		ret[0] = new IBRasterProvider[a.length];
+		ret[1] = new IBRasterProvider[b.length];
 		
-		for( int j= 0 ; j < A.length ; j++ ){
-			IBRectangle r = A[j];
-			IBRasterProvider card = BRasterProviderCache.instance().get(testImage,r,_background,false);
+		for( int j= 0 ; j < a.length ; j++ ){
+			IBRectangle r = a[j];
+			IBRasterProvider card = BRasterProviderCache.instance().get(testImage,r,BPlatform.COLOR_WHITE,false);
 			ret[0][j] = card;
 		}
 		
-		for( int j= 0 ; j < B.length ; j++ ){
-			IBRectangle r = B[j];
-			IBRasterProvider card = BRasterProviderCache.instance().get(testImage,r,_background,false);
+		for( int j= 0 ; j < b.length ; j++ ){
+			IBRectangle r = b[j];
+			IBRasterProvider card = BRasterProviderCache.instance().get(testImage,r,BPlatform.COLOR_WHITE,false);
 			ret[1][j] = card;
 		}
 		return ret;
