@@ -5,6 +5,7 @@
 	<property name="src-awt" value="ollitos-awt/src" />
 	<property name="src-andr" value="ollitos-andr/src" />
 	<property name="src-bot" value="ollitosbot/src" />
+	<property name="lib-bot" value="ollitosbot/lib" />
 	<property name="bin" value="bin" />
 	<property name="bin.classes" value="${bin}/classes" />
 	<property name="exec.dir" value="." />
@@ -13,10 +14,16 @@
 
 	<property name="android.assets" value="android/assets"/>
 
+	<path id="ollitosbot-lib">
+		<fileset dir="${lib-bot}">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
 
 	<target name="compile">
 		<mkdir dir="${bin.classes}" />
 		<javac destdir="${bin.classes}" fork="true" source="1.5" target="1.5" debug="true" debuglevel="lines,vars,source">
+			<classpath refid="ollitosbot-lib"/>
 			<src path="${src-common}"/>
 			<src path="${src-awt}"/>
 			<src path="${src-bongard}"/>
@@ -53,11 +60,13 @@
 				<include name="**/*.png" />
 				<include name="**/*.events" />
 				<include name="**/*.html" />
+				<include name="**/*.properties" />
 			</fileset>
 			<fileset dir="${src-bot}">
 				<include name="**/*.png" />
 				<include name="**/*.events" />
 				<include name="**/*.html" />
+				<include name="**/*.properties" />
 			</fileset>
 			<manifest>
 				<attribute name="Main-Class" value="ollitos.platform.awt.AWTGame" />
