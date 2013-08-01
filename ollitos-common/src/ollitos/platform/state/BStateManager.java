@@ -65,29 +65,22 @@ public class BStateManager implements IBDisposable{
 		try{
 			return restoreImpl(c);
 		}
-		catch( Error e ){
+		catch( Exception e ){
             e.printStackTrace();
 			BPlatform.instance().logger().log( this, e );
-		}
-		catch( RuntimeException r ){
-            r.printStackTrace();
-            BPlatform.instance().logger().log( this, r );
-		}
-		return null;
+            try {
+                return c.newInstance();
+            }
+            catch (Exception ex) {
+                throw new BException("Can't create " + c, ex );
+            }
+        }
 	}
 	
 	@SuppressWarnings("unchecked")
 	private <T extends Stateful> T restoreImpl(Class<T> c){
 		byte[] b = table().getBytes(c);
 		BState<T> state = (BState<T>) BState.fromBytes(b); 
-		if( state == null ){
-			try {
-				return c.newInstance();
-			}
-			catch (Exception ex) {
-				throw new BException("Can't create " + c, ex );
-			}
-		}
 		return (T) state.create();
 	}
 

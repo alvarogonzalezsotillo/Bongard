@@ -40,8 +40,8 @@ public class BTransformIntoRectangleAnimation extends BFixedDurationAnimation{
 			IBTransform ret = rd.transform();
 			BTransformUtil.setTo(ret, os, r, true, true);
 
-            String log = "_dst:" + _dst + " -- f:" + f + " -- " + r;
-			BPlatform.instance().logger().log( this, log );
+            //String log = "_dst:" + _dst + " -- f:" + f + " -- " + r;
+			//BPlatform.instance().logger().log( this, log );
         }
 	}
 	
