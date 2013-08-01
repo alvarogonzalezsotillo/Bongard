@@ -34,7 +34,6 @@ public class AWTScreen extends BScreen{
 		@Override
 		public void keyPressed(KeyEvent e) {
 			int c = e.getKeyCode();
-			BPlatform.instance().logger().log( this, "KeyPressed:" + c );
 			if( c == KeyEvent.VK_ESCAPE || c == KeyEvent.VK_BACK_SPACE ){
                 listeners().handle( new IBEvent(IBEvent.Type.back) );
 			}

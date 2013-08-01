@@ -23,10 +23,12 @@ public class BRearangedBongardTestField extends BBongardTestField{
 
     public BRearangedBongardTestField(BResourceLocator l) {
         super(l);
+        platform().logger().log( this, "Creando BRearangedBongardTestField:" + l );
     }
 
     @Override
     protected void createProblemDrawables(BProblem problem) {
+        System.out.println( "************************************************");
         problem.setSkipBorder(true);
         IBRasterProvider testImage = problem.testImage();
         _rasters = BCardExtractor.extractImages(testImage,false);

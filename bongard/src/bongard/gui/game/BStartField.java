@@ -113,6 +113,7 @@ public class BStartField extends BDrawableContainer{
 	}
 	
 	protected void startOriginalPressed() {
+        System.out.println( "startOriginalPressed" );
 		final BSlidableBongardGame d = platform().stateManager().restore(BSlidableBongardGame.class);
 		IBAnimation a = new BRunnableAnimation(PRESS_DELAY, new Runnable(){
 			@Override
@@ -124,7 +125,8 @@ public class BStartField extends BDrawableContainer{
 	}
 
 	protected void helpOriginalPressed() {
-		final BGameHelp d = platform().stateManager().restore(BGameHelp.class);
+        System.out.println( "helpOriginalPressed" );
+        final BGameHelp d = platform().stateManager().restore(BGameHelp.class);
 		IBAnimation a = new BRunnableAnimation(PRESS_DELAY, new Runnable(){
 			@Override
 			public void run() {
