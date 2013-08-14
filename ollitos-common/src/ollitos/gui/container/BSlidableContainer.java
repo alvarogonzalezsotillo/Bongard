@@ -25,6 +25,7 @@ import ollitos.util.BTransformUtil;
 public class BSlidableContainer extends BDrawableContainer implements BState.Stateful{
 	
 	private static final double MARGIN = 50;
+    private static final double DRAG_SPEED_LIMIT = 25;
 	
 	public static final boolean LOG_EVENTS = false;
 
@@ -61,16 +62,29 @@ public class BSlidableContainer extends BDrawableContainer implements BState.Sta
 	
 	private class ReleaseAnimation extends DragAnimation{
 
-		private int _newCurrent = Integer.MAX_VALUE;
+        private final int _indexDelta;
+        private int _newCurrent = Integer.MAX_VALUE;
 
-		public ReleaseAnimation(int totalMillis) {
+
+        public ReleaseAnimation(int totalMillis) {
+            this( totalMillis, 0 );
+        }
+
+		public ReleaseAnimation(int totalMillis, int indexDelta) {
 			super(0,totalMillis);
+            _indexDelta = indexDelta;
 		}
 		
 		@Override
 		public void stepAnimation(long millis) {
 			if( _newCurrent == Integer.MAX_VALUE ){
-				_newCurrent = computeNewIndexFromDrawableOffset();
+                if( _indexDelta != 0 ){
+                    _newCurrent = currentIndex() + _indexDelta;
+                }
+                else{
+                    _newCurrent = computeNewIndexFromDrawableOffset();
+                }
+                _newCurrent = Math.min( model().width()-1, Math.max(_newCurrent,0) );
 				double fx = (currentIndex() - _newCurrent)*originalSize().w();
 				if( fx < 0 ) fx -= MARGIN;
 				if( fx > 0 ) fx += MARGIN;
@@ -92,12 +106,19 @@ public class BSlidableContainer extends BDrawableContainer implements BState.Sta
 		private boolean _endReached = false;
 		
 		public GoToIndexAnimation(int endIndex){
-			_endIndex = endIndex;
+			_endIndex = Math.max( Math.min(endIndex, model().width()-1), 0 );
 			_initIndex = currentIndex();
+            if( _endIndex == _initIndex ){
+                _endReached = true;
+            }
 		}
 
 		@Override
 		public void stepAnimation(long millis) {
+            if( endReached() ){
+                return;
+            }
+
 			double w = originalSize().w();
 			int indexOffset = _endIndex - _initIndex;
 			double fx = -w;
@@ -157,8 +178,9 @@ public class BSlidableContainer extends BDrawableContainer implements BState.Sta
 		IBPoint _lastPoint;
 		private BWaitForAnimation _dragAnimation;
 		private BWaitForAnimation _releaseAnimation;
+        private double _dragSpeed;
 
-		@Override
+        @Override
 		public boolean pointerClick(IBPoint pInMyCoordinates) {
 			if( _boxes == null ){
 				return false;
@@ -168,6 +190,7 @@ public class BSlidableContainer extends BDrawableContainer implements BState.Sta
                 return true;
             }
 
+            // CHECK FOR CLICK INSIDE A BOX
 			for (int i = 0; i < _boxes.length; i++) {
 				IBRectangle r = _boxes[i];
 				r = IBRectangle.Util.grow(r, BOX_SPACING);
@@ -177,7 +200,8 @@ public class BSlidableContainer extends BDrawableContainer implements BState.Sta
 					return true;
 				}
 			}
-			
+
+            // CHECK FOR CLICK AT THE LEFT OF THE BOXES
 			IBRectangle box = _boxes[0];
 			IBPoint p = platform().point(box.x(), box.y() );
 			if( IBPoint.Util.distance(p, pInMyCoordinates) < BOX_SPACING*3 ){
@@ -187,8 +211,9 @@ public class BSlidableContainer extends BDrawableContainer implements BState.Sta
                 platform().game().animator().addAnimation(_goToIndexAnimation);
 				return true;
 			}
-			
-			box = _boxes[_boxes.length-1];
+
+            // CHECK FOR CLICK AT THE RIGHT OF THE BOXES
+            box = _boxes[_boxes.length-1];
 			p = platform().point(box.x(), box.y() + box.w() );
 			if( IBPoint.Util.distance(p, pInMyCoordinates) < BOX_SPACING*3 ){
 				int index = currentIndex()+MAX_DRAWABLES_WIDTH;
@@ -215,10 +240,10 @@ public class BSlidableContainer extends BDrawableContainer implements BState.Sta
 			_lastPoint = _currentPoint;
 			_currentPoint = pInMyCoordinates;
 			if( _initialPoint == null ){
-				// THIS COULDNT HAPPEN, BUT IT DOES SOMETIMES
+				// THIS COULDN'T HAPPEN, BUT IT DOES SOMETIMES
 				return true;
 			}
-			
+
 			double dx = _currentPoint.x() - _initialPoint.x();
 
 			IBAnimation oldDragAnimation = _dragAnimation; 
@@ -234,12 +259,25 @@ public class BSlidableContainer extends BDrawableContainer implements BState.Sta
 		@Override
 		public boolean pointerUp(IBPoint pInMyCoordinates) {
 
+            int indexDeltaDueToSpeed = 0;
+
+            if( pInMyCoordinates != null && _lastPoint != null ){
+                _dragSpeed = _lastPoint.x() - pInMyCoordinates.x();
+                System.err.println( "up ---------------------- _dragSpeed:" + _dragSpeed  );
+                if( Math.abs( _dragSpeed ) > DRAG_SPEED_LIMIT ){
+                    System.err.println( "up ---------------- CHANGE!" );
+                    indexDeltaDueToSpeed = (int) Math.signum(_dragSpeed);
+                }
+            }
+
 			if( _initialPoint != null ){
-				_releaseAnimation = new BWaitForAnimation( new ReleaseAnimation(100), _dragAnimation );
+				_releaseAnimation = new BWaitForAnimation( new ReleaseAnimation(100, indexDeltaDueToSpeed), _dragAnimation );
 				platform().game().animator().addAnimation(_releaseAnimation);
 			}
 
-			_initialPoint = null;
+
+
+            _initialPoint = null;
 			_currentPoint = null;
 			_dragAnimation = null;
 			_releaseAnimation = null;

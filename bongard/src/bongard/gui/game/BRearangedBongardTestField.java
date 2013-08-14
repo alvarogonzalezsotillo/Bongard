@@ -3,8 +3,9 @@ package bongard.gui.game;
 import bongard.problem.BCardExtractor;
 import bongard.problem.BProblem;
 import ollitos.geom.BRectangle;
-import ollitos.gui.basic.BDelayedSprite;
-import ollitos.gui.basic.BSprite;
+import ollitos.gui.basic.*;
+import ollitos.gui.container.BZoomDrawable;
+import ollitos.gui.container.IBSlidablePage;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 import ollitos.platform.raster.BRasterProviderCache;
@@ -21,6 +22,7 @@ public class BRearangedBongardTestField extends BBongardTestField{
 
     transient private IBRasterProvider[][] _rasters;
 
+
     public BRearangedBongardTestField(BResourceLocator l) {
         super(l);
         platform().logger().log( this, "Creando BRearangedBongardTestField:" + l );
@@ -32,13 +34,13 @@ public class BRearangedBongardTestField extends BBongardTestField{
         problem.setSkipBorder(true);
         IBRasterProvider testImage = problem.testImage();
         _rasters = BCardExtractor.extractImages(testImage,false);
-        BSprite[][]_sprites = new BSprite[_rasters.length][_rasters[0].length];
+        BRectangularDrawable[][] sprites = new BRectangularDrawable[_rasters.length][_rasters[0].length];
 
-        for( int side = 0 ; side < _sprites.length ; side++ ){
-            for( int i = 0 ; i < _sprites[0].length ; i++ ){
+        for( int side = 0 ; side < sprites.length ; side++ ){
+            for( int i = 0 ; i < sprites[0].length ; i++ ){
                 BDelayedSprite sprite = new BDelayedSprite(_rasters[side][i]);
-                _sprites[side][i] = sprite;
-                addDrawable(_sprites[side][i]);
+                sprites[side][i] = sprite;
+                addDrawable(sprites[side][i]);
             }
         }
 
@@ -46,19 +48,19 @@ public class BRearangedBongardTestField extends BBongardTestField{
         double size = (originalSize().w()-margin*7)/3;
         double oY = originalSize().h()-size*4-margin*9;
 
-        _sprites[0][0].setSizeTo( new BRectangle(margin*2,                oY,size,size), true, true);
-        _sprites[0][1].setSizeTo( new BRectangle(margin*2+size+margin,    oY,size,size), true, true);
-        _sprites[0][2].setSizeTo( new BRectangle(margin*2+size*2+margin*2,oY,size,size), true, true);
-        _sprites[0][3].setSizeTo( new BRectangle(margin*2,                oY+margin+size,size,size), true, true);
-        _sprites[0][4].setSizeTo( new BRectangle(margin*2+size+margin,    oY+margin+size,size,size), true, true);
-        _sprites[0][5].setSizeTo( new BRectangle(margin*2+size*2+margin*2,oY+margin+size,size,size), true, true);
+        sprites[0][0].setSizeTo( new BRectangle(margin*2,                oY,size,size), true, true);
+        sprites[0][1].setSizeTo( new BRectangle(margin*2+size+margin,    oY,size,size), true, true);
+        sprites[0][2].setSizeTo( new BRectangle(margin*2+size*2+margin*2,oY,size,size), true, true);
+        sprites[0][3].setSizeTo( new BRectangle(margin*2,                oY+margin+size,size,size), true, true);
+        sprites[0][4].setSizeTo( new BRectangle(margin*2+size+margin,    oY+margin+size,size,size), true, true);
+        sprites[0][5].setSizeTo( new BRectangle(margin*2+size*2+margin*2,oY+margin+size,size,size), true, true);
 
-        _sprites[1][0].setSizeTo( new BRectangle(margin*2,                oY+margin+size*2+margin*4,size,size), true, true);
-        _sprites[1][1].setSizeTo( new BRectangle(margin*2+size+margin,    oY+margin+size*2+margin*4,size,size), true, true);
-        _sprites[1][2].setSizeTo( new BRectangle(margin*2+size*2+margin*2,oY+margin+size*2+margin*4,size,size), true, true);
-        _sprites[1][3].setSizeTo( new BRectangle(margin*2,                oY+margin+size*3+margin*5,size,size), true, true);
-        _sprites[1][4].setSizeTo( new BRectangle(margin*2+size+margin,    oY+margin+size*3+margin*5,size,size), true, true);
-        _sprites[1][5].setSizeTo( new BRectangle(margin*2+size*2+margin*2,oY+margin+size*3+margin*5,size,size), true, true);
+        sprites[1][0].setSizeTo( new BRectangle(margin*2,                oY+margin+size*2+margin*4,size,size), true, true);
+        sprites[1][1].setSizeTo( new BRectangle(margin*2+size+margin,    oY+margin+size*2+margin*4,size,size), true, true);
+        sprites[1][2].setSizeTo( new BRectangle(margin*2+size*2+margin*2,oY+margin+size*2+margin*4,size,size), true, true);
+        sprites[1][3].setSizeTo( new BRectangle(margin*2,                oY+margin+size*3+margin*5,size,size), true, true);
+        sprites[1][4].setSizeTo( new BRectangle(margin*2+size+margin,    oY+margin+size*3+margin*5,size,size), true, true);
+        sprites[1][5].setSizeTo( new BRectangle(margin*2+size*2+margin*2,oY+margin+size*3+margin*5,size,size), true, true);
 
     }
 

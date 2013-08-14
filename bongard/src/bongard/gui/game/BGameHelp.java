@@ -37,6 +37,7 @@ public class BGameHelp extends BSlidableContainer implements BState.Stateful{
             private final int _x;
             private IBDrawable _d;
             private IBDrawable _icon;
+            private IBRasterProvider _r;
 
             public HelpPage(int x) {
                 _x = x;
@@ -48,11 +49,16 @@ public class BGameHelp extends BSlidableContainer implements BState.Stateful{
 
             @Override
             public boolean disposed() {
-                return false;
+                return _d == null;
             }
 
             @Override
             public void dispose() {
+                _d = null;
+                if( _r != null ){
+                    _r.dispose();
+                    _r = null;
+                }
             }
 
             @Override
@@ -83,8 +89,8 @@ public class BGameHelp extends BSlidableContainer implements BState.Stateful{
                 int w = 320*2;
                 int h = 480*2;
                 IBRectangle rect = new BRectangle(-w/2,-h/2,w,h);
-                IBRasterProvider r = BRasterProviderCache.instance().getFromHTML(l, rect);
-                BSprite sprite = new BSprite(r);
+                _r = BRasterProviderCache.instance().getFromHTML(l, rect);
+                BSprite sprite = new BSprite(_r);
                 sprite.setAntialias(true);
                 sprite.setNotAvailableColor(BPlatform.COLOR_DARKGRAY);
                 sprite.setNotAvailableBorderColor(BPlatform.COLOR_DARKGRAY);

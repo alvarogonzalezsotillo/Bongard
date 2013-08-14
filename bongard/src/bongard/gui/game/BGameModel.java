@@ -105,10 +105,10 @@ public class BGameModel implements IBSlidableModel{
 		
 		BResourceLocator[] problems = null;
 		if( limitDificulty ){
-			if( width <= 3 ){
+			if( width <= 2 ){
 				problems = BCardExtractor.randomProblems(width,10);
 			}
-			else if( width <= 5 ){
+			else if( width <= 3 ){
 				problems = BCardExtractor.randomProblems(width,30);
 			}
 		}

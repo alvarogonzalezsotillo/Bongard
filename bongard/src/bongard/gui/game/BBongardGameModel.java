@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 
 import ollitos.gui.basic.BDelayedSprite;
 import ollitos.gui.basic.IBDrawable;
+import ollitos.gui.container.BZoomSlidablePage;
 import ollitos.gui.container.IBSlidableModel;
 import ollitos.gui.container.IBSlidablePage;
 import ollitos.platform.BPlatform;
@@ -18,49 +19,49 @@ import ollitos.platform.raster.IBRasterProvider;
 @SuppressWarnings("serial")
 public class BBongardGameModel implements IBSlidableModel{
 
-	transient private BResourceLocator[] _resources;
-	private BBongardTestField[] _drawables;
+    transient private BResourceLocator[] _resources;
+    private IBSlidablePage[] _drawables;
     transient private BDelayedSprite _background;
 
     private BResourceLocator[] resources(){
-		if (_resources == null) {
-			_resources = BCardExtractor.allProblems();
-		}
+        if (_resources == null) {
+            _resources = BCardExtractor.allProblems();
+        }
 
-		return _resources;
-	}
+        return _resources;
+    }
 
-	private BBongardTestField[] drawables(){
-		if (_drawables == null) {
-			_drawables = new BBongardTestField[resources().length];
-			
-		}
+    private IBSlidablePage[] drawables(){
+        if (_drawables == null) {
+            _drawables = new IBSlidablePage[resources().length];
 
-		return _drawables;
-	}
-	
-	@Override
-	public int width() {
-		return resources().length;
-	}
+        }
 
-	@Override
-	public IBSlidablePage page(int x) {
-		BBongardTestField ret = drawables()[x];
-		if( ret == null ){
-			//ret = new BBongardTestField(resources()[x]);
+        return _drawables;
+    }
+
+    @Override
+    public int width() {
+        return resources().length;
+    }
+
+    @Override
+    public IBSlidablePage page(int x) {
+        IBSlidablePage ret = drawables()[x];
+        if( ret == null ){
             ret = new BRearangedBongardTestField(resources()[x]);
-			drawables()[x] = ret;
-		}
-		return ret;
-	}
+            ret = new BZoomSlidablePage(ret);
+            drawables()[x] = ret;
+        }
+        return ret;
+    }
 
-	@Override
-	public void dispose(int x) {
-		if( drawables()[x] != null ){
-			drawables()[x].dispose();
-		}
-	}
+    @Override
+    public void dispose(int x) {
+        if( drawables()[x] != null ){
+            drawables()[x].dispose();
+        }
+    }
 
     @Override
     public IBDrawable background(){
@@ -74,13 +75,13 @@ public class BBongardGameModel implements IBSlidableModel{
         }
         return _background;
     }
-	
-	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
-		stream.defaultReadObject();
-	}
 
-	private void writeObject(ObjectOutputStream stream)	throws IOException {
-		stream.defaultWriteObject();
-	}
+    private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+        stream.defaultReadObject();
+    }
+
+    private void writeObject(ObjectOutputStream stream)	throws IOException {
+        stream.defaultWriteObject();
+    }
 
 }

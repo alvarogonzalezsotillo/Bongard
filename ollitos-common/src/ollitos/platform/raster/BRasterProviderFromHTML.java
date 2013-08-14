@@ -36,7 +36,7 @@ class BRasterProviderFromHTML extends BRasterProvider{
 
 	@Override
 	public String key() {
-		return getClass().getSimpleName() + "-" + String.valueOf(_rl) + "-" + String.valueOf(_str);
+		return getClass().getSimpleName() + "-" + String.valueOf(_rl) + "-" + String.valueOf(_str).hashCode();
 	}
 
 	@Override

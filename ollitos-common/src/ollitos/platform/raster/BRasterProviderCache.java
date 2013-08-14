@@ -48,7 +48,7 @@ public class BRasterProviderCache {
     public IBRasterProvider get( IBRasterProvider key ){
 		synchronized (_map) {
 			String k = key.key();
-			IBRasterProvider ret = _map.get(key);
+			IBRasterProvider ret = _map.get(k);
 			if( ret == null ){
 				_map.put(k, key);
 				ret = key;

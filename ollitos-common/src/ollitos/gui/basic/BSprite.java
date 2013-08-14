@@ -101,6 +101,8 @@ public class BSprite extends BRectangularDrawable{
 
         canvasContext().setColor(_notAvailableBorderColor);
         c.drawBox(this,os,false);
+        c.drawLine(this,(float)os.x(),(float)os.y(),(float)(os.x()+os.w()),(float)(os.y()+os.h()));
+        c.drawLine(this,(float)os.x(),(float)(os.y()+os.h()),(float)(os.x()+os.w()),(float)os.y());
     }
 	
 	@Override

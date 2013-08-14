@@ -7,6 +7,11 @@ import ollitos.platform.BPlatform;
 public interface IBPoint extends Serializable{
 	
 	public static final class Util{
+
+        public static double module(IBPoint p){
+            return distance( p, BPlatform.instance().point(0,0) );
+        }
+
 		public static double distance(IBPoint p1, IBPoint p2 ){
 			double y = p1.y() - p2.y();
 			double x = p1.x() - p2.x();
