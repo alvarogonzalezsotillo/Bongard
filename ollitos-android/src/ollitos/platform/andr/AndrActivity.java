@@ -2,6 +2,7 @@ package ollitos.platform.andr;
 
 import java.lang.Thread.UncaughtExceptionHandler;
 
+import ollitos.gui.basic.IBDrawable;
 import ollitos.platform.BPlatform;
 import ollitos.platform.IBGame;
 import android.app.Activity;
@@ -12,9 +13,8 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import bongard.gui.game.BStartField;
 
-public class AndrActivity extends Activity {
+public abstract class AndrActivity extends Activity {
 
 	/**
 	http://stackoverflow.com/questions/11225209/thread-exiting-with-uncaught-exception-no-stack-trace
@@ -43,12 +43,14 @@ public class AndrActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		AndrPlatform.initContext(this);
-		AndrPlatform.instance().game().setDefaultDrawable( new BStartField() );
+		AndrPlatform.instance().game().setDefaultDrawable(createDefaultDrawable());
 		setContentView(createView());
 		restoreState();
 	}
-	
-	@Override
+
+    protected abstract IBDrawable createDefaultDrawable();
+
+    @Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		boolean ret = andrCanvas().onKeyDown(keyCode,event);
 		if( ret ){

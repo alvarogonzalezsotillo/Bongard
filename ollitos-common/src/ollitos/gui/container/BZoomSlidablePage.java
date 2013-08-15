@@ -2,6 +2,8 @@ package ollitos.gui.container;
 
 import ollitos.gui.basic.IBDrawable;
 
+import java.io.Serializable;
+
 /**
  * Created with IntelliJ IDEA.
  * User: alvaro
@@ -9,10 +11,10 @@ import ollitos.gui.basic.IBDrawable;
  * Time: 16:55
  * To change this template use File | Settings | File Templates.
  */
-public class BZoomSlidablePage implements IBSlidablePage{
+public class BZoomSlidablePage implements IBSlidablePage, Serializable {
 
     private final IBSlidablePage _page;
-    private BZoomDrawable _zoom;
+    transient private BZoomDrawable _zoom;
 
     public BZoomSlidablePage(IBSlidablePage page) {
         _page = page;

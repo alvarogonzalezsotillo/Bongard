@@ -194,7 +194,9 @@ public class AndrScreen extends BScreen{
 
 	@Override
 	public void refresh() {
-		_view.invalidate();
+        if( _view != null ){
+		    _view.invalidate();
+        }
 	}
 
     private BRectangle _originalSize;
@@ -210,7 +212,7 @@ public class AndrScreen extends BScreen{
 	}
 
 	public Canvas androidCanvas() {
-		return _view.currentAndroidCanvas();
+		return view().currentAndroidCanvas();
 	}
 
 	@Override
