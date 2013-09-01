@@ -9,10 +9,10 @@ import java.util.prefs.Preferences;
 
 import javax.swing.SwingUtilities;
 
+import ollitos.bongard.all.BStartField;
 import ollitos.platform.BGame;
 import ollitos.platform.BPlatform;
 import ollitos.platform.state.BState;
-import bongard.gui.game.BStartField;
 
 
 public class AWTGame extends BGame{

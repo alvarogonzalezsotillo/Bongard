@@ -2,7 +2,9 @@ package ollitos.geom;
 
 import ollitos.platform.BPlatform;
 
-public interface IBRectangle{
+import java.io.Serializable;
+
+public interface IBRectangle extends Serializable{
 	
 	public static class Util{
 		public static IBPoint topLeft(IBRectangle r){

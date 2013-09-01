@@ -2,7 +2,6 @@ package ollitos.bongard.original;
 
 import bongard.gui.game.BBongardTestField;
 import bongard.gui.game.BSlidableBongardGame;
-import bongard.gui.game.BStartField;
 import ollitos.gui.basic.IBDrawable;
 import ollitos.platform.BPlatform;
 import ollitos.platform.andr.AndrActivity;

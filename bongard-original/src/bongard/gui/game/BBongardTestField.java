@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import ollitos.geom.BRectangle;
 import ollitos.geom.IBRectangle;
+import ollitos.geom.IBTransform;
 import ollitos.gui.basic.BBox;
 import ollitos.gui.basic.BCheckBox;
 import ollitos.gui.basic.BCheckBox.StateListener;
@@ -16,6 +17,7 @@ import ollitos.gui.container.BZoomDrawable;
 import ollitos.gui.container.IBSlidablePage;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
+import ollitos.platform.IBCanvas;
 import ollitos.platform.raster.BRasterProviderCache;
 import ollitos.platform.raster.IBRasterProvider;
 import bongard.problem.BProblem;
@@ -53,33 +55,47 @@ public class BBongardTestField extends BDrawableContainer implements IBSlidableP
 	private BResourceLocator _locator;
 	transient private BProblem _problem;
 	transient private BSprite _sprite;
-	transient private BCheckBox _checkBox;
+	transient private IBDrawable _checkBox;
 	private State _state = State.undefined;
 	
 	public State state(){
 		return _state;
 	}
-	
+
 	public BBongardTestField(BResourceLocator l){
-		super( BGameField.computeOriginalSize() );
+		super(computeOriginalSize());
 		setLocator(l);
 	}
 
+    public static IBRectangle computeOriginalSize(){
+        return new BRectangle(420,630);
+    }
 
-	private void setLocator(BResourceLocator l){
+
+
+    private void setLocator(BResourceLocator l){
 		_locator = l;
 	}
 	
-	private BCheckBox createCheckBox(){
+	private IBDrawable createCheckBox(){
+        IBRectangle os = originalSize();
+        BRectangle size = new BRectangle(os.x() + 5, os.y() + 5, 45, 45);
+
 		BCheckBox c = new BCheckBox(_sprites);
-		c.setSizeTo( new BRectangle(5, 5, 45, 45), false, true);
+        c.setSizeTo( size, false, true);
 		c.addStateListener( new StateListener() {
 			@Override
 			public void stateChanged(BCheckBox b) {
 				_state = State.values()[b.state()];
 			}
 		});
+        c.setState( state().ordinal() );
 		return c;
+
+
+        //return new BBox(size,BPlatform.COLOR_YELLOW);
+
+
 	}
 
 	
@@ -95,9 +111,15 @@ public class BBongardTestField extends BDrawableContainer implements IBSlidableP
         createProblemDrawables(_problem);
 		
 		_checkBox = createCheckBox();
-		_checkBox.setState( state().ordinal() );
 		addDrawable(_checkBox);
 	}
+
+
+    @Override
+    protected void draw_children(IBCanvas c, IBTransform t) {
+        super.draw_children(c, t);
+        //c.drawLine(this,(float)originalSize().x(), (float)originalSize().y(), (float)_checkBox.originalSize().x(), (float)_checkBox.originalSize().y() );
+    }
 
     protected void createProblemDrawables(BProblem problem) {
         IBRasterProvider testImage = problem.testImage();
@@ -110,11 +132,6 @@ public class BBongardTestField extends BDrawableContainer implements IBSlidableP
         BZoomDrawable z = new BZoomDrawable(_sprite);
         addDrawable(z);
     }
-
-    @Override
-	public IBRectangle originalSize() {
-		return BGameField.computeOriginalSize();
-	}
 
 	@Override
 	public IBDrawable icon() {

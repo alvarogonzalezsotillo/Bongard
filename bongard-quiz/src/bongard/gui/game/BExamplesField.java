@@ -15,6 +15,7 @@ import ollitos.gui.event.BLogListener.ReplayAnimation;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 import ollitos.platform.IBCanvas;
+import ollitos.platform.IBGame;
 import ollitos.util.BException;
 import bongard.problem.BCardExtractor;
 
@@ -51,7 +52,8 @@ public class BExamplesField extends BRectangularDrawable{
 		IBAnimation backToStartAnimation = new BRunnableAnimation(2000, new Runnable(){
 			@Override
 			public void run() {
-				BPlatform.instance().game().screen().setDrawable( new BStartField() );
+                IBGame game = BPlatform.instance().game();
+                game.screen().setDrawable( game.defaultDrawable() );
 			}
 		});
 		IBAnimation a = new BConcatenateAnimation(new BWaitAnimation(1000), _replayAnimation,backToStartAnimation);

@@ -1,5 +1,6 @@
-package bongard.gui.game;
+package ollitos.bongard.all;
 
+import bongard.gui.game.*;
 import ollitos.animation.BRunnableAnimation;
 import ollitos.animation.IBAnimation;
 import ollitos.geom.BRectangle;

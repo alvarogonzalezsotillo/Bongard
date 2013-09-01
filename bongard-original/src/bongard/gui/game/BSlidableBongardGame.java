@@ -1,6 +1,7 @@
 package bongard.gui.game;
 
 import ollitos.geom.BRectangle;
+import ollitos.geom.IBRectangle;
 import ollitos.gui.container.BSlidableContainer;
 import ollitos.platform.state.BState;
 
@@ -11,12 +12,16 @@ public class BSlidableBongardGame extends BSlidableContainer implements BState.S
 	}
 	
 	public BSlidableBongardGame(){
-		this( BGameField.computeOriginalSize(), createModel() );
+		this( BBongardTestField.computeOriginalSize(), createModel() );
 	}
-	
-	public BSlidableBongardGame(BRectangle s, BBongardGameModel m) {
-		super(s,m);
-	}
+
+    public BSlidableBongardGame(IBRectangle s, BBongardGameModel m) {
+        super(s,m);
+    }
+
+    public BSlidableBongardGame(BBongardGameModel m) {
+        this(BBongardTestField.computeOriginalSize(),m);
+    }
 
 	@SuppressWarnings("serial")
 	private static class MyState extends BState<BSlidableBongardGame>{
@@ -29,7 +34,7 @@ public class BSlidableBongardGame extends BSlidableContainer implements BState.S
 
 		@Override
 		public BSlidableContainer create() {
-			BSlidableBongardGame ret = new BSlidableBongardGame(BGameField.computeOriginalSize(),_myModel);
+			BSlidableBongardGame ret = new BSlidableBongardGame(_myModel);
 			ret.setCurrent( _index );
 			return ret;
 		}

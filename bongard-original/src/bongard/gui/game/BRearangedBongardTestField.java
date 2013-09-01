@@ -11,6 +11,8 @@ import ollitos.platform.BResourceLocator;
 import ollitos.platform.raster.BRasterProviderCache;
 import ollitos.platform.raster.IBRasterProvider;
 
+import java.io.IOException;
+
 /**
  * Created with IntelliJ IDEA.
  * User: alvaro
@@ -46,21 +48,22 @@ public class BRearangedBongardTestField extends BBongardTestField{
 
         double margin = originalSize().w()/30;
         double size = (originalSize().w()-margin*7)/3;
-        double oY = originalSize().h()-size*4-margin*9;
+        double oY = originalSize().y() + originalSize().h()-size*4 - margin*9;
+        double oX = originalSize().x();
 
-        sprites[0][0].setSizeTo( new BRectangle(margin*2,                oY,size,size), true, true);
-        sprites[0][1].setSizeTo( new BRectangle(margin*2+size+margin,    oY,size,size), true, true);
-        sprites[0][2].setSizeTo( new BRectangle(margin*2+size*2+margin*2,oY,size,size), true, true);
-        sprites[0][3].setSizeTo( new BRectangle(margin*2,                oY+margin+size,size,size), true, true);
-        sprites[0][4].setSizeTo( new BRectangle(margin*2+size+margin,    oY+margin+size,size,size), true, true);
-        sprites[0][5].setSizeTo( new BRectangle(margin*2+size*2+margin*2,oY+margin+size,size,size), true, true);
+        sprites[0][0].setSizeTo( new BRectangle(oX + margin*2,                oY,size,size), true, true);
+        sprites[0][1].setSizeTo( new BRectangle(oX + margin*2+size+margin,    oY,size,size), true, true);
+        sprites[0][2].setSizeTo( new BRectangle(oX + margin*2+size*2+margin*2,oY,size,size), true, true);
+        sprites[0][3].setSizeTo( new BRectangle(oX + margin*2,                oY+margin+size,size,size), true, true);
+        sprites[0][4].setSizeTo( new BRectangle(oX + margin*2+size+margin,    oY+margin+size,size,size), true, true);
+        sprites[0][5].setSizeTo( new BRectangle(oX + margin*2+size*2+margin*2,oY+margin+size,size,size), true, true);
 
-        sprites[1][0].setSizeTo( new BRectangle(margin*2,                oY+margin+size*2+margin*4,size,size), true, true);
-        sprites[1][1].setSizeTo( new BRectangle(margin*2+size+margin,    oY+margin+size*2+margin*4,size,size), true, true);
-        sprites[1][2].setSizeTo( new BRectangle(margin*2+size*2+margin*2,oY+margin+size*2+margin*4,size,size), true, true);
-        sprites[1][3].setSizeTo( new BRectangle(margin*2,                oY+margin+size*3+margin*5,size,size), true, true);
-        sprites[1][4].setSizeTo( new BRectangle(margin*2+size+margin,    oY+margin+size*3+margin*5,size,size), true, true);
-        sprites[1][5].setSizeTo( new BRectangle(margin*2+size*2+margin*2,oY+margin+size*3+margin*5,size,size), true, true);
+        sprites[1][0].setSizeTo( new BRectangle(oX + margin*2,                oY+margin+size*2+margin*4,size,size), true, true);
+        sprites[1][1].setSizeTo( new BRectangle(oX + margin*2+size+margin,    oY+margin+size*2+margin*4,size,size), true, true);
+        sprites[1][2].setSizeTo( new BRectangle(oX + margin*2+size*2+margin*2,oY+margin+size*2+margin*4,size,size), true, true);
+        sprites[1][3].setSizeTo( new BRectangle(oX + margin*2,                oY+margin+size*3+margin*5,size,size), true, true);
+        sprites[1][4].setSizeTo( new BRectangle(oX + margin*2+size+margin,    oY+margin+size*3+margin*5,size,size), true, true);
+        sprites[1][5].setSizeTo( new BRectangle(oX + margin*2+size*2+margin*2,oY+margin+size*3+margin*5,size,size), true, true);
 
     }
 
@@ -75,6 +78,12 @@ public class BRearangedBongardTestField extends BBongardTestField{
             _rasters = null;
         }
         super.dispose();
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException{
+        in.defaultReadObject();
+        // TODO: discover why this is necesary
+        setOriginalSize( computeOriginalSize() );
     }
 
 }

@@ -1,7 +1,5 @@
 package bongard.gui.game;
 
-import ollitos.bot.map.IBMapReader;
-import ollitos.bot.view.isoview.BIsoView;
 import ollitos.geom.BRectangle;
 import ollitos.geom.IBRectangle;
 import ollitos.gui.basic.*;
@@ -170,43 +168,7 @@ public class BGameHelp extends BSlidableContainer implements BState.Stateful{
             }
         }
 
-        private final class SlidablePageForIsoView implements IBSlidablePage {
-			private IBDrawable _drawable;
-			private IBMapReader _mapReader;
-			
-			public SlidablePageForIsoView(IBMapReader mapReader){
-				_mapReader = mapReader;
-			}
-
-			@Override
-			public void setUp() {
-			}
-
-			@Override
-			public boolean disposed() {
-				return false;
-			}
-
-			@Override
-			public void dispose() {
-			}
-
-			@Override
-			public IBDrawable drawable() {
-				if( _drawable != null ){
-					return _drawable;
-				}
-				_drawable = new BZoomDrawable( new BIsoView(_mapReader) );
-				return _drawable;
-			}
-
-			@Override
-			public IBDrawable icon() {
-				return null;
-			}
-		}
-
-		private transient IBSlidablePage _fd[];
+        private transient IBSlidablePage _fd[];
 		
 		public HelpModel(){
 			_fd = new IBSlidablePage[width()];
@@ -285,4 +247,5 @@ public class BGameHelp extends BSlidableContainer implements BState.Stateful{
             return new BButton( sp, r );
         }
     }
+
 }
