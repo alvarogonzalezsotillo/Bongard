@@ -32,7 +32,6 @@ public class BRearangedBongardTestField extends BBongardTestField{
 
     @Override
     protected void createProblemDrawables(BProblem problem) {
-        System.out.println( "************************************************");
         problem.setSkipBorder(true);
         IBRasterProvider testImage = problem.testImage();
         _rasters = BCardExtractor.extractImages(testImage,false);
