@@ -20,8 +20,16 @@ import java.util.Properties;
 
 public class BGameHelp extends BSlidableContainer implements BState.Stateful{
 
-	public BGameHelp(){
-		super(BGameField.computeOriginalSize(),createModel());
+    private static final int TILE_SIZE = 105;
+
+
+    private static  BRectangle computeOriginalSize() {
+        return new BRectangle(0, 0, TILE_SIZE*4, TILE_SIZE*6);
+    }
+
+
+    public BGameHelp(){
+		super(computeOriginalSize(),createModel());
 	}
 	
 	private static IBSlidableModel createModel() {

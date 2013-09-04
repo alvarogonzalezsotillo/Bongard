@@ -8,6 +8,7 @@ import ollitos.geom.IBRectangle;
 import ollitos.gui.basic.BSprite;
 import ollitos.gui.basic.IBDrawable;
 import ollitos.gui.event.IBEvent;
+import ollitos.gui.menu.IBMenu;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BResourceLocator;
 import ollitos.platform.BScreen;
@@ -26,8 +27,18 @@ import android.widget.FrameLayout;
 
 public class AndrScreen extends BScreen{
 
-	
-	private class AndrView extends View {
+
+    @Override
+    public void setMenu(IBMenu menu) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    protected void removeMenu() {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    private class AndrView extends View {
 
 		private class AndrListener implements OnTouchListener{
 

@@ -1,8 +1,6 @@
 package ollitos.platform.awt;
 
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Frame;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.prefs.Preferences;
@@ -17,7 +15,7 @@ import ollitos.platform.state.BState;
 
 public class AWTGame extends BGame{
 
-	private Container _c;
+	private Frame _c;
 	
 	private AWTScreen _canvas;
 
@@ -54,7 +52,8 @@ public class AWTGame extends BGame{
 		Component canvas = screen().canvasImpl();
 		f.add(canvas);
 		
-		f.setSize( 320, 480 );
+		f.setPreferredSize(new Dimension(320, 480));
+        f.pack();
 		return f;
 	}
 	
@@ -98,13 +97,13 @@ public class AWTGame extends BGame{
 	 */
 	@Override
 	public void restore() {
-		Container c = container();
+		Frame c = container();
 		c.setVisible(true);
 		super.restore();
 		screen().canvasImpl().requestFocusInWindow();
 	}
 
-	private Container container() {
+	public Frame container() {
 		if( _c == null ){
 			_c = createFrame();
 		}

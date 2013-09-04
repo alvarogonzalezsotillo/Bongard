@@ -12,6 +12,8 @@ import ollitos.gui.event.BListenerList;
 import ollitos.gui.event.IBEvent;
 import ollitos.gui.event.IBEventConsumer;
 import ollitos.gui.event.IBEventListener;
+import ollitos.gui.menu.IBMenu;
+import ollitos.gui.menu.IBMenuHolder;
 import ollitos.platform.state.BStateManager;
 import ollitos.util.BTransformUtil;
 
@@ -44,9 +46,16 @@ public abstract class BScreen implements IBScreen {
 		l.log( this, "saving new state...");
 		p.stateManager().save( BStateManager.asStateful(d) );
 		l.log( this, "saved new state");
+
+        removeMenu();
+        if( d instanceof IBMenuHolder ){
+            IBMenu menu = ((IBMenuHolder)d).menu();
+            setMenu(menu);
+        }
 	}
 
-	private void setDrawable_simple(IBDrawable d) {
+
+    private void setDrawable_simple(IBDrawable d) {
 		if (_d != null && _d instanceof IBEventConsumer) {
 			removeListener(((IBEventConsumer)_d).listener());
 		}
@@ -194,5 +203,9 @@ public abstract class BScreen implements IBScreen {
 		}
 		return _identity;
 	}
+
+    abstract public void setMenu(IBMenu menu);
+    protected abstract void removeMenu();
+
 
 }

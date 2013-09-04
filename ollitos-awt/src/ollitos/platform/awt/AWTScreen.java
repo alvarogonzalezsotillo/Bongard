@@ -1,26 +1,14 @@
 package ollitos.platform.awt;
 
-import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Point;
-import java.awt.RenderingHints;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
+import java.awt.*;
+import java.awt.event.*;
 
 import ollitos.geom.BRectangle;
 import ollitos.geom.IBRectangle;
 import ollitos.geom.IBTransform;
 import ollitos.gui.event.IBEvent;
+import ollitos.gui.menu.IBMenu;
+import ollitos.gui.menu.IBMenuItem;
 import ollitos.platform.BPlatform;
 import ollitos.platform.BScreen;
 import ollitos.platform.IBCanvas;
@@ -29,8 +17,9 @@ import ollitos.platform.raster.BRasterProviderCache;
 
 
 public class AWTScreen extends BScreen{
-	
-	private class KeyListenerImpl extends KeyAdapter{
+
+
+    private class KeyListenerImpl extends KeyAdapter{
 		@Override
 		public void keyPressed(KeyEvent e) {
 			int c = e.getKeyCode();
@@ -225,4 +214,42 @@ public class AWTScreen extends BScreen{
 		return new AWTCanvas(getGraphics());
 	}
 
+
+    @Override
+    public void setMenu(IBMenu menu) {
+        AWTGame g = (AWTGame) BPlatform.instance().game();
+        Frame f = g.container();
+
+        MenuBar menuBar = createMenuBar(menu);
+        f.setMenuBar(menuBar);
+    }
+
+    private MenuBar createMenuBar(IBMenu menu) {
+        MenuBar ret= new MenuBar();
+        Menu m = new Menu("Menu");
+        ret.add(m);
+
+        for( final IBMenuItem i: menu.items() ){
+            MenuItem mi = new MenuItem(i.text());
+            mi.addActionListener( new ActionListener() {
+                Runnable r;
+                {
+                    r = i.actionListener();
+                }
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    r.run();
+                }
+            } );
+            m.add(mi);
+        }
+        return ret;
+    }
+
+    @Override
+    protected void removeMenu() {
+        AWTGame g = (AWTGame) BPlatform.instance().game();
+        Frame f = g.container();
+        f.setMenuBar(null);
+    }
 }
