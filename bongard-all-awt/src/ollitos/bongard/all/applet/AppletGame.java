@@ -1,4 +1,4 @@
-package ollitos.platform.applet;
+package ollitos.bongard.all.applet;
 
 import java.applet.Applet;
 import java.awt.BorderLayout;
@@ -6,9 +6,8 @@ import java.awt.Button;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import ollitos.platform.BPlatform;
-import ollitos.platform.IBGame;
-import ollitos.bongard.all.BStartField;
+import ollitos.bongard.all.AWTAllFrame;
+
 
 
 
@@ -23,10 +22,8 @@ public class AppletGame extends Applet {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println( "Starting game frame..." );
-				IBGame game = BPlatform.instance().game();
-				game.setDefaultDrawable( new BStartField() );
-				game.restore();
-			}
+                AWTAllFrame.start();
+            }
 		});
 		add( button, BorderLayout.CENTER );
 	}

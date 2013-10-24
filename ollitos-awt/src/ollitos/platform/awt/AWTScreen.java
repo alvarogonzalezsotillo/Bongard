@@ -116,7 +116,17 @@ public class AWTScreen extends BScreen{
 			addMouseWheelListener(l);
 			addKeyListener( new KeyListenerImpl() );
 		}
-		
+
+        @Override
+        public Dimension getPreferredSize() {
+            if( drawable() == null ){
+                return super.getPreferredSize();
+            }
+            IBRectangle os = drawable().originalSize();
+            return new Dimension( (int)os.w(), (int)os.h() );
+        }
+
+        @Override
 		public void paint(Graphics g) {
 			BPlatform f = BPlatform.instance();
 			eraseBackground();

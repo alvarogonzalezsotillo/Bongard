@@ -1,6 +1,6 @@
 package ollitos.platform.awt;
 
-import ollitos.bongard.all.BStartField;
+import ollitos.geom.IBRectangle;
 import ollitos.gui.basic.IBDrawable;
 import ollitos.platform.BPlatform;
 
@@ -50,7 +50,9 @@ public abstract class AWTFrame extends Frame{
         f().game().setDefaultDrawable( createDefaultDrawable() );
         f().game().restore();
 
-        pack();
+        IBRectangle os = f().game().defaultDrawable().originalSize();
+        setSize( (int)os.w(), (int)os.h() );
+
         setVisible(true);
     }
 
@@ -59,25 +61,5 @@ public abstract class AWTFrame extends Frame{
     }
 
     protected abstract IBDrawable createDefaultDrawable();
-
-    /**
-     *
-     * @param args
-     */
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new AWTFrame(){
-
-                    @Override
-                    protected IBDrawable createDefaultDrawable() {
-                        return new BStartField();
-                    }
-                };
-            }
-        });
-    }
-
 
 }
