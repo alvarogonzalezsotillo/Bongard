@@ -2,17 +2,17 @@ package ollitos.platform.andr;
 
 import java.lang.Thread.UncaughtExceptionHandler;
 
+import android.view.*;
 import ollitos.gui.basic.IBDrawable;
+import ollitos.gui.menu.IBMenu;
+import ollitos.gui.menu.IBMenuHolder;
+import ollitos.gui.menu.IBMenuItem;
 import ollitos.platform.BPlatform;
 import ollitos.platform.IBGame;
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 
 public abstract class AndrActivity extends Activity {
 
@@ -43,12 +43,45 @@ public abstract class AndrActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		AndrPlatform.initContext(this);
-		AndrPlatform.instance().game().setDefaultDrawable(createDefaultDrawable());
+		BPlatform.instance().game().setDefaultDrawable(createDefaultDrawable());
 		setContentView(createView());
 		restoreState();
 	}
 
     protected abstract IBDrawable createDefaultDrawable();
+
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.clear();
+        IBDrawable d = BPlatform.instance().game().screen().drawable();
+        if( d instanceof IBMenuHolder ){
+            IBMenu bMenu = ((IBMenuHolder)d).menu();
+            fillAndroidMenu(menu,bMenu);
+        }
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    private void fillAndroidMenu(Menu andrMenu, IBMenu bMenu) {
+        int c = Menu.FIRST;
+        for(IBMenuItem i: bMenu.items() ){
+            MenuItem andrMenuItem = andrMenu.add(Menu.NONE, c, Menu.NONE, i.text());
+            c++;
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        IBDrawable d = BPlatform.instance().game().screen().drawable();
+        if( d instanceof IBMenuHolder ){
+            IBMenu bMenu = ((IBMenuHolder)d).menu();
+            int index = item.getItemId() - Menu.FIRST;
+            bMenu.items()[index].actionListener().run();
+            return true;
+        }
+        return false;
+    }
 
     @Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
