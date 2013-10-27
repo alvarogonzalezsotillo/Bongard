@@ -1,0 +1,12 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+dependencies {
+    compile project(':ollitos-awt')
+    runtime project(':ollitos-awt')
+
+    compile project(':bongard-all')
+    runtime project(':bongard-all')
+}
+
+mainClassName = "ollitos.bongard.all.AWTAllFrame"
