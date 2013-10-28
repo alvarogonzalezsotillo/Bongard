@@ -2,7 +2,6 @@ apply plugin: 'java'
 
 dependencies {
     compile project(':bongard-common')
-    runtime project(':bongard-common')
 }
 
 sourceSets.main.resources.srcDir 'src/main/java'

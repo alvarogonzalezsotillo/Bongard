@@ -2,7 +2,6 @@ apply plugin: 'java'
 
 dependencies {
     compile project(':ollitos-common')
-    runtime project(':ollitos-common')
 }
 
 sourceSets.main.resources.srcDir 'src/main/java'
