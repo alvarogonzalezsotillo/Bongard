@@ -1,17 +1,35 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath 'com.android.tools.build:gradle:0.5.6'
-    }
-}
-
-apply plugin: 'android-library'
+apply plugin: 'android'
 
 android {
     compileSdkVersion 17
     buildToolsVersion = "17.0.0"
+
+    signingConfigs {
+        release {
+            storeFile file("../keystore/keystore")
+            storePassword "bongard"
+            keyAlias "alvaro"
+            //keyPassword System.console().readLine("\n\$ Enter key password for alvaro: ")
+            keyPassword System.getenv( "KEYALIAS_PASSWD" )
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+        }
+    }
 }
 
+
+dependencies {
+    compile project(':bongard-quiz')
+    compile project(':ollitos-android')
+}
+
+task info{
+    doLast{
+        println "android.sourceSets.main.res:" + android.sourceSets.main.res
+        println "android.sourceSets.main.assets:" + android.sourceSets.main.assets
+    }
+}

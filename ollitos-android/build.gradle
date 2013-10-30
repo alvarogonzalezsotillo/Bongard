@@ -1,17 +1,12 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath 'com.android.tools.build:gradle:0.5.6'
-    }
-}
-
 apply plugin: 'android-library'
 
 android {
     compileSdkVersion 17
     buildToolsVersion = "17.0.0"
+}
+
+
+dependencies {
+    compile project(':ollitos-common')
 }
 
