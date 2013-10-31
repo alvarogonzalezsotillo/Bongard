@@ -582,13 +582,13 @@ public class BSlidableContainer extends BDrawableContainer implements BState.Sta
 		// DRAW OVERFLOW LABELS
 		if( start > 0 ){
 			BLabel startL = factory.label(  (start) + " ..." );
-			startL.transform().translate(BOX_SPACING/2, boxY + BOX_SPACING );
+			startL.transform().translate(os.x() + BOX_SPACING/2, boxY + BOX_SPACING );
 			startL.draw(c, t);
 		}
 
 		if( end < model().width()-1 ){
 			BLabel startL = factory.label( "... " + (model().width()-end-1)  );
-			startL.transform().translate(os.w() - 2*BOX_SPACING, boxY + BOX_SPACING );
+			startL.transform().translate(os.x() + os.w() - 2*BOX_SPACING, boxY + BOX_SPACING );
 			startL.draw(c, t);
 		}
 
