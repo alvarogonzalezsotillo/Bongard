@@ -8,6 +8,7 @@ import ollitos.geom.IBPoint;
 import ollitos.geom.IBRectangle;
 import ollitos.geom.IBTransform;
 import ollitos.gui.basic.IBDrawable;
+import ollitos.gui.basic.IBTopDrawable  ;
 import ollitos.gui.event.BListenerList;
 import ollitos.gui.event.IBEvent;
 import ollitos.gui.event.IBEventConsumer;
@@ -32,6 +33,7 @@ public abstract class BScreen implements IBScreen {
 
 	@Override
 	public void setDrawable(IBDrawable d) {
+	  IBDrawable oldDrawable = drawable();
 		BPlatform p = BPlatform.instance();
 		IBLogger l = p.logger();
 		l.log( this, "saving current state...");
@@ -52,6 +54,15 @@ public abstract class BScreen implements IBScreen {
             IBMenu menu = ((IBMenuHolder)d).menu();
             setMenu(menu);
         }
+        
+        if( oldDrawable instanceof IBTopDrawable ){
+          ((IBTopDrawable)oldDrawable).removedAsTopDrawable(); 
+        }
+
+        if( d instanceof IBTopDrawable ){
+          ((IBTopDrawable)d).setAsTopDrawable(); 
+        }
+        
 	}
 
 

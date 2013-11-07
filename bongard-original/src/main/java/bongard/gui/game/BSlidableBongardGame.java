@@ -7,11 +7,12 @@ import ollitos.gui.menu.*;
 import ollitos.platform.BPlatform;
 import ollitos.platform.IBGame;
 import ollitos.platform.IBScreen;
-import ollitos.platform.state.BState;
+import ollitos.platform.state.*;
+import ollitos.gui.basic.IBTopDrawable;
 
 import java.awt.event.ActionListener;
 
-public class BSlidableBongardGame extends BSlidableContainer implements BState.Stateful, IBMenuHolder{
+public class BSlidableBongardGame extends BSlidableContainer implements BState.Stateful, IBMenuHolder, IBTopDrawable{
 
 	private static BBongardGameModel createModel(){
 		return new BBongardGameModel();
@@ -29,19 +30,47 @@ public class BSlidableBongardGame extends BSlidableContainer implements BState.S
         this(BBongardTestField.computeOriginalSize(),m);
     }
 
-    @Override
-    public IBMenu menu(){
-        BMenu ret = new BMenu();
-        ret.addItem( new BMenuItem("Help"){
+    private IBMenuItem _helpMenuItem = new BMenuItem("Help"){
             @Override
             public void run() {
-                IBScreen screen = BPlatform.instance().game().screen();
+                IBScreen screen = platform().game().screen();
                 BGameHelp d = platform().stateManager().restore(BGameHelp.class);
                 screen.setDrawable( d );
             }
-        });
+        };
+
+    @Override
+    public IBMenu menu(){
+        BMenu ret = new BMenu();
+        ret.addItem( _helpMenuItem);
 
         return ret;
+    }
+    
+  private IBKeyValueDatabase _db;
+	private static final String DATABASE = "BSlidableBongardGame";
+	private static final String HELP_SHOWED = "hasHelpBeenShowed";
+	
+	private IBKeyValueDatabase database(){
+		if (_db == null) {
+			_db = BPlatform.instance().database( DATABASE );
+		}
+		return _db;
+	}
+    
+   private IBKeyValueTable table() {
+		return database().table(BSlidableBongardGame.class);
+	}
+    public void setAsTopDrawable(){
+      
+      byte[] helpShowed = table().getBytes(HELP_SHOWED);
+      if( helpShowed == null ){
+        table().putBytes( new byte[]{1}, HELP_SHOWED );
+        _helpMenuItem.actionListener().run();
+      }
+    }
+    
+    public void removedAsTopDrawable(){
     }
 
     @SuppressWarnings("serial")
