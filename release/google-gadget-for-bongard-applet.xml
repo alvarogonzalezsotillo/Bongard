@@ -7,8 +7,8 @@
 <script src="http://java.com/js/deployJava.js">
 </script>
 <div id='alvaro-gonzalez-sotillo-applet'>
-<script>
-var _jarUrl = "https://raw.github.com/alvarogonzalezsotillo/Bongard/master/release/bongard.jar";
+<script>        
+var _jarUrl = "https://github.com/alvarogonzalezsotillo/Bongard/raw/master/release/bongard.jar";
 var _name = "alvaro-gonzalez-sotillo-applet";
 var _code = "ollitos.bongard.all.applet.AppletGame";
 var _codebase = ".";
