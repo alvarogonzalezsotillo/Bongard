@@ -1,15 +1,12 @@
 include "bongard-all",
+        "bongard-all-android",
         "bongard-all-awt",
         "bongard-common",
         "bongard-original",
+        "bongard-original-android",
         "bongard-quiz",
+        "bongard-quiz-android",
+        "ollitos-android",
         "ollitos-awt",
         "ollitos-common",
         "ollitos-bot"
-        
-        /*
-        ,"bongard-all-android",
-        "bongard-original-android",
-        "bongard-quiz-android",
-        "ollitos-android",
-        */

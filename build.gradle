@@ -12,3 +12,13 @@ task wrapper(type: Wrapper) {
     gradleVersion = '1.6'
 }
 
+task webrelease( type: Copy, dependsOn: 'bongard-all-awt:fatjar' ){
+    from('bongard-all-awt/build/libs')
+    into('release')
+    include('bongard-all-awt-fat.jar')
+    rename ('bongard-all-awt-fat.jar', 'bongard.jar')
+}
+
+task('assemble').doLast{
+    webrelease()
+}
