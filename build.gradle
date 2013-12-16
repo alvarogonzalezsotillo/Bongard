@@ -19,6 +19,4 @@ task webrelease( type: Copy, dependsOn: 'bongard-all-awt:fatjar' ){
     rename ('bongard-all-awt-fat.jar', 'bongard.jar')
 }
 
-task('assemble').doLast{
-    webrelease()
-}
+

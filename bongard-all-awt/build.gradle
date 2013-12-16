@@ -8,7 +8,7 @@ dependencies {
 
 mainClassName = "ollitos.bongard.all.AWTAllFrame"
 
-task fatjar( type: Jar ){
+task fatjar( type: Jar, dependsOn: 'assemble' ){
 
     archiveName = "bongard-all-awt-fat.jar"
 

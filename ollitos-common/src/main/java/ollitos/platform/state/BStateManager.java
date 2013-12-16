@@ -35,11 +35,11 @@ public class BStateManager implements IBDisposable{
 		}
 		catch( Error e ){
             e.printStackTrace();
-			BPlatform.instance().logger().log( this, e );
+			BPlatform.instance().logger().log( this, "Catched:"+ e );
 		}
 		catch( RuntimeException r ){
             r.printStackTrace();
-            BPlatform.instance().logger().log( this, r );
+            BPlatform.instance().logger().log( this, "Catched:"+ r );
 		}
 	}
 	
