@@ -9,13 +9,11 @@ dependencies {
 mainClassName = "ollitos.bongard.all.AWTAllFrame"
 
 task fatjar( type: Jar, dependsOn: 'assemble' ){
-
     archiveName = "bongard-all-awt-fat.jar"
+    duplicatesStrategy = 'exclude'
 
     from {
-
         from files(sourceSets.main.output.classesDir)
-
         configurations.compile.collect {
             it.isDirectory() ? it : zipTree(it)
         }

@@ -108,12 +108,6 @@ public class
 		return _logger;
 	}
 
-	@Override
-	public BHTMLDrawable html() {
-		BHTMLDrawable ret = new AndrHTMLDrawable();
-		return ret;
-	}
-
     @Override
     public boolean openInExternalApplication(BResourceLocator l) {
         Uri uri = Uri.parse( l.toString() );

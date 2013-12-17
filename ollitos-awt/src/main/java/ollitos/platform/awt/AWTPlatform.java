@@ -114,12 +114,6 @@ public class AWTPlatform extends BPlatform {
 	}
 
 	@Override
-	public AWTHTMLDrawable html() {
-		AWTHTMLDrawable ret = new AWTHTMLDrawable();
-		return ret;
-	}
-
-	@Override
 	public IBKeyValueDatabase database(String database) {
 		return new AWTKeyValueDatabase(database);
 	}

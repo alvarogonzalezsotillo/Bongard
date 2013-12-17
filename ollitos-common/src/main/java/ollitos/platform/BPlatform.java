@@ -117,8 +117,6 @@ public abstract class BPlatform {
 	}
 
 
-	public abstract BHTMLDrawable html();
-
 	private BStateManager _stateManager;
 
 	public BStateManager stateManager() {
