@@ -1,7 +1,5 @@
 package ollitos.bongard.quiz;
 
-import android.app.Activity;
-import android.os.Bundle;
 import bongard.gui.game.BGameModel;
 import bongard.gui.game.BSlidableGameField;
 import ollitos.gui.basic.IBDrawable;

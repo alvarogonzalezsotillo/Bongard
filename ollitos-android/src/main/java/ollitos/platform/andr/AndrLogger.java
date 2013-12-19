@@ -12,7 +12,7 @@ public class AndrLogger implements IBLogger{
 	
 	public void log(Object sender, Object msg) {
 		String s = sender != null ? sender.getClass().getName() : "-";
-		s = s.substring( s.lastIndexOf("")+1, s.length() );
+		s = s.substring( s.lastIndexOf(".")+1, s.length() );
 		Log.d(s, String.valueOf(msg));
 	}
 }

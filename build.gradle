@@ -9,7 +9,7 @@ buildscript {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.7'
+    gradleVersion = '1.9'
 }
 
 
@@ -20,6 +20,22 @@ task webrelease( type: Copy, dependsOn: 'bongard-all-awt:fatjar' ){
     include('bongard-all-awt-fat.jar')
     rename ('bongard-all-awt-fat.jar', 'bongard.jar')
 }
+
+task apkrelease( type: Copy, dependsOn: ['bongard-quiz-android:build', 'bongard-quiz-android:build',  'bongard-original-android:build'] ){
+    from('out'){
+        include('**/*android.apk')
+    }
+    into 'release'
+    eachFile{ details ->
+        println details
+        println details.path
+        println new java.io.File(details.path)
+        println new java.io.File(details.path).getName()
+        details.path = new java.io.File(details.path).getName()
+    }
+}
+
+task release( dependsOn: ['webrelease' ,'apkrelease'] )
 
 tasks.withType(Compile) {
     options.compilerArgs << "-Xlint:unchecked"

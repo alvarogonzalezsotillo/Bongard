@@ -9,7 +9,6 @@ import ollitos.geom.IBPoint;
 import ollitos.geom.IBRectangle;
 import ollitos.geom.IBTransform;
 import ollitos.gui.basic.BBox;
-import ollitos.gui.basic.BHTMLDrawable;
 import ollitos.gui.basic.BLabel;
 import ollitos.gui.basic.BSprite;
 import ollitos.platform.raster.BRasterProviderCache;

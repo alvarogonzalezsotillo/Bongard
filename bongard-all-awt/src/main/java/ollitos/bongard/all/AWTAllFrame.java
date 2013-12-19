@@ -1,15 +1,10 @@
 package ollitos.bongard.all;
 
-import ollitos.geom.IBRectangle;
+import ollitos.bongard.all.BStartField;
 import ollitos.gui.basic.IBDrawable;
-import ollitos.platform.BPlatform;
 import ollitos.platform.awt.AWTFrame;
-import ollitos.platform.awt.AWTScreen;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
 /**
  * Created with IntelliJ IDEA.

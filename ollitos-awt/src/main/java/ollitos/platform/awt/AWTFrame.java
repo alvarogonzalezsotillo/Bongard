@@ -2,6 +2,7 @@ package ollitos.platform.awt;
 
 import ollitos.geom.IBRectangle;
 import ollitos.gui.basic.IBDrawable;
+import ollitos.gui.event.BRestartListener;
 import ollitos.platform.BPlatform;
 
 import javax.swing.*;
@@ -49,6 +50,8 @@ public abstract class AWTFrame extends Frame{
 
         f().game().setDefaultDrawable( createDefaultDrawable() );
         f().game().restore();
+        BRestartListener.install();
+
 
         IBRectangle os = f().game().defaultDrawable().originalSize();
         setSize( (int)os.w(), (int)os.h() );

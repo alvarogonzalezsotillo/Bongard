@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.webkit.WebView;
 import ollitos.geom.IBRectangle;
-import ollitos.gui.basic.BHTMLDrawable;
 import ollitos.gui.basic.BLabel;
 import ollitos.gui.basic.BSprite;
 import ollitos.platform.BCanvasContext;
@@ -29,8 +28,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-public class
-        AndrPlatform extends BPlatform{
+public class AndrPlatform extends BPlatform{
 
 	private static Context _context;
 	private AndrGame _game;

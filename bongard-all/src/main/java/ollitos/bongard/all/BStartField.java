@@ -66,10 +66,7 @@ public class BStartField extends BDrawableContainer{
 		addDrawable(_helpGameSprite);
 		addDrawable(_startOriginalSprite);
 		addDrawable(_helpOriginalSprite);
-		
-		
-		BRestartListener.install();
-	}
+    }
 
 
 	protected void clicked(BButton b) {

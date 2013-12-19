@@ -1,5 +1,6 @@
 package ollitos.bongard.all;
 
+import ollitos.bongard.all.BStartField;
 import ollitos.gui.basic.IBDrawable;
 import ollitos.platform.andr.AndrActivity;
 

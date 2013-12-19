@@ -4,6 +4,7 @@ import java.lang.Thread.UncaughtExceptionHandler;
 
 import android.view.*;
 import ollitos.gui.basic.IBDrawable;
+import ollitos.gui.event.BRestartListener;
 import ollitos.gui.menu.IBMenu;
 import ollitos.gui.menu.IBMenuHolder;
 import ollitos.gui.menu.IBMenuItem;
@@ -46,7 +47,9 @@ public abstract class AndrActivity extends Activity {
 		BPlatform.instance().game().setDefaultDrawable(createDefaultDrawable());
 		setContentView(createView());
 		restoreState();
-	}
+
+        BRestartListener.install();
+    }
 
     protected abstract IBDrawable createDefaultDrawable();
 
