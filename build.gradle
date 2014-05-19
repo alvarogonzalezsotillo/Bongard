@@ -22,17 +22,16 @@ task webrelease( type: Copy, dependsOn: 'bongard-all-awt:fatjar' ){
 }
 
 task apkrelease( type: Copy, dependsOn: ['bongard-quiz-android:build', 'bongard-quiz-android:build',  'bongard-original-android:build'] ){
-    from('out'){
-        include('**/*android.apk')
-    }
+    from '.'
+    include '**/*release.apk' 
+    exclude 'release/**'
+    includeEmptyDirs = false
     into 'release'
-    eachFile{ details ->
-        println details
-        println details.path
-        println new java.io.File(details.path)
-        println new java.io.File(details.path).getName()
-        details.path = new java.io.File(details.path).getName()
-    }
+    eachFile{ d ->
+    println d.path
+    def ret = new java.io.File(d.path).getName()
+    println ret
+    d.path=ret }
 }
 
 task release( dependsOn: ['webrelease' ,'apkrelease'] )

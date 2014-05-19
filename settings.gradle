@@ -9,4 +9,4 @@ include "bongard-all",
         "ollitos-android",
         "ollitos-awt",
         "ollitos-common",
-        "ollitos-bot"
+        "ollitosbot"

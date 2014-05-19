@@ -1,7 +1,9 @@
 apply plugin: 'java'
 
 dependencies {
-    compile project(':ollitos-common')
+    compile( project(':ollitos-common') ){
+        transitive = false
+    }
 }
 
 sourceSets.main.resources.srcDir 'src/main/java'

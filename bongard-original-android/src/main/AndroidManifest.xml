@@ -4,8 +4,9 @@
           android:versionCode="1"
           android:versionName="1.0">
     <uses-sdk android:minSdkVersion="7"/>
+
     <application android:label="@string/app_name">
-        <activity android:name="BongardOriginalActivity"  android:label="@string/app_name">
+        <activity android:name="BongardOriginalActivity"  android:label="@string/app_name" android:icon="@drawable/icon_original">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

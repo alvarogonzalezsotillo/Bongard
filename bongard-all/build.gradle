@@ -3,6 +3,7 @@ apply plugin: 'java'
 dependencies {
     compile project(':bongard-original')
     compile project(':bongard-quiz')
+    compile project(':bongard-common')
 }
 
 sourceSets.main.resources.srcDir 'src/main/java'

@@ -1,7 +1,13 @@
 apply plugin: 'java'
 
 dependencies {
-    compile project(':bongard-common')
+    compile( project(':bongard-common') ){
+        transitive = false
+    }
+    compile( project(':ollitos-common') ){
+        transitive = false
+    }
+
 }
 
 sourceSets.main.resources.srcDir 'src/main/java'
