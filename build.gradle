@@ -8,11 +8,13 @@ buildscript {
     }
 }
 
+def apkFiles = [ 'bongard-original-android/build/apk/bongard-original-android-release.apk',
+                 'bongard-quiz-android/build/apk/bongard-quiz-android-release.apk',
+                 'bongard-all-android/build/apk/bongard-all-android-release.apk' ]
+
 task wrapper(type: Wrapper) {
     gradleVersion = '1.9'
 }
-
-
 
 task webrelease( type: Copy, dependsOn: 'bongard-all-awt:fatjar' ){
     from('bongard-all-awt/build/libs')
@@ -23,15 +25,15 @@ task webrelease( type: Copy, dependsOn: 'bongard-all-awt:fatjar' ){
 
 task apkrelease( type: Copy, dependsOn: ['bongard-quiz-android:build', 'bongard-quiz-android:build',  'bongard-original-android:build'] ){
     from '.'
-    include '**/*release.apk' 
-    exclude 'release/**'
-    includeEmptyDirs = false
+    for( apk in apkFiles ){
+        include apk
+    }
     into 'release'
     eachFile{ d ->
-    println d.path
-    def ret = new java.io.File(d.path).getName()
-    println ret
-    d.path=ret }
+        def ret = new java.io.File(d.path).getName()
+        d.path=ret
+    }
+    includeEmptyDirs = false
 }
 
 task release( dependsOn: ['webrelease' ,'apkrelease'] )

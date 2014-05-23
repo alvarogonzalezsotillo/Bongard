@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Locale;
+import java.util.Properties;
 
 import ollitos.util.BException;
 
@@ -17,8 +18,21 @@ import ollitos.util.BException;
 public class BResourceLocator implements Serializable{
 	private String _s;
 	private URL _u;
-	
-	public static BResourceLocator combine(BResourceLocator path, String s ){
+
+    public static Properties getLocalizedProperties(BResourceLocator l) {
+        l = BResourceLocator.localizedResource(l);
+        Properties props = new Properties();
+        try {
+            props.load( BPlatform.instance().open(l) );
+        }
+        catch (IOException e) {
+            throw new BException( e.toString(), e );
+        }
+        return props;
+    }
+
+
+    public static BResourceLocator combine(BResourceLocator path, String s ){
 		String str = s.startsWith("/") ? s.substring(1) : s;
 		if( path.toString().endsWith("/") ){
 			return combine_impl(path, str);

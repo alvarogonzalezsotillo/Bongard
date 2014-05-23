@@ -25,5 +25,7 @@ android {
 dependencies {
     compile project(':bongard-all')
     compile project(':ollitos-android')
+    
+    
 }
 
