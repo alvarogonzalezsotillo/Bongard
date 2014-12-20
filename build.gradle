@@ -4,7 +4,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.5.6'
+        classpath 'com.android.tools.build:gradle:0.6.+'
     }
 }
 
@@ -13,7 +13,7 @@ def apkFiles = [ 'bongard-original-android/build/apk/bongard-original-android-re
                  'bongard-all-android/build/apk/bongard-all-android-release.apk' ]
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.9'
+    gradleVersion = '1.8'
 }
 
 task webrelease( type: Copy, dependsOn: 'bongard-all-awt:fatjar' ){
