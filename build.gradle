@@ -1,6 +1,9 @@
 buildscript {
     repositories {
         mavenCentral()
+        maven {
+            url "http://localhost:8888/repository/android-group"
+        }
     }
 
     dependencies {

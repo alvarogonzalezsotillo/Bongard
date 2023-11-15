@@ -11,3 +11,6 @@
 *.war
 *.ear
 /build
+/.gradle/
+*/build/*
+/local.properties
