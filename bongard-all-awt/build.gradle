@@ -4,6 +4,7 @@ apply plugin: 'application'
 dependencies {
     compile project(':ollitos-awt')
     compile project(':bongard-all')
+    compile project(':ollitosbot')
 }
 
 mainClassName = "ollitos.bongard.all.AWTAllFrame"

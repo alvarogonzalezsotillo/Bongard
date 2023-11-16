@@ -32,8 +32,13 @@ public class AWTAllFrame{
         new AWTFrame(){
             @Override
             protected IBDrawable createDefaultDrawable() {
+                // Para empezar con los robots. Hay que borrar el estado anterior.
+                //     String resource = "/map/debugMap";
+                //     ollitos.bot.map.IBMapReader reader = new ollitos.bot.map.bsh.BBeanShellMapReader(resource);
+                //     return new ollitos.bot.view.isoview.BIsoView(reader);
                 return new BStartField();
             }
+                
         };
     }
 

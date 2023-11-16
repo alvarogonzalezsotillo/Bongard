@@ -1,0 +1,11 @@
+apply plugin: 'java'
+
+
+dependencies {
+    compile project(':ollitos-common')
+    compile 'org.apache-extras.beanshell:bsh:2.0b6'
+}
+
+
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
