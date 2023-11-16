@@ -1,11 +1,14 @@
-apply plugin: 'java'
 
-
-dependencies {
-    compile project(':ollitos-common')
-    compile 'org.apache-extras.beanshell:bsh:2.0b6'
+plugins {
+    id 'java-library'
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_6
+    targetCompatibility = JavaVersion.VERSION_1_6
+}
 
-sourceCompatibility = 1.6
-targetCompatibility = 1.6
+dependencies {
+    implementation project(':ollitos-common')
+    implementation 'org.apache-extras.beanshell:bsh:2.0b6'
+}

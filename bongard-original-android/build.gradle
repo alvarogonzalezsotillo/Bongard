@@ -2,7 +2,6 @@ apply plugin: 'android'
 
 android {
     compileSdkVersion 17
-    buildToolsVersion = "17.0.0"
 
     signingConfigs {
         release {
@@ -23,8 +22,8 @@ android {
 
 
 dependencies {
-    compile project(':bongard-original')
-    compile project(':ollitos-android')
+    implementation project(':bongard-original')
+    implementation project(':ollitos-android')
 }
 
 task info{

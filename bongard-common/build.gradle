@@ -1,12 +1,12 @@
-apply plugin: 'java'
-
-sourceCompatibility = 1.6
-targetCompatibility = 1.6
-
-dependencies {
-    compile( project(':ollitos-common') ){
-        transitive = false
-    }
+plugins {
+    id 'java-library'
 }
 
-sourceSets.main.resources.srcDir 'src/main/java'
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_6
+    targetCompatibility = JavaVersion.VERSION_1_6
+}
+
+dependencies {
+    implementation project(':ollitos-common')
+}

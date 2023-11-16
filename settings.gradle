@@ -1,3 +1,5 @@
+rootProject.name = 'bongard'
+
 include "bongard-all",
         "bongard-all-android",
         "bongard-all-awt",

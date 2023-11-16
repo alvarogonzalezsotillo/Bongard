@@ -1,12 +1,15 @@
-apply plugin: 'java'
-
-sourceCompatibility = 1.6
-targetCompatibility = 1.6
-
-dependencies {
-    compile project(':bongard-original')
-    compile project(':bongard-quiz')
-    compile project(':bongard-common')
+plugins {
+    id 'java-library'
 }
 
-sourceSets.main.resources.srcDir 'src/main/java'
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_6
+    targetCompatibility = JavaVersion.VERSION_1_6
+}
+
+dependencies {
+    implementation project(':bongard-original')
+    implementation project(':bongard-quiz')
+    implementation project(':bongard-common')
+    implementation project(':ollitos-common')
+}
