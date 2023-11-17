@@ -24,6 +24,7 @@ android {
 dependencies {
     implementation project(':bongard-original')
     implementation project(':ollitos-android')
+    implementation project(':ollitos-common')
 }
 
 task info{
